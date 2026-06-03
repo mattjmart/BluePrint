@@ -1,906 +1,1076 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>DailyReps WOD</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HFK Blueprint — Hannibal For King Program</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600;700&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-:root{
-  --navy:#1e2748;--navy2:#2d3a6e;--navy3:#3d4f9f;
-  --cream:#f2efe8;--warm:#e4dfd5;--white:#fff;
-  --text:#16172b;--muted:#7a7a9a;
-  --red:#e84444;--red2:#ff6b6b;
-  --green:#1db954;--green2:#34d468;
-  --gold:#f4a620;--gold2:#ffc84a;
-  --rest:#64748b;
+  :root {
+    --black: #0a0a0a;
+    --deep: #111111;
+    --panel: #1a1a1a;
+    --border: #2a2a2a;
+    --gold: #c9a84c;
+    --gold-dim: #8a6e30;
+    --red: #c0392b;
+    --white: #f0ece4;
+    --muted: #888880;
+    --green: #2ecc71;
+  }
+
+- { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+background: var(–black);
+color: var(–white);
+font-family: ‘Barlow’, sans-serif;
+font-weight: 300;
+min-height: 100vh;
+overflow-x: hidden;
 }
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-html,body{height:100%;overflow:hidden;background:var(--navy);}
-body{font-family:'Syne',sans-serif;color:var(--text);display:flex;flex-direction:column;}
-#app{display:flex;flex-direction:column;height:100%;}
 
-.tab-bar{display:flex;background:var(--navy);border-top:1px solid rgba(255,255,255,.08);flex-shrink:0;order:3;}
-.tab{flex:1;padding:10px 4px 8px;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;border:none;background:none;transition:all .2s;}
-.tab svg{width:20px;height:20px;fill:none;stroke:rgba(255,255,255,.28);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:stroke .2s;}
-.tab span{font-size:9px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:rgba(255,255,255,.28);transition:color .2s;}
-.tab.active svg{stroke:var(--red2);}
-.tab.active span{color:var(--red2);}
+/* NOISE TEXTURE OVERLAY */
+body::before {
+content: ‘’;
+position: fixed;
+inset: 0;
+background-image: url(“data:image/svg+xml,%3Csvg viewBox=‘0 0 200 200’ xmlns=‘http://www.w3.org/2000/svg’%3E%3Cfilter id=‘n’%3E%3CfeTurbulence type=‘fractalNoise’ baseFrequency=‘0.9’ numOctaves=‘4’ stitchTiles=‘stitch’/%3E%3C/filter%3E%3Crect width=‘100%25’ height=‘100%25’ filter=‘url(%23n)’ opacity=‘0.03’/%3E%3C/svg%3E”);
+pointer-events: none;
+z-index: 1000;
+opacity: 0.4;
+}
 
-.pages{flex:1;overflow:hidden;order:2;position:relative;}
-.page{position:absolute;inset:0;display:none;flex-direction:column;overflow:hidden;}
-.page.active{display:flex;}
-.page-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+/* HERO */
+.hero {
+position: relative;
+padding: 60px 24px 40px;
+border-bottom: 1px solid var(–border);
+overflow: hidden;
+}
 
-.topbar{background:var(--navy);padding:14px 18px 12px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;border-bottom:1px solid rgba(255,255,255,.07);order:1;}
-.logo{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:3px;color:#fff;}
-.logo em{color:var(--red2);font-style:normal;}
+.hero::after {
+content: ‘HFK’;
+position: absolute;
+right: -20px;
+top: -10px;
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 200px;
+color: rgba(201,168,76,0.04);
+pointer-events: none;
+line-height: 1;
+letter-spacing: -5px;
+}
 
-/* TODAY */
-.today-hero{background:var(--navy2);padding:18px 18px 14px;flex-shrink:0;}
-.th-date{font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(255,255,255,.4);letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;}
-.th-title{font-family:'Bebas Neue',sans-serif;font-size:34px;letter-spacing:3px;color:#fff;line-height:1;margin-bottom:10px;}
-.focus-chips{display:flex;gap:7px;flex-wrap:wrap;}
-.focus-chip{padding:5px 13px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;border:2px solid transparent;transition:all .2s;}
-.focus-chip.arm{background:rgba(61,79,159,.3);color:#8ca8ff;border-color:rgba(61,79,159,.35);}
-.focus-chip.leg{background:rgba(232,68,68,.18);color:#ff8e8e;border-color:rgba(232,68,68,.28);}
-.focus-chip.abs{background:rgba(244,166,32,.18);color:#ffc84a;border-color:rgba(244,166,32,.28);}
-.focus-chip.back{background:rgba(29,185,84,.18);color:#34d468;border-color:rgba(29,185,84,.28);}
-.focus-chip.active.arm{background:var(--navy3);border-color:#8ca8ff;color:#fff;}
-.focus-chip.active.leg{background:var(--red);border-color:var(--red2);color:#fff;}
-.focus-chip.active.abs{background:var(--gold);border-color:var(--gold2);color:#16172b;}
-.focus-chip.active.back{background:var(--green);border-color:var(--green2);color:#fff;}
+.hero-tag {
+font-family: ‘Barlow Condensed’, sans-serif;
+font-size: 11px;
+font-weight: 600;
+letter-spacing: 4px;
+text-transform: uppercase;
+color: var(–gold);
+margin-bottom: 12px;
+display: flex;
+align-items: center;
+gap: 10px;
+}
 
-.wod-area{padding:14px 16px 16px;}
+.hero-tag::before {
+content: ‘’;
+width: 24px;
+height: 1px;
+background: var(–gold);
+}
 
-.timer-widget{background:var(--navy2);border-radius:16px;padding:16px 18px;margin-bottom:14px;border:1px solid rgba(255,255,255,.08);}
-.tw-top{display:flex;align-items:center;justify-content:space-between;}
-.tw-clock{font-family:'Bebas Neue',sans-serif;font-size:52px;letter-spacing:5px;color:#fff;line-height:1;transition:color .3s;}
-.tw-clock.warn{color:var(--red2);}
-.tw-clock.done{color:var(--green2);}
-.tw-label{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.38);margin-top:2px;}
-.tw-btns{display:flex;flex-direction:column;gap:7px;align-items:flex-end;}
-.tw-btn{padding:7px 16px;border-radius:8px;border:none;cursor:pointer;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;transition:all .2s;}
-.tw-start{background:var(--red);color:#fff;}
-.tw-start:hover{background:var(--red2);}
-.tw-reset{background:rgba(255,255,255,.07);color:rgba(255,255,255,.55);}
-.tw-reset:hover{background:rgba(255,255,255,.13);}
-.timer-bar-wrap{height:3px;background:rgba(255,255,255,.1);border-radius:2px;margin-top:12px;overflow:hidden;}
-.timer-bar{height:100%;background:var(--red);border-radius:2px;transition:width 1s linear;width:100%;}
+.hero h1 {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: clamp(52px, 12vw, 88px);
+line-height: 0.95;
+letter-spacing: 2px;
+color: var(–white);
+margin-bottom: 16px;
+}
 
-.round-row{display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.04);border-radius:12px;padding:11px 16px;margin-bottom:14px;border:1px solid rgba(255,255,255,.07);}
-.rr-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.45);}
-.rr-val{font-family:'Bebas Neue',sans-serif;font-size:34px;color:#fff;line-height:1;}
-.rr-btns{display:flex;gap:8px;}
-.rr-btn{width:34px;height:34px;border-radius:50%;border:none;cursor:pointer;font-size:18px;font-weight:700;display:flex;align-items:center;justify-content:center;transition:all .15s;}
-.rr-minus{background:rgba(255,255,255,.1);color:#fff;}
-.rr-plus{background:var(--red);color:#fff;}
-.rr-minus:hover{background:rgba(255,255,255,.2);}
-.rr-plus:hover{background:var(--red2);}
+.hero h1 span {
+color: var(–gold);
+}
 
-.notes-block{background:rgba(255,255,255,.04);border-radius:12px;padding:12px 14px;margin-bottom:14px;border:1px solid rgba(255,255,255,.07);}
-.notes-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:8px;}
-.notes-textarea{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#fff;font-family:'Syne',sans-serif;font-size:13px;padding:10px 12px;resize:none;outline:none;line-height:1.5;min-height:80px;}
-.notes-textarea::placeholder{color:rgba(255,255,255,.22);}
-.notes-textarea:focus{border-color:rgba(255,255,255,.25);background:rgba(255,255,255,.09);}
+.hero-sub {
+font-size: 14px;
+color: var(–muted);
+max-width: 380px;
+line-height: 1.6;
+font-weight: 300;
+}
 
-.circuit-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
-.circuit-title{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:#fff;}
-.regen-btn{background:none;border:1px solid rgba(255,255,255,.18);border-radius:6px;padding:5px 12px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.45);cursor:pointer;transition:all .2s;}
-.regen-btn:hover{border-color:var(--red2);color:var(--red2);}
-.circuit-card{background:var(--white);border-radius:14px;overflow:hidden;margin-bottom:14px;}
-.ex-row{display:flex;align-items:flex-start;gap:11px;padding:12px 14px;border-bottom:1px solid #f0ece4;cursor:pointer;transition:background .15s;}
-.ex-row:last-child{border-bottom:none;}
-.ex-row:active{background:#f5f1e8;}
-.ex-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);min-width:20px;padding-top:2px;font-weight:500;}
-.ex-check{width:22px;height:22px;border-radius:50%;border:2px solid var(--warm);flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:all .2s;}
-.ex-check.checked{background:var(--green);border-color:var(--green);}
-.ex-check.checked::after{content:'✓';color:#fff;font-size:11px;font-weight:700;}
-.ex-body{flex:1;}
-.ex-name{font-size:13px;font-weight:600;color:var(--text);line-height:1.3;}
-.ex-name.checked{text-decoration:line-through;color:var(--muted);}
-.ex-hint{font-size:11px;color:var(--muted);margin-top:2px;font-weight:400;}
-.ex-pill{font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 7px;border-radius:8px;align-self:flex-start;flex-shrink:0;margin-top:3px;}
-.pill-focus{background:#fff3cd;color:#b8860b;}
-.pill-arm{background:#e8ecff;color:#3d4f9f;}
-.pill-leg{background:#ffecec;color:#c0392b;}
-.pill-abs{background:#fff8e1;color:#e67e22;}
-.pill-back{background:#e8f8ef;color:#1a7a3e;}
+/* NAV TABS */
+.tabs {
+display: flex;
+border-bottom: 1px solid var(–border);
+overflow-x: auto;
+-webkit-overflow-scrolling: touch;
+scrollbar-width: none;
+}
+.tabs::-webkit-scrollbar { display: none; }
 
-.action-row{display:flex;gap:10px;margin-bottom:10px;}
-.log-btn{flex:1;padding:14px;background:var(--green);border:none;border-radius:12px;color:#fff;font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;cursor:pointer;transition:all .2s;}
-.log-btn:hover{background:var(--green2);}
-.rest-btn{padding:14px 18px;background:rgba(100,116,139,.2);border:1px solid rgba(100,116,139,.35);border-radius:12px;color:rgba(255,255,255,.55);font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:1.5px;cursor:pointer;transition:all .2s;white-space:nowrap;}
-.rest-btn:hover{background:rgba(100,116,139,.38);color:#fff;}
+.tab {
+font-family: ‘Barlow Condensed’, sans-serif;
+font-size: 13px;
+font-weight: 600;
+letter-spacing: 2px;
+text-transform: uppercase;
+color: var(–muted);
+padding: 16px 20px;
+cursor: pointer;
+border-bottom: 2px solid transparent;
+white-space: nowrap;
+transition: all 0.2s;
+background: none;
+border-top: none;
+border-left: none;
+border-right: none;
+}
 
-.empty-wod{text-align:center;padding:36px 20px;}
-.empty-wod .big{font-size:46px;margin-bottom:12px;}
-.empty-wod p{font-size:13px;color:rgba(255,255,255,.45);line-height:1.6;margin-bottom:18px;}
-.gen-btn{width:100%;padding:15px;background:var(--red);border:none;border-radius:12px;color:#fff;font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;cursor:pointer;transition:all .2s;box-shadow:0 4px 20px rgba(232,68,68,.28);}
-.gen-btn:hover{background:var(--red2);transform:translateY(-1px);}
+.tab.active {
+color: var(–gold);
+border-bottom-color: var(–gold);
+}
 
-/* LIBRARY */
-.lib-sub-tabs{display:flex;gap:0;padding:0 16px;background:var(--navy);overflow-x:auto;flex-shrink:0;border-bottom:1px solid rgba(255,255,255,.07);}
-.lib-sub-tab{padding:10px 14px;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.4);cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;}
-.lib-sub-tab.active{color:#fff;border-bottom-color:var(--red2);}
-.lib-content{padding:16px;}
-.lib-phase-block{margin-bottom:22px;}
-.lib-phase-hdr{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
-.lib-phase-badge{color:#fff;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;border-radius:6px;}
-.lib-phase-badge.p1{background:#3a5f3a;}
-.lib-phase-badge.p2{background:#1e3a6e;}
-.lib-phase-badge.p3{background:#6b1e1e;}
-.lib-phase-badge.p4{background:#4a3500;}
-.lib-phase-name{font-size:12px;color:rgba(255,255,255,.4);font-weight:600;}
-.lib-ex-card{background:var(--white);border-radius:10px;padding:11px 14px;margin-bottom:7px;}
-.lib-ex-name{font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px;}
-.lib-ex-hint{font-size:11px;color:var(--muted);}
-.lib-ex-tag{display:inline-block;font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 6px;border-radius:5px;margin-top:4px;}
-.tag-kb{background:#e8f0fe;color:#1a56a0;}
-.tag-db{background:#fce8e6;color:#b00020;}
-.tag-mil{background:#e6f4ea;color:#1e5c2e;}
-.tag-bw{background:#f3e5f5;color:#4a148c;}
-.lib-phase-stepper{display:flex;align-items:center;gap:8px;margin-top:12px;padding:12px 16px;background:rgba(255,255,255,.04);border-radius:10px;border:1px solid rgba(255,255,255,.08);}
-.lps-label{flex:1;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.5);}
-.lps-muscle{color:#fff;font-size:12px;font-weight:700;}
-.lps-val{font-family:'Bebas Neue',sans-serif;font-size:22px;color:#fff;min-width:20px;text-align:center;}
-.lps-btn{width:28px;height:28px;border-radius:50%;border:1.5px solid rgba(255,255,255,.2);background:none;color:#fff;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;}
-.lps-btn:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.5);}
+/* SECTIONS */
+.section { display: none; padding: 28px 20px; }
+.section.active { display: block; }
 
-/* CALENDAR */
-.cal-top{background:var(--navy2);padding:14px 18px 12px;flex-shrink:0;}
-.cal-streak-bar{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
-.streak-badge{background:linear-gradient(135deg,var(--gold),var(--red));border-radius:10px;padding:8px 14px;display:flex;align-items:center;gap:8px;flex:1;}
-.streak-fire{font-size:20px;}
-.streak-val{font-family:'Bebas Neue',sans-serif;font-size:28px;color:#fff;line-height:1;}
-.streak-lbl{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.75);}
-.total-badge{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:8px 14px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
-.total-val{font-family:'Bebas Neue',sans-serif;font-size:24px;color:#fff;line-height:1;}
-.total-lbl{font-size:8px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:2px;}
-.cal-month{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:3px;color:#fff;}
-.cal-nav{display:flex;gap:8px;margin-top:7px;}
-.cal-nav-btn{background:rgba(255,255,255,.07);border:none;border-radius:6px;padding:5px 13px;color:rgba(255,255,255,.55);font-size:11px;font-weight:700;cursor:pointer;transition:all .2s;}
-.cal-nav-btn:hover{background:rgba(255,255,255,.14);color:#fff;}
-.cal-grid{padding:10px 14px 0;}
-.cal-days-row{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:5px;}
-.cal-day-lbl{text-align:center;font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.25);padding:3px 0;}
-.cal-cells{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;}
-.cal-cell{aspect-ratio:1;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .18s;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.05);}
-.cal-cell.empty{background:transparent;border-color:transparent;cursor:default;}
-.cal-cell.today{border-color:rgba(255,255,255,.3);}
-.cal-cell.workout{background:rgba(29,185,84,.15);border-color:rgba(29,185,84,.35);}
-.cal-cell.workout .cal-num{color:var(--green2);}
-.cal-cell.rest-day{background:rgba(100,116,139,.15);border-color:rgba(100,116,139,.3);}
-.cal-cell.rest-day .cal-num{color:#94a3b8;}
-.cal-cell.selected{background:var(--red)!important;border-color:var(--red2)!important;}
-.cal-cell.selected .cal-num{color:#fff!important;}
-.cal-num{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;color:rgba(255,255,255,.45);}
-.cal-dot{width:4px;height:4px;border-radius:50%;margin-top:2px;}
-.dot-workout{background:var(--green);}
-.dot-rest{background:var(--rest);}
-.cal-detail{margin:12px 14px 16px;background:var(--white);border-radius:14px;overflow:hidden;}
-.cal-detail-hdr{padding:14px 16px;}
-.cdh-date{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
-.cdh-type{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;color:var(--text);}
-.cdh-meta{display:flex;gap:10px;margin-top:10px;}
-.cdh-stat{background:var(--cream);border-radius:8px;padding:7px 12px;text-align:center;flex:1;}
-.cdh-stat-val{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--text);}
-.cdh-stat-lbl{font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-top:1px;}
-.cal-detail-body{border-top:1px solid var(--warm);}
-.cal-ex-item{padding:9px 16px;border-bottom:1px solid #f0ece4;font-size:13px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:10px;}
-.cal-ex-item:last-child{border-bottom:none;}
-.cal-ex-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);min-width:20px;}
-.cal-notes-section{padding:12px 16px;border-top:1px solid var(--warm);}
-.cal-notes-label{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
-.cal-notes-text{font-size:13px;color:var(--text);line-height:1.5;}
+/* SECTION HEADER */
+.section-label {
+font-family: ‘Barlow Condensed’, sans-serif;
+font-size: 11px;
+letter-spacing: 3px;
+text-transform: uppercase;
+color: var(–gold-dim);
+margin-bottom: 20px;
+}
 
-/* SETTINGS */
-.settings-body{padding:16px;}
-.ss-title{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;color:#fff;margin-bottom:12px;}
-.ss-row{display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.05);border-radius:10px;padding:13px 16px;margin-bottom:8px;border:1px solid rgba(255,255,255,.07);}
-.ss-label{font-size:13px;font-weight:600;color:#fff;}
-.ss-sub{font-size:11px;color:var(--muted);margin-top:2px;}
-.ss-stepper{display:flex;align-items:center;gap:10px;}
-.ss-val{font-family:'Bebas Neue',sans-serif;font-size:24px;color:#fff;min-width:24px;text-align:center;}
-.ss-btn{width:30px;height:30px;border-radius:50%;border:1.5px solid rgba(255,255,255,.25);background:none;color:#fff;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;}
-.ss-btn:hover{background:rgba(255,255,255,.1);}
+/* WEEK SCHEDULE */
+.week-grid {
+display: flex;
+flex-direction: column;
+gap: 8px;
+}
 
-/* DONE OVERLAY */
-.done-ov{display:none;position:fixed;inset:0;background:rgba(18,20,40,.95);z-index:500;flex-direction:column;align-items:center;justify-content:center;padding:28px;text-align:center;}
-.done-ov.active{display:flex;}
-.done-emoji{font-size:70px;margin-bottom:14px;animation:pop .5s cubic-bezier(.34,1.56,.64,1);}
-@keyframes pop{0%{transform:scale(0) rotate(-10deg)}100%{transform:scale(1) rotate(0)}}
-.done-title{font-family:'Bebas Neue',sans-serif;font-size:50px;letter-spacing:4px;color:#fff;margin-bottom:6px;}
-.done-sub{font-size:13px;color:rgba(255,255,255,.5);line-height:1.6;max-width:260px;margin-bottom:24px;}
-.done-stats{display:flex;gap:10px;margin-bottom:24px;width:100%;max-width:320px;}
-.ds-box{flex:1;background:rgba(255,255,255,.07);border-radius:12px;padding:13px 8px;border:1px solid rgba(255,255,255,.1);}
-.ds-val{font-family:'Bebas Neue',sans-serif;font-size:34px;color:#fff;}
-.ds-lbl{font-size:8px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.38);margin-top:1px;}
-.done-close{width:100%;max-width:320px;padding:14px;background:var(--red);border:none;border-radius:12px;color:#fff;font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;cursor:pointer;transition:all .2s;}
-.done-close:hover{background:var(--red2);}
+.day-card {
+background: var(–panel);
+border: 1px solid var(–border);
+border-left: 3px solid transparent;
+padding: 16px 18px;
+cursor: pointer;
+transition: all 0.2s;
+position: relative;
+}
 
-/* BELL OVERLAY */
-.bell-ov{display:none;position:fixed;inset:0;background:rgba(14,16,32,.94);z-index:600;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px;}
-.bell-ov.active{display:flex;}
-.bell-ring{font-size:90px;animation:ring .3s ease-in-out infinite alternate;}
-@keyframes ring{0%{transform:rotate(-18deg) scale(1.05)}100%{transform:rotate(18deg) scale(1.1)}}
-.bell-title{font-family:'Bebas Neue',sans-serif;font-size:52px;letter-spacing:5px;color:#fff;margin-top:10px;}
-.bell-sub{font-size:14px;color:rgba(255,255,255,.5);margin-top:6px;letter-spacing:1px;}
-.bell-dismiss{margin-top:36px;padding:14px 48px;background:var(--red);border:none;border-radius:12px;color:#fff;font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;cursor:pointer;}
+.day-card.workout { border-left-color: var(–gold); }
+.day-card.rest { border-left-color: var(–border); opacity: 0.6; }
+.day-card.skills { border-left-color: var(–red); }
+.day-card.active-rest { border-left-color: #3498db; }
 
-.toast{position:fixed;bottom:68px;left:50%;transform:translateX(-50%) translateY(12px);background:var(--navy2);color:#fff;padding:9px 18px;border-radius:10px;font-size:12px;font-weight:600;opacity:0;transition:all .3s;z-index:999;white-space:nowrap;border:1px solid rgba(255,255,255,.14);}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-@media(max-width:360px){.tw-clock{font-size:42px;}.done-title{font-size:42px;}.bell-title{font-size:42px;}}
+.day-card:hover:not(.rest) {
+background: #222;
+transform: translateX(3px);
+}
+
+.day-header {
+display: flex;
+align-items: center;
+justify-content: space-between;
+}
+
+.day-name {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 22px;
+letter-spacing: 1px;
+color: var(–white);
+}
+
+.day-type {
+font-family: ‘Barlow Condensed’, sans-serif;
+font-size: 11px;
+letter-spacing: 2px;
+text-transform: uppercase;
+color: var(–muted);
+}
+
+.day-badge {
+font-family: ‘Barlow Condensed’, sans-serif;
+font-size: 10px;
+font-weight: 700;
+letter-spacing: 1.5px;
+text-transform: uppercase;
+padding: 3px 8px;
+border-radius: 2px;
+}
+
+.badge-work { background: rgba(201,168,76,0.15); color: var(–gold); }
+.badge-rest { background: rgba(136,136,128,0.1); color: var(–muted); }
+.badge-skill { background: rgba(192,57,43,0.15); color: var(–red); }
+.badge-active { background: rgba(52,152,219,0.15); color: #3498db; }
+
+.day-details {
+display: none;
+margin-top: 14px;
+padding-top: 14px;
+border-top: 1px solid var(–border);
+}
+
+.day-details.open { display: block; }
+
+/* WORKOUT BLOCK */
+.workout-info {
+font-size: 13px;
+color: var(–muted);
+margin-bottom: 14px;
+line-height: 1.6;
+}
+
+.exercise-list {
+display: flex;
+flex-direction: column;
+gap: 6px;
+margin-bottom: 14px;
+}
+
+.exercise-item {
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 10px 14px;
+background: rgba(255,255,255,0.03);
+border: 1px solid var(–border);
+}
+
+.ex-name {
+font-family: ‘Barlow Condensed’, sans-serif;
+font-size: 15px;
+font-weight: 600;
+letter-spacing: 0.5px;
+color: var(–white);
+}
+
+.ex-reps {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 18px;
+color: var(–gold);
+letter-spacing: 1px;
+}
+
+.ex-note {
+font-size: 11px;
+color: var(–muted);
+margin-top: 2px;
+}
+
+.ex-left { display: flex; flex-direction: column; }
+
+.tip-box {
+background: rgba(201,168,76,0.06);
+border-left: 2px solid var(–gold-dim);
+padding: 10px 14px;
+font-size: 12px;
+color: var(–muted);
+line-height: 1.6;
+margin-top: 10px;
+}
+
+.tip-box strong {
+color: var(–gold);
+font-family: ‘Barlow Condensed’, sans-serif;
+letter-spacing: 1px;
+text-transform: uppercase;
+font-size: 11px;
+}
+
+.yt-link {
+display: inline-flex;
+align-items: center;
+gap: 6px;
+font-family: ‘Barlow Condensed’, sans-serif;
+font-size: 12px;
+font-weight: 600;
+letter-spacing: 1.5px;
+text-transform: uppercase;
+color: var(–red);
+text-decoration: none;
+margin-top: 10px;
+transition: opacity 0.2s;
+}
+.yt-link:hover { opacity: 0.7; }
+
+/* PRINCIPLES */
+.principle-card {
+border: 1px solid var(–border);
+border-top: 2px solid var(–gold);
+padding: 20px;
+margin-bottom: 14px;
+background: var(–panel);
+}
+
+.principle-num {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 48px;
+color: rgba(201,168,76,0.15);
+line-height: 1;
+margin-bottom: 6px;
+}
+
+.principle-title {
+font-family: ‘Barlow Condensed’, sans-serif;
+font-size: 18px;
+font-weight: 700;
+letter-spacing: 1px;
+text-transform: uppercase;
+color: var(–white);
+margin-bottom: 8px;
+}
+
+.principle-body {
+font-size: 13px;
+color: var(–muted);
+line-height: 1.7;
+}
+
+/* TRACKER */
+.tracker-header {
+display: flex;
+align-items: baseline;
+justify-content: space-between;
+margin-bottom: 20px;
+}
+
+.stat-row {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 10px;
+margin-bottom: 24px;
+}
+
+.stat-box {
+background: var(–panel);
+border: 1px solid var(–border);
+padding: 16px;
+text-align: center;
+}
+
+.stat-num {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 42px;
+color: var(–gold);
+line-height: 1;
+}
+
+.stat-label {
+font-family: ‘Barlow Condensed’, sans-serif;
+font-size: 11px;
+letter-spacing: 2px;
+text-transform: uppercase;
+color: var(–muted);
+margin-top: 4px;
+}
+
+.log-section-title {
+font-family: ‘Barlow Condensed’, sans-serif;
+font-size: 13px;
+font-weight: 700;
+letter-spacing: 2px;
+text-transform: uppercase;
+color: var(–white);
+margin-bottom: 12px;
+}
+
+.log-form {
+display: flex;
+flex-direction: column;
+gap: 10px;
+margin-bottom: 20px;
+}
+
+.log-row {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 8px;
+}
+
+.log-input {
+background: var(–panel);
+border: 1px solid var(–border);
+color: var(–white);
+font-family: ‘Barlow’, sans-serif;
+font-size: 14px;
+padding: 10px 14px;
+outline: none;
+transition: border-color 0.2s;
+width: 100%;
+}
+
+.log-input:focus { border-color: var(–gold); }
+.log-input::placeholder { color: var(–muted); }
+
+select.log-input option {
+background: var(–panel);
+}
+
+.log-btn {
+background: var(–gold);
+color: var(–black);
+border: none;
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 18px;
+letter-spacing: 2px;
+padding: 12px 20px;
+cursor: pointer;
+transition: all 0.2s;
+}
+
+.log-btn:hover { background: #e0bb5a; transform: translateY(-1px); }
+
+.log-entries {
+display: flex;
+flex-direction: column;
+gap: 6px;
+}
+
+.log-entry {
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 10px 14px;
+background: var(–panel);
+border: 1px solid var(–border);
+animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+from { opacity: 0; transform: translateY(-4px); }
+to { opacity: 1; transform: translateY(0); }
+}
+
+.log-entry-day {
+font-family: ‘Barlow Condensed’, sans-serif;
+font-size: 13px;
+font-weight: 600;
+color: var(–gold);
+}
+
+.log-entry-detail {
+font-size: 12px;
+color: var(–muted);
+}
+
+.log-entry-rounds {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 22px;
+color: var(–white);
+}
+
+.clear-btn {
+font-family: ‘Barlow Condensed’, sans-serif;
+font-size: 11px;
+letter-spacing: 2px;
+text-transform: uppercase;
+color: var(–muted);
+background: none;
+border: none;
+cursor: pointer;
+padding: 4px 0;
+transition: color 0.2s;
+}
+.clear-btn:hover { color: var(–red); }
+
+.empty-state {
+text-align: center;
+padding: 30px;
+font-family: ‘Barlow Condensed’, sans-serif;
+font-size: 13px;
+letter-spacing: 1px;
+text-transform: uppercase;
+color: var(–muted);
+border: 1px dashed var(–border);
+}
+
+/* PHASE TIMELINE */
+.phase-block {
+display: flex;
+gap: 16px;
+margin-bottom: 20px;
+align-items: flex-start;
+}
+
+.phase-num-box {
+flex-shrink: 0;
+width: 44px;
+height: 44px;
+background: var(–panel);
+border: 1px solid var(–gold-dim);
+display: flex;
+align-items: center;
+justify-content: center;
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 22px;
+color: var(–gold);
+}
+
+.phase-content-title {
+font-family: ‘Barlow Condensed’, sans-serif;
+font-size: 16px;
+font-weight: 700;
+letter-spacing: 1px;
+text-transform: uppercase;
+color: var(–white);
+margin-bottom: 4px;
+}
+
+.phase-content-months {
+font-size: 11px;
+color: var(–gold-dim);
+letter-spacing: 2px;
+text-transform: uppercase;
+margin-bottom: 6px;
+font-family: ‘Barlow Condensed’, sans-serif;
+}
+
+.phase-content-desc {
+font-size: 13px;
+color: var(–muted);
+line-height: 1.6;
+}
+
+.phase-connector {
+width: 1px;
+height: 16px;
+background: var(–border);
+margin-left: 21px;
+}
+
+/* DIVIDER */
+.divider {
+height: 1px;
+background: var(–border);
+margin: 24px 0;
+}
+
+/* FOOTER */
+.footer {
+padding: 24px 20px;
+border-top: 1px solid var(–border);
+text-align: center;
+font-size: 11px;
+color: var(–muted);
+letter-spacing: 1.5px;
+font-family: ‘Barlow Condensed’, sans-serif;
+text-transform: uppercase;
+}
+
+.footer span { color: var(–gold-dim); }
+
+/* PROGRESS BAR */
+.progress-bar-wrap {
+background: var(–panel);
+border: 1px solid var(–border);
+height: 6px;
+margin-bottom: 6px;
+overflow: hidden;
+}
+
+.progress-bar-fill {
+height: 100%;
+background: linear-gradient(90deg, var(–gold-dim), var(–gold));
+transition: width 0.6s ease;
+}
+
+.progress-label {
+display: flex;
+justify-content: space-between;
+font-family: ‘Barlow Condensed’, sans-serif;
+font-size: 11px;
+letter-spacing: 1px;
+color: var(–muted);
+margin-bottom: 14px;
+}
 </style>
+
 </head>
 <body>
-<div id="app">
-  <div class="topbar">
-    <div class="logo">Daily<em>Reps</em></div>
-    <div id="tbDate" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(255,255,255,.38);letter-spacing:1px;text-transform:uppercase;"></div>
+
+<div class="hero">
+  <div class="hero-tag">Bodyweight · Street Workout · No Gym</div>
+  <h1>HANNIBAL<br><span>FOR KING</span><br>BLUEPRINT</h1>
+  <p class="hero-sub">High-volume calisthenics program for fat loss and muscle building. Inspired by the Around The World method.</p>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('schedule', this)">Schedule</button>
+  <button class="tab" onclick="switchTab('principles', this)">Principles</button>
+  <button class="tab" onclick="switchTab('phases', this)">Phases</button>
+  <button class="tab" onclick="switchTab('tracker', this)">Tracker</button>
+</div>
+
+<!-- SCHEDULE -->
+
+<div id="schedule" class="section active">
+  <div class="section-label">Weekly Training Schedule</div>
+  <div class="week-grid">
+
+```
+<div class="day-card workout" onclick="toggleDay(this)">
+  <div class="day-header">
+    <div>
+      <div class="day-name">Monday</div>
+      <div class="day-type">Around The World — Beginner Cycle</div>
+    </div>
+    <div class="day-badge badge-work">Train</div>
   </div>
-  <div class="pages">
-
-    <!-- TODAY -->
-    <div class="page active" id="pageToday">
-      <div class="today-hero">
-        <div class="th-date" id="todayDate"></div>
-        <div class="th-title">Today's WOD</div>
-        <div style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.38);margin-bottom:7px;">Focus muscle</div>
-        <div class="focus-chips" id="focusChips">
-          <div class="focus-chip arm active" onclick="setFocus('Arms/Chest',this)">💪 Arms/Chest</div>
-          <div class="focus-chip leg" onclick="setFocus('Legs',this)">🦵 Legs</div>
-          <div class="focus-chip abs" onclick="setFocus('Abs',this)">🔥 Abs</div>
-          <div class="focus-chip back" onclick="setFocus('Back',this)">🏋️ Back</div>
+  <div class="day-details">
+    <p class="workout-info">Set a 45–60 min timer. Complete as many full cycles as possible with minimal rest between sets. Lock out every rep. Squeeze your core throughout.</p>
+    <div class="exercise-list">
+      <div class="exercise-item">
+        <div class="ex-left">
+          <div class="ex-name">Pull-Ups</div>
+          <div class="ex-note">Full ROM — dead hang to chin over bar</div>
         </div>
+        <div class="ex-reps">10</div>
       </div>
-      <div class="page-scroll">
-        <div class="wod-area">
-          <div class="timer-widget">
-            <div class="tw-top">
-              <div>
-                <div class="tw-clock" id="timerClock">20:00</div>
-                <div class="tw-label" id="timerLabel">Ready to work</div>
-              </div>
-              <div class="tw-btns">
-                <button class="tw-btn tw-start" id="timerStartBtn" onclick="toggleTimer()">Start</button>
-                <button class="tw-btn tw-reset" onclick="resetTimer()">Reset</button>
-              </div>
-            </div>
-            <div class="timer-bar-wrap"><div class="timer-bar" id="timerBar"></div></div>
-          </div>
-          <div class="round-row">
-            <div><div class="rr-label">Rounds Completed</div><div class="rr-val" id="roundDisplay">0</div></div>
-            <div class="rr-btns">
-              <button class="rr-btn rr-minus" onclick="changeRound(-1)">−</button>
-              <button class="rr-btn rr-plus" onclick="changeRound(1)">+</button>
-            </div>
-          </div>
-          <div class="notes-block">
-            <div class="notes-label">📝 Round Notes &amp; Reps</div>
-            <textarea class="notes-textarea" id="wodNotes" placeholder="e.g. R1: 15 push-ups, 12 squats, 20s plank&#10;R2: 12 push-ups, 10 squats..." oninput="saveNotes()" rows="4"></textarea>
-          </div>
-          <div id="circuitWrap">
-            <div class="empty-wod">
-              <div class="big">🪖</div>
-              <p>Pick your focus muscle then generate your random military WOD.</p>
-              <button class="gen-btn" onclick="generateWOD()">Generate Today's WOD</button>
-            </div>
-          </div>
-          <div id="actionRow" style="display:none;">
-            <div class="action-row">
-              <button class="log-btn" onclick="logWorkout()">✓ Log Complete</button>
-              <button class="rest-btn" onclick="logRestDay()">😴 Rest Day</button>
-            </div>
-          </div>
+      <div class="exercise-item">
+        <div class="ex-left">
+          <div class="ex-name">Parallel Bar Dips</div>
+          <div class="ex-note">Chest slightly forward, full depth</div>
         </div>
+        <div class="ex-reps">20</div>
+      </div>
+      <div class="exercise-item">
+        <div class="ex-left">
+          <div class="ex-name">Push-Ups</div>
+          <div class="ex-note">Chest to floor, elbows 45° out</div>
+        </div>
+        <div class="ex-reps">20</div>
       </div>
     </div>
-
-    <!-- LIBRARY -->
-    <div class="page" id="pageLibrary">
-      <div style="background:var(--navy2);padding:14px 18px 10px;flex-shrink:0;">
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:3px;color:#fff;">Exercise Library</div>
-        <div style="font-size:11px;color:rgba(255,255,255,.38);margin-top:2px;font-weight:500;">Military calisthenics + KB/DB · 4 phases per muscle</div>
-      </div>
-      <div class="lib-sub-tabs" id="libTabs">
-        <button class="lib-sub-tab active" onclick="showLibTab('Arms/Chest',this)">Arms/Chest</button>
-        <button class="lib-sub-tab" onclick="showLibTab('Legs',this)">Legs</button>
-        <button class="lib-sub-tab" onclick="showLibTab('Abs',this)">Abs</button>
-        <button class="lib-sub-tab" onclick="showLibTab('Back',this)">Back</button>
-      </div>
-      <div class="page-scroll"><div class="lib-content" id="libContent"></div></div>
-    </div>
-
-    <!-- CALENDAR -->
-    <div class="page" id="pageCalendar">
-      <div class="cal-top">
-        <div class="cal-streak-bar" id="streakBar"></div>
-        <div class="cal-month" id="calMonthLabel"></div>
-        <div class="cal-nav">
-          <button class="cal-nav-btn" onclick="calNav(-1)">← Prev</button>
-          <button class="cal-nav-btn" onclick="calNav(1)">Next →</button>
-          <button class="cal-nav-btn" onclick="calToday()">Today</button>
-        </div>
-      </div>
-      <div class="page-scroll">
-        <div class="cal-grid">
-          <div class="cal-days-row">
-            <div class="cal-day-lbl">Sun</div><div class="cal-day-lbl">Mon</div><div class="cal-day-lbl">Tue</div>
-            <div class="cal-day-lbl">Wed</div><div class="cal-day-lbl">Thu</div><div class="cal-day-lbl">Fri</div>
-            <div class="cal-day-lbl">Sat</div>
-          </div>
-          <div class="cal-cells" id="calCells"></div>
-        </div>
-        <div id="calDetailWrap"></div>
-        <div style="display:flex;gap:16px;padding:0 14px 20px;flex-wrap:wrap;">
-          <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:rgba(255,255,255,.4);font-weight:600;"><div style="width:10px;height:10px;border-radius:3px;background:rgba(29,185,84,.4);border:1px solid rgba(29,185,84,.6);"></div>Workout</div>
-          <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:rgba(255,255,255,.4);font-weight:600;"><div style="width:10px;height:10px;border-radius:3px;background:rgba(100,116,139,.3);border:1px solid rgba(100,116,139,.5);"></div>Rest Day</div>
-          <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:rgba(255,255,255,.4);font-weight:600;"><div style="width:10px;height:10px;border-radius:3px;border:1px solid rgba(255,255,255,.3);"></div>Today</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SETTINGS -->
-    <div class="page" id="pageSettings">
-      <div style="background:var(--navy2);padding:14px 18px 12px;flex-shrink:0;">
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:3px;color:#fff;">Settings</div>
-      </div>
-      <div class="page-scroll">
-        <div class="settings-body">
-          <div style="margin-bottom:20px;">
-            <div class="ss-title">My Phases</div>
-            <div style="font-size:12px;color:rgba(255,255,255,.38);margin-bottom:12px;line-height:1.5;">Each muscle progresses independently. Increase phase when exercises feel too easy.</div>
-            <div id="phaseSettings"></div>
-          </div>
-          <div style="margin-bottom:20px;">
-            <div class="ss-title">Library Legend</div>
-            <div style="background:rgba(255,255,255,.04);border-radius:10px;padding:14px 16px;border:1px solid rgba(255,255,255,.07);">
-              <div style="display:flex;flex-wrap:wrap;gap:10px;">
-                <div style="display:flex;align-items:center;gap:6px;"><span class="lib-ex-tag tag-mil" style="display:inline-block;">MIL</span><span style="font-size:12px;color:rgba(255,255,255,.6);">Military standard</span></div>
-                <div style="display:flex;align-items:center;gap:6px;"><span class="lib-ex-tag tag-kb" style="display:inline-block;">KB</span><span style="font-size:12px;color:rgba(255,255,255,.6);">Kettlebell</span></div>
-                <div style="display:flex;align-items:center;gap:6px;"><span class="lib-ex-tag tag-db" style="display:inline-block;">DB</span><span style="font-size:12px;color:rgba(255,255,255,.6);">Dumbbell</span></div>
-                <div style="display:flex;align-items:center;gap:6px;"><span class="lib-ex-tag tag-bw" style="display:inline-block;">BW</span><span style="font-size:12px;color:rgba(255,255,255,.6);">Bodyweight</span></div>
-              </div>
-            </div>
-          </div>
-          <div style="margin-bottom:20px;">
-            <div class="ss-title">Blueprint Rules</div>
-            <div style="background:rgba(255,255,255,.04);border-radius:10px;padding:14px 16px;border:1px solid rgba(255,255,255,.07);">
-              <div style="font-size:12px;color:rgba(255,255,255,.65);line-height:1.8;">
-                1. Pick <b style="color:#fff;">1 move per body part</b> from your phase<br>
-                2. Add <b style="color:#fff;">1–2 focus extras</b> for today's target muscle<br>
-                3. Circuit AMRAP for <b style="color:#fff;">20 minutes</b><br>
-                4. Rest <b style="color:#fff;">10–45 sec</b> between moves<br>
-                5. Progress when exercises feel too easy<br>
-                6. Different phases per muscle is <b style="color:#fff;">totally normal</b>
-              </div>
-            </div>
-          </div>
-          <button onclick="clearLog()" style="width:100%;padding:12px;background:rgba(232,68,68,.14);border:1px solid rgba(232,68,68,.28);border-radius:10px;color:var(--red2);font-size:12px;font-weight:700;cursor:pointer;letter-spacing:1px;text-transform:uppercase;">Clear All Workout History</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="tab-bar">
-    <button class="tab active" onclick="showPage('pageToday',this)">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
-      <span>Today</span>
-    </button>
-    <button class="tab" onclick="showPage('pageLibrary',this)">
-      <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
-      <span>Library</span>
-    </button>
-    <button class="tab" onclick="showPage('pageCalendar',this)">
-      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-      <span>Calendar</span>
-    </button>
-    <button class="tab" onclick="showPage('pageSettings',this)">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
-      <span>Settings</span>
-    </button>
+    <div class="tip-box"><strong>HFK Cue</strong> — Rest only as long as you need, then get back on the bar. The goal is max rounds within the time window.</div>
+    <a class="yt-link" href="https://www.youtube.com/watch?v=Wy7-SO7TsoE" target="_blank">▶ Watch Workout Routine Pt. 1</a>
   </div>
 </div>
 
-<div class="bell-ov" id="bellOv">
-  <div class="bell-ring">🔔</div>
-  <div class="bell-title">DING DING DING!</div>
-  <div class="bell-sub">Time's up — 20 minutes complete!</div>
-  <button class="bell-dismiss" onclick="dismissBell()">Log It →</button>
-</div>
-<div class="done-ov" id="doneOv">
-  <div class="done-emoji">🏆</div>
-  <div class="done-title">Logged!</div>
-  <div class="done-sub">Keep stacking daily wins. Little by little a little becomes a lot.</div>
-  <div class="done-stats">
-    <div class="ds-box"><div class="ds-val" id="doneRounds">0</div><div class="ds-lbl">Rounds</div></div>
-    <div class="ds-box"><div class="ds-val">20</div><div class="ds-lbl">Minutes</div></div>
-    <div class="ds-box"><div class="ds-val" id="doneMoves">0</div><div class="ds-lbl">Moves</div></div>
+<div class="day-card active-rest" onclick="toggleDay(this)">
+  <div class="day-header">
+    <div>
+      <div class="day-name">Tuesday</div>
+      <div class="day-type">Active Recovery</div>
+    </div>
+    <div class="day-badge badge-active">Active</div>
   </div>
-  <button class="done-close" onclick="closeDone()">Back to App →</button>
+  <div class="day-details">
+    <p class="workout-info">Light movement to promote recovery. No high-intensity work.</p>
+    <div class="exercise-list">
+      <div class="exercise-item">
+        <div class="ex-left"><div class="ex-name">Walking</div><div class="ex-note">20–30 min easy pace</div></div>
+        <div class="ex-reps">—</div>
+      </div>
+      <div class="exercise-item">
+        <div class="ex-left"><div class="ex-name">Hip Flexor + Hamstring Stretch</div><div class="ex-note">30 sec each side, 2 rounds</div></div>
+        <div class="ex-reps">—</div>
+      </div>
+      <div class="exercise-item">
+        <div class="ex-left"><div class="ex-name">Dead Hang</div><div class="ex-note">Passive grip decompression, 3×30 sec</div></div>
+        <div class="ex-reps">—</div>
+      </div>
+    </div>
+    <div class="tip-box"><strong>Why</strong> — Recovery is when you actually grow. Don't skip this day by doing a "light workout." Truly rest your CNS.</div>
+  </div>
 </div>
-<div class="toast" id="toast"></div>
+
+<div class="day-card workout" onclick="toggleDay(this)">
+  <div class="day-header">
+    <div>
+      <div class="day-name">Wednesday</div>
+      <div class="day-type">Around The World — Advanced Cycle</div>
+    </div>
+    <div class="day-badge badge-work">Train</div>
+  </div>
+  <div class="day-details">
+    <p class="workout-info">Same time block (60–90 min), upgraded movement variations. This is Hannibal's exact cycle — narrow grip demands more from chest, tris, and rear delts.</p>
+    <div class="exercise-list">
+      <div class="exercise-item">
+        <div class="ex-left">
+          <div class="ex-name">Close-Grip Pull-Ups</div>
+          <div class="ex-note">Hands ~6" apart, elbows tight to body</div>
+        </div>
+        <div class="ex-reps">5</div>
+      </div>
+      <div class="exercise-item">
+        <div class="ex-left">
+          <div class="ex-name">Dips</div>
+          <div class="ex-note">Slow descent, pause at bottom</div>
+        </div>
+        <div class="ex-reps">5</div>
+      </div>
+      <div class="exercise-item">
+        <div class="ex-left">
+          <div class="ex-name">Diamond Push-Ups</div>
+          <div class="ex-note">One foot raised for instability challenge</div>
+        </div>
+        <div class="ex-reps">10</div>
+      </div>
+    </div>
+    <div class="tip-box"><strong>Lower reps, harder moves</strong> — These are quality reps, not sprint reps. Focus on tension over tempo.</div>
+    <a class="yt-link" href="https://www.youtube.com/watch?v=Zk9jp9rJ3Ss" target="_blank">▶ Watch Workout Routine Pt. 2</a>
+  </div>
+</div>
+
+<div class="day-card rest">
+  <div class="day-header">
+    <div>
+      <div class="day-name">Thursday</div>
+      <div class="day-type">Full Rest</div>
+    </div>
+    <div class="day-badge badge-rest">Rest</div>
+  </div>
+</div>
+
+<div class="day-card workout" onclick="toggleDay(this)">
+  <div class="day-header">
+    <div>
+      <div class="day-name">Friday</div>
+      <div class="day-type">Volume Day — Push For Max Rounds</div>
+    </div>
+    <div class="day-badge badge-work">Train</div>
+  </div>
+  <div class="day-details">
+    <p class="workout-info">90-minute session. Alternate beginner and advanced cycles back-to-back. Track your total rounds — this is your weekly benchmark number.</p>
+    <div class="exercise-list">
+      <div class="exercise-item">
+        <div class="ex-left"><div class="ex-name">Pull-Ups</div><div class="ex-note">10 reps — wide or close, alternate each round</div></div>
+        <div class="ex-reps">10</div>
+      </div>
+      <div class="exercise-item">
+        <div class="ex-left"><div class="ex-name">Dips</div><div class="ex-note">20 reps or 5 slow reps, alternating</div></div>
+        <div class="ex-reps">20/5</div>
+      </div>
+      <div class="exercise-item">
+        <div class="ex-left"><div class="ex-name">Push-Ups</div><div class="ex-note">Regular or Diamond, alternating</div></div>
+        <div class="ex-reps">20/10</div>
+      </div>
+      <div class="exercise-item">
+        <div class="ex-left"><div class="ex-name">Squats / Jump Squats</div><div class="ex-note">Added lower body stimulus</div></div>
+        <div class="ex-reps">20</div>
+      </div>
+    </div>
+    <div class="tip-box"><strong>Track it</strong> — Log your total rounds on the Tracker tab. Week over week improvement here is how you know the program is working.</div>
+    <a class="yt-link" href="https://www.youtube.com/watch?v=gh9BzXDmHbo" target="_blank">▶ Watch Workout Routine Pt. 3</a>
+  </div>
+</div>
+
+<div class="day-card skills" onclick="toggleDay(this)">
+  <div class="day-header">
+    <div>
+      <div class="day-name">Saturday</div>
+      <div class="day-type">Skill Work + Freestyle</div>
+    </div>
+    <div class="day-badge badge-skill">Skills</div>
+  </div>
+  <div class="day-details">
+    <p class="workout-info">This is your fun day — explore the advanced movements HFK made famous. Don't grind volume. Spend 45–60 min working on new skills with full rest between attempts.</p>
+    <div class="exercise-list">
+      <div class="exercise-item">
+        <div class="ex-left"><div class="ex-name">Muscle-Up Practice</div><div class="ex-note">Negatives or banded if needed</div></div>
+        <div class="ex-reps">5–8</div>
+      </div>
+      <div class="exercise-item">
+        <div class="ex-left"><div class="ex-name">L-Sit Hold</div><div class="ex-note">On parallel bars or floor — 3×max</div></div>
+        <div class="ex-reps">3×</div>
+      </div>
+      <div class="exercise-item">
+        <div class="ex-left"><div class="ex-name">Front Lever Progressions</div><div class="ex-note">Tuck → advanced tuck → straddle</div></div>
+        <div class="ex-reps">3×</div>
+      </div>
+      <div class="exercise-item">
+        <div class="ex-left"><div class="ex-name">Human Flag Attempts</div><div class="ex-note">Side lean → tuck flag → full flag</div></div>
+        <div class="ex-reps">3×</div>
+      </div>
+    </div>
+    <div class="tip-box"><strong>Long game</strong> — Hannibal spent years on fundamentals before skills looked effortless. These are aspirational — work them patiently.</div>
+    <a class="yt-link" href="https://www.youtube.com/c/HannibalForKing1" target="_blank">▶ HFK YouTube Channel</a>
+  </div>
+</div>
+
+<div class="day-card rest">
+  <div class="day-header">
+    <div>
+      <div class="day-name">Sunday</div>
+      <div class="day-type">Full Rest</div>
+    </div>
+    <div class="day-badge badge-rest">Rest</div>
+  </div>
+</div>
+```
+
+  </div>
+</div>
+
+<!-- PRINCIPLES -->
+
+<div id="principles" class="section">
+  <div class="section-label">Training Principles</div>
+
+  <div class="principle-card">
+    <div class="principle-num">01</div>
+    <div class="principle-title">Full Range of Motion, Every Rep</div>
+    <div class="principle-body">Dead hang to chin over bar. Chest to floor on push-ups. Lock out at the bottom of every dip. Partial reps rob you of the stimulus. HFK's physique was built on honest reps, not inflated round counts.</div>
+  </div>
+
+  <div class="principle-card">
+    <div class="principle-num">02</div>
+    <div class="principle-title">Squeeze the Target Muscle</div>
+    <div class="principle-body">Mind-muscle connection isn't a gym bro myth — it's Hannibal's actual cue. On every push movement, squeeze your chest and triceps. On every pull, feel your lats engage. Core braced on everything.</div>
+  </div>
+
+  <div class="principle-card">
+    <div class="principle-num">03</div>
+    <div class="principle-title">Push/Pull in the Same Session</div>
+    <div class="principle-body">HFK trains chest and back together, never splits them across days. Antagonist pairing allows faster recovery between sets and higher total session volume — the engine of fat loss and muscle gain simultaneously.</div>
+  </div>
+
+  <div class="principle-card">
+    <div class="principle-num">04</div>
+    <div class="principle-title">Endurance Over Max Strength</div>
+    <div class="principle-body">The Around The World method is high-rep, high-volume, short rest. This builds dense muscle, elevates metabolism, and burns fat — without a barbell in sight. Volume is the variable. Keep adding rounds.</div>
+  </div>
+
+  <div class="principle-card">
+    <div class="principle-num">05</div>
+    <div class="principle-title">Master Basics for 8–12 Months First</div>
+    <div class="principle-body">Hannibal's exact advice: drill fundamental movements for 8–12 months before chasing advanced skills. Pull-ups, dips, and push-ups done with perfect form are more productive than sloppy muscle-ups. Earn the progressions.</div>
+  </div>
+
+  <div class="principle-card">
+    <div class="principle-num">06</div>
+    <div class="principle-title">Nutrition: Protein + Deficit</div>
+    <div class="principle-body">HFK currently eats lean protein, healthy fats, vegetables, and complex carbs — and recommends quality protein powder as a minimum. For fat loss, keep protein at ~0.8–1g per lb of bodyweight and maintain a modest caloric deficit. Let the training volume do the rest.</div>
+  </div>
+
+</div>
+
+<!-- PHASES -->
+
+<div id="phases" class="section">
+  <div class="section-label">12-Month Progression</div>
+
+  <div class="phase-block">
+    <div class="phase-num-box">1</div>
+    <div>
+      <div class="phase-content-months">Months 1–3</div>
+      <div class="phase-content-title">Foundation — Around The World</div>
+      <div class="phase-content-desc">Build the habit. Master pull-up lockout, dip depth, and push-up form. Work up to 8+ quality rounds in a 60-min session. No skills work yet — this is pure fundamentals. 3 sessions/week.</div>
+    </div>
+  </div>
+  <div class="phase-connector"></div>
+
+  <div class="phase-block">
+    <div class="phase-num-box">2</div>
+    <div>
+      <div class="phase-content-months">Months 4–6</div>
+      <div class="phase-content-title">Intensity — Add Variations</div>
+      <div class="phase-content-desc">Introduce close-grip pull-ups, diamond push-ups, and slow-tempo dips. Extend sessions to 75–90 min. Add Saturday skill work (muscle-up negatives, L-sit holds). 4 sessions/week.</div>
+    </div>
+  </div>
+  <div class="phase-connector"></div>
+
+  <div class="phase-block">
+    <div class="phase-num-box">3</div>
+    <div>
+      <div class="phase-content-months">Months 7–9</div>
+      <div class="phase-content-title">Volume Peak — Max Rounds</div>
+      <div class="phase-content-desc">Chase your personal records on Friday Volume Day. Incorporate jump push-ups, clapping pull-ups, and explosive dips for power. Begin tuck front lever holds. Nutrition locked in with consistent protein targets.</div>
+    </div>
+  </div>
+  <div class="phase-connector"></div>
+
+  <div class="phase-block">
+    <div class="phase-num-box">4</div>
+    <div>
+      <div class="phase-content-months">Months 10–12</div>
+      <div class="phase-content-title">Skills + Refinement</div>
+      <div class="phase-content-desc">Muscle-ups in working sets. Straddle front lever attempts. Begin planche push-up progressions (feet elevated). This is the HFK level — achieved through 9 months of patient fundamentals, exactly as he prescribed.</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section-label">Fat Loss Strategy</div>
+  <div class="principle-card">
+    <div class="principle-title">Caloric Deficit + High Volume = Recomp</div>
+    <div class="principle-body" style="margin-top:8px">High-rep calisthenics creates a significant metabolic demand. Pair 3–4 sessions/week with a 300–500 cal/day deficit and ~180g+ protein (assuming ~180 lb bodyweight). The volume preserves muscle while the deficit drives fat loss. Progress photos and weekly round counts are your best metrics — not the scale alone.</div>
+  </div>
+
+</div>
+
+<!-- TRACKER -->
+
+<div id="tracker" class="section">
+  <div class="section-label">Session Log</div>
+
+  <div class="stat-row">
+    <div class="stat-box">
+      <div class="stat-num" id="total-sessions">0</div>
+      <div class="stat-label">Sessions Logged</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num" id="total-rounds">0</div>
+      <div class="stat-label">Total Rounds</div>
+    </div>
+  </div>
+
+  <div id="pr-block" style="display:none; margin-bottom:20px;">
+    <div class="progress-label">
+      <span>Weekly Best</span>
+      <span id="pr-label">—</span>
+    </div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="pr-bar" style="width:0%"></div>
+    </div>
+  </div>
+
+  <div class="log-section-title">Log a Session</div>
+  <div class="log-form">
+    <div class="log-row">
+      <select class="log-input" id="log-day">
+        <option value="">Day</option>
+        <option>Monday</option>
+        <option>Wednesday</option>
+        <option>Friday</option>
+        <option>Saturday</option>
+      </select>
+      <input class="log-input" id="log-rounds" type="number" min="1" max="50" placeholder="Rounds">
+    </div>
+    <div class="log-row">
+      <input class="log-input" id="log-duration" type="number" min="10" max="180" placeholder="Duration (min)">
+      <select class="log-input" id="log-type">
+        <option value="">Type</option>
+        <option>Beginner Cycle</option>
+        <option>Advanced Cycle</option>
+        <option>Volume Day</option>
+        <option>Skills</option>
+      </select>
+    </div>
+    <button class="log-btn" onclick="logSession()">LOG SESSION</button>
+  </div>
+
+  <div class="tracker-header">
+    <div class="log-section-title" style="margin-bottom:0">History</div>
+    <button class="clear-btn" onclick="clearLog()">Clear All</button>
+  </div>
+  <div class="log-entries" id="log-entries">
+    <div class="empty-state" id="empty-state">No sessions logged yet</div>
+  </div>
+</div>
+
+<div class="footer">
+  <span>Hannibal For King Blueprint</span> · Bodyweight Calisthenics · Built for the park
+</div>
 
 <script>
-// ═══════════════════════════ EXPANDED EXERCISE DATA
-// Tags: mil=military standard, kb=kettlebell, db=dumbbell, bw=bodyweight
-const MUSCLES=["Arms/Chest","Legs","Abs","Back"];
-const ICONS={"Arms/Chest":"💪","Legs":"🦵","Abs":"🔥","Back":"🏋️"};
-const PILL={"Arms/Chest":"pill-arm","Legs":"pill-leg","Abs":"pill-abs","Back":"pill-back"};
-const PHASE_NAMES=["","Beginner","Intermediate","Advanced","Pro"];
-const MONTHS_FULL=["January","February","March","April","May","June","July","August","September","October","November","December"];
-const MONTHS_SH=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-const DAYS_SH=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
-
-const DATA={
-  "Arms/Chest":{
-    1:[
-      {n:"Incline Push-Ups",h:"hands on counter or couch — classic military starter",t:"mil"},
-      {n:"Kneeling Push-Ups",h:"reduce load, build form before full push-up",t:"bw"},
-      {n:"Negative Push-Ups",h:"Tom Peto: lower slow 3–5 sec, knees down to reset",t:"bw"},
-      {n:"Chair Dips",h:"hands on sturdy chair behind you, feet closer = easier",t:"mil"},
-      {n:"Bicep Curls",h:"light DB or backpack filled with books — 3×12",t:"db"},
-      {n:"DB Shoulder Press",h:"light dumbbells, seated or standing — 3×10",t:"db"},
-      {n:"Band Pull-Aparts",h:"resistance band at chest height, great shoulder warm-up",t:"bw"},
-      {n:"Pike Push-Ups (Negative)",h:"Tom Peto beginner: lower only, reset at top",t:"bw"}
-    ],
-    2:[
-      {n:"Standard Push-Ups",h:"military standard — chest to fist height, full lockout",t:"mil"},
-      {n:"Wide Push-Ups",h:"military variation — hands wider than shoulders",t:"mil"},
-      {n:"Diamond Push-Ups",h:"military standard for triceps — hands form diamond",t:"mil"},
-      {n:"Close-Grip Push-Ups",h:"Tom Peto: elbows tucked, arrow shape at bottom",t:"bw"},
-      {n:"Pike Push-Ups",h:"Tom Peto: triangle head/hands, unlock knees for flat back",t:"bw"},
-      {n:"Decline Push-Ups",h:"feet elevated on chair — increases upper chest load",t:"bw"},
-      {n:"Feet-Elevated Dips",h:"chair behind + feet on another chair",t:"bw"},
-      {n:"DB Bicep Curls",h:"moderate weight — 3×10 each arm, strict form",t:"db"},
-      {n:"DB Tricep Kickbacks",h:"hinge forward, extend arm fully behind — 3×12",t:"db"},
-      {n:"KB Floor Press",h:"one or two hands, full press from floor — 3×10",t:"kb"},
-      {n:"Chin-Ups",h:"supinated grip, great for biceps and back together",t:"mil"},
-      {n:"DB Lateral Raises",h:"light DB, raise to shoulder height — 3×12",t:"db"}
-    ],
-    3:[
-      {n:"Explosive / Clap Push-Ups",h:"military power drill — chest touches, explode up",t:"mil"},
-      {n:"Archer Push-Ups",h:"Tom Peto: shift weight side to side, one arm extended",t:"bw"},
-      {n:"Deficit Push-Ups",h:"Tom Peto: hands on parallettes/books for deeper ROM",t:"bw"},
-      {n:"Pike Push-Ups (Feet Elevated)",h:"Tom Peto advanced: feet on chair, more shoulder load",t:"bw"},
-      {n:"Feet-Elevated Dips (Weighted)",h:"add backpack or KB across lap",t:"kb"},
-      {n:"KB Push-Up Rows",h:"push-up then row one KB, alternate — compound killer",t:"kb"},
-      {n:"KB Clean to Press",h:"ground to shoulder to overhead — military conditioning",t:"kb"},
-      {n:"Handstand Push-Ups",h:"against wall — elite military shoulder builder",t:"mil"},
-      {n:"Tension Push-Ups",h:"Tom Peto: hold bottom 5–30 sec or slow 4–8 sec down",t:"bw"},
-      {n:"DB Arnold Press",h:"rotate from palms-in to palms-out at top — 3×10",t:"db"},
-      {n:"Commando Pull-Ups",h:"alternating side-to-side chin-ups on bar",t:"mil"},
-      {n:"Bodyweight Dips",h:"parallel bars or dip station — full dip",t:"mil"}
-    ],
-    4:[
-      {n:"Weighted Push-Ups",h:"weight plate or vest on back — military strength phase",t:"mil"},
-      {n:"Weighted Archer Push-Ups",h:"add vest for unilateral pressing challenge",t:"bw"},
-      {n:"Weighted Dips",h:"dip belt or vest — military standard for pushing strength",t:"mil"},
-      {n:"Heavy KB Clean to Press",h:"heavier KB, power from hips — 5×5",t:"kb"},
-      {n:"Heavy DB Shoulder Press",h:"standing, strict form — 4×6",t:"db"},
-      {n:"Planche Lean Push-Ups",h:"lean forward over hands to front — elite progression",t:"bw"},
-      {n:"Hand-Release Push-Ups",h:"military CFT standard — lift hands at bottom each rep",t:"mil"},
-      {n:"DB Push Press",h:"slight leg drive to press overhead — power movement",t:"db"}
-    ]
-  },
-  "Legs":{
-    1:[
-      {n:"Bodyweight Squats",h:"military standard — air squat, chest up, knees out",t:"mil"},
-      {n:"Reverse Lunges",h:"step back, back knee toward floor — easier on knees",t:"bw"},
-      {n:"Glute Bridges",h:"bodyweight — squeeze at top, hold 1 sec",t:"bw"},
-      {n:"Step-Ups",h:"small step or sturdy chair — alternating legs",t:"mil"},
-      {n:"Calf Raises",h:"both feet, slow lowering — 3×20",t:"bw"},
-      {n:"Wall Sit",h:"military staple — thighs parallel, hold 30–60 sec",t:"mil"},
-      {n:"Narrow Stance Split Squat",h:"Tom Peto beginner pistol progression",t:"bw"},
-      {n:"DB Romanian Deadlift",h:"light DB, hinge at hips, keep back flat — 3×12",t:"db"}
-    ],
-    2:[
-      {n:"Jump Squats",h:"military conditioning — explode up, land soft",t:"mil"},
-      {n:"Jump Lunges",h:"alternating explosive lunges — military cardio staple",t:"mil"},
-      {n:"Bulgarian Split Squats",h:"rear foot on chair — brutal quad builder",t:"bw"},
-      {n:"Goblet Squat",h:"KB or DB at chest, deep squat — 3×12",t:"kb"},
-      {n:"Walking Lunges",h:"military march drill — weight optional",t:"mil"},
-      {n:"Single-Leg Glute Bridge",h:"one leg up, drive through heel",t:"bw"},
-      {n:"KB Swings",h:"hip hinge power — military conditioning favorite",t:"kb"},
-      {n:"Cossack Lunges",h:"Tom Peto: side-to-side deep lunge, adductor stretch",t:"bw"},
-      {n:"DB Goblet Squat",h:"hold DB vertical at chest — 3×12",t:"db"},
-      {n:"Reverse Nordic Curl",h:"Tom Peto: on knees, lean back slowly — quad destroyer",t:"bw"},
-      {n:"Sumo Squat",h:"wide stance, toes out — targets inner thighs",t:"bw"}
-    ],
-    3:[
-      {n:"Pistol Squat Progressions",h:"Tom Peto: box → assisted → full pistol squat",t:"bw"},
-      {n:"1 Down 2 Up Pistol Squat",h:"Tom Peto intermediate: one leg down, both up",t:"bw"},
-      {n:"KB Romanian Deadlifts",h:"hip hinge, KB between legs — 4×10",t:"kb"},
-      {n:"Weighted Step-Ups",h:"KB or DB in each hand — 3×12 per leg",t:"kb"},
-      {n:"DB Bulgarian Split Squats",h:"dumbbells + rear foot elevated — 3×10 each",t:"db"},
-      {n:"KB Goblet Squat (Heavy)",h:"heavier KB, pause at bottom — 4×10",t:"kb"},
-      {n:"Static Lunges with KB Pass-Through",h:"KB passes under front leg — coordination + strength",t:"kb"},
-      {n:"Explosive Jump Squats (Weighted)",h:"light KB or DB — power + conditioning",t:"kb"},
-      {n:"Bear Crawls",h:"military conditioning — low knees, controlled forward movement",t:"mil"},
-      {n:"Farmer Carry",h:"heavy DB or KB each hand, walk tall — grip + legs",t:"db"}
-    ],
-    4:[
-      {n:"Full Pistol Squats",h:"Tom Peto advanced — full ROM, no assistance",t:"bw"},
-      {n:"Heavy KB Swings",h:"heavier bell, power snaps — 5×10",t:"kb"},
-      {n:"Heavy DB Romanian Deadlifts",h:"heavy load, slow eccentric — 4×8",t:"db"},
-      {n:"Weighted Jump Squats",h:"light DB held at sides — explosive power",t:"db"},
-      {n:"Heavy Bulgarian Split Squats",h:"heavy DB — 4×8 each leg",t:"db"},
-      {n:"Suitcase Carry",h:"one heavy KB, walk upright, resist lateral lean",t:"kb"},
-      {n:"KB Overhead Squats",h:"one arm locked out overhead — stability + strength",t:"kb"},
-      {n:"Burpee Broad Jumps",h:"military power drill — burpee + broad jump forward",t:"mil"}
-    ]
-  },
-  "Abs":{
-    1:[
-      {n:"Dead Bugs",h:"Tom Peto staple — lower back pressed to floor throughout",t:"bw"},
-      {n:"Half Hollow Hold",h:"Tom Peto beginner: legs/arms higher to reduce load",t:"bw"},
-      {n:"Crunches",h:"military standard — controlled, no neck pulling",t:"mil"},
-      {n:"Leg Raises",h:"on floor, lower back down — military PT staple",t:"mil"},
-      {n:"Plank",h:"military standard — rigid plank from head to heels, 20–30 sec",t:"mil"},
-      {n:"Penguins",h:"side-to-side crunch — oblique activation",t:"bw"},
-      {n:"Hollow Hold",h:"Tom Peto: no gap between lower back and mat",t:"bw"},
-      {n:"Prone Y-Raises",h:"Tom Peto: arms in Y shape, use upper back to lift",t:"bw"}
-    ],
-    2:[
-      {n:"Military Sit-Ups",h:"standard military PT test movement — heels down",t:"mil"},
-      {n:"V-Ups",h:"Tom Peto intermediate — reach hands to feet simultaneously",t:"bw"},
-      {n:"Hollow Rock",h:"Tom Peto advanced hollow: rock back and forth",t:"bw"},
-      {n:"Side Plank",h:"Tom Peto: top leg forward, full side plank — 30–40 sec",t:"bw"},
-      {n:"Russian Twists",h:"bodyweight or light DB/KB — 3×20 total",t:"db"},
-      {n:"Mountain Climbers",h:"military conditioning staple — fast alternating knees",t:"mil"},
-      {n:"Hanging Knee Raises",h:"doorway bar or pull-up bar — full hang, knees to chest",t:"bw"},
-      {n:"Plank Shoulder Taps",h:"tap opposite shoulder, minimize hip rotation",t:"bw"},
-      {n:"KB Suitcase Marches",h:"hold KB on one side, high knees — anti-lateral flexion",t:"kb"},
-      {n:"Compressions",h:"Tom Peto: seated, lift legs — hip flexors and abs",t:"bw"},
-      {n:"Bicycle Crunches",h:"military standard — elbow to opposite knee",t:"mil"}
-    ],
-    3:[
-      {n:"Hanging Leg Raises",h:"Tom Peto advanced — full straight leg raise from dead hang",t:"bw"},
-      {n:"Toe-to-Bar Progressions",h:"Tom Peto: knee → L-raise → toe-touch progression",t:"bw"},
-      {n:"1/2 Side Plank → Side Plank Star",h:"Tom Peto progression — raise top leg for star position",t:"bw"},
-      {n:"Plank Walk-Outs",h:"Tom Peto: from standing hinge, walk to plank and back",t:"bw"},
-      {n:"KB Sit-Up to Press",h:"sit up with KB, press overhead at top — 3×10",t:"kb"},
-      {n:"KB Overhead Marches",h:"KB locked overhead, high knees — core + shoulder stability",t:"kb"},
-      {n:"Dragon Flag Progressions",h:"military elite movement — tuck to full body lever",t:"bw"},
-      {n:"Ab Wheel Rollout",h:"from knees — full extension, pull back with abs",t:"bw"},
-      {n:"DB Wood Chops",h:"diagonal chop with light DB — rotational power",t:"db"},
-      {n:"Extended Plank",h:"Tom Peto: 1+ min, optional hip dips — maximum tension",t:"bw"}
-    ],
-    4:[
-      {n:"Full Hanging Leg Raises",h:"military bars — straight legs, controlled throughout",t:"mil"},
-      {n:"Weighted Sit-Ups",h:"plate on chest — military strength standard",t:"mil"},
-      {n:"Heavy KB Sit-Up to Press",h:"heavier KB — 4×8",t:"kb"},
-      {n:"Weighted Plank",h:"weight plate on back — 45–90 sec",t:"mil"},
-      {n:"L-Sit Hold",h:"between chairs or parallettes — full body tension",t:"bw"},
-      {n:"Toes to Bar",h:"strict hang, full range — military bar work",t:"mil"},
-      {n:"Heavy DB Russian Twists",h:"heavy DB, controlled rotation — 4×15",t:"db"},
-      {n:"Dragon Flag",h:"elite military calisthenics — full body lever",t:"mil"}
-    ]
-  },
-  "Back":{
-    1:[
-      {n:"Supermans",h:"prone, lift arms and legs together — lower back activation",t:"bw"},
-      {n:"Prone Y-Raises",h:"Tom Peto: Y-shaped arms, upper back lifts — not lower back",t:"bw"},
-      {n:"Reverse Snow Angels",h:"prone, arms sweep up and back — rear deltoid activation",t:"bw"},
-      {n:"Doorway Isometric Pulls",h:"lean back + pull against door frame — build pull strength",t:"bw"},
-      {n:"Reverse Plank",h:"Tom Peto: pinch shoulder blades, high hips, glutes engaged",t:"bw"},
-      {n:"Backpack Bent-Over Rows",h:"hinge forward, row backpack to chest — 3×12",t:"bw"},
-      {n:"Pull-Ups (Band Assisted)",h:"military standard with band support — build to unassisted",t:"mil"},
-      {n:"Inverted Rows",h:"under table or bar at waist height — horizontal pull",t:"bw"}
-    ],
-    2:[
-      {n:"Pull-Ups",h:"military standard — dead hang to chin over bar",t:"mil"},
-      {n:"Chin-Ups",h:"supinated grip — biceps + lats, military PT favorite",t:"mil"},
-      {n:"Commando Pull-Ups",h:"military: neutral grip, alternate sides each rep",t:"mil"},
-      {n:"Single-Arm KB Rows",h:"hinge, row KB to hip — 3×10 each side",t:"kb"},
-      {n:"DB Bent-Over Rows",h:"bilateral or unilateral, hinge at 45° — 3×10",t:"db"},
-      {n:"Hip Hinge / Good Mornings",h:"bodyweight or KB — hamstrings and lower back",t:"kb"},
-      {n:"Back Extensions",h:"couch or bench edge — lower back endurance",t:"bw"},
-      {n:"Inverted Doorway Rows",h:"towel around door handle — horizontal pull",t:"bw"},
-      {n:"KB Deadlift",h:"KB between feet, hinge and stand — 3×12",t:"kb"},
-      {n:"DB Renegade Rows",h:"push-up position, row one DB — anti-rotation challenge",t:"db"}
-    ],
-    3:[
-      {n:"Weighted Pull-Ups",h:"weight vest or dip belt — military elite standard",t:"mil"},
-      {n:"KB Renegade Rows",h:"Tom Peto: push-up + alternating KB rows — full body",t:"kb"},
-      {n:"KB Gorilla Rows",h:"both KBs on floor, alternate rows in squat position",t:"kb"},
-      {n:"Explosive Hip Hinges",h:"KB swing variation — power from posterior chain",t:"kb"},
-      {n:"KB Clean and Press",h:"floor to shoulder to overhead — military conditioning",t:"kb"},
-      {n:"DB Single-Leg RDL",h:"one leg balance, hinge, DB in opposite hand — 3×8",t:"db"},
-      {n:"Weighted Supermans",h:"light backpack held overhead — spinal erector strength",t:"bw"},
-      {n:"Inverted Rows (Feet Elevated)",h:"feet on chair, body horizontal — increases difficulty",t:"bw"},
-      {n:"Bear Crawl Rows",h:"KB in each hand, crawl + row — military functional move",t:"kb"},
-      {n:"Handstand Push-Ups",h:"against wall — elite shoulder/back strength",t:"mil"}
-    ],
-    4:[
-      {n:"Heavy Weighted Pull-Ups",h:"military elite — 5×5 with added weight",t:"mil"},
-      {n:"Heavy KB Renegade Rows",h:"heavier KBs — 4×6 each side",t:"kb"},
-      {n:"Heavy KB Clean and Press",h:"power + press — 5×5",t:"kb"},
-      {n:"Heavy DB Romanian Deadlifts",h:"4×8 heavy load — posterior chain strength",t:"db"},
-      {n:"Muscle-Ups (Progression)",h:"military elite: pull-up into dip transition on bar",t:"mil"},
-      {n:"Typewriter Pull-Ups",h:"at top, shift weight side to side — control + strength",t:"mil"},
-      {n:"Heavy KB Swings",h:"posterior chain power — 5×15 heavy",t:"kb"},
-      {n:"Archer Pull-Ups",h:"one arm extended on bar, shift weight to other arm",t:"bw"}
-    ]
+  // TAB SWITCHING
+  function switchTab(id, btn) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
   }
-};
 
-// ═══════════════════════════ STATE
-function todayKey(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
-function loadS(){try{return JSON.parse(localStorage.getItem('drState3')||'{}');}catch(e){return {};}}
-function saveS(){localStorage.setItem('drState3',JSON.stringify(S));}
-
-let S=Object.assign({
-  phases:{"Arms/Chest":1,"Legs":1,"Abs":1,"Back":1},
-  focus:"Arms/Chest",
-  todayCircuit:null,
-  todayDate:null,
-  log:{},
-  rounds:0,
-  checked:[],
-  notes:""
-},loadS());
-MUSCLES.forEach(m=>{if(!S.phases[m])S.phases[m]=1;});
-if(!S.log)S.log={};
-
-// ═══════════════════════════ UTILS
-function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
-function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
-
-// ═══════════════════════════ INIT
-function init(){
-  const d=new Date();
-  const DAYS=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-  document.getElementById('todayDate').textContent=`${DAYS[d.getDay()]} · ${MONTHS_SH[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
-  document.getElementById('tbDate').textContent=`${MONTHS_SH[d.getMonth()]} ${d.getDate()}`;
-  document.querySelectorAll('.focus-chip').forEach(c=>{
-    c.classList.remove('active');
-    if(c.dataset&&c.onclick&&c.getAttribute('onclick')&&c.getAttribute('onclick').includes(S.focus.replace('/','\\/')))c.classList.add('active');
-  });
-  // restore focus chip by text
-  document.querySelectorAll('.focus-chip').forEach(c=>{
-    const txt=c.textContent.trim();
-    if(txt.includes('Arms')&&S.focus==='Arms/Chest')c.classList.add('active');
-    else if(txt.includes('Legs')&&S.focus==='Legs')c.classList.add('active');
-    else if(txt.includes('Abs')&&S.focus==='Abs')c.classList.add('active');
-    else if(txt.includes('Back')&&S.focus==='Back')c.classList.add('active');
-    else c.classList.remove('active');
-  });
-  if(S.todayDate===todayKey()&&S.todayCircuit){
-    renderCircuit(S.todayCircuit);
-    document.getElementById('actionRow').style.display='block';
+  // DAY TOGGLE
+  function toggleDay(card) {
+    const details = card.querySelector('.day-details');
+    if (!details) return;
+    details.classList.toggle('open');
   }
-  document.getElementById('roundDisplay').textContent=S.rounds||0;
-  document.getElementById('wodNotes').value=S.notes||'';
-  updateTimerDisplay();
-  renderPhaseSettings();
-  showLibTab('Arms/Chest',document.querySelector('.lib-sub-tab'));
-  calViewYear=new Date().getFullYear();
-  calViewMonth=new Date().getMonth();
-}
 
-function setFocus(muscle,el){
-  document.querySelectorAll('.focus-chip').forEach(c=>c.classList.remove('active'));
-  el.classList.add('active');
-  S.focus=muscle;
-  saveS();
-}
+  // TRACKER
+  let sessions = JSON.parse(localStorage.getItem('hfk-sessions') || '[]');
 
-// ═══════════════════════════ GENERATE WOD
-function generateWOD(){
-  const circuit=[];
-  MUSCLES.forEach(m=>{
-    const pool=DATA[m][S.phases[m]]||[];
-    if(!pool.length)return;
-    circuit.push({...shuffle(pool)[0],muscle:m,isFocus:false});
-  });
-  const fp=S.phases[S.focus];
-  const picked=circuit.filter(e=>e.muscle===S.focus).map(e=>e.n);
-  const extras=shuffle((DATA[S.focus][fp]||[]).filter(e=>!picked.includes(e.n)));
-  for(let i=0;i<Math.min(2,extras.length);i++)circuit.push({...extras[i],muscle:S.focus,isFocus:true});
-  const final=[...shuffle(circuit.filter(e=>!e.isFocus)),...shuffle(circuit.filter(e=>e.isFocus))];
-  S.todayCircuit=final;
-  S.todayDate=todayKey();
-  S.rounds=0;S.checked=[];S.notes='';
-  saveS();
-  document.getElementById('roundDisplay').textContent='0';
-  document.getElementById('wodNotes').value='';
-  renderCircuit(final);
-  document.getElementById('actionRow').style.display='block';
-  showToast('🎲 New random WOD generated!');
-}
+  function renderTracker() {
+    const entries = document.getElementById('log-entries');
+    const empty = document.getElementById('empty-state');
+    const totalS = document.getElementById('total-sessions');
+    const totalR = document.getElementById('total-rounds');
+    const prBlock = document.getElementById('pr-block');
+    const prLabel = document.getElementById('pr-label');
+    const prBar = document.getElementById('pr-bar');
 
-function renderCircuit(circuit){
-  const checked=new Set(S.checked||[]);
-  let html=`<div class="circuit-header"><div class="circuit-title">Today's Circuit</div><button class="regen-btn" onclick="generateWOD()">↺ New Random</button></div><div class="circuit-card">`;
-  circuit.forEach((ex,i)=>{
-    const key=ex.n+'|'+i;
-    const isC=checked.has(key);
-    const pc=ex.isFocus?'pill-focus':(PILL[ex.muscle]||'pill-arm');
-    const pl=ex.isFocus?'Focus ⭐':ex.muscle;
-    html+=`<div class="ex-row" onclick="toggleCheck(${i},'${key.replace(/'/g,"\\'")}')">
-      <div class="ex-num">${String(i+1).padStart(2,'0')}</div>
-      <div class="ex-check ${isC?'checked':''}" id="chk${i}"></div>
-      <div class="ex-body">
-        <div class="ex-name ${isC?'checked':''}" id="exn${i}">${ex.n}</div>
-        ${ex.h?`<div class="ex-hint">${ex.h}</div>`:''}
-      </div>
-      <div class="ex-pill ${pc}">${pl}</div>
-    </div>`;
-  });
-  html+=`</div>`;
-  document.getElementById('circuitWrap').innerHTML=html;
-}
+    totalS.textContent = sessions.length;
+    const total = sessions.reduce((a, s) => a + (s.rounds || 0), 0);
+    totalR.textContent = total;
 
-function toggleCheck(i,key){
-  const checked=new Set(S.checked||[]);
-  checked.has(key)?checked.delete(key):checked.add(key);
-  S.checked=[...checked];saveS();
-  document.getElementById('chk'+i)?.classList.toggle('checked',checked.has(key));
-  document.getElementById('exn'+i)?.classList.toggle('checked',checked.has(key));
-}
+    if (sessions.length === 0) {
+      empty.style.display = 'block';
+      entries.innerHTML = '';
+      entries.appendChild(empty);
+      prBlock.style.display = 'none';
+      return;
+    }
 
-function changeRound(d){S.rounds=Math.max(0,(S.rounds||0)+d);saveS();document.getElementById('roundDisplay').textContent=S.rounds;}
-function saveNotes(){S.notes=document.getElementById('wodNotes').value;saveS();}
+    empty.style.display = 'none';
+    const maxRounds = Math.max(...sessions.map(s => s.rounds || 0));
+    if (maxRounds > 0) {
+      prBlock.style.display = 'block';
+      prLabel.textContent = maxRounds + ' rounds (PR)';
+      prBar.style.width = '100%';
+    }
 
-function logWorkout(){
-  const key=todayKey();
-  S.log[key]={type:'workout',focus:S.focus,circuit:S.todayCircuit||[],rounds:S.rounds||0,moves:(S.todayCircuit||[]).length,notes:S.notes||'',ts:Date.now()};
-  saveS();
-  document.getElementById('doneRounds').textContent=S.rounds||0;
-  document.getElementById('doneMoves').textContent=(S.todayCircuit||[]).length;
-  document.getElementById('doneOv').classList.add('active');
-  renderCalendar();
-}
-function logRestDay(){
-  const key=todayKey();
-  S.log[key]={type:'rest',ts:Date.now()};
-  saveS();renderCalendar();showToast('😴 Rest day logged!');
-}
-function closeDone(){document.getElementById('doneOv').classList.remove('active');}
-
-// ═══════════════════════════ TIMER
-let timerSecs=1200,timerTotal=1200,timerRunning=false,timerInt=null;
-function updateTimerDisplay(){
-  const m=Math.floor(timerSecs/60),s=timerSecs%60;
-  const fmt=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-  const cl=document.getElementById('timerClock');
-  const bar=document.getElementById('timerBar');
-  const lbl=document.getElementById('timerLabel');
-  if(cl){cl.textContent=timerSecs===0?'DONE!':fmt;cl.classList.toggle('warn',timerSecs<=60&&timerSecs>0);cl.classList.toggle('done',timerSecs===0);}
-  if(bar)bar.style.width=(timerSecs/timerTotal*100)+'%';
-  if(lbl)lbl.textContent=timerRunning?'Running…':(timerSecs===0?'Done!':(timerSecs===timerTotal?'Ready to work':'Paused'));
-}
-function toggleTimer(){
-  const btn=document.getElementById('timerStartBtn');
-  if(timerRunning){clearInterval(timerInt);timerRunning=false;if(btn)btn.textContent='Resume';}
-  else{
-    timerRunning=true;if(btn)btn.textContent='Pause';
-    timerInt=setInterval(()=>{
-      if(timerSecs<=0){clearInterval(timerInt);timerRunning=false;if(btn)btn.textContent='Start';timerSecs=0;updateTimerDisplay();ringBell();return;}
-      timerSecs--;updateTimerDisplay();
-    },1000);
+    entries.innerHTML = '';
+    [...sessions].reverse().forEach((s, i) => {
+      const el = document.createElement('div');
+      el.className = 'log-entry';
+      el.innerHTML = `
+        <div>
+          <div class="log-entry-day">${s.day}</div>
+          <div class="log-entry-detail">${s.type || ''} · ${s.duration || '?'} min</div>
+        </div>
+        <div class="log-entry-rounds">${s.rounds}</div>
+      `;
+      entries.appendChild(el);
+    });
   }
-  updateTimerDisplay();
-}
-function resetTimer(){clearInterval(timerInt);timerRunning=false;timerSecs=timerTotal;const btn=document.getElementById('timerStartBtn');if(btn)btn.textContent='Start';updateTimerDisplay();}
 
-// ═══════════════════════════ BELL
-let audioCtx=null;
-function getACtx(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();return audioCtx;}
-function playBell(){
-  const ctx=getACtx();
-  function ring(t){
-    const o1=ctx.createOscillator(),o2=ctx.createOscillator(),o3=ctx.createOscillator(),g=ctx.createGain();
-    o1.type='sine';o1.frequency.setValueAtTime(880,t);
-    o2.type='sine';o2.frequency.setValueAtTime(1108,t);
-    o3.type='sine';o3.frequency.setValueAtTime(1318,t);
-    g.gain.setValueAtTime(0.55,t);g.gain.exponentialRampToValueAtTime(0.001,t+1.8);
-    o1.connect(g);o2.connect(g);o3.connect(g);g.connect(ctx.destination);
-    o1.start(t);o2.start(t);o3.start(t);o1.stop(t+2);o2.stop(t+2);o3.stop(t+2);
+  function logSession() {
+    const day = document.getElementById('log-day').value;
+    const rounds = parseInt(document.getElementById('log-rounds').value);
+    const duration = parseInt(document.getElementById('log-duration').value);
+    const type = document.getElementById('log-type').value;
+
+    if (!day || !rounds) {
+      document.getElementById('log-day').style.borderColor = day ? '' : '#c0392b';
+      document.getElementById('log-rounds').style.borderColor = rounds ? '' : '#c0392b';
+      return;
+    }
+
+    sessions.push({ day, rounds, duration, type, date: new Date().toLocaleDateString() });
+    localStorage.setItem('hfk-sessions', JSON.stringify(sessions));
+    renderTracker();
+
+    document.getElementById('log-day').value = '';
+    document.getElementById('log-rounds').value = '';
+    document.getElementById('log-duration').value = '';
+    document.getElementById('log-type').value = '';
+    document.getElementById('log-day').style.borderColor = '';
+    document.getElementById('log-rounds').style.borderColor = '';
   }
-  const n=ctx.currentTime;ring(n);ring(n+0.55);ring(n+1.1);
-}
-function ringBell(){try{playBell();}catch(e){}document.getElementById('bellOv').classList.add('active');}
-function dismissBell(){document.getElementById('bellOv').classList.remove('active');logWorkout();}
 
-// ═══════════════════════════ LIBRARY
-const TAG_MAP={mil:'<span class="lib-ex-tag tag-mil">MIL</span>',kb:'<span class="lib-ex-tag tag-kb">KB</span>',db:'<span class="lib-ex-tag tag-db">DB</span>',bw:'<span class="lib-ex-tag tag-bw">BW</span>'};
-const BADGE_CLS=['','p1','p2','p3','p4'];
-function showLibTab(muscle,el){
-  document.querySelectorAll('.lib-sub-tab').forEach(t=>t.classList.remove('active'));
-  if(el)el.classList.add('active');
-  const content=document.getElementById('libContent');
-  let html='';
-  for(let p=1;p<=4;p++){
-    const exes=DATA[muscle][p]||[];
-    html+=`<div class="lib-phase-block"><div class="lib-phase-hdr"><div class="lib-phase-badge ${BADGE_CLS[p]}">Phase ${p}</div><div class="lib-phase-name">${PHASE_NAMES[p]}</div></div>`;
-    html+=exes.map(e=>`<div class="lib-ex-card"><div class="lib-ex-name">${e.n}</div>${e.h?`<div class="lib-ex-hint">${e.h}</div>`:''}<div>${TAG_MAP[e.t]||''}</div></div>`).join('');
-    html+=`</div>`;
+  function clearLog() {
+    if (confirm('Clear all session history?')) {
+      sessions = [];
+      localStorage.removeItem('hfk-sessions');
+      renderTracker();
+    }
   }
-  html+=`<div class="lib-phase-stepper"><div class="lps-label">Your phase for <span class="lps-muscle">${muscle}</span></div><div style="display:flex;align-items:center;gap:8px;"><button class="lps-btn" onclick="adjPhase('${muscle}',-1)">−</button><div class="lps-val" id="lpv${muscle.replace('/','_')}">${S.phases[muscle]}</div><button class="lps-btn" onclick="adjPhase('${muscle}',1)">+</button></div></div>`;
-  content.innerHTML=html;
-}
 
-function adjPhase(muscle,d){
-  S.phases[muscle]=Math.max(1,Math.min(4,(S.phases[muscle]||1)+d));
-  saveS();
-  const k=muscle.replace('/','_');
-  const el=document.getElementById('lpv'+k);
-  if(el)el.textContent=S.phases[muscle];
-  renderPhaseSettings();
-  showToast(`${muscle}: Phase ${S.phases[muscle]} · ${PHASE_NAMES[S.phases[muscle]]}`);
-}
-function renderPhaseSettings(){
-  const el=document.getElementById('phaseSettings');
-  if(!el)return;
-  el.innerHTML=MUSCLES.map(m=>`<div class="ss-row"><div><div class="ss-label">${ICONS[m]} ${m}</div><div class="ss-sub">Phase ${S.phases[m]} · ${PHASE_NAMES[S.phases[m]]}</div></div><div class="ss-stepper"><button class="ss-btn" onclick="adjPhase('${m}',-1)">−</button><div class="ss-val">${S.phases[m]}</div><button class="ss-btn" onclick="adjPhase('${m}',1)">+</button></div></div>`).join('');
-}
-
-// ═══════════════════════════ STREAK
-function calcStreak(){
-  const keys=Object.keys(S.log).sort();
-  if(!keys.length)return{current:0,total:0};
-  let streak=0;
-  const d=new Date();
-  while(true){
-    const k=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-    if(S.log[k])streak++;else break;
-    d.setDate(d.getDate()-1);
-  }
-  return{current:streak,total:keys.length};
-}
-
-// ═══════════════════════════ CALENDAR
-let calViewYear=new Date().getFullYear(),calViewMonth=new Date().getMonth(),calSelectedKey=null;
-function calNav(d){calViewMonth+=d;if(calViewMonth>11){calViewMonth=0;calViewYear++;}if(calViewMonth<0){calViewMonth=11;calViewYear--;}renderCalendar();}
-function calToday(){calViewYear=new Date().getFullYear();calViewMonth=new Date().getMonth();renderCalendar();}
-function renderCalendar(){
-  const{current,total}=calcStreak();
-  document.getElementById('streakBar').innerHTML=`<div class="streak-badge"><div class="streak-fire">🔥</div><div><div class="streak-val">${current}</div><div class="streak-lbl">Day Streak</div></div></div><div class="total-badge"><div class="total-val">${total}</div><div class="total-lbl">Total Days</div></div>`;
-  document.getElementById('calMonthLabel').textContent=`${MONTHS_FULL[calViewMonth]} ${calViewYear}`;
-  const firstDay=new Date(calViewYear,calViewMonth,1).getDay();
-  const daysInMonth=new Date(calViewYear,calViewMonth+1,0).getDate();
-  const today=new Date();
-  const todayStr=`${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
-  let html='';
-  for(let i=0;i<firstDay;i++)html+=`<div class="cal-cell empty"></div>`;
-  for(let d=1;d<=daysInMonth;d++){
-    const key=`${calViewYear}-${String(calViewMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    const isToday=key===todayStr,entry=S.log[key],isW=entry&&entry.type==='workout',isR=entry&&entry.type==='rest',isSel=key===calSelectedKey;
-    let cls='cal-cell';
-    if(isToday)cls+=' today';if(isW)cls+=' workout';else if(isR)cls+=' rest-day';if(isSel)cls+=' selected';
-    const dot=isW?`<div class="cal-dot dot-workout"></div>`:isR?`<div class="cal-dot dot-rest"></div>`:'';
-    html+=`<div class="${cls}" onclick="selectCalDay('${key}')"><div class="cal-num">${d}</div>${dot}</div>`;
-  }
-  document.getElementById('calCells').innerHTML=html;
-  renderCalDetail(calSelectedKey);
-}
-function selectCalDay(key){calSelectedKey=(calSelectedKey===key?null:key);renderCalendar();}
-function renderCalDetail(key){
-  const wrap=document.getElementById('calDetailWrap');
-  if(!key||!S.log[key]){wrap.innerHTML='';return;}
-  const entry=S.log[key],[y,m,d]=key.split('-');
-  const dateStr=`${DAYS_SH[new Date(parseInt(y),parseInt(m)-1,parseInt(d)).getDay()]} ${MONTHS_SH[parseInt(m)-1]} ${parseInt(d)}, ${y}`;
-  if(entry.type==='rest'){wrap.innerHTML=`<div class="cal-detail"><div class="cal-detail-hdr"><div class="cdh-date">${dateStr}</div><div class="cdh-type">😴 Rest Day</div></div></div>`;return;}
-  let exHtml=(entry.circuit||[]).map((ex,i)=>`<div class="cal-ex-item"><div class="cal-ex-num">${String(i+1).padStart(2,'0')}</div><div>${ex.n}${ex.isFocus?' ⭐':''}</div></div>`).join('');
-  const notesHtml=entry.notes?`<div class="cal-notes-section"><div class="cal-notes-label">Round Notes</div><div class="cal-notes-text">${entry.notes.replace(/\n/g,'<br>')}</div></div>`:'';
-  wrap.innerHTML=`<div class="cal-detail"><div class="cal-detail-hdr"><div class="cdh-date">${dateStr}</div><div class="cdh-type">${ICONS[entry.focus]||''} ${entry.focus} Day</div><div class="cdh-meta"><div class="cdh-stat"><div class="cdh-stat-val">${entry.rounds}</div><div class="cdh-stat-lbl">Rounds</div></div><div class="cdh-stat"><div class="cdh-stat-val">${entry.moves}</div><div class="cdh-stat-lbl">Moves</div></div><div class="cdh-stat"><div class="cdh-stat-val">20</div><div class="cdh-stat-lbl">Min</div></div></div></div><div class="cal-detail-body">${exHtml||'<div style="padding:12px 16px;color:var(--muted);font-size:13px;">No exercises on record.</div>'}</div>${notesHtml}</div>`;
-}
-
-// ═══════════════════════════ NAV
-function showPage(id,tab){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  if(tab)tab.classList.add('active');
-  if(id==='pageCalendar')renderCalendar();
-  if(id==='pageSettings')renderPhaseSettings();
-}
-function clearLog(){if(confirm('Clear all workout history? This cannot be undone.')){S.log={};saveS();renderCalendar();showToast('Log cleared');}}
-
-init();
+  renderTracker();
 </script>
+
 </body>
 </html>
