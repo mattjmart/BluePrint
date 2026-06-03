@@ -4,808 +4,749 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HFK Blueprint — Hannibal For King Program</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600;700&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<title>Daily Reps Blueprint — HFK × Tom Peto</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --black: #0a0a0a;
-    --deep: #111111;
-    --panel: #1a1a1a;
-    --border: #2a2a2a;
-    --gold: #c9a84c;
-    --gold-dim: #8a6e30;
-    --red: #c0392b;
-    --white: #f0ece4;
-    --muted: #888880;
-    --green: #2ecc71;
-  }
-
-- { margin: 0; padding: 0; box-sizing: border-box; }
-
+:root {
+  --black: #0c0c0c;
+  --deep: #131313;
+  --panel: #1c1c1c;
+  --panel2: #212121;
+  --border: #2e2e2e;
+  --gold: #c9a84c;
+  --gold-dim: #7a6230;
+  --red: #c0392b;
+  --blue: #2980b9;
+  --green: #27ae60;
+  --white: #eeead8;
+  --muted: #7a7870;
+  --tag-push: rgba(192,57,43,0.12);
+  --tag-pull: rgba(41,128,185,0.12);
+  --tag-legs: rgba(39,174,96,0.12);
+  --tag-core: rgba(142,68,173,0.12);
+  --col-push: #c0392b;
+  --col-pull: #2980b9;
+  --col-legs: #27ae60;
+  --col-core: #8e44ad;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
 body {
-background: var(–black);
-color: var(–white);
-font-family: ‘Barlow’, sans-serif;
-font-weight: 300;
-min-height: 100vh;
-overflow-x: hidden;
+  background: var(--black);
+  color: var(--white);
+  font-family: 'Barlow', sans-serif;
+  font-weight: 300;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
-
-/* NOISE TEXTURE OVERLAY */
 body::before {
-content: ‘’;
-position: fixed;
-inset: 0;
-background-image: url(“data:image/svg+xml,%3Csvg viewBox=‘0 0 200 200’ xmlns=‘http://www.w3.org/2000/svg’%3E%3Cfilter id=‘n’%3E%3CfeTurbulence type=‘fractalNoise’ baseFrequency=‘0.9’ numOctaves=‘4’ stitchTiles=‘stitch’/%3E%3C/filter%3E%3Crect width=‘100%25’ height=‘100%25’ filter=‘url(%23n)’ opacity=‘0.03’/%3E%3C/svg%3E”);
-pointer-events: none;
-z-index: 1000;
-opacity: 0.4;
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 999; opacity: 0.35;
 }
 
-/* HERO */
+/* ── HERO ── */
 .hero {
-position: relative;
-padding: 60px 24px 40px;
+padding: 52px 22px 36px;
 border-bottom: 1px solid var(–border);
-overflow: hidden;
+position: relative; overflow: hidden;
 }
-
 .hero::after {
-content: ‘HFK’;
-position: absolute;
-right: -20px;
-top: -10px;
+content: ‘DRG’;
+position: absolute; right: -12px; top: -8px;
 font-family: ‘Bebas Neue’, sans-serif;
-font-size: 200px;
-color: rgba(201,168,76,0.04);
-pointer-events: none;
-line-height: 1;
-letter-spacing: -5px;
+font-size: 180px; line-height: 1; letter-spacing: -4px;
+color: rgba(201,168,76,0.04); pointer-events: none;
 }
-
-.hero-tag {
+.hero-eyebrow {
 font-family: ‘Barlow Condensed’, sans-serif;
-font-size: 11px;
-font-weight: 600;
-letter-spacing: 4px;
-text-transform: uppercase;
-color: var(–gold);
-margin-bottom: 12px;
-display: flex;
-align-items: center;
-gap: 10px;
+font-size: 10px; font-weight: 700; letter-spacing: 4px;
+text-transform: uppercase; color: var(–gold);
+margin-bottom: 10px;
+display: flex; align-items: center; gap: 10px;
 }
-
-.hero-tag::before {
-content: ‘’;
-width: 24px;
-height: 1px;
-background: var(–gold);
-}
-
+.hero-eyebrow::before { content: ‘’; width: 20px; height: 1px; background: var(–gold); }
 .hero h1 {
 font-family: ‘Bebas Neue’, sans-serif;
-font-size: clamp(52px, 12vw, 88px);
-line-height: 0.95;
-letter-spacing: 2px;
-color: var(–white);
-margin-bottom: 16px;
+font-size: clamp(44px, 11vw, 80px);
+line-height: 0.92; letter-spacing: 2px; color: var(–white);
+margin-bottom: 14px;
 }
-
-.hero h1 span {
-color: var(–gold);
+.hero h1 em { color: var(–gold); font-style: normal; }
+.hero-sub { font-size: 13px; color: var(–muted); line-height: 1.65; max-width: 360px; }
+.source-pills {
+display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px;
 }
-
-.hero-sub {
-font-size: 14px;
-color: var(–muted);
-max-width: 380px;
-line-height: 1.6;
-font-weight: 300;
+.source-pill {
+font-family: ‘Barlow Condensed’, sans-serif;
+font-size: 10px; font-weight: 700; letter-spacing: 1.5px;
+text-transform: uppercase; padding: 4px 10px; border-radius: 2px;
 }
+.pill-hfk  { background: rgba(201,168,76,0.12); color: var(–gold); border: 1px solid var(–gold-dim); }
+.pill-peto { background: rgba(41,128,185,0.12);  color: #3498db;    border: 1px solid #1a5276; }
+.pill-drg  { background: rgba(39,174,96,0.12);   color: var(–green); border: 1px solid #1a6636; }
 
-/* NAV TABS */
+/* ── TABS ── */
 .tabs {
-display: flex;
-border-bottom: 1px solid var(–border);
-overflow-x: auto;
--webkit-overflow-scrolling: touch;
-scrollbar-width: none;
+display: flex; border-bottom: 1px solid var(–border);
+overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;
 }
 .tabs::-webkit-scrollbar { display: none; }
-
 .tab {
 font-family: ‘Barlow Condensed’, sans-serif;
-font-size: 13px;
-font-weight: 600;
-letter-spacing: 2px;
-text-transform: uppercase;
-color: var(–muted);
-padding: 16px 20px;
-cursor: pointer;
-border-bottom: 2px solid transparent;
-white-space: nowrap;
-transition: all 0.2s;
-background: none;
-border-top: none;
-border-left: none;
-border-right: none;
+font-size: 12px; font-weight: 700; letter-spacing: 2px;
+text-transform: uppercase; color: var(–muted);
+padding: 15px 18px; cursor: pointer;
+border: none; border-bottom: 2px solid transparent;
+background: none; white-space: nowrap; transition: all 0.2s;
 }
+.tab.active { color: var(–gold); border-bottom-color: var(–gold); }
 
-.tab.active {
-color: var(–gold);
-border-bottom-color: var(–gold);
-}
-
-/* SECTIONS */
-.section { display: none; padding: 28px 20px; }
+/* ── SECTIONS ── */
+.section { display: none; padding: 26px 18px 40px; }
 .section.active { display: block; }
-
-/* SECTION HEADER */
 .section-label {
 font-family: ‘Barlow Condensed’, sans-serif;
-font-size: 11px;
-letter-spacing: 3px;
-text-transform: uppercase;
-color: var(–gold-dim);
-margin-bottom: 20px;
+font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+color: var(–gold-dim); margin-bottom: 18px;
 }
 
-/* WEEK SCHEDULE */
-.week-grid {
-display: flex;
-flex-direction: column;
-gap: 8px;
+/* ── AMRAP BANNER ── */
+.amrap-banner {
+background: linear-gradient(135deg, rgba(201,168,76,0.08) 0%, rgba(201,168,76,0.03) 100%);
+border: 1px solid var(–gold-dim);
+border-left: 3px solid var(–gold);
+padding: 14px 16px; margin-bottom: 20px;
 }
+.amrap-banner-title {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 20px; letter-spacing: 1px; color: var(–gold); margin-bottom: 4px;
+}
+.amrap-banner-body { font-size: 12px; color: var(–muted); line-height: 1.6; }
 
+/* ── WEEK CARDS ── */
+.week-grid { display: flex; flex-direction: column; gap: 7px; }
 .day-card {
-background: var(–panel);
-border: 1px solid var(–border);
-border-left: 3px solid transparent;
-padding: 16px 18px;
-cursor: pointer;
-transition: all 0.2s;
-position: relative;
+background: var(–panel); border: 1px solid var(–border);
+border-left: 3px solid var(–border);
+transition: all 0.18s; position: relative;
 }
-
-.day-card.workout { border-left-color: var(–gold); }
-.day-card.rest { border-left-color: var(–border); opacity: 0.6; }
+.day-card.train  { border-left-color: var(–gold); }
+.day-card.active-rest { border-left-color: var(–blue); }
 .day-card.skills { border-left-color: var(–red); }
-.day-card.active-rest { border-left-color: #3498db; }
-
-.day-card:hover:not(.rest) {
-background: #222;
-transform: translateX(3px);
+.day-card.rest   { border-left-color: #2e2e2e; opacity: 0.55; }
+.day-card-header {
+display: flex; align-items: center; justify-content: space-between;
+padding: 14px 16px; cursor: pointer;
 }
-
-.day-header {
-display: flex;
-align-items: center;
-justify-content: space-between;
-}
-
+.day-card.rest .day-card-header { cursor: default; }
+.day-card:not(.rest):hover { background: #1f1f1f; transform: translateX(2px); }
+.day-left {}
 .day-name {
 font-family: ‘Bebas Neue’, sans-serif;
-font-size: 22px;
-letter-spacing: 1px;
-color: var(–white);
+font-size: 21px; letter-spacing: 1px; color: var(–white); line-height: 1;
 }
-
-.day-type {
+.day-subtitle {
 font-family: ‘Barlow Condensed’, sans-serif;
-font-size: 11px;
-letter-spacing: 2px;
-text-transform: uppercase;
-color: var(–muted);
+font-size: 11px; letter-spacing: 1px; color: var(–muted);
+text-transform: uppercase; margin-top: 2px;
 }
-
+.day-right { display: flex; align-items: center; gap: 8px; }
 .day-badge {
 font-family: ‘Barlow Condensed’, sans-serif;
-font-size: 10px;
-font-weight: 700;
-letter-spacing: 1.5px;
-text-transform: uppercase;
-padding: 3px 8px;
-border-radius: 2px;
+font-size: 10px; font-weight: 700; letter-spacing: 1.5px;
+text-transform: uppercase; padding: 3px 8px; border-radius: 2px;
 }
-
-.badge-work { background: rgba(201,168,76,0.15); color: var(–gold); }
-.badge-rest { background: rgba(136,136,128,0.1); color: var(–muted); }
-.badge-skill { background: rgba(192,57,43,0.15); color: var(–red); }
-.badge-active { background: rgba(52,152,219,0.15); color: #3498db; }
-
-.day-details {
-display: none;
-margin-top: 14px;
-padding-top: 14px;
-border-top: 1px solid var(–border);
+.badge-train  { background: rgba(201,168,76,0.12); color: var(–gold); }
+.badge-active { background: rgba(41,128,185,0.12);  color: #3498db; }
+.badge-skill  { background: rgba(192,57,43,0.12);   color: var(–red); }
+.badge-rest   { background: rgba(100,100,100,0.1);  color: var(–muted); }
+.chevron {
+font-size: 10px; color: var(–muted);
+transition: transform 0.2s; display: inline-block;
 }
-
+.day-details { display: none; padding: 0 16px 16px; }
 .day-details.open { display: block; }
+.details-divider { height: 1px; background: var(–border); margin-bottom: 14px; }
 
-/* WORKOUT BLOCK */
-.workout-info {
-font-size: 13px;
-color: var(–muted);
-margin-bottom: 14px;
-line-height: 1.6;
+/* ── WORKOUT META ── */
+.workout-meta {
+display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 14px;
 }
-
-.exercise-list {
-display: flex;
-flex-direction: column;
-gap: 6px;
-margin-bottom: 14px;
+.meta-chip {
+font-family: ‘Barlow Condensed’, sans-serif;
+font-size: 10px; font-weight: 700; letter-spacing: 1.5px;
+text-transform: uppercase; padding: 3px 9px; border-radius: 2px;
+background: var(–panel2); border: 1px solid var(–border); color: var(–muted);
 }
+.meta-chip.highlight { color: var(–gold); border-color: var(–gold-dim); background: rgba(201,168,76,0.07); }
 
-.exercise-item {
-display: flex;
-justify-content: space-between;
-align-items: center;
-padding: 10px 14px;
-background: rgba(255,255,255,0.03);
-border: 1px solid var(–border);
+.workout-desc { font-size: 13px; color: var(–muted); line-height: 1.65; margin-bottom: 16px; }
+
+/* ── EXERCISE TABLE ── */
+.ex-section-label {
+font-family: ‘Barlow Condensed’, sans-serif;
+font-size: 10px; font-weight: 700; letter-spacing: 2.5px;
+text-transform: uppercase; color: var(–muted); margin-bottom: 8px;
 }
-
+.ex-list { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
+.ex-row {
+display: flex; align-items: flex-start; justify-content: space-between;
+gap: 10px; padding: 10px 12px;
+background: rgba(255,255,255,0.025); border: 1px solid var(–border);
+}
+.ex-info { flex: 1; min-width: 0; }
 .ex-name {
 font-family: ‘Barlow Condensed’, sans-serif;
-font-size: 15px;
-font-weight: 600;
-letter-spacing: 0.5px;
-color: var(–white);
+font-size: 15px; font-weight: 700; letter-spacing: 0.3px; color: var(–white);
 }
-
+.ex-tags { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 4px; }
+.ex-tag {
+font-size: 9px; font-family: ‘Barlow Condensed’, sans-serif;
+font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+padding: 2px 6px; border-radius: 2px;
+}
+.tag-push { background: var(–tag-push); color: var(–col-push); }
+.tag-pull { background: var(–tag-pull); color: var(–col-pull); }
+.tag-legs { background: var(–tag-legs); color: var(–col-legs); }
+.tag-core { background: var(–tag-core); color: var(–col-core); }
+.tag-mob  { background: rgba(230,126,34,0.12); color: #e67e22; }
+.ex-cue { font-size: 11px; color: var(–muted); margin-top: 3px; line-height: 1.5; }
+.ex-target { flex-shrink: 0; text-align: right; }
 .ex-reps {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 18px;
-color: var(–gold);
-letter-spacing: 1px;
+font-family: ‘Bebas Neue’, sans-serif; font-size: 20px;
+color: var(–gold); letter-spacing: 1px; line-height: 1;
 }
-
-.ex-note {
-font-size: 11px;
-color: var(–muted);
-margin-top: 2px;
-}
-
-.ex-left { display: flex; flex-direction: column; }
-
-.tip-box {
-background: rgba(201,168,76,0.06);
-border-left: 2px solid var(–gold-dim);
-padding: 10px 14px;
-font-size: 12px;
-color: var(–muted);
-line-height: 1.6;
-margin-top: 10px;
-}
-
-.tip-box strong {
-color: var(–gold);
+.ex-reps-label {
 font-family: ‘Barlow Condensed’, sans-serif;
-letter-spacing: 1px;
-text-transform: uppercase;
-font-size: 11px;
+font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase;
+color: var(–muted); text-align: right;
 }
-
-.yt-link {
-display: inline-flex;
-align-items: center;
-gap: 6px;
-font-family: ‘Barlow Condensed’, sans-serif;
-font-size: 12px;
-font-weight: 600;
-letter-spacing: 1.5px;
-text-transform: uppercase;
-color: var(–red);
-text-decoration: none;
-margin-top: 10px;
-transition: opacity 0.2s;
-}
-.yt-link:hover { opacity: 0.7; }
-
-/* PRINCIPLES */
-.principle-card {
-border: 1px solid var(–border);
-border-top: 2px solid var(–gold);
-padding: 20px;
-margin-bottom: 14px;
-background: var(–panel);
-}
-
-.principle-num {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 48px;
-color: rgba(201,168,76,0.15);
-line-height: 1;
-margin-bottom: 6px;
-}
-
-.principle-title {
-font-family: ‘Barlow Condensed’, sans-serif;
-font-size: 18px;
-font-weight: 700;
-letter-spacing: 1px;
-text-transform: uppercase;
-color: var(–white);
-margin-bottom: 8px;
-}
-
-.principle-body {
-font-size: 13px;
-color: var(–muted);
-line-height: 1.7;
-}
-
-/* TRACKER */
-.tracker-header {
-display: flex;
-align-items: baseline;
-justify-content: space-between;
-margin-bottom: 20px;
-}
-
-.stat-row {
-display: grid;
-grid-template-columns: 1fr 1fr;
-gap: 10px;
-margin-bottom: 24px;
-}
-
-.stat-box {
-background: var(–panel);
-border: 1px solid var(–border);
-padding: 16px;
-text-align: center;
-}
-
-.stat-num {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 42px;
-color: var(–gold);
-line-height: 1;
-}
-
-.stat-label {
-font-family: ‘Barlow Condensed’, sans-serif;
-font-size: 11px;
-letter-spacing: 2px;
-text-transform: uppercase;
-color: var(–muted);
+.ex-beginner {
+font-size: 11px; color: var(–muted); font-style: italic;
 margin-top: 4px;
 }
 
-.log-section-title {
+/* ── TIP BOX ── */
+.tip-box {
+border-left: 2px solid var(–gold-dim);
+background: rgba(201,168,76,0.05);
+padding: 10px 13px; font-size: 12px; color: var(–muted);
+line-height: 1.65; margin-top: 10px;
+}
+.tip-box strong {
 font-family: ‘Barlow Condensed’, sans-serif;
-font-size: 13px;
-font-weight: 700;
-letter-spacing: 2px;
-text-transform: uppercase;
-color: var(–white);
-margin-bottom: 12px;
+font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase;
+color: var(–gold); display: block; margin-bottom: 3px;
 }
-
-.log-form {
-display: flex;
-flex-direction: column;
-gap: 10px;
-margin-bottom: 20px;
+.yt-link {
+display: inline-flex; align-items: center; gap: 5px;
+font-family: ‘Barlow Condensed’, sans-serif;
+font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+color: var(–red); text-decoration: none; margin-top: 12px; transition: opacity 0.2s;
 }
+.yt-link:hover { opacity: 0.65; }
+.yt-links { display: flex; gap: 14px; flex-wrap: wrap; }
 
-.log-row {
-display: grid;
-grid-template-columns: 1fr 1fr;
-gap: 8px;
+/* ── AMRAP TIMER ── */
+.timer-block {
+background: var(–panel); border: 1px solid var(–border);
+border-top: 2px solid var(–gold); padding: 18px; margin-bottom: 18px;
 }
+.timer-title {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 18px; letter-spacing: 1px; color: var(–white); margin-bottom: 14px;
+}
+.timer-controls {
+display: flex; flex-direction: column; gap: 10px;
+}
+.timer-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.timer-select {
+background: var(–panel2); border: 1px solid var(–border);
+color: var(–white); font-family: ‘Barlow’, sans-serif; font-size: 14px;
+padding: 9px 12px; outline: none; transition: border-color 0.2s; width: 100%;
+cursor: pointer;
+}
+.timer-select:focus { border-color: var(–gold); }
+.timer-select option { background: #1c1c1c; }
+.timer-display {
+text-align: center; padding: 18px 0; margin: 12px 0 8px;
+}
+.timer-time {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 72px; letter-spacing: 4px; line-height: 1;
+transition: color 0.3s;
+}
+.timer-time.running { color: var(–gold); }
+.timer-time.paused  { color: var(–muted); }
+.timer-time.done    { color: var(–green); }
+.timer-time.idle    { color: var(–white); }
+.timer-phase {
+font-family: ‘Barlow Condensed’, sans-serif;
+font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+color: var(–muted); margin-top: 4px;
+}
+.timer-btns { display: flex; gap: 8px; }
+.t-btn {
+flex: 1; padding: 12px; border: none; cursor: pointer;
+font-family: ‘Bebas Neue’, sans-serif; font-size: 18px; letter-spacing: 2px;
+transition: all 0.15s;
+}
+.t-btn-start { background: var(–gold); color: var(–black); }
+.t-btn-start:hover { background: #e0bb5a; }
+.t-btn-reset { background: var(–panel2); color: var(–muted); border: 1px solid var(–border); }
+.t-btn-reset:hover { color: var(–white); }
 
+/* ── PRINCIPLES ── */
+.principle-card {
+border: 1px solid var(–border); border-top: 2px solid var(–gold-dim);
+padding: 18px; margin-bottom: 12px; background: var(–panel);
+}
+.principle-num {
+font-family: ‘Bebas Neue’, sans-serif; font-size: 44px;
+color: rgba(201,168,76,0.1); line-height: 1; margin-bottom: 4px;
+}
+.principle-title {
+font-family: ‘Barlow Condensed’, sans-serif;
+font-size: 17px; font-weight: 700; letter-spacing: 0.5px;
+text-transform: uppercase; color: var(–white); margin-bottom: 7px;
+}
+.principle-source {
+font-family: ‘Barlow Condensed’, sans-serif;
+font-size: 9px; font-weight: 700; letter-spacing: 2px;
+text-transform: uppercase; padding: 2px 7px; border-radius: 2px; margin-left: 6px;
+vertical-align: middle;
+}
+.principle-body { font-size: 13px; color: var(–muted); line-height: 1.7; }
+
+/* ── TRACKER ── */
+.stat-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 20px; }
+.stat-box { background: var(–panel); border: 1px solid var(–border); padding: 14px 10px; text-align: center; }
+.stat-num { font-family: ‘Bebas Neue’, sans-serif; font-size: 36px; color: var(–gold); line-height: 1; }
+.stat-label { font-family: ‘Barlow Condensed’, sans-serif; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(–muted); margin-top: 3px; }
+.log-form-title { font-family: ‘Barlow Condensed’, sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(–white); margin-bottom: 10px; }
+.log-form { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+.log-row { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
 .log-input {
-background: var(–panel);
-border: 1px solid var(–border);
-color: var(–white);
-font-family: ‘Barlow’, sans-serif;
-font-size: 14px;
-padding: 10px 14px;
-outline: none;
-transition: border-color 0.2s;
-width: 100%;
+background: var(–panel); border: 1px solid var(–border);
+color: var(–white); font-family: ‘Barlow’, sans-serif; font-size: 14px;
+padding: 9px 12px; outline: none; width: 100%; transition: border-color 0.2s;
 }
-
 .log-input:focus { border-color: var(–gold); }
 .log-input::placeholder { color: var(–muted); }
-
-select.log-input option {
-background: var(–panel);
-}
-
+.log-input option { background: #1c1c1c; }
 .log-btn {
-background: var(–gold);
-color: var(–black);
-border: none;
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 18px;
-letter-spacing: 2px;
-padding: 12px 20px;
-cursor: pointer;
-transition: all 0.2s;
+background: var(–gold); color: var(–black); border: none;
+font-family: ‘Bebas Neue’, sans-serif; font-size: 18px; letter-spacing: 2px;
+padding: 11px; cursor: pointer; transition: all 0.15s;
 }
-
 .log-btn:hover { background: #e0bb5a; transform: translateY(-1px); }
-
-.log-entries {
-display: flex;
-flex-direction: column;
-gap: 6px;
-}
-
+.log-list { display: flex; flex-direction: column; gap: 5px; }
 .log-entry {
-display: flex;
-justify-content: space-between;
-align-items: center;
-padding: 10px 14px;
-background: var(–panel);
-border: 1px solid var(–border);
-animation: fadeIn 0.3s ease;
+display: flex; justify-content: space-between; align-items: center;
+padding: 10px 13px; background: var(–panel); border: 1px solid var(–border);
+animation: fadeIn 0.25s ease;
 }
-
-@keyframes fadeIn {
-from { opacity: 0; transform: translateY(-4px); }
-to { opacity: 1; transform: translateY(0); }
-}
-
-.log-entry-day {
-font-family: ‘Barlow Condensed’, sans-serif;
-font-size: 13px;
-font-weight: 600;
-color: var(–gold);
-}
-
-.log-entry-detail {
-font-size: 12px;
-color: var(–muted);
-}
-
-.log-entry-rounds {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 22px;
-color: var(–white);
-}
-
-.clear-btn {
-font-family: ‘Barlow Condensed’, sans-serif;
-font-size: 11px;
-letter-spacing: 2px;
-text-transform: uppercase;
-color: var(–muted);
-background: none;
-border: none;
-cursor: pointer;
-padding: 4px 0;
-transition: color 0.2s;
-}
+@keyframes fadeIn { from { opacity:0; transform:translateY(-3px); } to { opacity:1; transform:translateY(0); } }
+.log-entry-left {}
+.log-entry-day { font-family: ‘Barlow Condensed’, sans-serif; font-size: 14px; font-weight: 700; color: var(–gold); letter-spacing: 0.5px; }
+.log-entry-meta { font-size: 11px; color: var(–muted); margin-top: 1px; }
+.log-entry-stat { font-family: ‘Bebas Neue’, sans-serif; font-size: 24px; color: var(–white); }
+.log-entry-stat span { font-size: 13px; color: var(–muted); font-family: ‘Barlow Condensed’, sans-serif; margin-left: 3px; vertical-align: middle; font-weight: 400; }
+.log-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
+.clear-btn { font-family: ‘Barlow Condensed’, sans-serif; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(–muted); background: none; border: none; cursor: pointer; transition: color 0.2s; }
 .clear-btn:hover { color: var(–red); }
+.empty-state { text-align: center; padding: 28px; font-family: ‘Barlow Condensed’, sans-serif; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; color: var(–muted); border: 1px dashed var(–border); }
 
-.empty-state {
-text-align: center;
-padding: 30px;
+/* ── EXERCISE LIBRARY ── */
+.lib-filters { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 16px; }
+.lib-filter {
 font-family: ‘Barlow Condensed’, sans-serif;
-font-size: 13px;
-letter-spacing: 1px;
-text-transform: uppercase;
-color: var(–muted);
-border: 1px dashed var(–border);
+font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+padding: 4px 10px; border-radius: 2px; cursor: pointer;
+border: 1px solid var(–border); background: var(–panel); color: var(–muted);
+transition: all 0.15s;
 }
-
-/* PHASE TIMELINE */
-.phase-block {
-display: flex;
-gap: 16px;
-margin-bottom: 20px;
-align-items: flex-start;
+.lib-filter.active { color: var(–gold); border-color: var(–gold-dim); background: rgba(201,168,76,0.08); }
+.lib-grid { display: flex; flex-direction: column; gap: 5px; }
+.lib-card {
+background: var(–panel); border: 1px solid var(–border); padding: 13px 14px;
 }
-
-.phase-num-box {
-flex-shrink: 0;
-width: 44px;
-height: 44px;
-background: var(–panel);
-border: 1px solid var(–gold-dim);
-display: flex;
-align-items: center;
-justify-content: center;
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 22px;
-color: var(–gold);
-}
-
-.phase-content-title {
+.lib-card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.lib-card-name {
 font-family: ‘Barlow Condensed’, sans-serif;
-font-size: 16px;
-font-weight: 700;
-letter-spacing: 1px;
-text-transform: uppercase;
-color: var(–white);
-margin-bottom: 4px;
+font-size: 16px; font-weight: 700; color: var(–white); letter-spacing: 0.3px;
 }
-
-.phase-content-months {
-font-size: 11px;
-color: var(–gold-dim);
-letter-spacing: 2px;
-text-transform: uppercase;
-margin-bottom: 6px;
+.lib-card-source { flex-shrink: 0; }
+.lib-progressions { margin-top: 10px; display: flex; flex-direction: column; gap: 4px; }
+.prog-row {
+display: flex; align-items: center; gap: 8px;
+font-size: 12px; color: var(–muted);
+}
+.prog-dot {
+width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+}
+.prog-dot.beg { background: var(–green); }
+.prog-dot.int { background: var(–gold); }
+.prog-dot.adv { background: var(–red); }
+.prog-level {
 font-family: ‘Barlow Condensed’, sans-serif;
+font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+color: var(–muted); width: 30px; flex-shrink: 0;
 }
 
-.phase-content-desc {
-font-size: 13px;
-color: var(–muted);
-line-height: 1.6;
-}
+/* ── DIVIDER ── */
+.divider { height: 1px; background: var(–border); margin: 20px 0; }
 
-.phase-connector {
-width: 1px;
-height: 16px;
-background: var(–border);
-margin-left: 21px;
-}
-
-/* DIVIDER */
-.divider {
-height: 1px;
-background: var(–border);
-margin: 24px 0;
-}
-
-/* FOOTER */
+/* ── FOOTER ── */
 .footer {
-padding: 24px 20px;
-border-top: 1px solid var(–border);
-text-align: center;
-font-size: 11px;
-color: var(–muted);
-letter-spacing: 1.5px;
-font-family: ‘Barlow Condensed’, sans-serif;
-text-transform: uppercase;
+padding: 20px; border-top: 1px solid var(–border);
+text-align: center; font-family: ‘Barlow Condensed’, sans-serif;
+font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(–muted);
 }
-
 .footer span { color: var(–gold-dim); }
-
-/* PROGRESS BAR */
-.progress-bar-wrap {
-background: var(–panel);
-border: 1px solid var(–border);
-height: 6px;
-margin-bottom: 6px;
-overflow: hidden;
-}
-
-.progress-bar-fill {
-height: 100%;
-background: linear-gradient(90deg, var(–gold-dim), var(–gold));
-transition: width 0.6s ease;
-}
-
-.progress-label {
-display: flex;
-justify-content: space-between;
-font-family: ‘Barlow Condensed’, sans-serif;
-font-size: 11px;
-letter-spacing: 1px;
-color: var(–muted);
-margin-bottom: 14px;
-}
 </style>
 
 </head>
 <body>
 
+<!-- HERO -->
+
 <div class="hero">
-  <div class="hero-tag">Bodyweight · Street Workout · No Gym</div>
-  <h1>HANNIBAL<br><span>FOR KING</span><br>BLUEPRINT</h1>
-  <p class="hero-sub">High-volume calisthenics program for fat loss and muscle building. Inspired by the Around The World method.</p>
+  <div class="hero-eyebrow">Calisthenics · Fat Loss · Muscle</div>
+  <h1>DAILY REPS<br><em>BLUEPRINT</em></h1>
+  <p class="hero-sub">A merged bodyweight program drawing from Hannibal For King's street volume, Tom Peto's structured progressions, and the DailyRepsGuy AMRAP method.</p>
+  <div class="source-pills">
+    <span class="source-pill pill-hfk">HFK · Around The World</span>
+    <span class="source-pill pill-peto">Tom Peto · Progressions</span>
+    <span class="source-pill pill-drg">DailyRepsGuy · AMRAP 15–20 min</span>
+  </div>
 </div>
+
+<!-- TABS -->
 
 <div class="tabs">
-  <button class="tab active" onclick="switchTab('schedule', this)">Schedule</button>
-  <button class="tab" onclick="switchTab('principles', this)">Principles</button>
-  <button class="tab" onclick="switchTab('phases', this)">Phases</button>
-  <button class="tab" onclick="switchTab('tracker', this)">Tracker</button>
+  <button class="tab active" onclick="switchTab('schedule',this)">Schedule</button>
+  <button class="tab" onclick="switchTab('timer',this)">AMRAP Timer</button>
+  <button class="tab" onclick="switchTab('library',this)">Exercise Library</button>
+  <button class="tab" onclick="switchTab('principles',this)">Principles</button>
+  <button class="tab" onclick="switchTab('tracker',this)">Tracker</button>
 </div>
 
-<!-- SCHEDULE -->
+<!-- ════════════ SCHEDULE ════════════ -->
 
 <div id="schedule" class="section active">
   <div class="section-label">Weekly Training Schedule</div>
+
+  <div class="amrap-banner">
+    <div class="amrap-banner-title">AMRAP FORMAT — 15 TO 20 MINUTES</div>
+    <div class="amrap-banner-body">Each training session uses the DailyRepsGuy AMRAP method: set a 15–20 min timer and complete as many rounds as possible of the circuit. Log your rounds in the Tracker. Beat your number week over week.</div>
+  </div>
+
   <div class="week-grid">
 
 ```
-<div class="day-card workout" onclick="toggleDay(this)">
-  <div class="day-header">
-    <div>
+<!-- MON -->
+<div class="day-card train" onclick="toggleDay(this)">
+  <div class="day-card-header">
+    <div class="day-left">
       <div class="day-name">Monday</div>
-      <div class="day-type">Around The World — Beginner Cycle</div>
+      <div class="day-subtitle">Push · Chest, Shoulders, Triceps</div>
     </div>
-    <div class="day-badge badge-work">Train</div>
+    <div class="day-right">
+      <div class="day-badge badge-train">AMRAP</div>
+      <span class="chevron">▼</span>
+    </div>
   </div>
   <div class="day-details">
-    <p class="workout-info">Set a 45–60 min timer. Complete as many full cycles as possible with minimal rest between sets. Lock out every rep. Squeeze your core throughout.</p>
-    <div class="exercise-list">
-      <div class="exercise-item">
-        <div class="ex-left">
-          <div class="ex-name">Pull-Ups</div>
-          <div class="ex-note">Full ROM — dead hang to chin over bar</div>
-        </div>
-        <div class="ex-reps">10</div>
-      </div>
-      <div class="exercise-item">
-        <div class="ex-left">
-          <div class="ex-name">Parallel Bar Dips</div>
-          <div class="ex-note">Chest slightly forward, full depth</div>
-        </div>
-        <div class="ex-reps">20</div>
-      </div>
-      <div class="exercise-item">
-        <div class="ex-left">
+    <div class="details-divider"></div>
+    <div class="workout-meta">
+      <div class="meta-chip highlight">15–20 min AMRAP</div>
+      <div class="meta-chip">No Equipment</div>
+      <div class="meta-chip">3–5 Rounds Target</div>
+    </div>
+    <p class="workout-desc">Set your timer. Move through each exercise back-to-back with no rest mid-circuit. Rest only between rounds. Focus: full range of motion on every rep (Tom Peto cue), squeeze chest and triceps (HFK cue).</p>
+    <div class="ex-section-label">Circuit — one round</div>
+    <div class="ex-list">
+      <div class="ex-row">
+        <div class="ex-info">
           <div class="ex-name">Push-Ups</div>
-          <div class="ex-note">Chest to floor, elbows 45° out</div>
+          <div class="ex-tags"><span class="ex-tag tag-push">Push</span><span class="ex-tag tag-push">Chest</span></div>
+          <div class="ex-cue">Chest to floor, elbows 45°. Lock out at top, full squeeze.</div>
+          <div class="ex-beginner">Beginner: knee push-ups → Negative push-ups</div>
         </div>
-        <div class="ex-reps">20</div>
+        <div class="ex-target"><div class="ex-reps">10</div><div class="ex-reps-label">reps</div></div>
       </div>
-    </div>
-    <div class="tip-box"><strong>HFK Cue</strong> — Rest only as long as you need, then get back on the bar. The goal is max rounds within the time window.</div>
-    <a class="yt-link" href="https://www.youtube.com/watch?v=Wy7-SO7TsoE" target="_blank">▶ Watch Workout Routine Pt. 1</a>
-  </div>
-</div>
-
-<div class="day-card active-rest" onclick="toggleDay(this)">
-  <div class="day-header">
-    <div>
-      <div class="day-name">Tuesday</div>
-      <div class="day-type">Active Recovery</div>
-    </div>
-    <div class="day-badge badge-active">Active</div>
-  </div>
-  <div class="day-details">
-    <p class="workout-info">Light movement to promote recovery. No high-intensity work.</p>
-    <div class="exercise-list">
-      <div class="exercise-item">
-        <div class="ex-left"><div class="ex-name">Walking</div><div class="ex-note">20–30 min easy pace</div></div>
-        <div class="ex-reps">—</div>
-      </div>
-      <div class="exercise-item">
-        <div class="ex-left"><div class="ex-name">Hip Flexor + Hamstring Stretch</div><div class="ex-note">30 sec each side, 2 rounds</div></div>
-        <div class="ex-reps">—</div>
-      </div>
-      <div class="exercise-item">
-        <div class="ex-left"><div class="ex-name">Dead Hang</div><div class="ex-note">Passive grip decompression, 3×30 sec</div></div>
-        <div class="ex-reps">—</div>
-      </div>
-    </div>
-    <div class="tip-box"><strong>Why</strong> — Recovery is when you actually grow. Don't skip this day by doing a "light workout." Truly rest your CNS.</div>
-  </div>
-</div>
-
-<div class="day-card workout" onclick="toggleDay(this)">
-  <div class="day-header">
-    <div>
-      <div class="day-name">Wednesday</div>
-      <div class="day-type">Around The World — Advanced Cycle</div>
-    </div>
-    <div class="day-badge badge-work">Train</div>
-  </div>
-  <div class="day-details">
-    <p class="workout-info">Same time block (60–90 min), upgraded movement variations. This is Hannibal's exact cycle — narrow grip demands more from chest, tris, and rear delts.</p>
-    <div class="exercise-list">
-      <div class="exercise-item">
-        <div class="ex-left">
-          <div class="ex-name">Close-Grip Pull-Ups</div>
-          <div class="ex-note">Hands ~6" apart, elbows tight to body</div>
+      <div class="ex-row">
+        <div class="ex-info">
+          <div class="ex-name">Pike Push-Ups</div>
+          <div class="ex-tags"><span class="ex-tag tag-push">Push</span><span class="ex-tag tag-push">Shoulders</span></div>
+          <div class="ex-cue">Hips high, head toward floor. Triangle between hands and head at bottom.</div>
+          <div class="ex-beginner">Beginner: negative pike push-ups (slow down only)</div>
         </div>
-        <div class="ex-reps">5</div>
+        <div class="ex-target"><div class="ex-reps">8</div><div class="ex-reps-label">reps</div></div>
       </div>
-      <div class="exercise-item">
-        <div class="ex-left">
-          <div class="ex-name">Dips</div>
-          <div class="ex-note">Slow descent, pause at bottom</div>
-        </div>
-        <div class="ex-reps">5</div>
-      </div>
-      <div class="exercise-item">
-        <div class="ex-left">
+      <div class="ex-row">
+        <div class="ex-info">
           <div class="ex-name">Diamond Push-Ups</div>
-          <div class="ex-note">One foot raised for instability challenge</div>
+          <div class="ex-tags"><span class="ex-tag tag-push">Push</span><span class="ex-tag tag-push">Triceps</span></div>
+          <div class="ex-cue">Hands form diamond shape, elbows track back — not out.</div>
         </div>
-        <div class="ex-reps">10</div>
+        <div class="ex-target"><div class="ex-reps">8</div><div class="ex-reps-label">reps</div></div>
+      </div>
+      <div class="ex-row">
+        <div class="ex-info">
+          <div class="ex-name">Dips (Chair or Bar)</div>
+          <div class="ex-tags"><span class="ex-tag tag-push">Push</span><span class="ex-tag tag-push">Triceps</span></div>
+          <div class="ex-cue">Slow descent, pause at bottom, press to full lock-out (HFK).</div>
+        </div>
+        <div class="ex-target"><div class="ex-reps">10</div><div class="ex-reps-label">reps</div></div>
+      </div>
+      <div class="ex-row">
+        <div class="ex-info">
+          <div class="ex-name">Half Hollow Hold</div>
+          <div class="ex-tags"><span class="ex-tag tag-core">Core</span></div>
+          <div class="ex-cue">Lower back pressed to floor, legs and arms extended. No arch (Tom Peto).</div>
+        </div>
+        <div class="ex-target"><div class="ex-reps">20s</div><div class="ex-reps-label">hold</div></div>
       </div>
     </div>
-    <div class="tip-box"><strong>Lower reps, harder moves</strong> — These are quality reps, not sprint reps. Focus on tension over tempo.</div>
-    <a class="yt-link" href="https://www.youtube.com/watch?v=Zk9jp9rJ3Ss" target="_blank">▶ Watch Workout Routine Pt. 2</a>
+    <div class="tip-box"><strong>Score it</strong> Track your total rounds on the Tracker tab. Week over week, one more round is the goal.</div>
+    <div class="yt-links">
+      <a class="yt-link" href="https://www.youtube.com/watch?v=kuUZYUBHryw" target="_blank">▶ Tom Peto 20min Beginner</a>
+      <a class="yt-link" href="https://www.youtube.com/watch?v=Wy7-SO7TsoE" target="_blank">▶ HFK Workout Pt.1</a>
+    </div>
   </div>
 </div>
 
+<!-- TUE -->
+<div class="day-card active-rest" onclick="toggleDay(this)">
+  <div class="day-card-header">
+    <div class="day-left">
+      <div class="day-name">Tuesday</div>
+      <div class="day-subtitle">Mobility + Active Recovery</div>
+    </div>
+    <div class="day-right">
+      <div class="day-badge badge-active">Active</div>
+      <span class="chevron">▼</span>
+    </div>
+  </div>
+  <div class="day-details">
+    <div class="details-divider"></div>
+    <p class="workout-desc">15–20 min light movement from Tom Peto's warm-up series. No intensity — this is joint prep and recovery work.</p>
+    <div class="ex-list">
+      <div class="ex-row">
+        <div class="ex-info"><div class="ex-name">Kang Squats</div><div class="ex-tags"><span class="ex-tag tag-mob">Mobility</span><span class="ex-tag tag-legs">Legs</span></div><div class="ex-cue">Hinge → squat → stand. Warms hamstrings and hips.</div></div>
+        <div class="ex-target"><div class="ex-reps">10</div></div>
+      </div>
+      <div class="ex-row">
+        <div class="ex-info"><div class="ex-name">Cossack Squats</div><div class="ex-tags"><span class="ex-tag tag-mob">Mobility</span><span class="ex-tag tag-legs">Legs</span></div><div class="ex-cue">Side lunge, sit into hip, keep chest up. Tom Peto staple.</div></div>
+        <div class="ex-target"><div class="ex-reps">8/s</div></div>
+      </div>
+      <div class="ex-row">
+        <div class="ex-info"><div class="ex-name">Single-Leg Romanian Deadlift</div><div class="ex-tags"><span class="ex-tag tag-mob">Mobility</span><span class="ex-tag tag-legs">Hamstrings</span></div><div class="ex-cue">Hinge at hip, back flat, reach fingertips to floor.</div></div>
+        <div class="ex-target"><div class="ex-reps">8/s</div></div>
+      </div>
+      <div class="ex-row">
+        <div class="ex-info"><div class="ex-name">Wrist Circles + Angel Stretch</div><div class="ex-tags"><span class="ex-tag tag-mob">Mobility</span></div><div class="ex-cue">Wrists: 10 each direction. Angels: arms overhead from behind back to mobilize shoulders.</div></div>
+        <div class="ex-target"><div class="ex-reps">2×</div></div>
+      </div>
+      <div class="ex-row">
+        <div class="ex-info"><div class="ex-name">Dead Hang</div><div class="ex-tags"><span class="ex-tag tag-pull">Decompression</span></div><div class="ex-cue">Passive grip, relax shoulders. Decompress spine after training.</div></div>
+        <div class="ex-target"><div class="ex-reps">30s</div></div>
+      </div>
+    </div>
+    <a class="yt-link" href="https://www.youtube.com/TomPetoTraining" target="_blank">▶ Tom Peto YouTube Channel</a>
+  </div>
+</div>
+
+<!-- WED -->
+<div class="day-card train" onclick="toggleDay(this)">
+  <div class="day-card-header">
+    <div class="day-left">
+      <div class="day-name">Wednesday</div>
+      <div class="day-subtitle">Pull + Core · Back, Biceps, Abs</div>
+    </div>
+    <div class="day-right">
+      <div class="day-badge badge-train">AMRAP</div>
+      <span class="chevron">▼</span>
+    </div>
+  </div>
+  <div class="day-details">
+    <div class="details-divider"></div>
+    <div class="workout-meta">
+      <div class="meta-chip highlight">15–20 min AMRAP</div>
+      <div class="meta-chip">Pull-Up Bar</div>
+      <div class="meta-chip">3–5 Rounds Target</div>
+    </div>
+    <p class="workout-desc">HFK's pull-focused circuit merged with Tom Peto's core progressions. Lock out fully at the bottom of every pull rep. Core engaged through every movement.</p>
+    <div class="ex-list">
+      <div class="ex-row">
+        <div class="ex-info">
+          <div class="ex-name">Pull-Ups</div>
+          <div class="ex-tags"><span class="ex-tag tag-pull">Pull</span><span class="ex-tag tag-pull">Back</span></div>
+          <div class="ex-cue">Dead hang to chin over bar — full ROM every rep (HFK). Squeeze lats at top.</div>
+          <div class="ex-beginner">Beginner: inverted rows under a table or band-assisted pull-ups</div>
+        </div>
+        <div class="ex-target"><div class="ex-reps">5</div><div class="ex-reps-label">reps</div></div>
+      </div>
+      <div class="ex-row">
+        <div class="ex-info">
+          <div class="ex-name">Chin-Ups</div>
+          <div class="ex-tags"><span class="ex-tag tag-pull">Pull</span><span class="ex-tag tag-pull">Biceps</span></div>
+          <div class="ex-cue">Underhand grip, supinate the forearm at top. Controlled negative.</div>
+          <div class="ex-beginner">Beginner: negative chin-ups (jump to top, slow 3–5 sec descent)</div>
+        </div>
+        <div class="ex-target"><div class="ex-reps">5</div><div class="ex-reps-label">reps</div></div>
+      </div>
+      <div class="ex-row">
+        <div class="ex-info">
+          <div class="ex-name">Alternating Compressions</div>
+          <div class="ex-tags"><span class="ex-tag tag-core">Core</span><span class="ex-tag tag-pull">Back</span></div>
+          <div class="ex-cue">Lying face down, alternate arm/leg lifts. Use upper back to lift — NOT lower back (Tom Peto).</div>
+        </div>
+        <div class="ex-target"><div class="ex-reps">10</div><div class="ex-reps-label">each</div></div>
+      </div>
+      <div class="ex-row">
+        <div class="ex-info">
+          <div class="ex-name">Hanging Leg Raises</div>
+          <div class="ex-tags"><span class="ex-tag tag-core">Core</span><span class="ex-tag tag-pull">Pull</span></div>
+          <div class="ex-cue">From dead hang, raise knees to chest with control. No swinging.</div>
+          <div class="ex-beginner">Beginner: knee tucks → straight leg raises</div>
+        </div>
+        <div class="ex-target"><div class="ex-reps">8</div><div class="ex-reps-label">reps</div></div>
+      </div>
+      <div class="ex-row">
+        <div class="ex-info">
+          <div class="ex-name">Side Plank Hold</div>
+          <div class="ex-tags"><span class="ex-tag tag-core">Core</span></div>
+          <div class="ex-cue">Top leg forward to engage glutes and obliques (Tom Peto tip).</div>
+          <div class="ex-beginner">Beginner: half side plank (knees bent)</div>
+        </div>
+        <div class="ex-target"><div class="ex-reps">20s</div><div class="ex-reps-label">each</div></div>
+      </div>
+    </div>
+    <div class="tip-box"><strong>HFK Principle</strong> Train push and pull in the same session. Wednesday is pull-dominant — Monday was push. Both in the same week = full upper body stimulus twice.</div>
+    <div class="yt-links">
+      <a class="yt-link" href="https://www.youtube.com/watch?v=qTsKwpnQYPc" target="_blank">▶ Tom Peto Upper Body Day 5</a>
+      <a class="yt-link" href="https://www.youtube.com/watch?v=Zk9jp9rJ3Ss" target="_blank">▶ HFK Workout Pt.2</a>
+    </div>
+  </div>
+</div>
+
+<!-- THU -->
 <div class="day-card rest">
-  <div class="day-header">
-    <div>
+  <div class="day-card-header">
+    <div class="day-left">
       <div class="day-name">Thursday</div>
-      <div class="day-type">Full Rest</div>
+      <div class="day-subtitle">Full Rest</div>
     </div>
-    <div class="day-badge badge-rest">Rest</div>
+    <div class="day-right"><div class="day-badge badge-rest">Rest</div></div>
   </div>
 </div>
 
-<div class="day-card workout" onclick="toggleDay(this)">
-  <div class="day-header">
-    <div>
+<!-- FRI -->
+<div class="day-card train" onclick="toggleDay(this)">
+  <div class="day-card-header">
+    <div class="day-left">
       <div class="day-name">Friday</div>
-      <div class="day-type">Volume Day — Push For Max Rounds</div>
+      <div class="day-subtitle">Full Body · HFK Around The World</div>
     </div>
-    <div class="day-badge badge-work">Train</div>
+    <div class="day-right">
+      <div class="day-badge badge-train">AMRAP</div>
+      <span class="chevron">▼</span>
+    </div>
   </div>
   <div class="day-details">
-    <p class="workout-info">90-minute session. Alternate beginner and advanced cycles back-to-back. Track your total rounds — this is your weekly benchmark number.</p>
-    <div class="exercise-list">
-      <div class="exercise-item">
-        <div class="ex-left"><div class="ex-name">Pull-Ups</div><div class="ex-note">10 reps — wide or close, alternate each round</div></div>
-        <div class="ex-reps">10</div>
+    <div class="details-divider"></div>
+    <div class="workout-meta">
+      <div class="meta-chip highlight">20 min AMRAP</div>
+      <div class="meta-chip">Full Body</div>
+      <div class="meta-chip">Max Rounds</div>
+    </div>
+    <p class="workout-desc">Friday is your benchmark session — the classic HFK Around The World format, extended to include lower body and core. 20 min, go all out, track your rounds. This is the number you chase week to week.</p>
+    <div class="ex-list">
+      <div class="ex-row">
+        <div class="ex-info"><div class="ex-name">Close-Grip Pull-Ups</div><div class="ex-tags"><span class="ex-tag tag-pull">Pull</span></div><div class="ex-cue">Hands 6" apart, elbows tight. HFK's preferred variation.</div></div>
+        <div class="ex-target"><div class="ex-reps">5</div></div>
       </div>
-      <div class="exercise-item">
-        <div class="ex-left"><div class="ex-name">Dips</div><div class="ex-note">20 reps or 5 slow reps, alternating</div></div>
-        <div class="ex-reps">20/5</div>
+      <div class="ex-row">
+        <div class="ex-info"><div class="ex-name">Dips</div><div class="ex-tags"><span class="ex-tag tag-push">Push</span></div><div class="ex-cue">Pause at bottom, press to lockout. Slow on the descent.</div></div>
+        <div class="ex-target"><div class="ex-reps">10</div></div>
       </div>
-      <div class="exercise-item">
-        <div class="ex-left"><div class="ex-name">Push-Ups</div><div class="ex-note">Regular or Diamond, alternating</div></div>
-        <div class="ex-reps">20/10</div>
+      <div class="ex-row">
+        <div class="ex-info"><div class="ex-name">Push-Ups (Wide + Diamond alt.)</div><div class="ex-tags"><span class="ex-tag tag-push">Push</span></div><div class="ex-cue">Alternate grip each round for varied stimulus.</div></div>
+        <div class="ex-target"><div class="ex-reps">10</div></div>
       </div>
-      <div class="exercise-item">
-        <div class="ex-left"><div class="ex-name">Squats / Jump Squats</div><div class="ex-note">Added lower body stimulus</div></div>
-        <div class="ex-reps">20</div>
+      <div class="ex-row">
+        <div class="ex-info">
+          <div class="ex-name">Narrow Split Squats</div>
+          <div class="ex-tags"><span class="ex-tag tag-legs">Legs</span></div>
+          <div class="ex-cue">Narrow stance, knee tracks over toe. Tom Peto beginner legs staple.</div>
+          <div class="ex-beginner">Progress to: 1 down/2 up → full pistol squat</div>
+        </div>
+        <div class="ex-target"><div class="ex-reps">8/s</div></div>
+      </div>
+      <div class="ex-row">
+        <div class="ex-info"><div class="ex-name">Full Hollow Hold</div><div class="ex-tags"><span class="ex-tag tag-core">Core</span></div><div class="ex-cue">Arms and legs extended, lower back glued to floor. Progress from half hollow (Tom Peto).</div></div>
+        <div class="ex-target"><div class="ex-reps">20s</div></div>
       </div>
     </div>
-    <div class="tip-box"><strong>Track it</strong> — Log your total rounds on the Tracker tab. Week over week improvement here is how you know the program is working.</div>
-    <a class="yt-link" href="https://www.youtube.com/watch?v=gh9BzXDmHbo" target="_blank">▶ Watch Workout Routine Pt. 3</a>
+    <div class="tip-box"><strong>Your Benchmark</strong> Log your Friday round count. This is your weekly PR target. Progressive overload in calisthenics = more rounds in the same time window.</div>
+    <div class="yt-links">
+      <a class="yt-link" href="https://www.youtube.com/watch?v=Wj1EpkvDJ9I" target="_blank">▶ Tom Peto 25min Beginner/Int.</a>
+      <a class="yt-link" href="https://www.youtube.com/watch?v=gh9BzXDmHbo" target="_blank">▶ HFK Workout Pt.3</a>
+    </div>
   </div>
 </div>
 
+<!-- SAT -->
 <div class="day-card skills" onclick="toggleDay(this)">
-  <div class="day-header">
-    <div>
+  <div class="day-card-header">
+    <div class="day-left">
       <div class="day-name">Saturday</div>
-      <div class="day-type">Skill Work + Freestyle</div>
+      <div class="day-subtitle">Skill Work + Freestyle</div>
     </div>
-    <div class="day-badge badge-skill">Skills</div>
+    <div class="day-right">
+      <div class="day-badge badge-skill">Skills</div>
+      <span class="chevron">▼</span>
+    </div>
   </div>
   <div class="day-details">
-    <p class="workout-info">This is your fun day — explore the advanced movements HFK made famous. Don't grind volume. Spend 45–60 min working on new skills with full rest between attempts.</p>
-    <div class="exercise-list">
-      <div class="exercise-item">
-        <div class="ex-left"><div class="ex-name">Muscle-Up Practice</div><div class="ex-note">Negatives or banded if needed</div></div>
-        <div class="ex-reps">5–8</div>
+    <div class="details-divider"></div>
+    <p class="workout-desc">No AMRAP — this is patient skill practice. Full rest between attempts. 40–50 min total. Long-term investment in the movements HFK made famous.</p>
+    <div class="ex-list">
+      <div class="ex-row">
+        <div class="ex-info"><div class="ex-name">Muscle-Up Negatives</div><div class="ex-tags"><span class="ex-tag tag-pull">Pull</span><span class="ex-tag tag-push">Push</span></div><div class="ex-cue">Jump to top position, slowly lower through the transition. 3–5 sec descent.</div></div>
+        <div class="ex-target"><div class="ex-reps">5</div></div>
       </div>
-      <div class="exercise-item">
-        <div class="ex-left"><div class="ex-name">L-Sit Hold</div><div class="ex-note">On parallel bars or floor — 3×max</div></div>
-        <div class="ex-reps">3×</div>
+      <div class="ex-row">
+        <div class="ex-info"><div class="ex-name">L-Sit Hold</div><div class="ex-tags"><span class="ex-tag tag-core">Core</span></div><div class="ex-cue">On parallettes or floor, hips off ground, legs as straight as possible.</div></div>
+        <div class="ex-target"><div class="ex-reps">3×max</div></div>
       </div>
-      <div class="exercise-item">
-        <div class="ex-left"><div class="ex-name">Front Lever Progressions</div><div class="ex-note">Tuck → advanced tuck → straddle</div></div>
-        <div class="ex-reps">3×</div>
+      <div class="ex-row">
+        <div class="ex-info"><div class="ex-name">Tuck Front Lever</div><div class="ex-tags"><span class="ex-tag tag-pull">Pull</span><span class="ex-tag tag-core">Core</span></div><div class="ex-cue">From bar, retract scapula, hold tuck position horizontal. Progress: tuck → adv. tuck → straddle.</div></div>
+        <div class="ex-target"><div class="ex-reps">3×</div></div>
       </div>
-      <div class="exercise-item">
-        <div class="ex-left"><div class="ex-name">Human Flag Attempts</div><div class="ex-note">Side lean → tuck flag → full flag</div></div>
-        <div class="ex-reps">3×</div>
+      <div class="ex-row">
+        <div class="ex-info"><div class="ex-name">Planche Push-Up Progressions</div><div class="ex-tags"><span class="ex-tag tag-push">Push</span></div><div class="ex-cue">Feet elevated on chair → tuck planche lean → straddle. HFK's signature move.</div></div>
+        <div class="ex-target"><div class="ex-reps">3×</div></div>
       </div>
     </div>
-    <div class="tip-box"><strong>Long game</strong> — Hannibal spent years on fundamentals before skills looked effortless. These are aspirational — work them patiently.</div>
+    <div class="tip-box"><strong>Long game</strong> Spend 8–12 months on fundamentals (Mon / Wed / Fri) before expecting clean skill reps. Saturday is the horizon you're working toward.</div>
     <a class="yt-link" href="https://www.youtube.com/c/HannibalForKing1" target="_blank">▶ HFK YouTube Channel</a>
   </div>
 </div>
 
+<!-- SUN -->
 <div class="day-card rest">
-  <div class="day-header">
-    <div>
+  <div class="day-card-header">
+    <div class="day-left">
       <div class="day-name">Sunday</div>
-      <div class="day-type">Full Rest</div>
+      <div class="day-subtitle">Full Rest</div>
     </div>
-    <div class="day-badge badge-rest">Rest</div>
+    <div class="day-right"><div class="day-badge badge-rest">Rest</div></div>
   </div>
 </div>
 ```
@@ -813,263 +754,409 @@ margin-bottom: 14px;
   </div>
 </div>
 
-<!-- PRINCIPLES -->
+<!-- ════════════ AMRAP TIMER ════════════ -->
+
+<div id="timer" class="section">
+  <div class="section-label">DailyRepsGuy AMRAP Timer</div>
+
+  <div class="timer-block">
+    <div class="timer-title">SET YOUR AMRAP WINDOW</div>
+    <div class="timer-controls">
+      <div class="timer-row">
+        <select class="timer-select" id="timer-duration">
+          <option value="900">15 minutes</option>
+          <option value="1080">18 minutes</option>
+          <option value="1200" selected>20 minutes</option>
+        </select>
+        <select class="timer-select" id="timer-session">
+          <option>Monday — Push</option>
+          <option>Wednesday — Pull + Core</option>
+          <option>Friday — Full Body</option>
+          <option>Saturday — Skills</option>
+        </select>
+      </div>
+      <div class="timer-display">
+        <div class="timer-time idle" id="timer-display">20:00</div>
+        <div class="timer-phase" id="timer-phase">READY TO START</div>
+      </div>
+      <div class="timer-btns">
+        <button class="t-btn t-btn-start" id="timer-start-btn" onclick="timerAction()">START</button>
+        <button class="t-btn t-btn-reset" onclick="timerReset()">RESET</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="tip-box" style="margin-top:0">
+    <strong>How to use</strong>
+    Select your session, hit Start, and move through the circuit. Each time you complete a full round, tap the round counter below. When the timer hits zero, your round count is your score for the day — log it in the Tracker.
+  </div>
+
+  <div style="margin-top: 16px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+      <div class="log-form-title" style="margin-bottom:0">Round Counter</div>
+      <button class="clear-btn" onclick="resetRounds()">Reset</button>
+    </div>
+    <div style="display:flex; gap:10px; align-items:center;">
+      <button onclick="addRound()" style="flex:1; background:var(--gold); color:var(--black); border:none; font-family:'Bebas Neue',sans-serif; font-size:22px; letter-spacing:2px; padding:14px; cursor:pointer;">+ ROUND</button>
+      <div style="flex-shrink:0; text-align:center; min-width:80px;">
+        <div id="round-count" style="font-family:'Bebas Neue',sans-serif; font-size:64px; color:var(--white); line-height:1;">0</div>
+        <div style="font-family:'Barlow Condensed',sans-serif; font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--muted);">Rounds</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ EXERCISE LIBRARY ════════════ -->
+
+<div id="library" class="section">
+  <div class="section-label">Exercise Progressions — Tom Peto Method</div>
+  <div class="lib-filters">
+    <button class="lib-filter active" onclick="filterLib('all',this)">All</button>
+    <button class="lib-filter" onclick="filterLib('push',this)">Push</button>
+    <button class="lib-filter" onclick="filterLib('pull',this)">Pull</button>
+    <button class="lib-filter" onclick="filterLib('legs',this)">Legs</button>
+    <button class="lib-filter" onclick="filterLib('core',this)">Core</button>
+    <button class="lib-filter" onclick="filterLib('mob',this)">Mobility</button>
+  </div>
+  <div class="lib-grid" id="lib-grid"></div>
+</div>
+
+<!-- ════════════ PRINCIPLES ════════════ -->
 
 <div id="principles" class="section">
-  <div class="section-label">Training Principles</div>
+  <div class="section-label">Merged Training Principles</div>
 
   <div class="principle-card">
     <div class="principle-num">01</div>
-    <div class="principle-title">Full Range of Motion, Every Rep</div>
-    <div class="principle-body">Dead hang to chin over bar. Chest to floor on push-ups. Lock out at the bottom of every dip. Partial reps rob you of the stimulus. HFK's physique was built on honest reps, not inflated round counts.</div>
+    <div class="principle-title">AMRAP is Progressive Overload <span class="source-pill pill-drg">DRG</span></div>
+    <div class="principle-body">Without a barbell, rounds are your load. Every extra round in the same 15–20 min window is equivalent to adding weight. Track it weekly — progressive overload is how calisthenics builds muscle, not just fitness.</div>
   </div>
 
   <div class="principle-card">
     <div class="principle-num">02</div>
-    <div class="principle-title">Squeeze the Target Muscle</div>
-    <div class="principle-body">Mind-muscle connection isn't a gym bro myth — it's Hannibal's actual cue. On every push movement, squeeze your chest and triceps. On every pull, feel your lats engage. Core braced on everything.</div>
+    <div class="principle-title">Full Range of Motion, Every Rep <span class="source-pill pill-hfk">HFK</span></div>
+    <div class="principle-body">Dead hang to chin over bar. Chest to floor on push-ups. Lock out at the top and bottom of every movement. Half reps inflate your round count but kill your results. Honest reps only.</div>
   </div>
 
   <div class="principle-card">
     <div class="principle-num">03</div>
-    <div class="principle-title">Push/Pull in the Same Session</div>
-    <div class="principle-body">HFK trains chest and back together, never splits them across days. Antagonist pairing allows faster recovery between sets and higher total session volume — the engine of fat loss and muscle gain simultaneously.</div>
+    <div class="principle-title">Master Progressions Before Moving Up <span class="source-pill pill-peto">Tom Peto</span></div>
+    <div class="principle-body">Tom Peto's system gives every movement three tiers: beginner → intermediate → advanced. Stay in the beginner tier until you can complete all reps with clean form. Chasing advanced variations too soon is the fastest way to plateau.</div>
   </div>
 
   <div class="principle-card">
     <div class="principle-num">04</div>
-    <div class="principle-title">Endurance Over Max Strength</div>
-    <div class="principle-body">The Around The World method is high-rep, high-volume, short rest. This builds dense muscle, elevates metabolism, and burns fat — without a barbell in sight. Volume is the variable. Keep adding rounds.</div>
+    <div class="principle-title">Push + Pull in the Same Week <span class="source-pill pill-hfk">HFK</span></div>
+    <div class="principle-body">HFK considers splitting push and pull across different days "a waste of time." This program pairs Monday (push) and Wednesday (pull) to hit the full upper body twice per week — the minimum frequency for muscle growth.</div>
   </div>
 
   <div class="principle-card">
     <div class="principle-num">05</div>
-    <div class="principle-title">Master Basics for 8–12 Months First</div>
-    <div class="principle-body">Hannibal's exact advice: drill fundamental movements for 8–12 months before chasing advanced skills. Pull-ups, dips, and push-ups done with perfect form are more productive than sloppy muscle-ups. Earn the progressions.</div>
+    <div class="principle-title">Mobility is Not Optional <span class="source-pill pill-peto">Tom Peto</span></div>
+    <div class="principle-body">Wrist circles, kang squats, Cossack squats, and angel stretches aren't a warm-up formality. Tom Peto builds them into every session because calisthenics requires full joint range — especially wrists and shoulders. Skip them and the movements suffer.</div>
   </div>
 
   <div class="principle-card">
     <div class="principle-num">06</div>
-    <div class="principle-title">Nutrition: Protein + Deficit</div>
-    <div class="principle-body">HFK currently eats lean protein, healthy fats, vegetables, and complex carbs — and recommends quality protein powder as a minimum. For fat loss, keep protein at ~0.8–1g per lb of bodyweight and maintain a modest caloric deficit. Let the training volume do the rest.</div>
+    <div class="principle-title">Nutrition: Protein + Modest Deficit <span class="source-pill pill-drg">DRG</span></div>
+    <div class="principle-body">High-rep AMRAP circuits create a significant metabolic demand. Pair the training volume with ~0.8g protein per lb bodyweight and a 300–400 cal/day deficit. The volume preserves muscle while the deficit drives fat loss. Progress photos and round counts tell the real story.</div>
   </div>
-
 </div>
 
-<!-- PHASES -->
-
-<div id="phases" class="section">
-  <div class="section-label">12-Month Progression</div>
-
-  <div class="phase-block">
-    <div class="phase-num-box">1</div>
-    <div>
-      <div class="phase-content-months">Months 1–3</div>
-      <div class="phase-content-title">Foundation — Around The World</div>
-      <div class="phase-content-desc">Build the habit. Master pull-up lockout, dip depth, and push-up form. Work up to 8+ quality rounds in a 60-min session. No skills work yet — this is pure fundamentals. 3 sessions/week.</div>
-    </div>
-  </div>
-  <div class="phase-connector"></div>
-
-  <div class="phase-block">
-    <div class="phase-num-box">2</div>
-    <div>
-      <div class="phase-content-months">Months 4–6</div>
-      <div class="phase-content-title">Intensity — Add Variations</div>
-      <div class="phase-content-desc">Introduce close-grip pull-ups, diamond push-ups, and slow-tempo dips. Extend sessions to 75–90 min. Add Saturday skill work (muscle-up negatives, L-sit holds). 4 sessions/week.</div>
-    </div>
-  </div>
-  <div class="phase-connector"></div>
-
-  <div class="phase-block">
-    <div class="phase-num-box">3</div>
-    <div>
-      <div class="phase-content-months">Months 7–9</div>
-      <div class="phase-content-title">Volume Peak — Max Rounds</div>
-      <div class="phase-content-desc">Chase your personal records on Friday Volume Day. Incorporate jump push-ups, clapping pull-ups, and explosive dips for power. Begin tuck front lever holds. Nutrition locked in with consistent protein targets.</div>
-    </div>
-  </div>
-  <div class="phase-connector"></div>
-
-  <div class="phase-block">
-    <div class="phase-num-box">4</div>
-    <div>
-      <div class="phase-content-months">Months 10–12</div>
-      <div class="phase-content-title">Skills + Refinement</div>
-      <div class="phase-content-desc">Muscle-ups in working sets. Straddle front lever attempts. Begin planche push-up progressions (feet elevated). This is the HFK level — achieved through 9 months of patient fundamentals, exactly as he prescribed.</div>
-    </div>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="section-label">Fat Loss Strategy</div>
-  <div class="principle-card">
-    <div class="principle-title">Caloric Deficit + High Volume = Recomp</div>
-    <div class="principle-body" style="margin-top:8px">High-rep calisthenics creates a significant metabolic demand. Pair 3–4 sessions/week with a 300–500 cal/day deficit and ~180g+ protein (assuming ~180 lb bodyweight). The volume preserves muscle while the deficit drives fat loss. Progress photos and weekly round counts are your best metrics — not the scale alone.</div>
-  </div>
-
-</div>
-
-<!-- TRACKER -->
+<!-- ════════════ TRACKER ════════════ -->
 
 <div id="tracker" class="section">
   <div class="section-label">Session Log</div>
-
   <div class="stat-row">
-    <div class="stat-box">
-      <div class="stat-num" id="total-sessions">0</div>
-      <div class="stat-label">Sessions Logged</div>
-    </div>
-    <div class="stat-box">
-      <div class="stat-num" id="total-rounds">0</div>
-      <div class="stat-label">Total Rounds</div>
-    </div>
+    <div class="stat-box"><div class="stat-num" id="stat-sessions">0</div><div class="stat-label">Sessions</div></div>
+    <div class="stat-box"><div class="stat-num" id="stat-rounds">0</div><div class="stat-label">Total Rounds</div></div>
+    <div class="stat-box"><div class="stat-num" id="stat-pr">0</div><div class="stat-label">Round PR</div></div>
   </div>
 
-  <div id="pr-block" style="display:none; margin-bottom:20px;">
-    <div class="progress-label">
-      <span>Weekly Best</span>
-      <span id="pr-label">—</span>
-    </div>
-    <div class="progress-bar-wrap">
-      <div class="progress-bar-fill" id="pr-bar" style="width:0%"></div>
-    </div>
-  </div>
-
-  <div class="log-section-title">Log a Session</div>
+  <div class="log-form-title">Log a Session</div>
   <div class="log-form">
     <div class="log-row">
-      <select class="log-input" id="log-day">
+      <select class="log-input" id="l-day">
         <option value="">Day</option>
-        <option>Monday</option>
-        <option>Wednesday</option>
-        <option>Friday</option>
-        <option>Saturday</option>
+        <option>Monday — Push</option>
+        <option>Wednesday — Pull + Core</option>
+        <option>Friday — Full Body</option>
+        <option>Saturday — Skills</option>
       </select>
-      <input class="log-input" id="log-rounds" type="number" min="1" max="50" placeholder="Rounds">
+      <input class="log-input" id="l-rounds" type="number" min="1" max="50" placeholder="Rounds completed">
     </div>
     <div class="log-row">
-      <input class="log-input" id="log-duration" type="number" min="10" max="180" placeholder="Duration (min)">
-      <select class="log-input" id="log-type">
-        <option value="">Type</option>
-        <option>Beginner Cycle</option>
-        <option>Advanced Cycle</option>
-        <option>Volume Day</option>
-        <option>Skills</option>
+      <select class="log-input" id="l-duration">
+        <option value="">Duration</option>
+        <option>15 min</option>
+        <option>18 min</option>
+        <option>20 min</option>
+      </select>
+      <select class="log-input" id="l-feel">
+        <option value="">How'd it feel?</option>
+        <option>💪 Strong</option>
+        <option>😐 Average</option>
+        <option>😤 Grind</option>
       </select>
     </div>
     <button class="log-btn" onclick="logSession()">LOG SESSION</button>
   </div>
 
-  <div class="tracker-header">
-    <div class="log-section-title" style="margin-bottom:0">History</div>
+  <div class="log-header">
+    <div class="log-form-title" style="margin-bottom:0">History</div>
     <button class="clear-btn" onclick="clearLog()">Clear All</button>
   </div>
-  <div class="log-entries" id="log-entries">
-    <div class="empty-state" id="empty-state">No sessions logged yet</div>
+  <div class="log-list" id="log-list">
+    <div class="empty-state" id="log-empty">No sessions logged yet — get to work</div>
   </div>
 </div>
 
-<div class="footer">
-  <span>Hannibal For King Blueprint</span> · Bodyweight Calisthenics · Built for the park
-</div>
+<div class="footer"><span>Daily Reps Blueprint</span> · HFK × Tom Peto × DailyRepsGuy</div>
 
 <script>
-  // TAB SWITCHING
-  function switchTab(id, btn) {
-    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    btn.classList.add('active');
+// ── TAB ──
+function switchTab(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ── DAY TOGGLE ──
+function toggleDay(card) {
+  const details = card.querySelector('.day-details');
+  const chevron = card.querySelector('.chevron');
+  if (!details) return;
+  const open = details.classList.toggle('open');
+  if (chevron) chevron.style.transform = open ? 'rotate(180deg)' : '';
+}
+
+// ── TIMER ──
+let timerInterval = null;
+let timerRunning = false;
+let timerSeconds = 1200;
+let timerTotal = 1200;
+
+function updateTimerDisplay() {
+  const m = Math.floor(timerSeconds / 60);
+  const s = timerSeconds % 60;
+  document.getElementById('timer-display').textContent =
+    String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+}
+
+document.getElementById('timer-duration').addEventListener('change', function() {
+  if (!timerRunning) {
+    timerTotal = parseInt(this.value);
+    timerSeconds = timerTotal;
+    updateTimerDisplay();
+    document.getElementById('timer-display').className = 'timer-time idle';
+    document.getElementById('timer-phase').textContent = 'READY TO START';
   }
+});
 
-  // DAY TOGGLE
-  function toggleDay(card) {
-    const details = card.querySelector('.day-details');
-    if (!details) return;
-    details.classList.toggle('open');
+function timerAction() {
+  if (!timerRunning) {
+    if (timerSeconds === 0) timerReset();
+    timerRunning = true;
+    document.getElementById('timer-start-btn').textContent = 'PAUSE';
+    document.getElementById('timer-display').className = 'timer-time running';
+    document.getElementById('timer-phase').textContent = 'GO — AMRAP IN PROGRESS';
+    timerInterval = setInterval(() => {
+      timerSeconds--;
+      updateTimerDisplay();
+      if (timerSeconds <= 10) {
+        document.getElementById('timer-phase').textContent = 'ALMOST DONE — FINISH STRONG';
+      }
+      if (timerSeconds <= 0) {
+        clearInterval(timerInterval);
+        timerRunning = false;
+        document.getElementById('timer-display').className = 'timer-time done';
+        document.getElementById('timer-display').textContent = 'DONE';
+        document.getElementById('timer-phase').textContent = '✓ LOG YOUR ROUNDS BELOW';
+        document.getElementById('timer-start-btn').textContent = 'START';
+      }
+    }, 1000);
+  } else {
+    clearInterval(timerInterval);
+    timerRunning = false;
+    document.getElementById('timer-start-btn').textContent = 'RESUME';
+    document.getElementById('timer-display').className = 'timer-time paused';
+    document.getElementById('timer-phase').textContent = 'PAUSED';
   }
+}
 
-  // TRACKER
-  let sessions = JSON.parse(localStorage.getItem('hfk-sessions') || '[]');
+function timerReset() {
+  clearInterval(timerInterval);
+  timerRunning = false;
+  timerTotal = parseInt(document.getElementById('timer-duration').value);
+  timerSeconds = timerTotal;
+  updateTimerDisplay();
+  document.getElementById('timer-display').className = 'timer-time idle';
+  document.getElementById('timer-phase').textContent = 'READY TO START';
+  document.getElementById('timer-start-btn').textContent = 'START';
+}
 
-  function renderTracker() {
-    const entries = document.getElementById('log-entries');
-    const empty = document.getElementById('empty-state');
-    const totalS = document.getElementById('total-sessions');
-    const totalR = document.getElementById('total-rounds');
-    const prBlock = document.getElementById('pr-block');
-    const prLabel = document.getElementById('pr-label');
-    const prBar = document.getElementById('pr-bar');
+let roundCount = 0;
+function addRound() {
+  roundCount++;
+  document.getElementById('round-count').textContent = roundCount;
+}
+function resetRounds() { roundCount = 0; document.getElementById('round-count').textContent = 0; }
 
-    totalS.textContent = sessions.length;
-    const total = sessions.reduce((a, s) => a + (s.rounds || 0), 0);
-    totalR.textContent = total;
+// ── EXERCISE LIBRARY ──
+const exercises = [
+  { name: 'Push-Ups', cat: 'push', source: 'Both', progressions: [
+    { level: 'beg', text: 'Knee Push-Ups' }, { level: 'int', text: 'Standard Push-Ups' }, { level: 'adv', text: 'Archer Push-Ups' }
+  ]},
+  { name: 'Pike Push-Ups', cat: 'push', source: 'Tom Peto', progressions: [
+    { level: 'beg', text: 'Negative Pike Push-Ups' }, { level: 'int', text: 'Full Pike Push-Ups' }, { level: 'adv', text: 'Feet-Elevated Pike Push-Ups' }
+  ]},
+  { name: 'Diamond Push-Ups', cat: 'push', source: 'HFK', progressions: [
+    { level: 'beg', text: 'Close-Grip Knee Push-Ups' }, { level: 'int', text: 'Diamond Push-Ups' }, { level: 'adv', text: 'Diamond + One Foot Raised' }
+  ]},
+  { name: 'Dips', cat: 'push', source: 'HFK', progressions: [
+    { level: 'beg', text: 'Chair Dips (legs extended)' }, { level: 'int', text: 'Parallel Bar Dips' }, { level: 'adv', text: 'Weighted / Ring Dips' }
+  ]},
+  { name: 'Pull-Ups', cat: 'pull', source: 'HFK', progressions: [
+    { level: 'beg', text: 'Dead Hang Hold + Negatives' }, { level: 'int', text: 'Full Pull-Ups' }, { level: 'adv', text: 'Close-Grip Pull-Ups / L-Pull-Ups' }
+  ]},
+  { name: 'Chin-Ups', cat: 'pull', source: 'Both', progressions: [
+    { level: 'beg', text: 'Negative Chin-Ups (3–5 sec descent)' }, { level: 'int', text: 'Full Chin-Ups' }, { level: 'adv', text: 'Weighted Chin-Ups' }
+  ]},
+  { name: 'Hanging Leg Raises', cat: 'pull', source: 'Tom Peto', progressions: [
+    { level: 'beg', text: 'Hanging Knee Tucks' }, { level: 'int', text: 'Hanging Leg Raises' }, { level: 'adv', text: 'Toes to Bar' }
+  ]},
+  { name: 'Inverted Rows', cat: 'pull', source: 'Tom Peto', progressions: [
+    { level: 'beg', text: 'High Bar (body near vertical)' }, { level: 'int', text: 'Low Bar (body near horizontal)' }, { level: 'adv', text: 'Feet-Elevated Row' }
+  ]},
+  { name: 'Split Squats', cat: 'legs', source: 'Tom Peto', progressions: [
+    { level: 'beg', text: 'Narrow Stance Split Squat' }, { level: 'int', text: '1 Down / 2 Up' }, { level: 'adv', text: 'Bulgarian Split Squat' }
+  ]},
+  { name: 'Pistol Squat', cat: 'legs', source: 'Tom Peto', progressions: [
+    { level: 'beg', text: 'Assisted Pistol (hold support)' }, { level: 'int', text: 'Box Pistol' }, { level: 'adv', text: 'Full Pistol Squat' }
+  ]},
+  { name: 'Cossack Squat', cat: 'legs', source: 'Tom Peto', progressions: [
+    { level: 'beg', text: 'Small Range of Motion' }, { level: 'int', text: 'Full Cossack Squat' }, { level: 'adv', text: 'Weighted Cossack' }
+  ]},
+  { name: 'Hollow Hold', cat: 'core', source: 'Tom Peto', progressions: [
+    { level: 'beg', text: 'Half Hollow Hold (knees bent)' }, { level: 'int', text: 'Full Hollow Hold' }, { level: 'adv', text: 'Hollow Rock' }
+  ]},
+  { name: 'Side Plank', cat: 'core', source: 'Tom Peto', progressions: [
+    { level: 'beg', text: 'Half Side Plank (knees bent)' }, { level: 'int', text: 'Full Side Plank' }, { level: 'adv', text: 'Side Plank Star' }
+  ]},
+  { name: 'Alternating Compressions', cat: 'core', source: 'Tom Peto', progressions: [
+    { level: 'beg', text: 'Hands touch floor between reps' }, { level: 'int', text: 'Hands stay off floor' }, { level: 'adv', text: 'Slow + paused reps' }
+  ]},
+  { name: 'Kang Squat', cat: 'mob', source: 'Tom Peto', progressions: [
+    { level: 'beg', text: 'Shallow hinge + squat' }, { level: 'int', text: 'Full Kang Squat' }, { level: 'adv', text: 'Slow + paused at bottom' }
+  ]},
+  { name: 'Cossack Squat (Mobility)', cat: 'mob', source: 'Tom Peto', progressions: [
+    { level: 'beg', text: 'Assisted (hold doorframe)' }, { level: 'int', text: 'Bodyweight Cossack' }, { level: 'adv', text: 'Heel elevated version' }
+  ]},
+  { name: 'Single-Leg RDL', cat: 'mob', source: 'Tom Peto', progressions: [
+    { level: 'beg', text: 'Touch support for balance' }, { level: 'int', text: 'Free-standing SL-RDL' }, { level: 'adv', text: 'Slow + paused, reach past foot' }
+  ]},
+];
 
-    if (sessions.length === 0) {
-      empty.style.display = 'block';
-      entries.innerHTML = '';
-      entries.appendChild(empty);
-      prBlock.style.display = 'none';
-      return;
-    }
+let currentFilter = 'all';
 
-    empty.style.display = 'none';
-    const maxRounds = Math.max(...sessions.map(s => s.rounds || 0));
-    if (maxRounds > 0) {
-      prBlock.style.display = 'block';
-      prLabel.textContent = maxRounds + ' rounds (PR)';
-      prBar.style.width = '100%';
-    }
+function filterLib(cat, btn) {
+  currentFilter = cat;
+  document.querySelectorAll('.lib-filter').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderLib();
+}
 
-    entries.innerHTML = '';
-    [...sessions].reverse().forEach((s, i) => {
-      const el = document.createElement('div');
-      el.className = 'log-entry';
-      el.innerHTML = `
-        <div>
-          <div class="log-entry-day">${s.day}</div>
-          <div class="log-entry-detail">${s.type || ''} · ${s.duration || '?'} min</div>
-        </div>
-        <div class="log-entry-rounds">${s.rounds}</div>
-      `;
-      entries.appendChild(el);
-    });
+function sourceClass(src) {
+  if (src === 'HFK') return 'pill-hfk';
+  if (src === 'Tom Peto') return 'pill-peto';
+  return 'pill-drg';
+}
+
+function renderLib() {
+  const grid = document.getElementById('lib-grid');
+  const filtered = currentFilter === 'all' ? exercises : exercises.filter(e => e.cat === currentFilter);
+  grid.innerHTML = filtered.map(e => `
+    <div class="lib-card">
+      <div class="lib-card-header">
+        <div class="lib-card-name">${e.name}</div>
+        <div class="lib-card-source"><span class="source-pill ${sourceClass(e.source)}" style="font-size:9px;">${e.source}</span></div>
+      </div>
+      <div class="lib-progressions">
+        ${e.progressions.map(p => `
+          <div class="prog-row">
+            <div class="prog-dot ${p.level}"></div>
+            <div class="prog-level">${p.level.toUpperCase()}</div>
+            <div>${p.text}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+renderLib();
+
+// ── TRACKER ──
+let sessions = JSON.parse(localStorage.getItem('drg-sessions-v2') || '[]');
+
+function renderTracker() {
+  const total = sessions.reduce((a, s) => a + (s.rounds || 0), 0);
+  const pr = sessions.length ? Math.max(...sessions.map(s => s.rounds || 0)) : 0;
+  document.getElementById('stat-sessions').textContent = sessions.length;
+  document.getElementById('stat-rounds').textContent = total;
+  document.getElementById('stat-pr').textContent = pr;
+
+  const list = document.getElementById('log-list');
+  const empty = document.getElementById('log-empty');
+  if (sessions.length === 0) {
+    list.innerHTML = '';
+    list.appendChild(empty);
+    empty.style.display = 'block';
+    return;
   }
+  empty.style.display = 'none';
+  list.innerHTML = [...sessions].reverse().map(s => `
+    <div class="log-entry">
+      <div class="log-entry-left">
+        <div class="log-entry-day">${s.day}</div>
+        <div class="log-entry-meta">${s.duration || ''} · ${s.feel || ''} · ${s.date}</div>
+      </div>
+      <div class="log-entry-stat">${s.rounds}<span>rounds</span></div>
+    </div>
+  `).join('');
+}
 
-  function logSession() {
-    const day = document.getElementById('log-day').value;
-    const rounds = parseInt(document.getElementById('log-rounds').value);
-    const duration = parseInt(document.getElementById('log-duration').value);
-    const type = document.getElementById('log-type').value;
+function logSession() {
+  const day = document.getElementById('l-day').value;
+  const rounds = parseInt(document.getElementById('l-rounds').value);
+  const duration = document.getElementById('l-duration').value;
+  const feel = document.getElementById('l-feel').value;
 
-    if (!day || !rounds) {
-      document.getElementById('log-day').style.borderColor = day ? '' : '#c0392b';
-      document.getElementById('log-rounds').style.borderColor = rounds ? '' : '#c0392b';
-      return;
-    }
+  document.getElementById('l-day').style.borderColor = day ? '' : 'var(--red)';
+  document.getElementById('l-rounds').style.borderColor = rounds ? '' : 'var(--red)';
+  if (!day || !rounds) return;
 
-    sessions.push({ day, rounds, duration, type, date: new Date().toLocaleDateString() });
-    localStorage.setItem('hfk-sessions', JSON.stringify(sessions));
-    renderTracker();
-
-    document.getElementById('log-day').value = '';
-    document.getElementById('log-rounds').value = '';
-    document.getElementById('log-duration').value = '';
-    document.getElementById('log-type').value = '';
-    document.getElementById('log-day').style.borderColor = '';
-    document.getElementById('log-rounds').style.borderColor = '';
-  }
-
-  function clearLog() {
-    if (confirm('Clear all session history?')) {
-      sessions = [];
-      localStorage.removeItem('hfk-sessions');
-      renderTracker();
-    }
-  }
-
+  sessions.push({ day, rounds, duration, feel, date: new Date().toLocaleDateString() });
+  localStorage.setItem('drg-sessions-v2', JSON.stringify(sessions));
   renderTracker();
+
+  ['l-day','l-rounds','l-duration','l-feel'].forEach(id => {
+    const el = document.getElementById(id);
+    el.value = ''; el.style.borderColor = '';
+  });
+}
+
+function clearLog() {
+  if (confirm('Clear all session history?')) {
+    sessions = [];
+    localStorage.removeItem('drg-sessions-v2');
+    renderTracker();
+  }
+}
+
+renderTracker();
+updateTimerDisplay();
 </script>
 
 </body>
