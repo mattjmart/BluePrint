@@ -207,6 +207,51 @@ textarea.inp:focus{border-color:var(--gold)}
 .empty{text-align:center;padding:28px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);border:1px dashed var(--border)}
 
 .footer{padding:20px;border-top:1px solid var(--border);text-align:center;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+
+/* ── WARMUP / COOLDOWN BLOCKS ── */
+.phase-block{margin-top:14px;border:1px solid var(--border)}
+.phase-block.warmup{border-top:2px solid #e07b30}
+.phase-block.cooldown{border-top:2px solid var(--blue)}
+.phase-head{display:flex;align-items:center;gap:8px;padding:9px 12px;cursor:pointer;background:rgba(255,255,255,.018)}
+.phase-head:hover{background:rgba(255,255,255,.03)}
+.phase-icon{font-size:14px}
+.phase-title{font-family:'DM Mono',monospace;font-size:10px;font-weight:500;letter-spacing:2px;text-transform:uppercase}
+.phase-block.warmup .phase-title{color:#e07b30}
+.phase-block.cooldown .phase-title{color:#6ab0d4}
+.phase-body{display:none;padding:4px 12px 12px}
+.phase-body.open{display:block}
+.phase-note{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:10px}
+.phase-chevron{margin-left:auto;font-size:10px;color:var(--muted);transition:transform .2s}
+.s-list{display:flex;flex-direction:column;gap:4px}
+.s-row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:9px 11px;background:rgba(255,255,255,.018);border:1px solid var(--border)}
+.s-info{flex:1;min-width:0}
+.s-name{font-size:14px;font-weight:500;color:var(--white)}
+.s-cue{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.5}
+.s-dur{flex-shrink:0;text-align:right}
+.s-time{font-family:'Bebas Neue',sans-serif;font-size:19px;color:#6ab0d4;line-height:1}
+.s-unit{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+.phase-block.warmup .s-time{color:#e07b30}
+
+/* ── STRETCHES TAB ── */
+.str-cat-label{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;color:var(--white);margin:18px 0 8px}
+.str-cat-label:first-child{margin-top:0}
+.str-intro{font-size:12px;color:var(--muted);line-height:1.65;margin-bottom:16px;border-left:2px solid var(--gold2);padding-left:10px}
+.str-card{background:var(--surface);border:1px solid var(--border);margin-bottom:5px}
+.str-card-head{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;cursor:pointer}
+.str-card-head:hover{background:rgba(255,255,255,.02)}
+.str-card-left{}
+.str-card-name{font-size:15px;font-weight:500;color:var(--white)}
+.str-card-target{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-top:2px}
+.str-card-dur{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--gold);margin-right:8px;flex-shrink:0}
+.str-card-body{display:none;padding:0 14px 12px}
+.str-card-body.open{display:block}
+.str-steps{list-style:none;display:flex;flex-direction:column;gap:5px;margin-top:4px}
+.str-steps li{display:flex;gap:8px;font-size:12px;color:var(--muted);line-height:1.55}
+.str-steps li::before{content:'–';color:var(--gold2);flex-shrink:0}
+.str-benefit{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold2);margin-top:8px}
+.str-filter-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.str-filter{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;border-radius:2px;cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--muted);transition:.15s}
+.str-filter.active{color:#6ab0d4;border-color:var(--blue);background:rgba(58,95,122,.12)}
 </style>
 </head>
 <body>
@@ -230,6 +275,7 @@ textarea.inp:focus{border-color:var(--gold)}
   <button class="tab active" onclick="show('schedule',this)">Schedule</button>
   <button class="tab" onclick="show('timer',this)">Timer</button>
   <button class="tab" onclick="show('streak',this)">Streak</button>
+  <button class="tab" onclick="show('stretches',this)">Stretches</button>
   <button class="tab" onclick="show('exercises',this)">Exercises</button>
   <button class="tab" onclick="show('tracker',this)">Tracker</button>
 </div>
@@ -261,7 +307,45 @@ textarea.inp:focus{border-color:var(--gold)}
           <div class="ex-row"><div class="ex-info"><div class="ex-name">High-to-Low Plank</div><div class="ex-cue">Push-up position → lower one elbow, then the other → press back up. Core tight throughout.</div></div><div class="ex-num"><div class="ex-reps">6</div><div class="ex-unit">reps</div></div></div>
         </div>
         <div class="tip"><b>Form Cue</b>Inhale on the way down, exhale on the press. Never fully lock elbows — slight bend protects the joints.</div>
-        <div class="notes-section">
+
+        <!-- WARMUP -->
+        <div class="phase-block warmup">
+          <div class="phase-head" onclick="togglePhase(this)">
+            <span class="phase-icon">🔥</span>
+            <span class="phase-title">Warm-Up · 5 min</span>
+            <span class="phase-chevron">▼</span>
+          </div>
+          <div class="phase-body">
+            <p class="phase-note">Do a light 2–3 min jog in place or walk before starting. Then move through these to wake up your shoulders, chest, and wrists.</p>
+            <div class="s-list">
+              <div class="s-row"><div class="s-info"><div class="s-name">Jumping Jacks</div><div class="s-cue">Get blood flowing. Light and easy.</div></div><div class="s-dur"><div class="s-time">60s</div><div class="s-unit">cardio</div></div></div>
+              <div class="s-row"><div class="s-info"><div class="s-name">Wrist Circles</div><div class="s-cue">10 circles each direction, both wrists. Essential before any push work.</div></div><div class="s-dur"><div class="s-time">30s</div></div></div>
+              <div class="s-row"><div class="s-info"><div class="s-name">Arm Circles</div><div class="s-cue">Big forward circles 10×, then backward 10×. Loosen the shoulder joint.</div></div><div class="s-dur"><div class="s-time">30s</div></div></div>
+              <div class="s-row"><div class="s-info"><div class="s-name">Cat-Cow</div><div class="s-cue">On all fours — arch back down on inhale, round up on exhale. 10 slow reps.</div></div><div class="s-dur"><div class="s-time">10×</div></div></div>
+              <div class="s-row"><div class="s-info"><div class="s-name">Incline Push-Up (easy)</div><div class="s-cue">Hands on chair or wall — 10 slow, easy reps to prime the push pattern.</div></div><div class="s-dur"><div class="s-time">10×</div></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- COOLDOWN -->
+        <div class="phase-block cooldown">
+          <div class="phase-head" onclick="togglePhase(this)">
+            <span class="phase-icon">❄️</span>
+            <span class="phase-title">Cool-Down + Stretch · 5–7 min</span>
+            <span class="phase-chevron">▼</span>
+          </div>
+          <div class="phase-body">
+            <p class="phase-note">Never stop abruptly — bring your heart rate down first with slow movement, then hold each stretch for 30 seconds. Stretching after training speeds up muscle repair and prevents stiffness.</p>
+            <div class="s-list">
+              <div class="s-row"><div class="s-info"><div class="s-name">Slow Walking</div><div class="s-cue">1–2 min easy walking to bring heart rate down gradually.</div></div><div class="s-dur"><div class="s-time">2min</div></div></div>
+              <div class="s-row"><div class="s-info"><div class="s-name">Child's Pose</div><div class="s-cue">Kneel, sit back on heels, arms extended forward, forehead to floor. Pulls shoulders and back open.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">hold</div></div></div>
+              <div class="s-row"><div class="s-info"><div class="s-name">Wall Chest Stretch</div><div class="s-cue">Forearm on doorframe, lean chest forward until you feel the pec stretch. Both sides.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">each</div></div></div>
+              <div class="s-row"><div class="s-info"><div class="s-name">T-Spine Windmill</div><div class="s-cue">Lie on side, arms stacked, knees bent 90°. Roll top arm to opposite side, opening the chest. 5–10 slow reps each side.</div></div><div class="s-dur"><div class="s-time">5×</div><div class="s-unit">each</div></div></div>
+              <div class="s-row"><div class="s-info"><div class="s-name">Reverse Shoulder Stretch</div><div class="s-cue">Interlock fingers behind back, palms up, squeeze shoulder blades, push arms upward. Stretches chest and biceps.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">hold</div></div></div>
+              <div class="s-row"><div class="s-info"><div class="s-name">Wrist Extensor Stretch</div><div class="s-cue">Arm out, palm facing you, bend wrist down, use other hand to gently pull. Hold and switch.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">each</div></div></div>
+            </div>
+          </div>
+        </div>
           <div class="notes-label">
             <span>Session Notes</span>
             <span class="notes-saved-badge" id="saved-mon">✓ Saved</span>
@@ -291,8 +375,26 @@ textarea.inp:focus{border-color:var(--gold)}
           <div class="ex-row"><div class="ex-info"><div class="ex-name">Dead Hang</div><div class="ex-cue">If you have a bar — relax and decompress. 3 × 20–30 sec.</div></div><div class="ex-num"><div class="ex-reps">3×</div></div></div>
         </div>
         <div class="tip"><b>Why It Matters</b>Satellite cells repair muscle fibers during rest. Full-intensity every day keeps the body in a destructive state — you need this day.</div>
-        <div class="notes-section">
-          <div class="notes-label"><span>Notes</span><span class="notes-saved-badge" id="saved-tue">✓ Saved</span></div>
+
+        <!-- REST DAY STRETCH ROUTINE -->
+        <div class="phase-block cooldown" style="border-top-color:var(--green)">
+          <div class="phase-head" onclick="togglePhase(this)">
+            <span class="phase-icon">🧘</span>
+            <span class="phase-title" style="color:var(--green)">Rest Day Stretch Routine · 10–15 min</span>
+            <span class="phase-chevron">▼</span>
+          </div>
+          <div class="phase-body">
+            <p class="phase-note">The book recommends stretching at least once daily. Rest days are the perfect time for a full-body routine. Hold each stretch 30 seconds. You should feel tension — never sharp pain.</p>
+            <div class="s-list">
+              <div class="s-row"><div class="s-info"><div class="s-name">Knights Stretch</div><div class="s-cue">Step back, hands on floor each side of front foot. Lower hips and hold. Extend front leg as far as possible. Both sides. Targets hip flexors and legs.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">each</div></div></div>
+              <div class="s-row"><div class="s-info"><div class="s-name">Forward Fold</div><div class="s-cue">Feet shoulder-width, interlace fingers behind glutes. Bend at waist, weight on heels. Pull arms up overhead as you fold. Targets hamstrings, lower back, shoulders.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">hold</div></div></div>
+              <div class="s-row"><div class="s-info"><div class="s-name">Seated Piriformis Stretch</div><div class="s-cue">Right leg crossed over left (extended). Twist shoulder toward right, push against right leg for support. Both sides. Relieves back pain and hip stiffness.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">each</div></div></div>
+              <div class="s-row"><div class="s-info"><div class="s-name">Reclining Bound Angle</div><div class="s-cue">Sit, soles of feet touching, hands on knees. Breathe out and let knees sink toward floor. Releases hips and inner thighs.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">hold</div></div></div>
+              <div class="s-row"><div class="s-info"><div class="s-name">Cat-Cow</div><div class="s-cue">On all fours, arch down on inhale, round up on exhale. Slow and breathing-led. Loosens the whole spine.</div></div><div class="s-dur"><div class="s-time">60s</div><div class="s-unit">slow</div></div></div>
+              <div class="s-row"><div class="s-info"><div class="s-name">Child's Pose</div><div class="s-cue">Kneel, sit back on heels, arms extended forward. Hold and breathe deeply. Decompresses the back and opens hips.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">hold</div></div></div>
+            </div>
+          </div>
+        </div>
           <textarea class="notes-ta" id="notes-tue" placeholder="How the body felt, any tightness, mobility notes..."></textarea>
           <div class="notes-row"><button class="notes-btn notes-save" onclick="saveNote('tue')">Save</button><button class="notes-btn notes-clear" onclick="clearNote('tue')">Clear</button></div>
         </div>
@@ -317,8 +419,43 @@ textarea.inp:focus{border-color:var(--gold)}
           <div class="ex-row"><div class="ex-info"><div class="ex-name">Plank Hold</div><div class="ex-cue">Elbows under shoulders, body rigid. Squeeze everything — no raised hips, no sag.</div></div><div class="ex-num"><div class="ex-reps">30s</div><div class="ex-unit">hold</div></div></div>
         </div>
         <div class="tip"><b>Progression Rule</b>When you can do 10 pull-ups with perfect form, move up — slow the descent to 3 sec, or try L-sit pull-ups.</div>
-        <div class="notes-section">
-          <div class="notes-label"><span>Session Notes</span><span class="notes-saved-badge" id="saved-wed">✓ Saved</span></div>
+
+        <!-- WARMUP -->
+        <div class="phase-block warmup">
+          <div class="phase-head" onclick="togglePhase(this)">
+            <span class="phase-icon">🔥</span><span class="phase-title">Warm-Up · 5 min</span>
+            <span class="phase-chevron">▼</span>
+          </div>
+          <div class="phase-body">
+            <p class="phase-note">Warm up the posterior chain and grip before any pulling work. Never hang cold — the shoulder and bicep tendons need a few minutes of blood flow first.</p>
+            <div class="s-list">
+              <div class="s-row"><div class="s-info"><div class="s-name">Light Jog / March in Place</div><div class="s-cue">2 min easy movement to elevate heart rate and warm muscles.</div></div><div class="s-dur"><div class="s-time">2min</div></div></div>
+              <div class="s-row"><div class="s-info"><div class="s-name">Arm Circles</div><div class="s-cue">Large slow circles, 10 forward and 10 back. Primes the shoulder joint.</div></div><div class="s-dur"><div class="s-time">20×</div></div></div>
+              <div class="s-row"><div class="s-info"><div class="s-name">Scapular Retractions</div><div class="s-cue">Hang from bar, arms straight, squeeze shoulder blades together and apart 10×. Wakes up the pulling muscles.</div></div><div class="s-dur"><div class="s-time">10×</div></div></div>
+              <div class="s-row"><div class="s-info"><div class="s-name">Dead Hang</div><div class="s-cue">Relax completely on the bar for 20–30 sec. Decompresses, primes grip.</div></div><div class="s-dur"><div class="s-time">30s</div></div></div>
+              <div class="s-row"><div class="s-info"><div class="s-name">Cat-Cow</div><div class="s-cue">10 slow reps on all fours. Loosens the spine before loaded movement.</div></div><div class="s-dur"><div class="s-time">10×</div></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- COOLDOWN -->
+        <div class="phase-block cooldown">
+          <div class="phase-head" onclick="togglePhase(this)">
+            <span class="phase-icon">❄️</span><span class="phase-title">Cool-Down + Stretch · 5–7 min</span>
+            <span class="phase-chevron">▼</span>
+          </div>
+          <div class="phase-body">
+            <p class="phase-note">Stretch the lats, biceps, and upper back — the primary muscles worked today. Focus on bringing tension back to resting length to speed repair.</p>
+            <div class="s-list">
+              <div class="s-row"><div class="s-info"><div class="s-name">Slow Walking</div><div class="s-cue">1–2 min to lower heart rate before static stretching.</div></div><div class="s-dur"><div class="s-time">2min</div></div></div>
+              <div class="s-row"><div class="s-info"><div class="s-name">Dead Hang Stretch</div><div class="s-cue">Passive hang, arms straight, fully relax. Decompresses spine and stretches lats.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">hold</div></div></div>
+              <div class="s-row"><div class="s-info"><div class="s-name">Thread the Needle</div><div class="s-cue">On all fours, thread right arm through gap under left arm, palm up. Feel stretch at back of right shoulder. Both sides.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">each</div></div></div>
+              <div class="s-row"><div class="s-info"><div class="s-name">Child's Pose</div><div class="s-cue">Arms extended forward, sit back on heels. Hold and breathe. Opens up lats and back.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">hold</div></div></div>
+              <div class="s-row"><div class="s-info"><div class="s-name">Upper Trapezius Stretch</div><div class="s-cue">Sit tall, one hand on lower back. Other hand pulls head to shoulder. Feel stretch in neck. Both sides.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">each</div></div></div>
+              <div class="s-row"><div class="s-info"><div class="s-name">Cobra Stretch</div><div class="s-cue">Lie face down, hands under shoulders, push up, look to ceiling. Lengthens the whole anterior chain to counterbalance pulling work.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">hold</div></div></div>
+            </div>
+          </div>
+        </div>
           <textarea class="notes-ta" id="notes-wed" placeholder="Pull-up reps per set, modifications, grip notes, rounds..."></textarea>
           <div class="notes-row"><button class="notes-btn notes-save" onclick="saveNote('wed')">Save</button><button class="notes-btn notes-clear" onclick="clearNote('wed')">Clear</button></div>
         </div>
@@ -326,10 +463,37 @@ textarea.inp:focus{border-color:var(--gold)}
     </div>
 
     <!-- THU -->
-    <div class="day rest">
-      <div class="day-head" style="cursor:default">
-        <div><div class="day-name">Thursday</div><div class="day-focus">Full Rest</div></div>
-        <span class="badge badge-rest">Rest</span>
+    <div class="day rest" onclick="toggle(this)">
+      <div class="day-head">
+        <div><div class="day-name">Thursday</div><div class="day-focus">Full Rest + Stretch</div></div>
+        <div style="display:flex;align-items:center"><span class="badge badge-rest">Rest</span><span class="chevron">▼</span></div>
+      </div>
+      <div class="day-body">
+        <div class="divider-thin"></div>
+        <p class="day-desc">Complete rest from training. Use this time for a focused lower body and back stretch session. The book recommends stretching at least once daily — Thursday is the ideal full-body mobility day.</p>
+        <div class="phase-block cooldown" style="border-top-color:var(--green);margin-top:0">
+          <div class="phase-head" onclick="togglePhase(this)">
+            <span class="phase-icon">🧘</span>
+            <span class="phase-title" style="color:var(--green)">Full Body Stretch · 10–15 min</span>
+            <span class="phase-chevron">▼</span>
+          </div>
+          <div class="phase-body">
+            <p class="phase-note">Focus on the hips, hamstrings, and back today — the muscles most taxed by Wednesday's pull work. Hold each stretch for 30 seconds minimum.</p>
+            <div class="s-list">
+              <div class="s-row"><div class="s-info"><div class="s-name">Lunging Hip Flexor Stretch</div><div class="s-cue">Kneel on one knee, other foot forward at 90°. Push hips toward floor, lift opposite arm. Both sides. Opens the hip flexors and quads.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">each</div></div></div>
+              <div class="s-row"><div class="s-info"><div class="s-name">Pigeon Pose</div><div class="s-cue">Right knee forward, left leg stretched behind. Push hips into ground and walk hands forward. Deep glute and piriformis release.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">each</div></div></div>
+              <div class="s-row"><div class="s-info"><div class="s-name">Supine Hamstring Stretch</div><div class="s-cue">Lie on back, wrap towel around foot, pull leg toward you keeping it as straight as possible. Hamstrings and lower back.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">each</div></div></div>
+              <div class="s-row"><div class="s-info"><div class="s-name">Knee-to-Chest Stretch</div><div class="s-cue">Lie on back, grab shin, pull knee to chest. Don't lift hips — lengthen the spine. Both sides. Targets lower back.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">each</div></div></div>
+              <div class="s-row"><div class="s-info"><div class="s-name">90/90 Hip Stretch</div><div class="s-cue">Sit on floor, front leg at 90°, back leg at 90° pointing behind. Push hips toward ground. Deep hip mobility work.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">each</div></div></div>
+              <div class="s-row"><div class="s-info"><div class="s-name">Sphinx Pose</div><div class="s-cue">Lie face down, elbows under shoulders, lift chest. Engage core and glutes. Strengthens spine and stretches abdomen.</div></div><div class="s-dur"><div class="s-time">10</div><div class="s-unit">breaths</div></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="notes-section" style="margin-top:12px">
+          <div class="notes-label"><span>Notes</span><span class="notes-saved-badge" id="saved-thu">✓ Saved</span></div>
+          <textarea class="notes-ta" id="notes-thu" placeholder="How the body feels, any tightness, flexibility notes..."></textarea>
+          <div class="notes-row"><button class="notes-btn notes-save" onclick="saveNote('thu')">Save</button><button class="notes-btn notes-clear" onclick="clearNote('thu')">Clear</button></div>
+        </div>
       </div>
     </div>
 
@@ -352,8 +516,44 @@ textarea.inp:focus{border-color:var(--gold)}
           <div class="ex-row"><div class="ex-info"><div class="ex-name">Dips</div><div class="ex-cue">Two chairs. Elbows to 90°, controlled press back up.</div></div><div class="ex-num"><div class="ex-reps">8</div><div class="ex-unit">reps</div></div></div>
         </div>
         <div class="tip"><b>Your Score</b>One extra round per week = 52 rounds of improvement over a year. Write this number down.</div>
-        <div class="notes-section">
-          <div class="notes-label"><span>Session Notes</span><span class="notes-saved-badge" id="saved-fri">✓ Saved</span></div>
+
+        <!-- WARMUP -->
+        <div class="phase-block warmup">
+          <div class="phase-head" onclick="togglePhase(this)">
+            <span class="phase-icon">🔥</span><span class="phase-title">Warm-Up · 5 min</span>
+            <span class="phase-chevron">▼</span>
+          </div>
+          <div class="phase-body">
+            <p class="phase-note">Full body day needs a full warm-up. Get your heart rate up, then hit the major joints — shoulders, hips, wrists — before starting the AMRAP.</p>
+            <div class="s-list">
+              <div class="s-row"><div class="s-info"><div class="s-name">High Knees / Jumping Jacks</div><div class="s-cue">90 sec to raise heart rate and body temperature. Any cardio movement works.</div></div><div class="s-dur"><div class="s-time">90s</div></div></div>
+              <div class="s-row"><div class="s-info"><div class="s-name">Arm Circles + Wrist Circles</div><div class="s-cue">10 each direction. Primes pushing and pulling joints.</div></div><div class="s-dur"><div class="s-time">30s</div></div></div>
+              <div class="s-row"><div class="s-info"><div class="s-name">Bodyweight Squat (slow)</div><div class="s-cue">10 slow reps, pause at bottom. Warm up the hips and knees before loaded squats.</div></div><div class="s-dur"><div class="s-time">10×</div></div></div>
+              <div class="s-row"><div class="s-info"><div class="s-name">Cat-Cow</div><div class="s-cue">10 reps, breathing-led. Loosens the spine for full-body work.</div></div><div class="s-dur"><div class="s-time">10×</div></div></div>
+              <div class="s-row"><div class="s-info"><div class="s-name">Scapular Retractions + Easy Dead Hang</div><div class="s-cue">Squeeze shoulder blades 10× then hang 20 sec. Wakes up the posterior chain.</div></div><div class="s-dur"><div class="s-time">20s</div></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- COOLDOWN -->
+        <div class="phase-block cooldown">
+          <div class="phase-head" onclick="togglePhase(this)">
+            <span class="phase-icon">❄️</span><span class="phase-title">Cool-Down + Stretch · 7–10 min</span>
+            <span class="phase-chevron">▼</span>
+          </div>
+          <div class="phase-body">
+            <p class="phase-note">Full-body session = full-body cool-down. This is the most important stretch session of the week. Take your time — this is where the adaptation happens.</p>
+            <div class="s-list">
+              <div class="s-row"><div class="s-info"><div class="s-name">Slow Walking</div><div class="s-cue">2 min easy movement to bring heart rate down.</div></div><div class="s-dur"><div class="s-time">2min</div></div></div>
+              <div class="s-row"><div class="s-info"><div class="s-name">Forward Fold</div><div class="s-cue">Feet shoulder-width, interlace fingers behind glutes, fold forward. Targets hamstrings, lower back, shoulders.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">hold</div></div></div>
+              <div class="s-row"><div class="s-info"><div class="s-name">Knights Stretch</div><div class="s-cue">Step back, hands on floor, lower hips, extend front leg. Both sides. Deep hip flexor and quad release.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">each</div></div></div>
+              <div class="s-row"><div class="s-info"><div class="s-name">Child's Pose</div><div class="s-cue">Sit back on heels, arms extended, breathe into the stretch. Opens lats, back, and hips simultaneously.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">hold</div></div></div>
+              <div class="s-row"><div class="s-info"><div class="s-name">Wall Chest Stretch</div><div class="s-cue">Forearm on doorframe, lean forward. Stretches chest and front shoulder from all the push work.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">each</div></div></div>
+              <div class="s-row"><div class="s-info"><div class="s-name">Piriformis Stretch</div><div class="s-cue">On back, ankle over opposite thigh, pull both legs to chest. Releases glutes and lower back after squats.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">each</div></div></div>
+              <div class="s-row"><div class="s-info"><div class="s-name">Dead Hang Finish</div><div class="s-cue">Passive hang on bar, 30 seconds. Decompresses the spine after the full-body effort. Perfect way to end the week's hardest session.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">hold</div></div></div>
+            </div>
+          </div>
+        </div>
           <textarea class="notes-ta" id="notes-fri" placeholder="Total rounds, reps per exercise, how each movement felt, PR notes..."></textarea>
           <div class="notes-row"><button class="notes-btn notes-save" onclick="saveNote('fri')">Save</button><button class="notes-btn notes-clear" onclick="clearNote('fri')">Clear</button></div>
         </div>
@@ -383,10 +583,32 @@ textarea.inp:focus{border-color:var(--gold)}
     </div>
 
     <!-- SUN -->
-    <div class="day rest">
-      <div class="day-head" style="cursor:default">
-        <div><div class="day-name">Sunday</div><div class="day-focus">Full Rest</div></div>
-        <span class="badge badge-rest">Rest</span>
+    <div class="day rest" onclick="toggle(this)">
+      <div class="day-head">
+        <div><div class="day-name">Sunday</div><div class="day-focus">Full Rest + Stretch</div></div>
+        <div style="display:flex;align-items:center"><span class="badge badge-rest">Rest</span><span class="chevron">▼</span></div>
+      </div>
+      <div class="day-body">
+        <div class="divider-thin"></div>
+        <p class="day-desc">End the week with a gentle full-body stretch. This is preparation for Monday's push session — loose shoulders and chest means better range of motion and fewer injuries.</p>
+        <div class="phase-block cooldown" style="border-top-color:var(--green);margin-top:0">
+          <div class="phase-head" onclick="togglePhase(this)">
+            <span class="phase-icon">🧘</span>
+            <span class="phase-title" style="color:var(--green)">Sunday Reset Stretch · 10 min</span>
+            <span class="phase-chevron">▼</span>
+          </div>
+          <div class="phase-body">
+            <p class="phase-note">Slow, restorative. No intensity — just length and breath. Hold everything for 30 seconds minimum.</p>
+            <div class="s-list">
+              <div class="s-row"><div class="s-info"><div class="s-name">Cat-Cow</div><div class="s-cue">10 slow, breathing-led reps. Resets the spine to start the week fresh.</div></div><div class="s-dur"><div class="s-time">10×</div></div></div>
+              <div class="s-row"><div class="s-info"><div class="s-name">Child's Pose</div><div class="s-cue">Extended arms, breathe deeply into back and hips. Hold and relax completely.</div></div><div class="s-dur"><div class="s-time">60s</div><div class="s-unit">hold</div></div></div>
+              <div class="s-row"><div class="s-info"><div class="s-name">T-Spine Windmill</div><div class="s-cue">On side, arms stacked, knees bent 90°. Roll top arm open to opposite side. Opens thoracic spine — key for Monday push work.</div></div><div class="s-dur"><div class="s-time">5×</div><div class="s-unit">each</div></div></div>
+              <div class="s-row"><div class="s-info"><div class="s-name">Reclining Bound Angle</div><div class="s-cue">Soles of feet together, hands on knees, breathe knees toward floor. Releases hips and inner thighs.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">hold</div></div></div>
+              <div class="s-row"><div class="s-info"><div class="s-name">Lunge with Spinal Twist</div><div class="s-cue">Step forward into lunge, one hand on floor, other reaches to ceiling — upper body twists. Both sides. Hips, quads, and thoracic rotation.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">each</div></div></div>
+              <div class="s-row"><div class="s-info"><div class="s-name">Reverse Shoulder Stretch</div><div class="s-cue">Fingers interlaced behind back, push arms up, squeeze shoulder blades. Opens chest for Monday.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">hold</div></div></div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -469,6 +691,23 @@ textarea.inp:focus{border-color:var(--gold)}
   </div>
 </div>
 
+<!-- ══════════════ STRETCHES ══════════════ -->
+<div id="stretches" class="section">
+  <div class="sec-label">Stretching Library</div>
+  <div class="str-intro">From <em>Use It or Lose It</em> — the stretching companion book. These stretches are organized by body region and used throughout the warmup, cooldown, and rest day routines. Tap any stretch to see full instructions. Hold each stretch for 30 seconds. Stretching should create tension — never sharp pain.</div>
+
+  <div class="str-filter-row">
+    <button class="str-filter active" onclick="filterStr('all',this)">All</button>
+    <button class="str-filter" onclick="filterStr('neck',this)">Neck &amp; Shoulder</button>
+    <button class="str-filter" onclick="filterStr('back',this)">Back</button>
+    <button class="str-filter" onclick="filterStr('hip',this)">Hips &amp; Glutes</button>
+    <button class="str-filter" onclick="filterStr('leg',this)">Legs</button>
+    <button class="str-filter" onclick="filterStr('wrist',this)">Wrist &amp; Arms</button>
+  </div>
+
+  <div id="str-lib"></div>
+</div>
+
 <!-- ══════════════ EXERCISES ══════════════ -->
 <div id="exercises" class="section">
   <div class="sec-label">Exercise Progressions</div>
@@ -548,9 +787,20 @@ function show(id, btn) {
 // DAY TOGGLE
 // ══════════════════════════════════════
 function toggle(el) {
-  if (el.classList.contains('rest')) return;
   const body = el.querySelector('.day-body');
   const ch = el.querySelector('.chevron');
+  if (!body) return;
+  const open = body.classList.toggle('open');
+  if (ch) ch.style.transform = open ? 'rotate(180deg)' : '';
+}
+
+// ══════════════════════════════════════
+// PHASE TOGGLE (warmup / cooldown)
+// ══════════════════════════════════════
+function togglePhase(headEl) {
+  const body = headEl.nextElementSibling;
+  const ch = headEl.querySelector('.phase-chevron');
+  if (!body) return;
   const open = body.classList.toggle('open');
   if (ch) ch.style.transform = open ? 'rotate(180deg)' : '';
 }
@@ -558,7 +808,7 @@ function toggle(el) {
 // ══════════════════════════════════════
 // NOTES
 // ══════════════════════════════════════
-const notesKeys = ['mon','tue','wed','fri','sat'];
+const notesKeys = ['mon','tue','wed','thu','fri','sat'];
 function loadNotes() {
   notesKeys.forEach(k => {
     const saved = localStorage.getItem('note-' + k) || '';
@@ -863,6 +1113,224 @@ function logSession() {
 function clearLog() {
   if (confirm('Clear all session history?')) { sessions=[]; localStorage.removeItem('drb-v2'); renderTracker(); }
 }
+// ══════════════════════════════════════
+// STRETCH LIBRARY
+// ══════════════════════════════════════
+const strData = [
+  // NECK & SHOULDER
+  { cat:'neck', name:'Thread the Needle', target:'Shoulder girdle, pectoralis minor', dur:'30s each side', steps:[
+    'Kneel on all fours, hands under shoulders, knees under hips.',
+    'Take right arm and thread it through the gap between left arm and thigh, palm facing up.',
+    'Bend left arm slightly to allow right side to sink deeper. Feel the stretch at back of right shoulder.',
+    'Hold a few seconds, repeat several times, then switch sides.'
+  ]},
+  { cat:'neck', name:'Upper Trapezius Stretch', target:'Neck muscles', dur:'30s each side', steps:[
+    'Sit or stand with back straight.',
+    'Place one hand on your lower back or between shoulder blades.',
+    'Use opposite hand to gently pull your head toward your shoulder.',
+    'Feel the stretch in the neck on the opposite side. Hold 20–30 seconds. Repeat on other side.'
+  ]},
+  { cat:'neck', name:'Cervical Side Bend', target:'Neck lateral muscles', dur:'30s each side', steps:[
+    'Sit or stand with back and neck straight.',
+    'Move right ear toward right shoulder while keeping eyes looking forward.',
+    'Feel the stretch in the left neck muscles.',
+    'Hold a few seconds then repeat on the other side.'
+  ]},
+  { cat:'neck', name:'T-Spine Windmill', target:'Shoulder, thoracic spine, chest', dur:'5–10 reps each side', steps:[
+    'Lie on your side, arms stretched out in front, knees and hips bent at 90°.',
+    'Lay arms on top of each other, same with legs.',
+    'Move top hand over to the other side of your body — arms now form a T shape.',
+    'Slowly return to starting position. Repeat 5–10 times, then switch sides.'
+  ]},
+  { cat:'neck', name:'Reverse Shoulder Stretch', target:'Deltoids, pectorals', dur:'30s hold', steps:[
+    'Interlace fingers behind your back with palms facing up.',
+    'Keep back and arms straight, pull shoulder blades together.',
+    'Push arms upward until you feel the stretch in your chest.',
+    'Hold for 30 seconds.'
+  ]},
+  { cat:'neck', name:'Wall Chest Stretch', target:'Chest, front shoulders', dur:'30s each side', steps:[
+    'Place straight arm on a wall at shoulder height.',
+    'Step forward with the leg furthest from the wall.',
+    'Gently move chest forward until you feel the stretch.',
+    'Move hand higher or lower to target different parts of the chest. Repeat on other side.'
+  ]},
+  // BACK
+  { cat:'back', name:'Child\'s Pose', target:'Back, neck, shoulders, hips, glutes', dur:'30–60s hold', steps:[
+    'Kneel on floor and sit back on your heels. Knees slightly wider than hips, feet touching.',
+    'Fold torso over thighs, reach arms forward overhead, forehead to ground.',
+    'Pull chest and shoulders toward floor for a deeper stretch.',
+    'Hold and breathe deeply for 30+ seconds.'
+  ]},
+  { cat:'back', name:'Cat-Cow', target:'Spine, upper body', dur:'60s slow', steps:[
+    'Start on all fours, hands under shoulders, knees under hips.',
+    'Breathe in: push belly toward ground, lift head — this is Cow.',
+    'Breathe out: tuck chin, round spine toward ceiling — this is Cat.',
+    'Move between the two in one smooth motion for about 60 seconds.'
+  ]},
+  { cat:'back', name:'Cobra Stretch', target:'Upper body, spine, abdomen', dur:'30s × 3', steps:[
+    'Lie face down. Bring hands directly under shoulders.',
+    'Breathe in, push up with hands until arms are fully extended.',
+    'Look up toward ceiling to stretch neck. Hold 30 seconds.',
+    'Exhale slowly and return to floor. Repeat 3 times.'
+  ]},
+  { cat:'back', name:'Sphinx Pose', target:'Spine, abdomen, core', dur:'10 breaths', steps:[
+    'Lie on belly, tops of feet facing down.',
+    'Bring elbows under shoulders, palms flat, forearms parallel.',
+    'Inhale and lift head and chest toward ceiling.',
+    'Engage core and glutes, push pelvis into ground. Hold for 10 slow breaths.'
+  ]},
+  { cat:'back', name:'Knee-to-Chest Stretch', target:'Lower back', dur:'30s each side', steps:[
+    'Lie flat on back. Bring right knee up toward chest.',
+    'Grip shin with both hands, pull knee down firmly toward chest.',
+    'Do not lift hips — focus on lengthening the spine.',
+    'Hold 5–30 seconds, release, repeat 3 times each side.'
+  ]},
+  { cat:'back', name:'Piriformis Stretch', target:'Buttocks, lower back, hips', dur:'30–60s each side', steps:[
+    'Lie on back with knees bent.',
+    'Place right ankle over left thigh.',
+    'Grab left thigh and pull toward chest as far as comfortable.',
+    'Hold 30–60 seconds, then repeat on the other side.'
+  ]},
+  { cat:'back', name:'Pelvic Tilt', target:'Lower back, abdomen', dur:'5–10s × 10', steps:[
+    'Lie on back with knees bent, hands to sides, palms flat.',
+    'Flatten lower back into the floor and engage core muscles.',
+    'Hold for 5–10 seconds and slowly release.',
+    'Repeat as many times as desired.'
+  ]},
+  // HIP & GLUTES
+  { cat:'hip', name:'Knights Stretch', target:'Hip flexors, legs', dur:'30s each side', steps:[
+    'Stand feet shoulder-width, step one leg back, hands on floor either side of front foot.',
+    'Lower hips and hold — feel the stretch in hip and leg.',
+    'Extend front leg as far as possible while hands remain on floor. Hold 30 seconds.',
+    'Repeat on the other side.'
+  ]},
+  { cat:'hip', name:'Lunging Hip Flexor Stretch', target:'Hip flexors, quads', dur:'30s each side', steps:[
+    'Kneel on one knee. Front foot at 90° angle, back knee down, top of foot flat.',
+    'Lean forward, pushing hips toward floor.',
+    'Squeeze glutes and lift the arm on the opposite side of your front leg.',
+    'Hold 30 seconds. Repeat on other side.'
+  ]},
+  { cat:'hip', name:'Pigeon Pose', target:'Glutes, hips, piriformis', dur:'30s each side', steps:[
+    'Get down on right knee. Drop left knee to left and slide right leg behind you.',
+    'Push hips into ground and walk hands forward as far as possible, palms down.',
+    'Keep hips centered and square.',
+    'Hold 20–30 seconds. Repeat on other side.'
+  ]},
+  { cat:'hip', name:'90/90 Hip Stretch', target:'Hip internal and external rotation', dur:'30s each side', steps:[
+    'Sit on floor: left leg in front at 90°, right knee to the right at 90° pointing behind you.',
+    'Left glute on ground. Try to get right glute as close to ground as possible by pushing hips down.',
+    'Sit tall through the stretch.',
+    'Hold 30+ seconds. Repeat on other side.'
+  ]},
+  { cat:'hip', name:'Lunge with Spinal Twist', target:'Hip flexors, back, quads', dur:'30s each side', steps:[
+    'Step forward into a deep lunge with right foot. Back leg stretched behind.',
+    'Place left hand on floor for stability.',
+    'Reach right hand up toward ceiling, allowing upper body to twist.',
+    'Look up at your raised hand. Hold 30 seconds. Repeat on left side.'
+  ]},
+  { cat:'hip', name:'Reclining Bound Angle', target:'Hips, inner thighs', dur:'30s hold', steps:[
+    'Sit with back straight, soles of feet touching each other.',
+    'Place hands on knees and keep spine tall.',
+    'On each exhale, let knees sink closer to the ground.',
+    'Hold as far as comfortable for 30 seconds.'
+  ]},
+  { cat:'hip', name:'Seated Piriformis Stretch', target:'Lower back, hips, glutes', dur:'30s each side', steps:[
+    'Sit on floor with right leg crossed over the left (left leg extended forward).',
+    'Twist your shoulder toward the right. Push against right leg for support.',
+    'Pull and rotate as far as manageable. Hold 30 seconds.',
+    'Repeat on the right side.'
+  ]},
+  // LEGS
+  { cat:'leg', name:'Forward Fold', target:'Hamstrings, lower back, shoulders, chest', dur:'30s hold', steps:[
+    'Stand feet shoulder-width apart. Interlace fingers behind glutes.',
+    'Bend at waist, shifting hips backward, weight on heels.',
+    'Pull arms up above head as you fold forward as far as shoulders allow.',
+    'Hold 30 seconds. Relax and repeat.'
+  ]},
+  { cat:'leg', name:'Supine Hamstring Stretch', target:'Hamstrings, thighs', dur:'30–60s each side', steps:[
+    'Lie on back with knees bent.',
+    'Wrap a towel or resistance band around one foot.',
+    'Pull the leg toward you, keeping it as straight as possible.',
+    'Hold 30–60 seconds. Repeat 3 times, then switch sides.'
+  ]},
+  { cat:'leg', name:'Wide-Legged Forward Fold', target:'Inner thighs, hamstrings', dur:'5+ breaths', steps:[
+    'Stand with legs 3–4 feet apart, feet parallel (not turned in).',
+    'Breathe in. On the exhale, bend at hips keeping back straight.',
+    'Reach fingers toward ground, head as close to floor as possible.',
+    'Hold for at least 5 slow breaths.'
+  ]},
+  { cat:'leg', name:'Quad Stretch', target:'Quadriceps, knee area', dur:'30s each side', steps:[
+    'Lie on your side, legs stacked. Use bottom arm to prop yourself up.',
+    'Bend top knee and grab foot with free hand.',
+    'Pull foot toward glutes until you feel the stretch in the quad.',
+    'Hold 30+ seconds. Repeat on other side.'
+  ]},
+  { cat:'leg', name:'Side Lunge (Adductor Stretch)', target:'Inner thigh muscles', dur:'15–30s each side', steps:[
+    'Stand upright then step one leg out to the side into a side lunge.',
+    'Bend one knee, keep the other leg extended.',
+    'Keep as much of the extended leg\'s foot on the floor as possible.',
+    'Hold 15–30 seconds. Repeat on other side.'
+  ]},
+  // WRIST & ARMS
+  { cat:'wrist', name:'Wrist Extensor Stretch', target:'Forearm, wrist', dur:'30s × 3 each', steps:[
+    'Lift hand out in front, bend wrist down so palm faces you.',
+    'Use other hand to gently pull bent wrist further toward you.',
+    'Feel the stretch in forearm and wrist.',
+    'Hold 30 seconds. Repeat 3 times. Switch hands.'
+  ]},
+  { cat:'wrist', name:'Wrist Flexor Stretch', target:'Wrist, forearm', dur:'30s × 3 each', steps:[
+    'Stretch hand out in front with palm facing down.',
+    'Bend wrist upward.',
+    'Use other hand to gently pull wrist back toward you until you feel the stretch down the forearm.',
+    'Hold 30 seconds. Repeat 3 times. Switch hands.'
+  ]},
+  { cat:'wrist', name:'Eagle Arms', target:'Wrists, shoulders', dur:'5 breaths each side', steps:[
+    'Sit or stand with arms in front of you.',
+    'Cross left arm over right, both elbows bent upward.',
+    'Intertwine arms until palms touch.',
+    'Lift both arms away from body in upward motion. Feel the spread between shoulder blades. Hold 5 deep breaths, then switch hands.'
+  ]},
+  { cat:'wrist', name:'Quadruped Thoracic Rotation', target:'Upper spine, shoulders', dur:'30s each side', steps:[
+    'Begin on all fours, hands under shoulders, knees under hips, core engaged.',
+    'Touch back of head with right hand — no pressure.',
+    'Slowly move head and shoulder inward toward opposite arm.',
+    'Then rotate all the way back until elbow points to ceiling. Hold a few seconds. Repeat 30 seconds, then switch.'
+  ]},
+];
+
+let strFilter = 'all';
+function filterStr(cat, btn) {
+  strFilter = cat;
+  document.querySelectorAll('.str-filter').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderStrLib();
+}
+function renderStrLib() {
+  const data = strFilter === 'all' ? strData : strData.filter(s => s.cat === strFilter);
+  document.getElementById('str-lib').innerHTML = data.map((s, i) => `
+    <div class="str-card">
+      <div class="str-card-head" onclick="toggleStrCard(this)">
+        <div class="str-card-left">
+          <div class="str-card-name">${s.name}</div>
+          <div class="str-card-target">${s.target}</div>
+        </div>
+        <span class="str-card-dur">${s.dur}</span>
+        <span style="color:var(--muted);font-size:10px;transition:transform .2s">▼</span>
+      </div>
+      <div class="str-card-body">
+        <ul class="str-steps">${s.steps.map(st => `<li>${st}</li>`).join('')}</ul>
+        <div class="str-benefit">${s.target}</div>
+      </div>
+    </div>`).join('');
+}
+function toggleStrCard(head) {
+  const body = head.nextElementSibling;
+  const ch = head.querySelector('span:last-child');
+  const open = body.classList.toggle('open');
+  if (ch) ch.style.transform = open ? 'rotate(180deg)' : '';
+}
+renderStrLib();
+
 renderTracker();
 updateClock();
 </script>
