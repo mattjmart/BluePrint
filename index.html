@@ -6,271 +6,216 @@
 <title>Daily Reps Blueprint</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:#111110;--surface:#1a1a18;--card:#212120;--border:#303030;
-  --gold:#c8a84b;--gold2:#7a6430;--muted:#6e6d68;--white:#ece9de;
-  --red:#b94040;--green:#4a9460;--blue:#3a5f7a;
-}
+:root{--bg:#111110;--surface:#1a1a18;--card:#212120;--border:#303030;--gold:#c8a84b;--gold2:#7a6430;--muted:#6e6d68;--white:#ece9de;--red:#b94040;--green:#4a9460;--blue:#3a5f7a;--orange:#c07030;}
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden}
-
 /* HERO */
-.hero{padding:44px 20px 28px;border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+.hero{padding:36px 20px 24px;border-bottom:1px solid var(--border);position:relative;overflow:hidden}
 .hero::before{content:'DRB';position:absolute;right:-10px;top:-4px;font-family:'Bebas Neue',sans-serif;font-size:160px;line-height:1;color:rgba(200,168,75,.04);pointer-events:none}
-.eyebrow{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold2);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.eyebrow{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold2);margin-bottom:8px;display:flex;align-items:center;gap:8px}
 .eyebrow::before{content:'';width:16px;height:1px;background:var(--gold2)}
-h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(50px,12vw,86px);line-height:.92;letter-spacing:2px;margin-bottom:10px}
+h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,10vw,78px);line-height:.92;letter-spacing:2px;margin-bottom:8px}
 h1 span{color:var(--gold)}
-.hero-sub{font-size:13px;color:var(--muted);line-height:1.7;max-width:340px;margin-bottom:14px}
-
-/* STREAK PILL in hero */
-.streak-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(200,168,75,.08);border:1px solid var(--gold2);padding:6px 12px}
-.streak-pill-num{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--gold);line-height:1}
+.hero-date{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.hero-bottom{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.streak-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(200,168,75,.08);border:1px solid var(--gold2);padding:5px 11px}
+.streak-pill-num{font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--gold);line-height:1}
 .streak-pill-txt{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
-
+.today-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(200,168,75,.04);border:1px solid var(--border);padding:5px 11px}
+.tp-lbl{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+.tp-val{font-family:'DM Mono',monospace;font-size:9px;font-weight:500;color:var(--gold);letter-spacing:1px;text-transform:uppercase}
 /* TABS */
 .tabs{display:flex;border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none}
 .tabs::-webkit-scrollbar{display:none}
-.tab{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:14px 16px;cursor:pointer;border:none;border-bottom:2px solid transparent;background:none;white-space:nowrap;transition:.2s}
+.tab{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:13px 14px;cursor:pointer;border:none;border-bottom:2px solid transparent;background:none;white-space:nowrap;transition:.2s}
 .tab.active{color:var(--gold);border-bottom-color:var(--gold)}
-
 /* SECTIONS */
-.section{display:none;padding:22px 18px 48px}
-.section.active{display:block}
-.sec-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold2);margin-bottom:16px}
-
+.section{display:none;padding:20px 18px 48px}.section.active{display:block}
+.sec-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold2);margin-bottom:14px}
+/* TODAY BANNER */
+.today-banner{background:rgba(200,168,75,.07);border:1px solid var(--gold2);border-left:3px solid var(--gold);padding:14px 15px;margin-bottom:16px}
+.today-banner-title{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;color:var(--gold);line-height:1;margin-bottom:3px}
+.today-banner-sub{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:11px}
+.today-btn-row{display:flex;gap:8px}
+.today-btn{flex:1;padding:11px;border:none;cursor:pointer;font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:2px;transition:.15s}
+.btn-start-w{background:var(--gold);color:var(--bg)}.btn-start-w:hover{background:#e0c060}.btn-start-w.going{background:var(--orange);color:var(--white);cursor:default}.btn-start-w.done{background:var(--green);color:var(--white);cursor:default}
+.btn-finish-w{background:var(--surface);color:var(--muted);border:1px solid var(--border)}.btn-finish-w.ready{background:var(--green);color:var(--white);border:none}.btn-finish-w.done{background:var(--card);color:var(--muted);border:1px solid var(--border);cursor:default}
 /* AMRAP CALLOUT */
-.amrap-callout{background:rgba(200,168,75,.06);border:1px solid var(--gold2);border-left:3px solid var(--gold);padding:13px 15px;margin-bottom:18px}
-.amrap-callout-title{font-family:'Bebas Neue',sans-serif;font-size:19px;letter-spacing:1px;color:var(--gold);margin-bottom:3px}
-.amrap-callout-body{font-size:12px;color:var(--muted);line-height:1.65}
-
+.amrap-callout{background:rgba(200,168,75,.05);border:1px solid var(--gold2);border-left:3px solid var(--gold);padding:11px 14px;margin-bottom:14px}
+.amrap-callout-title{font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:1px;color:var(--gold);margin-bottom:2px}
+.amrap-callout-body{font-size:12px;color:var(--muted);line-height:1.6}
 /* DAY CARDS */
 .days{display:flex;flex-direction:column;gap:6px}
 .day{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--border);transition:.15s}
-.day.train{border-left-color:var(--gold)}
-.day.recover{border-left-color:var(--blue);opacity:.8}
-.day.rest{border-left-color:var(--border);opacity:.45}
-.day:not(.rest):hover{background:var(--card)}
-.day-head{display:flex;align-items:center;justify-content:space-between;padding:13px 15px;cursor:pointer}
-.day.rest .day-head{cursor:default}
-.day-name{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;line-height:1}
-.day-focus{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-top:2px}
-.badge{font-family:'DM Mono',monospace;font-size:9px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;padding:3px 8px;border-radius:2px}
-.badge-train{background:rgba(200,168,75,.1);color:var(--gold)}
-.badge-recover{background:rgba(58,95,122,.15);color:#6ab0d4}
-.badge-rest{background:rgba(100,100,100,.08);color:var(--muted)}
-.chevron{color:var(--muted);font-size:10px;transition:transform .2s;margin-left:8px}
-.day-body{display:none;padding:0 15px 15px}
-.day-body.open{display:block}
-.divider-thin{height:1px;background:var(--border);margin-bottom:13px}
-.day-desc{font-size:13px;color:var(--muted);line-height:1.65;margin-bottom:14px}
-
-/* CHIPS */
-.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:13px}
-.chip{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:3px 9px;background:var(--card);border:1px solid var(--border);color:var(--muted);border-radius:2px}
+.day.train{border-left-color:var(--gold)}.day.recover{border-left-color:var(--blue);opacity:.8}.day.rest{border-left-color:var(--border);opacity:.5}
+.day.today-hl{border-color:var(--gold2);opacity:1!important;box-shadow:0 0 0 1px rgba(200,168,75,.15)}
+.day:hover{background:var(--card)}
+.day-head{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;cursor:pointer}
+.day-name{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;line-height:1}
+.day-focus{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-top:2px}
+.badge{font-family:'DM Mono',monospace;font-size:9px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;padding:3px 7px;border-radius:2px}
+.badge-train{background:rgba(200,168,75,.1);color:var(--gold)}.badge-recover{background:rgba(58,95,122,.15);color:#6ab0d4}.badge-rest{background:rgba(100,100,100,.08);color:var(--muted)}
+.chevron{color:var(--muted);font-size:10px;transition:transform .2s;margin-left:6px}
+.day-body{display:none;padding:0 13px 13px}.day-body.open{display:block}
+.divider-thin{height:1px;background:var(--border);margin-bottom:11px}
+.day-desc{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:11px}
+.chips{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:11px}
+.chip{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:3px 8px;background:var(--card);border:1px solid var(--border);color:var(--muted);border-radius:2px}
 .chip.hi{color:var(--gold);border-color:var(--gold2);background:rgba(200,168,75,.07)}
-
 /* EXERCISE ROWS */
-.ex-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
-.ex-list{display:flex;flex-direction:column;gap:4px;margin-bottom:13px}
-.ex-row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:10px 12px;background:rgba(255,255,255,.022);border:1px solid var(--border)}
-.ex-info{flex:1;min-width:0}
-.ex-name{font-size:15px;font-weight:500;color:var(--white)}
-.ex-cue{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.5}
-.ex-prog{font-size:10px;color:var(--gold2);margin-top:3px;font-style:italic}
-.ex-num{flex-shrink:0;text-align:right}
-.ex-reps{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--gold);line-height:1}
-.ex-unit{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
-
-/* TIP */
-.tip{border-left:2px solid var(--gold2);background:rgba(200,168,75,.05);padding:9px 12px;font-size:12px;color:var(--muted);line-height:1.65;margin-top:10px}
-.tip b{display:block;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:3px}
-
-/* NOTES BOX (inside each day) */
-.notes-section{margin-top:13px}
-.notes-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;display:flex;justify-content:space-between;align-items:center}
-.notes-saved-badge{font-size:9px;color:var(--green);opacity:0;transition:opacity .4s}
-.notes-ta{width:100%;background:var(--card);border:1px solid var(--border);color:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;padding:10px 12px;resize:vertical;min-height:80px;outline:none;transition:border-color .2s;line-height:1.6}
-.notes-ta:focus{border-color:var(--gold)}
-.notes-ta::placeholder{color:var(--muted)}
-.notes-row{display:flex;gap:6px;margin-top:6px}
-.notes-btn{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:6px 12px;cursor:pointer;border:none;transition:.15s}
-.notes-save{background:var(--gold);color:var(--bg)}
-.notes-save:hover{background:#e0c060}
-.notes-clear{background:var(--card);color:var(--muted);border:1px solid var(--border)}
-.notes-clear:hover{color:var(--red)}
-
-/* ── CALENDAR STREAK TAB ── */
-.streak-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:20px}
-.sstat{background:var(--surface);border:1px solid var(--border);padding:14px 8px;text-align:center}
+.ex-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.ex-list{display:flex;flex-direction:column;gap:4px;margin-bottom:11px}
+.ex-row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:9px 11px;background:rgba(255,255,255,.022);border:1px solid var(--border)}
+.ex-info{flex:1;min-width:0}.ex-name{font-size:14px;font-weight:500;color:var(--white)}.ex-cue{font-size:11px;color:var(--muted);margin-top:2px;line-height:1.45}.ex-prog{font-size:10px;color:var(--gold2);margin-top:2px;font-style:italic}
+.ex-num{flex-shrink:0;text-align:right}.ex-reps{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--gold);line-height:1}.ex-unit{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+.tip{border-left:2px solid var(--gold2);background:rgba(200,168,75,.05);padding:8px 11px;font-size:12px;color:var(--muted);line-height:1.6;margin-top:8px}
+.tip b{display:block;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:2px}
+/* INLINE ROUND COUNTER */
+.riw{display:flex;align-items:center;gap:8px;margin-top:11px;padding:9px 11px;background:rgba(200,168,75,.05);border:1px solid var(--gold2)}
+.riw-lbl{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);flex:1}
+.riw-num{font-family:'Bebas Neue',sans-serif;font-size:34px;color:var(--gold);line-height:1;min-width:40px;text-align:center}
+.riw-add{background:var(--gold);color:var(--bg);border:none;font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:1px;padding:7px 12px;cursor:pointer;transition:.15s}.riw-add:hover{background:#e0c060}
+.riw-rst{background:var(--card);color:var(--muted);border:1px solid var(--border);font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:5px 8px;cursor:pointer;transition:.15s}.riw-rst:hover{color:var(--white)}
+/* PHASE BLOCKS */
+.phase-block{margin-top:11px;border:1px solid var(--border)}
+.phase-block.wu{border-top:2px solid var(--orange)}.phase-block.cd{border-top:2px solid var(--blue)}.phase-block.rs{border-top:2px solid var(--green)}
+.phase-head{display:flex;align-items:center;gap:7px;padding:8px 11px;cursor:pointer;background:rgba(255,255,255,.015)}.phase-head:hover{background:rgba(255,255,255,.028)}
+.phase-icon{font-size:13px}.phase-title{font-family:'DM Mono',monospace;font-size:9px;font-weight:500;letter-spacing:2px;text-transform:uppercase}
+.phase-block.wu .phase-title{color:var(--orange)}.phase-block.cd .phase-title{color:#6ab0d4}.phase-block.rs .phase-title{color:var(--green)}
+.phase-chev{margin-left:auto;font-size:9px;color:var(--muted);transition:transform .2s}
+.phase-body{display:none;padding:2px 11px 11px}.phase-body.open{display:block}
+.phase-note{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:8px}
+.s-list{display:flex;flex-direction:column;gap:4px}
+.s-row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:7px 10px;background:rgba(255,255,255,.018);border:1px solid var(--border)}
+.s-info{flex:1;min-width:0}.s-name{font-size:13px;font-weight:500;color:var(--white)}.s-cue{font-size:11px;color:var(--muted);margin-top:2px;line-height:1.4}
+.s-dur{flex-shrink:0;text-align:right}.s-time{font-family:'Bebas Neue',sans-serif;font-size:17px;color:#6ab0d4;line-height:1}.s-unit{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+.phase-block.wu .s-time{color:var(--orange)}
+/* NOTES */
+.notes-section{margin-top:11px}
+.notes-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;display:flex;justify-content:space-between;align-items:center}
+.saved-badge{font-size:9px;color:var(--green);opacity:0;transition:opacity .4s}
+.notes-ta{width:100%;background:var(--card);border:1px solid var(--border);color:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;padding:8px 11px;resize:vertical;min-height:68px;outline:none;transition:border-color .2s;line-height:1.6}
+.notes-ta:focus{border-color:var(--gold)}.notes-ta::placeholder{color:var(--muted)}
+.notes-row{display:flex;gap:6px;margin-top:5px}
+.nb{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:5px 10px;cursor:pointer;border:none;transition:.15s}
+.nb-save{background:var(--gold);color:var(--bg)}.nb-save:hover{background:#e0c060}
+.nb-clear{background:var(--card);color:var(--muted);border:1px solid var(--border)}.nb-clear:hover{color:var(--red)}
+/* TIMER */
+.timer-card{background:var(--surface);border:1px solid var(--border);border-top:2px solid var(--gold);padding:18px;margin-bottom:14px}
+.timer-h{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;margin-bottom:13px}
+.preset-row{display:flex;gap:6px;margin-bottom:11px}
+.preset-btn{flex:1;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:8px 4px;cursor:pointer;border:1px solid var(--border);background:var(--card);color:var(--muted);transition:.15s}
+.preset-btn:hover{color:var(--white)}.preset-btn.sel{background:rgba(200,168,75,.1);color:var(--gold);border-color:var(--gold2)}
+.custom-row{display:flex;gap:8px;align-items:center;margin-bottom:12px}
+.crl{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+.inp-n{background:var(--card);border:1px solid var(--border);color:var(--white);font-family:'Bebas Neue',sans-serif;font-size:22px;padding:6px 11px;outline:none;width:68px;text-align:center;transition:border-color .2s;letter-spacing:2px}
+.inp-n:focus{border-color:var(--gold)}
+.custom-sep{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--muted)}
+.clock-wrap{text-align:center;padding:14px 0 6px}
+.clock-num{font-family:'Bebas Neue',sans-serif;font-size:86px;letter-spacing:6px;line-height:1;transition:color .3s}
+.clock-num.idle{color:var(--white)}.clock-num.running{color:var(--gold)}.clock-num.paused{color:var(--muted)}.clock-num.done{color:var(--green)}
+.clock-phase{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-top:3px}
+.t-progress{height:4px;background:var(--border);margin:10px 0;overflow:hidden}
+.t-progress-fill{height:100%;background:var(--gold);transition:width .95s linear;width:100%}
+.btn-row{display:flex;gap:8px}
+.btn{flex:1;padding:12px;border:none;cursor:pointer;font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;transition:.15s}
+.btn-go{background:var(--gold);color:var(--bg)}.btn-go:hover{background:#e0c060}
+.btn-rst{background:var(--card);color:var(--muted);border:1px solid var(--border)}.btn-rst:hover{color:var(--white)}
+.bell-flash{position:fixed;inset:0;background:rgba(200,168,75,.2);pointer-events:none;opacity:0;z-index:9999;transition:opacity .08s}
+.bell-flash.ring{opacity:1}
+.round-section{margin-top:14px}
+.round-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.round-lbl{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--white)}
+.sm-btn{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;background:none;border:none;color:var(--muted);cursor:pointer;transition:.2s}.sm-btn:hover{color:var(--red)}
+.round-row{display:flex;gap:10px;align-items:center}
+.btn-round{flex:1;background:var(--gold);color:var(--bg);border:none;font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;padding:13px;cursor:pointer;transition:.15s}.btn-round:hover{background:#e0c060}
+.round-box{flex-shrink:0;text-align:center;min-width:72px}
+.round-big{font-family:'Bebas Neue',sans-serif;font-size:60px;color:var(--white);line-height:1}
+.round-unit{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+/* STREAK */
+.str-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
+.sstat{background:var(--surface);border:1px solid var(--border);padding:13px 8px;text-align:center}
 .sstat-n{font-family:'Bebas Neue',sans-serif;font-size:38px;color:var(--gold);line-height:1}
-.sstat-l{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-top:3px}
-.cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.cal-nav-btn{background:none;border:1px solid var(--border);color:var(--muted);font-size:16px;padding:5px 12px;cursor:pointer;transition:.15s}
-.cal-nav-btn:hover{color:var(--white);border-color:var(--gold)}
-.cal-month-lbl{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;color:var(--white)}
-.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:16px}
-.cal-dow{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);text-align:center;padding-bottom:4px}
-.cal-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);background:var(--surface);border:1px solid var(--border);cursor:pointer;transition:.15s;position:relative;border-radius:2px}
+.sstat-l{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-top:2px}
+.streak-note{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:13px;border-left:2px solid var(--gold2);padding-left:10px}
+.cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.cal-nav-btn{background:none;border:1px solid var(--border);color:var(--muted);font-size:15px;padding:4px 10px;cursor:pointer;transition:.15s}.cal-nav-btn:hover{color:var(--white);border-color:var(--gold)}
+.cal-month-lbl{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;color:var(--white)}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:12px}
+.cal-dow{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);text-align:center;padding-bottom:3px}
+.cal-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);background:var(--surface);border:1px solid var(--border);cursor:pointer;transition:.15s;position:relative;border-radius:2px;user-select:none}
 .cal-day:hover:not(.cal-empty){background:var(--card);color:var(--white)}
 .cal-day.cal-empty{background:transparent;border-color:transparent;cursor:default}
 .cal-day.cal-today{border-color:var(--gold2);color:var(--white)}
-.cal-day.cal-worked{background:rgba(200,168,75,.15);border-color:var(--gold2);color:var(--gold)}
-.cal-day.cal-worked::after{content:'';position:absolute;bottom:3px;left:50%;transform:translateX(-50%);width:4px;height:4px;border-radius:50%;background:var(--gold)}
-.cal-day.cal-streak{background:rgba(200,168,75,.25);border-color:var(--gold);color:var(--gold)}
-.mark-today-btn{background:var(--gold);color:var(--bg);border:none;font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:2px;padding:11px;cursor:pointer;transition:.15s;width:100%;margin-bottom:8px}
-.mark-today-btn:hover{background:#e0c060}
-.mark-today-btn.marked{background:var(--green);color:var(--white)}
-.cal-legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:8px}
+.cal-day.cal-worked{background:rgba(200,168,75,.18);border-color:var(--gold2);color:var(--gold)}
+.cal-day.cal-worked::after{content:'';position:absolute;bottom:2px;left:50%;transform:translateX(-50%);width:4px;height:4px;border-radius:50%;background:var(--gold)}
+.cal-legend{display:flex;gap:12px;flex-wrap:wrap}
 .leg-item{display:flex;align-items:center;gap:5px;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
 .leg-dot{width:8px;height:8px;border-radius:2px}
-
-/* ── TIMER TAB ── */
-.timer-card{background:var(--surface);border:1px solid var(--border);border-top:2px solid var(--gold);padding:20px;margin-bottom:14px}
-.timer-h{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;margin-bottom:14px}
-.sel-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
-select.inp{background:var(--card);border:1px solid var(--border);color:var(--white);font-family:'DM Sans',sans-serif;font-size:14px;padding:9px 12px;outline:none;width:100%;transition:border-color .2s;cursor:pointer}
-select.inp option{background:var(--card)}
-select.inp:focus{border-color:var(--gold)}
-.clock-wrap{text-align:center;padding:16px 0 8px;position:relative}
-.clock-ring{display:inline-block;position:relative}
-.clock-num{font-family:'Bebas Neue',sans-serif;font-size:80px;letter-spacing:5px;line-height:1;transition:color .3s}
-.clock-num.idle{color:var(--white)}
-.clock-num.running{color:var(--gold)}
-.clock-num.paused{color:var(--muted)}
-.clock-num.done{color:var(--green)}
-.clock-phase{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-top:4px}
-/* bell flash overlay */
-.bell-flash{position:fixed;inset:0;background:rgba(200,168,75,.18);pointer-events:none;opacity:0;z-index:9999;transition:opacity .1s}
-.bell-flash.ring{opacity:1}
-.btn-row{display:flex;gap:8px}
-.btn{flex:1;padding:13px;border:none;cursor:pointer;font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;transition:.15s}
-.btn-go{background:var(--gold);color:var(--bg)}
-.btn-go:hover{background:#e0c060}
-.btn-reset{background:var(--card);color:var(--muted);border:1px solid var(--border)}
-.btn-reset:hover{color:var(--white)}
-/* progress bar */
-.timer-progress{height:4px;background:var(--border);margin-top:12px;overflow:hidden}
-.timer-progress-fill{height:100%;background:var(--gold);transition:width .95s linear;width:100%}
-/* round counter */
-.round-section{margin-top:16px}
-.round-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-.round-lbl{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--white)}
-.small-btn{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;background:none;border:none;color:var(--muted);cursor:pointer;transition:.2s}
-.small-btn:hover{color:var(--red)}
-.round-counter-row{display:flex;gap:10px;align-items:center}
-.btn-round{flex:1;background:var(--gold);color:var(--bg);border:none;font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;padding:16px;cursor:pointer;transition:.15s}
-.btn-round:hover{background:#e0c060}
-.round-num-box{flex-shrink:0;text-align:center;min-width:80px}
-.round-big{font-family:'Bebas Neue',sans-serif;font-size:68px;color:var(--white);line-height:1}
-.round-unit{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
-
-/* ── EXERCISES TAB ── */
-.filter-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
-.filter-btn{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;border-radius:2px;cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--muted);transition:.15s}
-.filter-btn.active{color:var(--gold);border-color:var(--gold2);background:rgba(200,168,75,.08)}
-.lib-list{display:flex;flex-direction:column;gap:5px}
-.lib-card{background:var(--surface);border:1px solid var(--border);padding:14px}
-.lib-name{font-size:16px;font-weight:500;color:var(--white);margin-bottom:10px}
-.prog-rows{display:flex;flex-direction:column;gap:5px}
-.prog-item{display:flex;align-items:center;gap:9px;font-size:12px;color:var(--muted)}
-.dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+/* LIBRARY (Stretches & Exercises) */
+.lib-intro{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:13px;border-left:2px solid var(--gold2);padding-left:10px}
+.filter-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:13px}
+.fb{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;border-radius:2px;cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--muted);transition:.15s}
+.fb.active{color:var(--gold);border-color:var(--gold2);background:rgba(200,168,75,.08)}
+.fb.str-active{color:#6ab0d4;border-color:var(--blue);background:rgba(58,95,122,.12)}
+.lib-card{background:var(--surface);border:1px solid var(--border);margin-bottom:5px}
+.lib-head{display:flex;align-items:center;justify-content:space-between;padding:11px 13px;cursor:pointer}.lib-head:hover{background:rgba(255,255,255,.02)}
+.lib-name{font-size:14px;font-weight:500;color:var(--white)}.lib-sub{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-top:2px}
+.lib-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.lib-dur{font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--gold)}
+.lib-body{display:none;padding:0 13px 12px}.lib-body.open{display:block}
+.str-steps{list-style:none;display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.str-steps li{display:flex;gap:7px;font-size:12px;color:var(--muted);line-height:1.55}
+.str-steps li::before{content:'–';color:var(--gold2);flex-shrink:0}
+.prog-rows{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.prog-item{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--muted);line-height:1.5}
+.dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:4px}
 .dot.beg{background:var(--green)}.dot.int{background:var(--gold)}.dot.adv{background:var(--red)}
-.prog-lv{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;width:28px;flex-shrink:0;color:var(--muted)}
-
-/* ── TRACKER TAB ── */
-.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:20px}
-.stat-box{background:var(--surface);border:1px solid var(--border);padding:14px 8px;text-align:center}
-.stat-n{font-family:'Bebas Neue',sans-serif;font-size:38px;color:var(--gold);line-height:1}
-.stat-l{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-top:3px}
-.form-lbl{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--white);margin-bottom:10px}
-.form{display:flex;flex-direction:column;gap:7px;margin-bottom:18px}
+.prog-lv{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;width:26px;flex-shrink:0;color:var(--muted)}
+.yt-link{display:inline-flex;align-items:center;gap:5px;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--red);text-decoration:none;padding:4px 9px;border:1px solid rgba(185,64,64,.3);transition:opacity .2s;margin-top:4px;margin-right:6px}.yt-link:hover{opacity:.7}
+/* TRACKER */
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
+.stat-box{background:var(--surface);border:1px solid var(--border);padding:12px 8px;text-align:center}
+.stat-n{font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--gold);line-height:1}
+.stat-l{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-top:2px}
+.form-lbl{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--white);margin-bottom:8px}
+.form{display:flex;flex-direction:column;gap:7px;margin-bottom:16px}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:7px}
-input.inp{background:var(--surface);border:1px solid var(--border);color:var(--white);font-family:'DM Sans',sans-serif;font-size:14px;padding:9px 12px;outline:none;width:100%;transition:border-color .2s}
+input.inp,select.inp{background:var(--surface);border:1px solid var(--border);color:var(--white);font-family:'DM Sans',sans-serif;font-size:14px;padding:8px 11px;outline:none;width:100%;transition:border-color .2s}
 input.inp::placeholder{color:var(--muted)}
-input.inp:focus{border-color:var(--gold)}
-textarea.inp{background:var(--surface);border:1px solid var(--border);color:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;padding:9px 12px;outline:none;width:100%;transition:border-color .2s;resize:vertical;min-height:64px;line-height:1.6}
+input.inp:focus,select.inp:focus{border-color:var(--gold)}
+select.inp option{background:var(--card)}
+textarea.inp{background:var(--surface);border:1px solid var(--border);color:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;padding:8px 11px;outline:none;width:100%;transition:border-color .2s;resize:vertical;min-height:58px;line-height:1.6}
 textarea.inp::placeholder{color:var(--muted)}
 textarea.inp:focus{border-color:var(--gold)}
-.btn-log{background:var(--gold);color:var(--bg);border:none;font-family:'Bebas Neue',sans-serif;font-size:19px;letter-spacing:2px;padding:12px;cursor:pointer;transition:.15s;width:100%}
-.btn-log:hover{background:#e0c060}
-.log-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
+.btn-log{background:var(--gold);color:var(--bg);border:none;font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;padding:11px;cursor:pointer;transition:.15s;width:100%}.btn-log:hover{background:#e0c060}
+.log-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
 .log-entries{display:flex;flex-direction:column;gap:5px}
-.entry{background:var(--surface);border:1px solid var(--border);padding:12px 13px;animation:slideIn .25s ease}
-@keyframes slideIn{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:translateY(0)}}
+.entry{background:var(--surface);border:1px solid var(--border);padding:10px 12px;animation:fadeIn .25s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:translateY(0)}}
 .entry-top{display:flex;justify-content:space-between;align-items:flex-start}
-.entry-day{font-size:14px;font-weight:500;color:var(--gold)}
-.entry-meta{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:2px}
-.entry-rounds{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--white);line-height:1}
-.entry-rounds span{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-left:3px;vertical-align:middle}
-.entry-notes{font-size:12px;color:var(--muted);margin-top:8px;padding-top:8px;border-top:1px solid var(--border);line-height:1.55;white-space:pre-wrap}
-.empty{text-align:center;padding:28px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);border:1px dashed var(--border)}
-
-.footer{padding:20px;border-top:1px solid var(--border);text-align:center;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
-
-/* ── WARMUP / COOLDOWN BLOCKS ── */
-.phase-block{margin-top:14px;border:1px solid var(--border)}
-.phase-block.warmup{border-top:2px solid #e07b30}
-.phase-block.cooldown{border-top:2px solid var(--blue)}
-.phase-head{display:flex;align-items:center;gap:8px;padding:9px 12px;cursor:pointer;background:rgba(255,255,255,.018)}
-.phase-head:hover{background:rgba(255,255,255,.03)}
-.phase-icon{font-size:14px}
-.phase-title{font-family:'DM Mono',monospace;font-size:10px;font-weight:500;letter-spacing:2px;text-transform:uppercase}
-.phase-block.warmup .phase-title{color:#e07b30}
-.phase-block.cooldown .phase-title{color:#6ab0d4}
-.phase-body{display:none;padding:4px 12px 12px}
-.phase-body.open{display:block}
-.phase-note{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:10px}
-.phase-chevron{margin-left:auto;font-size:10px;color:var(--muted);transition:transform .2s}
-.s-list{display:flex;flex-direction:column;gap:4px}
-.s-row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:9px 11px;background:rgba(255,255,255,.018);border:1px solid var(--border)}
-.s-info{flex:1;min-width:0}
-.s-name{font-size:14px;font-weight:500;color:var(--white)}
-.s-cue{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.5}
-.s-dur{flex-shrink:0;text-align:right}
-.s-time{font-family:'Bebas Neue',sans-serif;font-size:19px;color:#6ab0d4;line-height:1}
-.s-unit{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
-.phase-block.warmup .s-time{color:#e07b30}
-
-/* ── STRETCHES TAB ── */
-.str-cat-label{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;color:var(--white);margin:18px 0 8px}
-.str-cat-label:first-child{margin-top:0}
-.str-intro{font-size:12px;color:var(--muted);line-height:1.65;margin-bottom:16px;border-left:2px solid var(--gold2);padding-left:10px}
-.str-card{background:var(--surface);border:1px solid var(--border);margin-bottom:5px}
-.str-card-head{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;cursor:pointer}
-.str-card-head:hover{background:rgba(255,255,255,.02)}
-.str-card-left{}
-.str-card-name{font-size:15px;font-weight:500;color:var(--white)}
-.str-card-target{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-top:2px}
-.str-card-dur{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--gold);margin-right:8px;flex-shrink:0}
-.str-card-body{display:none;padding:0 14px 12px}
-.str-card-body.open{display:block}
-.str-steps{list-style:none;display:flex;flex-direction:column;gap:5px;margin-top:4px}
-.str-steps li{display:flex;gap:8px;font-size:12px;color:var(--muted);line-height:1.55}
-.str-steps li::before{content:'–';color:var(--gold2);flex-shrink:0}
-.str-benefit{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold2);margin-top:8px}
-.str-filter-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
-.str-filter{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;border-radius:2px;cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--muted);transition:.15s}
-.str-filter.active{color:#6ab0d4;border-color:var(--blue);background:rgba(58,95,122,.12)}
+.entry-day{font-size:13px;font-weight:500;color:var(--gold)}.entry-meta{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:2px}
+.entry-rounds{font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--white);line-height:1}
+.entry-rounds span{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);margin-left:2px;vertical-align:middle}
+.entry-notes{font-size:12px;color:var(--muted);margin-top:6px;padding-top:6px;border-top:1px solid var(--border);line-height:1.55;white-space:pre-wrap}
+.empty{text-align:center;padding:26px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);border:1px dashed var(--border)}
+.footer{padding:18px;border-top:1px solid var(--border);text-align:center;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
 </style>
 </head>
 <body>
-
-<!-- BELL FLASH -->
-<div class="bell-flash" id="bell-flash"></div>
+<div class="bell-flash" id="bflash"></div>
 
 <!-- HERO -->
 <div class="hero">
   <div class="eyebrow">Bodyweight · No Gym · No Equipment</div>
   <h1>DAILY REPS<br><span>BLUEPRINT</span></h1>
-  <p class="hero-sub">Push, pull, legs, core — AMRAP circuits in 15–20 minutes.</p>
-  <div class="streak-pill">
-    <div class="streak-pill-num" id="hero-streak">0</div>
-    <div class="streak-pill-txt">day streak 🔥</div>
+  <div class="hero-date" id="hero-date"></div>
+  <div class="hero-bottom">
+    <div class="streak-pill"><div class="streak-pill-num" id="hero-streak">0</div><div class="streak-pill-txt">day streak 🔥</div></div>
+    <div class="today-pill"><span class="tp-lbl">Today:&nbsp;</span><span class="tp-val" id="hero-today">—</span></div>
   </div>
 </div>
 
-<!-- TABS -->
 <div class="tabs">
   <button class="tab active" onclick="show('schedule',this)">Schedule</button>
   <button class="tab" onclick="show('timer',this)">Timer</button>
@@ -280,448 +225,356 @@ textarea.inp:focus{border-color:var(--gold)}
   <button class="tab" onclick="show('tracker',this)">Tracker</button>
 </div>
 
-<!-- ══════════════ SCHEDULE ══════════════ -->
+<!-- ══════ SCHEDULE ══════ -->
 <div id="schedule" class="section active">
   <div class="sec-label">Weekly Schedule</div>
+  <div class="today-banner">
+    <div class="today-banner-title" id="tb-title">TODAY</div>
+    <div class="today-banner-sub" id="tb-sub">Loading...</div>
+    <div class="today-btn-row">
+      <button class="today-btn btn-start-w" id="btn-sw" onclick="startWorkout()">▶ START WORKOUT</button>
+      <button class="today-btn btn-finish-w" id="btn-fw" onclick="finishWorkout()">✓ FINISH &amp; LOG</button>
+    </div>
+  </div>
   <div class="amrap-callout">
-    <div class="amrap-callout-title">AMRAP · 15–20 MINUTES</div>
-    <div class="amrap-callout-body">Complete as many rounds of the circuit as possible. Rest only between rounds. Quality reps beat more reps — form first. Log rounds in Tracker, beat your number each week.</div>
+    <div class="amrap-callout-title">AMRAP · 15–20 MIN</div>
+    <div class="amrap-callout-body">As many rounds as possible. Rest only between rounds. Form first. Log rounds to track progress week over week.</div>
   </div>
   <div class="days">
 
-    <!-- MON -->
-    <div class="day train" onclick="toggle(this)">
-      <div class="day-head">
-        <div><div class="day-name">Monday</div><div class="day-focus">Push — Chest · Shoulders · Triceps</div></div>
-        <div style="display:flex;align-items:center"><span class="badge badge-train">AMRAP</span><span class="chevron">▼</span></div>
-      </div>
-      <div class="day-body">
-        <div class="divider-thin"></div>
-        <div class="chips"><div class="chip hi">15–20 min</div><div class="chip">No equipment</div><div class="chip">3–5 rounds</div></div>
-        <p class="day-desc">Move through each exercise back-to-back without stopping. Rest only after a full round. Chest to floor on every push-up, arms to full extension at the top.</p>
-        <div class="ex-label">One Round</div>
-        <div class="ex-list">
-          <div class="ex-row"><div class="ex-info"><div class="ex-name">Push-Ups</div><div class="ex-cue">Hands slightly wider than shoulders. Chest to floor, lock out at top. Core tight — no sagging hips.</div><div class="ex-prog">Can't do 5? → Incline push-ups on a chair, or knee push-ups</div></div><div class="ex-num"><div class="ex-reps">10</div><div class="ex-unit">reps</div></div></div>
-          <div class="ex-row"><div class="ex-info"><div class="ex-name">Pike Push-Ups</div><div class="ex-cue">Hips high, head toward floor. Triangle between hands and head at bottom. Targets shoulders.</div><div class="ex-prog">Too hard? → Negative pike: lower slowly, skip the press up</div></div><div class="ex-num"><div class="ex-reps">6</div><div class="ex-unit">reps</div></div></div>
-          <div class="ex-row"><div class="ex-info"><div class="ex-name">Dips</div><div class="ex-cue">Use two chairs. Elbows to 90°, then press to locked position. Slow descent — don't swing.</div><div class="ex-prog">Too hard? → Bench dips with feet flat on floor</div></div><div class="ex-num"><div class="ex-reps">8</div><div class="ex-unit">reps</div></div></div>
-          <div class="ex-row"><div class="ex-info"><div class="ex-name">High-to-Low Plank</div><div class="ex-cue">Push-up position → lower one elbow, then the other → press back up. Core tight throughout.</div></div><div class="ex-num"><div class="ex-reps">6</div><div class="ex-unit">reps</div></div></div>
-        </div>
-        <div class="tip"><b>Form Cue</b>Inhale on the way down, exhale on the press. Never fully lock elbows — slight bend protects the joints.</div>
-
-        <!-- WARMUP -->
-        <div class="phase-block warmup">
-          <div class="phase-head" onclick="togglePhase(this)">
-            <span class="phase-icon">🔥</span>
-            <span class="phase-title">Warm-Up · 5 min</span>
-            <span class="phase-chevron">▼</span>
-          </div>
-          <div class="phase-body">
-            <p class="phase-note">Do a light 2–3 min jog in place or walk before starting. Then move through these to wake up your shoulders, chest, and wrists.</p>
-            <div class="s-list">
-              <div class="s-row"><div class="s-info"><div class="s-name">Jumping Jacks</div><div class="s-cue">Get blood flowing. Light and easy.</div></div><div class="s-dur"><div class="s-time">60s</div><div class="s-unit">cardio</div></div></div>
-              <div class="s-row"><div class="s-info"><div class="s-name">Wrist Circles</div><div class="s-cue">10 circles each direction, both wrists. Essential before any push work.</div></div><div class="s-dur"><div class="s-time">30s</div></div></div>
-              <div class="s-row"><div class="s-info"><div class="s-name">Arm Circles</div><div class="s-cue">Big forward circles 10×, then backward 10×. Loosen the shoulder joint.</div></div><div class="s-dur"><div class="s-time">30s</div></div></div>
-              <div class="s-row"><div class="s-info"><div class="s-name">Cat-Cow</div><div class="s-cue">On all fours — arch back down on inhale, round up on exhale. 10 slow reps.</div></div><div class="s-dur"><div class="s-time">10×</div></div></div>
-              <div class="s-row"><div class="s-info"><div class="s-name">Incline Push-Up (easy)</div><div class="s-cue">Hands on chair or wall — 10 slow, easy reps to prime the push pattern.</div></div><div class="s-dur"><div class="s-time">10×</div></div></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- COOLDOWN -->
-        <div class="phase-block cooldown">
-          <div class="phase-head" onclick="togglePhase(this)">
-            <span class="phase-icon">❄️</span>
-            <span class="phase-title">Cool-Down + Stretch · 5–7 min</span>
-            <span class="phase-chevron">▼</span>
-          </div>
-          <div class="phase-body">
-            <p class="phase-note">Never stop abruptly — bring your heart rate down first with slow movement, then hold each stretch for 30 seconds. Stretching after training speeds up muscle repair and prevents stiffness.</p>
-            <div class="s-list">
-              <div class="s-row"><div class="s-info"><div class="s-name">Slow Walking</div><div class="s-cue">1–2 min easy walking to bring heart rate down gradually.</div></div><div class="s-dur"><div class="s-time">2min</div></div></div>
-              <div class="s-row"><div class="s-info"><div class="s-name">Child's Pose</div><div class="s-cue">Kneel, sit back on heels, arms extended forward, forehead to floor. Pulls shoulders and back open.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">hold</div></div></div>
-              <div class="s-row"><div class="s-info"><div class="s-name">Wall Chest Stretch</div><div class="s-cue">Forearm on doorframe, lean chest forward until you feel the pec stretch. Both sides.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">each</div></div></div>
-              <div class="s-row"><div class="s-info"><div class="s-name">T-Spine Windmill</div><div class="s-cue">Lie on side, arms stacked, knees bent 90°. Roll top arm to opposite side, opening the chest. 5–10 slow reps each side.</div></div><div class="s-dur"><div class="s-time">5×</div><div class="s-unit">each</div></div></div>
-              <div class="s-row"><div class="s-info"><div class="s-name">Reverse Shoulder Stretch</div><div class="s-cue">Interlock fingers behind back, palms up, squeeze shoulder blades, push arms upward. Stretches chest and biceps.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">hold</div></div></div>
-              <div class="s-row"><div class="s-info"><div class="s-name">Wrist Extensor Stretch</div><div class="s-cue">Arm out, palm facing you, bend wrist down, use other hand to gently pull. Hold and switch.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">each</div></div></div>
-            </div>
-          </div>
-        </div>
-          <div class="notes-label">
-            <span>Session Notes</span>
-            <span class="notes-saved-badge" id="saved-mon">✓ Saved</span>
-          </div>
-          <textarea class="notes-ta" id="notes-mon" placeholder="Rounds completed, how push-ups felt, modifications used, anything to remember..."></textarea>
-          <div class="notes-row">
-            <button class="notes-btn notes-save" onclick="saveNote('mon')">Save</button>
-            <button class="notes-btn notes-clear" onclick="clearNote('mon')">Clear</button>
-          </div>
-        </div>
-      </div>
+  <!-- MON -->
+  <div class="day train" id="day-mon" onclick="toggle(this)">
+    <div class="day-head">
+      <div><div class="day-name">Monday</div><div class="day-focus">Push — Chest · Shoulders · Triceps</div></div>
+      <div style="display:flex;align-items:center"><span class="badge badge-train">AMRAP</span><span class="chevron">▼</span></div>
     </div>
-
-    <!-- TUE -->
-    <div class="day recover" onclick="toggle(this)">
-      <div class="day-head">
-        <div><div class="day-name">Tuesday</div><div class="day-focus">Active Recovery</div></div>
-        <div style="display:flex;align-items:center"><span class="badge badge-recover">Active</span><span class="chevron">▼</span></div>
+    <div class="day-body">
+      <div class="divider-thin"></div>
+      <div class="chips"><div class="chip hi">15–20 min</div><div class="chip">No equipment</div><div class="chip">3–5 rounds</div></div>
+      <p class="day-desc">Move through each exercise back-to-back. Rest only after a full round. Chest to floor on every push-up, arms fully extended at the top.</p>
+      <div class="ex-label">One Round</div>
+      <div class="ex-list">
+        <div class="ex-row"><div class="ex-info"><div class="ex-name">Push-Ups</div><div class="ex-cue">Hands shoulder-width. Chest to floor, lock out at top. Core tight.</div><div class="ex-prog">Can't do 5? → Incline on chair or knee push-ups</div></div><div class="ex-num"><div class="ex-reps">10</div><div class="ex-unit">reps</div></div></div>
+        <div class="ex-row"><div class="ex-info"><div class="ex-name">Pike Push-Ups</div><div class="ex-cue">Hips high, head toward floor. Triangle at bottom. Targets shoulders.</div><div class="ex-prog">Too hard? → Negative pike: lower slowly only</div></div><div class="ex-num"><div class="ex-reps">6</div><div class="ex-unit">reps</div></div></div>
+        <div class="ex-row"><div class="ex-info"><div class="ex-name">Dips</div><div class="ex-cue">Two chairs. Elbows to 90°, press to lock. Slow descent.</div><div class="ex-prog">Too hard? → Bench dips, feet flat</div></div><div class="ex-num"><div class="ex-reps">8</div><div class="ex-unit">reps</div></div></div>
+        <div class="ex-row"><div class="ex-info"><div class="ex-name">High-to-Low Plank</div><div class="ex-cue">Push-up position → lower elbow by elbow → back up. Core tight.</div></div><div class="ex-num"><div class="ex-reps">6</div><div class="ex-unit">reps</div></div></div>
       </div>
-      <div class="day-body">
-        <div class="divider-thin"></div>
-        <p class="day-desc">Light movement — 15–20 min. Muscle growth happens during rest. Let Tuesday be a true recovery day.</p>
-        <div class="ex-list">
-          <div class="ex-row"><div class="ex-info"><div class="ex-name">Walking</div><div class="ex-cue">20–30 min easy pace outdoors</div></div><div class="ex-num"><div class="ex-reps">—</div></div></div>
-          <div class="ex-row"><div class="ex-info"><div class="ex-name">Hip Flexor Stretch</div><div class="ex-cue">Kneel on one knee, push hips forward. 30 sec each side.</div></div><div class="ex-num"><div class="ex-reps">2×</div></div></div>
-          <div class="ex-row"><div class="ex-info"><div class="ex-name">Deep Squat Hold</div><div class="ex-cue">Sit as deep as you can, heels flat. Relax into it. 30–60 sec.</div></div><div class="ex-num"><div class="ex-reps">2×</div></div></div>
-          <div class="ex-row"><div class="ex-info"><div class="ex-name">Dead Hang</div><div class="ex-cue">If you have a bar — relax and decompress. 3 × 20–30 sec.</div></div><div class="ex-num"><div class="ex-reps">3×</div></div></div>
-        </div>
-        <div class="tip"><b>Why It Matters</b>Satellite cells repair muscle fibers during rest. Full-intensity every day keeps the body in a destructive state — you need this day.</div>
-
-        <!-- REST DAY STRETCH ROUTINE -->
-        <div class="phase-block cooldown" style="border-top-color:var(--green)">
-          <div class="phase-head" onclick="togglePhase(this)">
-            <span class="phase-icon">🧘</span>
-            <span class="phase-title" style="color:var(--green)">Rest Day Stretch Routine · 10–15 min</span>
-            <span class="phase-chevron">▼</span>
-          </div>
-          <div class="phase-body">
-            <p class="phase-note">The book recommends stretching at least once daily. Rest days are the perfect time for a full-body routine. Hold each stretch 30 seconds. You should feel tension — never sharp pain.</p>
-            <div class="s-list">
-              <div class="s-row"><div class="s-info"><div class="s-name">Knights Stretch</div><div class="s-cue">Step back, hands on floor each side of front foot. Lower hips and hold. Extend front leg as far as possible. Both sides. Targets hip flexors and legs.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">each</div></div></div>
-              <div class="s-row"><div class="s-info"><div class="s-name">Forward Fold</div><div class="s-cue">Feet shoulder-width, interlace fingers behind glutes. Bend at waist, weight on heels. Pull arms up overhead as you fold. Targets hamstrings, lower back, shoulders.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">hold</div></div></div>
-              <div class="s-row"><div class="s-info"><div class="s-name">Seated Piriformis Stretch</div><div class="s-cue">Right leg crossed over left (extended). Twist shoulder toward right, push against right leg for support. Both sides. Relieves back pain and hip stiffness.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">each</div></div></div>
-              <div class="s-row"><div class="s-info"><div class="s-name">Reclining Bound Angle</div><div class="s-cue">Sit, soles of feet touching, hands on knees. Breathe out and let knees sink toward floor. Releases hips and inner thighs.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">hold</div></div></div>
-              <div class="s-row"><div class="s-info"><div class="s-name">Cat-Cow</div><div class="s-cue">On all fours, arch down on inhale, round up on exhale. Slow and breathing-led. Loosens the whole spine.</div></div><div class="s-dur"><div class="s-time">60s</div><div class="s-unit">slow</div></div></div>
-              <div class="s-row"><div class="s-info"><div class="s-name">Child's Pose</div><div class="s-cue">Kneel, sit back on heels, arms extended forward. Hold and breathe deeply. Decompresses the back and opens hips.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">hold</div></div></div>
-            </div>
+      <div class="tip"><b>Form Cue</b>Inhale down, exhale up. Never fully lock elbows — slight bend protects joints.</div>
+      <div class="riw"><span class="riw-lbl">Round Counter</span><button class="riw-rst" onclick="event.stopPropagation();riwReset('mon')">Reset</button><span class="riw-num" id="riw-mon">0</span><button class="riw-add" onclick="event.stopPropagation();riwAdd('mon')">+ Round</button></div>
+      <div class="phase-block wu"><div class="phase-head" onclick="event.stopPropagation();togglePhase(this)"><span class="phase-icon">🔥</span><span class="phase-title">Warm-Up · 5 min</span><span class="phase-chev">▼</span></div>
+        <div class="phase-body"><p class="phase-note">Jog 2–3 min first, then move through these to prime joints before pushing.</p>
+          <div class="s-list">
+            <div class="s-row"><div class="s-info"><div class="s-name">Jumping Jacks</div><div class="s-cue">Raise heart rate and warm muscles.</div></div><div class="s-dur"><div class="s-time">60s</div></div></div>
+            <div class="s-row"><div class="s-info"><div class="s-name">Wrist Circles</div><div class="s-cue">10 each direction per wrist. Essential before any push work.</div></div><div class="s-dur"><div class="s-time">30s</div></div></div>
+            <div class="s-row"><div class="s-info"><div class="s-name">Arm Circles</div><div class="s-cue">10 forward, 10 back. Loosen shoulder joint.</div></div><div class="s-dur"><div class="s-time">30s</div></div></div>
+            <div class="s-row"><div class="s-info"><div class="s-name">Cat-Cow</div><div class="s-cue">On all fours — arch on inhale, round on exhale. 10 slow reps.</div></div><div class="s-dur"><div class="s-time">10×</div></div></div>
+            <div class="s-row"><div class="s-info"><div class="s-name">Incline Push-Up (easy)</div><div class="s-cue">Hands on chair. 10 slow reps to prime the push pattern.</div></div><div class="s-dur"><div class="s-time">10×</div></div></div>
           </div>
         </div>
-          <textarea class="notes-ta" id="notes-tue" placeholder="How the body felt, any tightness, mobility notes..."></textarea>
-          <div class="notes-row"><button class="notes-btn notes-save" onclick="saveNote('tue')">Save</button><button class="notes-btn notes-clear" onclick="clearNote('tue')">Clear</button></div>
+      </div>
+      <div class="phase-block cd"><div class="phase-head" onclick="event.stopPropagation();togglePhase(this)"><span class="phase-icon">❄️</span><span class="phase-title">Cool-Down + Stretch · 5–7 min</span><span class="phase-chev">▼</span></div>
+        <div class="phase-body"><p class="phase-note">Walk 1–2 min, then hold each stretch 30 seconds. Targets chest, shoulders, wrists.</p>
+          <div class="s-list">
+            <div class="s-row"><div class="s-info"><div class="s-name">Slow Walking</div><div class="s-cue">1–2 min easy walking to lower heart rate.</div></div><div class="s-dur"><div class="s-time">2min</div></div></div>
+            <div class="s-row"><div class="s-info"><div class="s-name">Child's Pose</div><div class="s-cue">Kneel, sit on heels, arms forward, forehead to floor. Opens shoulders and back.</div></div><div class="s-dur"><div class="s-time">30s</div></div></div>
+            <div class="s-row"><div class="s-info"><div class="s-name">Wall Chest Stretch</div><div class="s-cue">Forearm on doorframe, lean chest forward. Both sides.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">each</div></div></div>
+            <div class="s-row"><div class="s-info"><div class="s-name">Reverse Shoulder Stretch</div><div class="s-cue">Interlace fingers behind back, push arms upward, squeeze shoulder blades.</div></div><div class="s-dur"><div class="s-time">30s</div></div></div>
+            <div class="s-row"><div class="s-info"><div class="s-name">Wrist Extensor Stretch</div><div class="s-cue">Arm out, palm toward you, bend wrist down, other hand gently pulls. Both wrists.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">each</div></div></div>
+          </div>
         </div>
       </div>
+      <div class="notes-section"><div class="notes-label"><span>Session Notes</span><span class="saved-badge" id="sv-mon">✓ Saved</span></div><textarea class="notes-ta" id="notes-mon" placeholder="Rounds, reps, modifications, how it felt..."></textarea><div class="notes-row"><button class="nb nb-save" onclick="event.stopPropagation();saveNote('mon')">Save</button><button class="nb nb-clear" onclick="event.stopPropagation();clearNote('mon')">Clear</button></div></div>
     </div>
-
-    <!-- WED -->
-    <div class="day train" onclick="toggle(this)">
-      <div class="day-head">
-        <div><div class="day-name">Wednesday</div><div class="day-focus">Pull + Core — Back · Biceps · Abs</div></div>
-        <div style="display:flex;align-items:center"><span class="badge badge-train">AMRAP</span><span class="chevron">▼</span></div>
-      </div>
-      <div class="day-body">
-        <div class="divider-thin"></div>
-        <div class="chips"><div class="chip hi">15–20 min</div><div class="chip">Pull-up bar</div><div class="chip">3–5 rounds</div></div>
-        <p class="day-desc">Pull movements and core work. Hold the bar at the base of your fingers, not the palm — prevents wrist strain and improves grip. Quality over quantity.</p>
-        <div class="ex-label">One Round</div>
-        <div class="ex-list">
-          <div class="ex-row"><div class="ex-info"><div class="ex-name">Pull-Ups</div><div class="ex-cue">Full hang to chin over bar. Engage scapula on the way up. Slow controlled descent — don't drop.</div><div class="ex-prog">Can't do 1? → Australian pull-ups (bar at hip height, body angled)</div></div><div class="ex-num"><div class="ex-reps">5</div><div class="ex-unit">reps</div></div></div>
-          <div class="ex-row"><div class="ex-info"><div class="ex-name">Chin-Ups</div><div class="ex-cue">Underhand grip, shoulder-width. Focus on the bicep squeeze at the top.</div><div class="ex-prog">Too hard? → Jump to top, lower slowly over 3–5 sec</div></div><div class="ex-num"><div class="ex-reps">5</div><div class="ex-unit">reps</div></div></div>
-          <div class="ex-row"><div class="ex-info"><div class="ex-name">Hanging Knee Raises</div><div class="ex-cue">From dead hang, pull knees to chest using core. Lower slowly — no swinging.</div><div class="ex-prog">No bar? → Lying leg raises on the floor (lower back flat)</div></div><div class="ex-num"><div class="ex-reps">8</div><div class="ex-unit">reps</div></div></div>
-          <div class="ex-row"><div class="ex-info"><div class="ex-name">Plank Hold</div><div class="ex-cue">Elbows under shoulders, body rigid. Squeeze everything — no raised hips, no sag.</div></div><div class="ex-num"><div class="ex-reps">30s</div><div class="ex-unit">hold</div></div></div>
-        </div>
-        <div class="tip"><b>Progression Rule</b>When you can do 10 pull-ups with perfect form, move up — slow the descent to 3 sec, or try L-sit pull-ups.</div>
-
-        <!-- WARMUP -->
-        <div class="phase-block warmup">
-          <div class="phase-head" onclick="togglePhase(this)">
-            <span class="phase-icon">🔥</span><span class="phase-title">Warm-Up · 5 min</span>
-            <span class="phase-chevron">▼</span>
-          </div>
-          <div class="phase-body">
-            <p class="phase-note">Warm up the posterior chain and grip before any pulling work. Never hang cold — the shoulder and bicep tendons need a few minutes of blood flow first.</p>
-            <div class="s-list">
-              <div class="s-row"><div class="s-info"><div class="s-name">Light Jog / March in Place</div><div class="s-cue">2 min easy movement to elevate heart rate and warm muscles.</div></div><div class="s-dur"><div class="s-time">2min</div></div></div>
-              <div class="s-row"><div class="s-info"><div class="s-name">Arm Circles</div><div class="s-cue">Large slow circles, 10 forward and 10 back. Primes the shoulder joint.</div></div><div class="s-dur"><div class="s-time">20×</div></div></div>
-              <div class="s-row"><div class="s-info"><div class="s-name">Scapular Retractions</div><div class="s-cue">Hang from bar, arms straight, squeeze shoulder blades together and apart 10×. Wakes up the pulling muscles.</div></div><div class="s-dur"><div class="s-time">10×</div></div></div>
-              <div class="s-row"><div class="s-info"><div class="s-name">Dead Hang</div><div class="s-cue">Relax completely on the bar for 20–30 sec. Decompresses, primes grip.</div></div><div class="s-dur"><div class="s-time">30s</div></div></div>
-              <div class="s-row"><div class="s-info"><div class="s-name">Cat-Cow</div><div class="s-cue">10 slow reps on all fours. Loosens the spine before loaded movement.</div></div><div class="s-dur"><div class="s-time">10×</div></div></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- COOLDOWN -->
-        <div class="phase-block cooldown">
-          <div class="phase-head" onclick="togglePhase(this)">
-            <span class="phase-icon">❄️</span><span class="phase-title">Cool-Down + Stretch · 5–7 min</span>
-            <span class="phase-chevron">▼</span>
-          </div>
-          <div class="phase-body">
-            <p class="phase-note">Stretch the lats, biceps, and upper back — the primary muscles worked today. Focus on bringing tension back to resting length to speed repair.</p>
-            <div class="s-list">
-              <div class="s-row"><div class="s-info"><div class="s-name">Slow Walking</div><div class="s-cue">1–2 min to lower heart rate before static stretching.</div></div><div class="s-dur"><div class="s-time">2min</div></div></div>
-              <div class="s-row"><div class="s-info"><div class="s-name">Dead Hang Stretch</div><div class="s-cue">Passive hang, arms straight, fully relax. Decompresses spine and stretches lats.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">hold</div></div></div>
-              <div class="s-row"><div class="s-info"><div class="s-name">Thread the Needle</div><div class="s-cue">On all fours, thread right arm through gap under left arm, palm up. Feel stretch at back of right shoulder. Both sides.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">each</div></div></div>
-              <div class="s-row"><div class="s-info"><div class="s-name">Child's Pose</div><div class="s-cue">Arms extended forward, sit back on heels. Hold and breathe. Opens up lats and back.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">hold</div></div></div>
-              <div class="s-row"><div class="s-info"><div class="s-name">Upper Trapezius Stretch</div><div class="s-cue">Sit tall, one hand on lower back. Other hand pulls head to shoulder. Feel stretch in neck. Both sides.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">each</div></div></div>
-              <div class="s-row"><div class="s-info"><div class="s-name">Cobra Stretch</div><div class="s-cue">Lie face down, hands under shoulders, push up, look to ceiling. Lengthens the whole anterior chain to counterbalance pulling work.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">hold</div></div></div>
-            </div>
-          </div>
-        </div>
-          <textarea class="notes-ta" id="notes-wed" placeholder="Pull-up reps per set, modifications, grip notes, rounds..."></textarea>
-          <div class="notes-row"><button class="notes-btn notes-save" onclick="saveNote('wed')">Save</button><button class="notes-btn notes-clear" onclick="clearNote('wed')">Clear</button></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- THU -->
-    <div class="day rest" onclick="toggle(this)">
-      <div class="day-head">
-        <div><div class="day-name">Thursday</div><div class="day-focus">Full Rest + Stretch</div></div>
-        <div style="display:flex;align-items:center"><span class="badge badge-rest">Rest</span><span class="chevron">▼</span></div>
-      </div>
-      <div class="day-body">
-        <div class="divider-thin"></div>
-        <p class="day-desc">Complete rest from training. Use this time for a focused lower body and back stretch session. The book recommends stretching at least once daily — Thursday is the ideal full-body mobility day.</p>
-        <div class="phase-block cooldown" style="border-top-color:var(--green);margin-top:0">
-          <div class="phase-head" onclick="togglePhase(this)">
-            <span class="phase-icon">🧘</span>
-            <span class="phase-title" style="color:var(--green)">Full Body Stretch · 10–15 min</span>
-            <span class="phase-chevron">▼</span>
-          </div>
-          <div class="phase-body">
-            <p class="phase-note">Focus on the hips, hamstrings, and back today — the muscles most taxed by Wednesday's pull work. Hold each stretch for 30 seconds minimum.</p>
-            <div class="s-list">
-              <div class="s-row"><div class="s-info"><div class="s-name">Lunging Hip Flexor Stretch</div><div class="s-cue">Kneel on one knee, other foot forward at 90°. Push hips toward floor, lift opposite arm. Both sides. Opens the hip flexors and quads.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">each</div></div></div>
-              <div class="s-row"><div class="s-info"><div class="s-name">Pigeon Pose</div><div class="s-cue">Right knee forward, left leg stretched behind. Push hips into ground and walk hands forward. Deep glute and piriformis release.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">each</div></div></div>
-              <div class="s-row"><div class="s-info"><div class="s-name">Supine Hamstring Stretch</div><div class="s-cue">Lie on back, wrap towel around foot, pull leg toward you keeping it as straight as possible. Hamstrings and lower back.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">each</div></div></div>
-              <div class="s-row"><div class="s-info"><div class="s-name">Knee-to-Chest Stretch</div><div class="s-cue">Lie on back, grab shin, pull knee to chest. Don't lift hips — lengthen the spine. Both sides. Targets lower back.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">each</div></div></div>
-              <div class="s-row"><div class="s-info"><div class="s-name">90/90 Hip Stretch</div><div class="s-cue">Sit on floor, front leg at 90°, back leg at 90° pointing behind. Push hips toward ground. Deep hip mobility work.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">each</div></div></div>
-              <div class="s-row"><div class="s-info"><div class="s-name">Sphinx Pose</div><div class="s-cue">Lie face down, elbows under shoulders, lift chest. Engage core and glutes. Strengthens spine and stretches abdomen.</div></div><div class="s-dur"><div class="s-time">10</div><div class="s-unit">breaths</div></div></div>
-            </div>
-          </div>
-        </div>
-        <div class="notes-section" style="margin-top:12px">
-          <div class="notes-label"><span>Notes</span><span class="notes-saved-badge" id="saved-thu">✓ Saved</span></div>
-          <textarea class="notes-ta" id="notes-thu" placeholder="How the body feels, any tightness, flexibility notes..."></textarea>
-          <div class="notes-row"><button class="notes-btn notes-save" onclick="saveNote('thu')">Save</button><button class="notes-btn notes-clear" onclick="clearNote('thu')">Clear</button></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- FRI -->
-    <div class="day train" onclick="toggle(this)">
-      <div class="day-head">
-        <div><div class="day-name">Friday</div><div class="day-focus">Full Body — Benchmark Day</div></div>
-        <div style="display:flex;align-items:center"><span class="badge badge-train">AMRAP</span><span class="chevron">▼</span></div>
-      </div>
-      <div class="day-body">
-        <div class="divider-thin"></div>
-        <div class="chips"><div class="chip hi">20 min</div><div class="chip hi">Log your rounds</div><div class="chip">All 4 categories</div></div>
-        <p class="day-desc">Friday is your one benchmark number. All four categories — push, pull, legs, core. Beat your round count from last week.</p>
-        <div class="ex-label">One Round</div>
-        <div class="ex-list">
-          <div class="ex-row"><div class="ex-info"><div class="ex-name">Push-Ups</div><div class="ex-cue">Full range. Chest to floor, lock out at top.</div><div class="ex-prog">Easier: incline or knee push-ups</div></div><div class="ex-num"><div class="ex-reps">10</div><div class="ex-unit">reps</div></div></div>
-          <div class="ex-row"><div class="ex-info"><div class="ex-name">Pull-Ups</div><div class="ex-cue">Dead hang to chin over bar. Even 3 perfect reps beats 10 sloppy ones.</div><div class="ex-prog">Easier: Australian pull-ups or jumping pull-ups</div></div><div class="ex-num"><div class="ex-reps">5</div><div class="ex-unit">reps</div></div></div>
-          <div class="ex-row"><div class="ex-info"><div class="ex-name">Squats</div><div class="ex-cue">Feet shoulder-width, toes out, hips back, chest up. Thighs parallel to floor.</div><div class="ex-prog">Progress to: jump squats → assisted pistol → pistol squats</div></div><div class="ex-num"><div class="ex-reps">15</div><div class="ex-unit">reps</div></div></div>
-          <div class="ex-row"><div class="ex-info"><div class="ex-name">Lying Leg Raises</div><div class="ex-cue">Flat on floor, legs together, raise to 30–45°. Lower back stays flat throughout.</div><div class="ex-prog">Too hard? → Assisted leg raises with legs on a chair</div></div><div class="ex-num"><div class="ex-reps">10</div><div class="ex-unit">reps</div></div></div>
-          <div class="ex-row"><div class="ex-info"><div class="ex-name">Dips</div><div class="ex-cue">Two chairs. Elbows to 90°, controlled press back up.</div></div><div class="ex-num"><div class="ex-reps">8</div><div class="ex-unit">reps</div></div></div>
-        </div>
-        <div class="tip"><b>Your Score</b>One extra round per week = 52 rounds of improvement over a year. Write this number down.</div>
-
-        <!-- WARMUP -->
-        <div class="phase-block warmup">
-          <div class="phase-head" onclick="togglePhase(this)">
-            <span class="phase-icon">🔥</span><span class="phase-title">Warm-Up · 5 min</span>
-            <span class="phase-chevron">▼</span>
-          </div>
-          <div class="phase-body">
-            <p class="phase-note">Full body day needs a full warm-up. Get your heart rate up, then hit the major joints — shoulders, hips, wrists — before starting the AMRAP.</p>
-            <div class="s-list">
-              <div class="s-row"><div class="s-info"><div class="s-name">High Knees / Jumping Jacks</div><div class="s-cue">90 sec to raise heart rate and body temperature. Any cardio movement works.</div></div><div class="s-dur"><div class="s-time">90s</div></div></div>
-              <div class="s-row"><div class="s-info"><div class="s-name">Arm Circles + Wrist Circles</div><div class="s-cue">10 each direction. Primes pushing and pulling joints.</div></div><div class="s-dur"><div class="s-time">30s</div></div></div>
-              <div class="s-row"><div class="s-info"><div class="s-name">Bodyweight Squat (slow)</div><div class="s-cue">10 slow reps, pause at bottom. Warm up the hips and knees before loaded squats.</div></div><div class="s-dur"><div class="s-time">10×</div></div></div>
-              <div class="s-row"><div class="s-info"><div class="s-name">Cat-Cow</div><div class="s-cue">10 reps, breathing-led. Loosens the spine for full-body work.</div></div><div class="s-dur"><div class="s-time">10×</div></div></div>
-              <div class="s-row"><div class="s-info"><div class="s-name">Scapular Retractions + Easy Dead Hang</div><div class="s-cue">Squeeze shoulder blades 10× then hang 20 sec. Wakes up the posterior chain.</div></div><div class="s-dur"><div class="s-time">20s</div></div></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- COOLDOWN -->
-        <div class="phase-block cooldown">
-          <div class="phase-head" onclick="togglePhase(this)">
-            <span class="phase-icon">❄️</span><span class="phase-title">Cool-Down + Stretch · 7–10 min</span>
-            <span class="phase-chevron">▼</span>
-          </div>
-          <div class="phase-body">
-            <p class="phase-note">Full-body session = full-body cool-down. This is the most important stretch session of the week. Take your time — this is where the adaptation happens.</p>
-            <div class="s-list">
-              <div class="s-row"><div class="s-info"><div class="s-name">Slow Walking</div><div class="s-cue">2 min easy movement to bring heart rate down.</div></div><div class="s-dur"><div class="s-time">2min</div></div></div>
-              <div class="s-row"><div class="s-info"><div class="s-name">Forward Fold</div><div class="s-cue">Feet shoulder-width, interlace fingers behind glutes, fold forward. Targets hamstrings, lower back, shoulders.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">hold</div></div></div>
-              <div class="s-row"><div class="s-info"><div class="s-name">Knights Stretch</div><div class="s-cue">Step back, hands on floor, lower hips, extend front leg. Both sides. Deep hip flexor and quad release.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">each</div></div></div>
-              <div class="s-row"><div class="s-info"><div class="s-name">Child's Pose</div><div class="s-cue">Sit back on heels, arms extended, breathe into the stretch. Opens lats, back, and hips simultaneously.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">hold</div></div></div>
-              <div class="s-row"><div class="s-info"><div class="s-name">Wall Chest Stretch</div><div class="s-cue">Forearm on doorframe, lean forward. Stretches chest and front shoulder from all the push work.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">each</div></div></div>
-              <div class="s-row"><div class="s-info"><div class="s-name">Piriformis Stretch</div><div class="s-cue">On back, ankle over opposite thigh, pull both legs to chest. Releases glutes and lower back after squats.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">each</div></div></div>
-              <div class="s-row"><div class="s-info"><div class="s-name">Dead Hang Finish</div><div class="s-cue">Passive hang on bar, 30 seconds. Decompresses the spine after the full-body effort. Perfect way to end the week's hardest session.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">hold</div></div></div>
-            </div>
-          </div>
-        </div>
-          <textarea class="notes-ta" id="notes-fri" placeholder="Total rounds, reps per exercise, how each movement felt, PR notes..."></textarea>
-          <div class="notes-row"><button class="notes-btn notes-save" onclick="saveNote('fri')">Save</button><button class="notes-btn notes-clear" onclick="clearNote('fri')">Clear</button></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SAT -->
-    <div class="day recover" onclick="toggle(this)">
-      <div class="day-head">
-        <div><div class="day-name">Saturday</div><div class="day-focus">Legs + Core — Optional</div></div>
-        <div style="display:flex;align-items:center"><span class="badge badge-recover">Optional</span><span class="chevron">▼</span></div>
-      </div>
-      <div class="day-body">
-        <div class="divider-thin"></div>
-        <p class="day-desc">Add this once Mon/Wed/Fri feel consistent. Don't rush to 4 days — master 3 first.</p>
-        <div class="ex-list">
-          <div class="ex-row"><div class="ex-info"><div class="ex-name">Squats</div><div class="ex-cue">Focus on depth and form. 3 sets × 15 reps, 60 sec rest between.</div></div><div class="ex-num"><div class="ex-reps">3×15</div></div></div>
-          <div class="ex-row"><div class="ex-info"><div class="ex-name">Jump Squats</div><div class="ex-cue">Once regular squats feel easy — add the jump. Explosive up, land soft.</div><div class="ex-prog">Next: assisted pistol squat → pistol squat</div></div><div class="ex-num"><div class="ex-reps">3×10</div></div></div>
-          <div class="ex-row"><div class="ex-info"><div class="ex-name">Parallel Knee Raises</div><div class="ex-cue">On dip bars or two chairs — raise knees to chest, lower slowly. Builds hanging strength.</div></div><div class="ex-num"><div class="ex-reps">3×8</div></div></div>
-        </div>
-        <div class="notes-section">
-          <div class="notes-label"><span>Notes</span><span class="notes-saved-badge" id="saved-sat">✓ Saved</span></div>
-          <textarea class="notes-ta" id="notes-sat" placeholder="Leg session notes, squat depth progress, any modifications..."></textarea>
-          <div class="notes-row"><button class="notes-btn notes-save" onclick="saveNote('sat')">Save</button><button class="notes-btn notes-clear" onclick="clearNote('sat')">Clear</button></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SUN -->
-    <div class="day rest" onclick="toggle(this)">
-      <div class="day-head">
-        <div><div class="day-name">Sunday</div><div class="day-focus">Full Rest + Stretch</div></div>
-        <div style="display:flex;align-items:center"><span class="badge badge-rest">Rest</span><span class="chevron">▼</span></div>
-      </div>
-      <div class="day-body">
-        <div class="divider-thin"></div>
-        <p class="day-desc">End the week with a gentle full-body stretch. This is preparation for Monday's push session — loose shoulders and chest means better range of motion and fewer injuries.</p>
-        <div class="phase-block cooldown" style="border-top-color:var(--green);margin-top:0">
-          <div class="phase-head" onclick="togglePhase(this)">
-            <span class="phase-icon">🧘</span>
-            <span class="phase-title" style="color:var(--green)">Sunday Reset Stretch · 10 min</span>
-            <span class="phase-chevron">▼</span>
-          </div>
-          <div class="phase-body">
-            <p class="phase-note">Slow, restorative. No intensity — just length and breath. Hold everything for 30 seconds minimum.</p>
-            <div class="s-list">
-              <div class="s-row"><div class="s-info"><div class="s-name">Cat-Cow</div><div class="s-cue">10 slow, breathing-led reps. Resets the spine to start the week fresh.</div></div><div class="s-dur"><div class="s-time">10×</div></div></div>
-              <div class="s-row"><div class="s-info"><div class="s-name">Child's Pose</div><div class="s-cue">Extended arms, breathe deeply into back and hips. Hold and relax completely.</div></div><div class="s-dur"><div class="s-time">60s</div><div class="s-unit">hold</div></div></div>
-              <div class="s-row"><div class="s-info"><div class="s-name">T-Spine Windmill</div><div class="s-cue">On side, arms stacked, knees bent 90°. Roll top arm open to opposite side. Opens thoracic spine — key for Monday push work.</div></div><div class="s-dur"><div class="s-time">5×</div><div class="s-unit">each</div></div></div>
-              <div class="s-row"><div class="s-info"><div class="s-name">Reclining Bound Angle</div><div class="s-cue">Soles of feet together, hands on knees, breathe knees toward floor. Releases hips and inner thighs.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">hold</div></div></div>
-              <div class="s-row"><div class="s-info"><div class="s-name">Lunge with Spinal Twist</div><div class="s-cue">Step forward into lunge, one hand on floor, other reaches to ceiling — upper body twists. Both sides. Hips, quads, and thoracic rotation.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">each</div></div></div>
-              <div class="s-row"><div class="s-info"><div class="s-name">Reverse Shoulder Stretch</div><div class="s-cue">Fingers interlaced behind back, push arms up, squeeze shoulder blades. Opens chest for Monday.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">hold</div></div></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
   </div>
+
+  <!-- TUE -->
+  <div class="day recover" id="day-tue" onclick="toggle(this)">
+    <div class="day-head">
+      <div><div class="day-name">Tuesday</div><div class="day-focus">Active Recovery</div></div>
+      <div style="display:flex;align-items:center"><span class="badge badge-recover">Active</span><span class="chevron">▼</span></div>
+    </div>
+    <div class="day-body">
+      <div class="divider-thin"></div>
+      <p class="day-desc">Light movement only. Muscle growth happens during rest — not during training.</p>
+      <div class="ex-list">
+        <div class="ex-row"><div class="ex-info"><div class="ex-name">Walking</div><div class="ex-cue">20–30 min easy pace outdoors.</div></div><div class="ex-num"><div class="ex-reps">—</div></div></div>
+        <div class="ex-row"><div class="ex-info"><div class="ex-name">Hip Flexor Stretch</div><div class="ex-cue">Kneel one knee, push hips forward. 30 sec each side.</div></div><div class="ex-num"><div class="ex-reps">2×</div></div></div>
+        <div class="ex-row"><div class="ex-info"><div class="ex-name">Deep Squat Hold</div><div class="ex-cue">Heels flat, sit as deep as possible. 30–60 sec.</div></div><div class="ex-num"><div class="ex-reps">2×</div></div></div>
+        <div class="ex-row"><div class="ex-info"><div class="ex-name">Dead Hang</div><div class="ex-cue">Passive hang on bar. Decompresses spine. 3 × 20–30 sec.</div></div><div class="ex-num"><div class="ex-reps">3×</div></div></div>
+      </div>
+      <div class="phase-block rs"><div class="phase-head" onclick="event.stopPropagation();togglePhase(this)"><span class="phase-icon">🧘</span><span class="phase-title" style="color:var(--green)">Rest Day Stretch · 10–15 min</span><span class="phase-chev">▼</span></div>
+        <div class="phase-body"><p class="phase-note">Hold each stretch 30 seconds. Tension is good — sharp pain means stop.</p>
+          <div class="s-list">
+            <div class="s-row"><div class="s-info"><div class="s-name">Knights Stretch</div><div class="s-cue">Step back, hands on floor beside front foot. Lower hips 30s, then extend front leg 30s. Both sides.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">each</div></div></div>
+            <div class="s-row"><div class="s-info"><div class="s-name">Forward Fold</div><div class="s-cue">Feet shoulder-width, interlace fingers behind glutes. Bend at waist, weight on heels. Pull arms overhead.</div></div><div class="s-dur"><div class="s-time">30s</div></div></div>
+            <div class="s-row"><div class="s-info"><div class="s-name">Seated Piriformis Stretch</div><div class="s-cue">Right leg crossed over left (extended). Twist shoulder right, push against right leg. Both sides.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">each</div></div></div>
+            <div class="s-row"><div class="s-info"><div class="s-name">Reclining Bound Angle</div><div class="s-cue">Soles of feet touching, hands on knees. On each exhale let knees sink toward floor.</div></div><div class="s-dur"><div class="s-time">30s</div></div></div>
+            <div class="s-row"><div class="s-info"><div class="s-name">Cat-Cow</div><div class="s-cue">Arch on inhale, round on exhale. Slow and breathing-led.</div></div><div class="s-dur"><div class="s-time">60s</div></div></div>
+            <div class="s-row"><div class="s-info"><div class="s-name">Child's Pose</div><div class="s-cue">Sit back on heels, arms extended, breathe deeply.</div></div><div class="s-dur"><div class="s-time">30s</div></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="notes-section"><div class="notes-label"><span>Notes</span><span class="saved-badge" id="sv-tue">✓ Saved</span></div><textarea class="notes-ta" id="notes-tue" placeholder="How the body felt, mobility notes..."></textarea><div class="notes-row"><button class="nb nb-save" onclick="event.stopPropagation();saveNote('tue')">Save</button><button class="nb nb-clear" onclick="event.stopPropagation();clearNote('tue')">Clear</button></div></div>
+    </div>
+  </div>
+
+  <!-- WED -->
+  <div class="day train" id="day-wed" onclick="toggle(this)">
+    <div class="day-head">
+      <div><div class="day-name">Wednesday</div><div class="day-focus">Pull + Core — Back · Biceps · Abs</div></div>
+      <div style="display:flex;align-items:center"><span class="badge badge-train">AMRAP</span><span class="chevron">▼</span></div>
+    </div>
+    <div class="day-body">
+      <div class="divider-thin"></div>
+      <div class="chips"><div class="chip hi">15–20 min</div><div class="chip">Pull-up bar</div><div class="chip">3–5 rounds</div></div>
+      <p class="day-desc">Pull movements and core. Hold the bar at the base of your fingers — prevents wrist strain. Quality over quantity every rep.</p>
+      <div class="ex-label">One Round</div>
+      <div class="ex-list">
+        <div class="ex-row"><div class="ex-info"><div class="ex-name">Pull-Ups</div><div class="ex-cue">Dead hang to chin over bar. Engage scapula. Slow descent.</div><div class="ex-prog">Can't do 1? → Australian pull-ups (low bar, body angled)</div></div><div class="ex-num"><div class="ex-reps">5</div><div class="ex-unit">reps</div></div></div>
+        <div class="ex-row"><div class="ex-info"><div class="ex-name">Chin-Ups</div><div class="ex-cue">Underhand grip. Bicep squeeze at top. Slow descent.</div><div class="ex-prog">Too hard? → Jump to top, lower slowly 3–5 sec</div></div><div class="ex-num"><div class="ex-reps">5</div><div class="ex-unit">reps</div></div></div>
+        <div class="ex-row"><div class="ex-info"><div class="ex-name">Hanging Knee Raises</div><div class="ex-cue">From dead hang, pull knees to chest using core. No swinging.</div><div class="ex-prog">No bar? → Lying leg raises on floor, lower back flat</div></div><div class="ex-num"><div class="ex-reps">8</div><div class="ex-unit">reps</div></div></div>
+        <div class="ex-row"><div class="ex-info"><div class="ex-name">Plank Hold</div><div class="ex-cue">Elbows under shoulders. Squeeze everything — no sag, no raised hips.</div></div><div class="ex-num"><div class="ex-reps">30s</div><div class="ex-unit">hold</div></div></div>
+      </div>
+      <div class="tip"><b>Progression</b>When you hit 10 clean pull-ups, slow the descent to 3 sec or try L-sit pull-ups.</div>
+      <div class="riw"><span class="riw-lbl">Round Counter</span><button class="riw-rst" onclick="event.stopPropagation();riwReset('wed')">Reset</button><span class="riw-num" id="riw-wed">0</span><button class="riw-add" onclick="event.stopPropagation();riwAdd('wed')">+ Round</button></div>
+      <div class="phase-block wu"><div class="phase-head" onclick="event.stopPropagation();togglePhase(this)"><span class="phase-icon">🔥</span><span class="phase-title">Warm-Up · 5 min</span><span class="phase-chev">▼</span></div>
+        <div class="phase-body"><p class="phase-note">Never hang cold — shoulder tendons need blood flow first.</p>
+          <div class="s-list">
+            <div class="s-row"><div class="s-info"><div class="s-name">Light Jog / March in Place</div><div class="s-cue">2 min easy to elevate heart rate.</div></div><div class="s-dur"><div class="s-time">2min</div></div></div>
+            <div class="s-row"><div class="s-info"><div class="s-name">Arm Circles</div><div class="s-cue">10 forward, 10 back. Primes shoulder joint.</div></div><div class="s-dur"><div class="s-time">30s</div></div></div>
+            <div class="s-row"><div class="s-info"><div class="s-name">Scapular Retractions</div><div class="s-cue">Hang from bar, squeeze shoulder blades together and apart 10×.</div></div><div class="s-dur"><div class="s-time">10×</div></div></div>
+            <div class="s-row"><div class="s-info"><div class="s-name">Dead Hang</div><div class="s-cue">Relax completely 20–30 sec. Decompresses, primes grip.</div></div><div class="s-dur"><div class="s-time">30s</div></div></div>
+            <div class="s-row"><div class="s-info"><div class="s-name">Cat-Cow</div><div class="s-cue">10 slow reps. Loosens spine before loaded pulls.</div></div><div class="s-dur"><div class="s-time">10×</div></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="phase-block cd"><div class="phase-head" onclick="event.stopPropagation();togglePhase(this)"><span class="phase-icon">❄️</span><span class="phase-title">Cool-Down + Stretch · 5–7 min</span><span class="phase-chev">▼</span></div>
+        <div class="phase-body"><p class="phase-note">Targets lats, biceps, upper back. Bring tension back to resting length to speed repair.</p>
+          <div class="s-list">
+            <div class="s-row"><div class="s-info"><div class="s-name">Slow Walking</div><div class="s-cue">1–2 min to lower heart rate.</div></div><div class="s-dur"><div class="s-time">2min</div></div></div>
+            <div class="s-row"><div class="s-info"><div class="s-name">Dead Hang Stretch</div><div class="s-cue">Passive hang, arms straight, fully relax. Stretches lats and decompresses spine.</div></div><div class="s-dur"><div class="s-time">30s</div></div></div>
+            <div class="s-row"><div class="s-info"><div class="s-name">Thread the Needle</div><div class="s-cue">On all fours, thread right arm through gap under left arm, palm up. Both sides.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">each</div></div></div>
+            <div class="s-row"><div class="s-info"><div class="s-name">Child's Pose</div><div class="s-cue">Arms extended, sit back on heels. Opens lats and back.</div></div><div class="s-dur"><div class="s-time">30s</div></div></div>
+            <div class="s-row"><div class="s-info"><div class="s-name">Upper Trapezius Stretch</div><div class="s-cue">Sit tall, one hand on lower back. Other pulls head to shoulder. Both sides.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">each</div></div></div>
+            <div class="s-row"><div class="s-info"><div class="s-name">Cobra Stretch</div><div class="s-cue">Lie face down, hands under shoulders, push up, look up. Counterbalances pulling work.</div></div><div class="s-dur"><div class="s-time">30s</div></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="notes-section"><div class="notes-label"><span>Session Notes</span><span class="saved-badge" id="sv-wed">✓ Saved</span></div><textarea class="notes-ta" id="notes-wed" placeholder="Pull-up reps per set, modifications, rounds..."></textarea><div class="notes-row"><button class="nb nb-save" onclick="event.stopPropagation();saveNote('wed')">Save</button><button class="nb nb-clear" onclick="event.stopPropagation();clearNote('wed')">Clear</button></div></div>
+    </div>
+  </div>
+
+  <!-- THU -->
+  <div class="day rest" id="day-thu" onclick="toggle(this)">
+    <div class="day-head">
+      <div><div class="day-name">Thursday</div><div class="day-focus">Full Rest + Stretch</div></div>
+      <div style="display:flex;align-items:center"><span class="badge badge-rest">Rest</span><span class="chevron">▼</span></div>
+    </div>
+    <div class="day-body">
+      <div class="divider-thin"></div>
+      <p class="day-desc">Complete rest from training. Use this time for focused lower body and back mobility work.</p>
+      <div class="phase-block rs" style="margin-top:0"><div class="phase-head" onclick="event.stopPropagation();togglePhase(this)"><span class="phase-icon">🧘</span><span class="phase-title" style="color:var(--green)">Full Body Stretch · 10–15 min</span><span class="phase-chev">▼</span></div>
+        <div class="phase-body"><p class="phase-note">Focus on hips, hamstrings, and back — the muscles most taxed by Wednesday's pull work. 30 seconds minimum per stretch.</p>
+          <div class="s-list">
+            <div class="s-row"><div class="s-info"><div class="s-name">Lunging Hip Flexor Stretch</div><div class="s-cue">Kneel one knee, front foot at 90°. Push hips to floor, lift opposite arm. Both sides.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">each</div></div></div>
+            <div class="s-row"><div class="s-info"><div class="s-name">Pigeon Pose</div><div class="s-cue">Right knee forward, left leg stretched behind. Push hips to ground, walk hands forward. Deep glute release.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">each</div></div></div>
+            <div class="s-row"><div class="s-info"><div class="s-name">Supine Hamstring Stretch</div><div class="s-cue">On back, towel around foot, pull leg toward you as straight as possible. Both sides.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">each</div></div></div>
+            <div class="s-row"><div class="s-info"><div class="s-name">Knee-to-Chest Stretch</div><div class="s-cue">On back, grab shin, pull knee to chest. Don't lift hips. Both sides. Targets lower back.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">each</div></div></div>
+            <div class="s-row"><div class="s-info"><div class="s-name">90/90 Hip Stretch</div><div class="s-cue">Sit on floor: front leg at 90°, back leg at 90° pointing behind. Push hips toward ground.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">each</div></div></div>
+            <div class="s-row"><div class="s-info"><div class="s-name">Sphinx Pose</div><div class="s-cue">Lie face down, elbows under shoulders. Lift chest, engage core and glutes. 10 slow breaths.</div></div><div class="s-dur"><div class="s-time">10</div><div class="s-unit">breaths</div></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="notes-section"><div class="notes-label"><span>Notes</span><span class="saved-badge" id="sv-thu">✓ Saved</span></div><textarea class="notes-ta" id="notes-thu" placeholder="How the body feels, any tightness..."></textarea><div class="notes-row"><button class="nb nb-save" onclick="event.stopPropagation();saveNote('thu')">Save</button><button class="nb nb-clear" onclick="event.stopPropagation();clearNote('thu')">Clear</button></div></div>
+    </div>
+  </div>
+
+  <!-- FRI -->
+  <div class="day train" id="day-fri" onclick="toggle(this)">
+    <div class="day-head">
+      <div><div class="day-name">Friday</div><div class="day-focus">Full Body — Benchmark Day</div></div>
+      <div style="display:flex;align-items:center"><span class="badge badge-train">AMRAP</span><span class="chevron">▼</span></div>
+    </div>
+    <div class="day-body">
+      <div class="divider-thin"></div>
+      <div class="chips"><div class="chip hi">20 min</div><div class="chip hi">Log your rounds</div><div class="chip">All 4 categories</div></div>
+      <p class="day-desc">Your weekly benchmark. All four categories in one circuit — push, pull, legs, core. Beat your round count from last week.</p>
+      <div class="ex-label">One Round</div>
+      <div class="ex-list">
+        <div class="ex-row"><div class="ex-info"><div class="ex-name">Push-Ups</div><div class="ex-cue">Full range — chest to floor, lock out at top.</div><div class="ex-prog">Easier: incline or knee push-ups</div></div><div class="ex-num"><div class="ex-reps">10</div><div class="ex-unit">reps</div></div></div>
+        <div class="ex-row"><div class="ex-info"><div class="ex-name">Pull-Ups</div><div class="ex-cue">Dead hang to chin over bar. Even 3 perfect reps beats 10 sloppy ones.</div><div class="ex-prog">Easier: Australian or jumping pull-ups</div></div><div class="ex-num"><div class="ex-reps">5</div><div class="ex-unit">reps</div></div></div>
+        <div class="ex-row"><div class="ex-info"><div class="ex-name">Squats</div><div class="ex-cue">Feet shoulder-width, toes out, hips back, chest up. Thighs parallel to floor.</div><div class="ex-prog">Progress: jump squats → assisted pistol → pistol squat</div></div><div class="ex-num"><div class="ex-reps">15</div><div class="ex-unit">reps</div></div></div>
+        <div class="ex-row"><div class="ex-info"><div class="ex-name">Lying Leg Raises</div><div class="ex-cue">Flat on floor, raise legs to 30–45°. Lower back stays flat throughout.</div><div class="ex-prog">Too hard? → Assisted raises with legs on a chair</div></div><div class="ex-num"><div class="ex-reps">10</div><div class="ex-unit">reps</div></div></div>
+        <div class="ex-row"><div class="ex-info"><div class="ex-name">Dips</div><div class="ex-cue">Two chairs. Elbows to 90°, controlled press back up.</div></div><div class="ex-num"><div class="ex-reps">8</div><div class="ex-unit">reps</div></div></div>
+      </div>
+      <div class="tip"><b>Your Score</b>One extra round per week = 52 rounds of improvement in a year.</div>
+      <div class="riw"><span class="riw-lbl">Round Counter</span><button class="riw-rst" onclick="event.stopPropagation();riwReset('fri')">Reset</button><span class="riw-num" id="riw-fri">0</span><button class="riw-add" onclick="event.stopPropagation();riwAdd('fri')">+ Round</button></div>
+      <div class="phase-block wu"><div class="phase-head" onclick="event.stopPropagation();togglePhase(this)"><span class="phase-icon">🔥</span><span class="phase-title">Warm-Up · 5 min</span><span class="phase-chev">▼</span></div>
+        <div class="phase-body"><p class="phase-note">Full body session needs full warm-up. Hit all major joints before starting.</p>
+          <div class="s-list">
+            <div class="s-row"><div class="s-info"><div class="s-name">High Knees / Jumping Jacks</div><div class="s-cue">90 sec to raise body temperature.</div></div><div class="s-dur"><div class="s-time">90s</div></div></div>
+            <div class="s-row"><div class="s-info"><div class="s-name">Arm Circles + Wrist Circles</div><div class="s-cue">10 each direction. Primes push and pull joints.</div></div><div class="s-dur"><div class="s-time">30s</div></div></div>
+            <div class="s-row"><div class="s-info"><div class="s-name">Bodyweight Squat (slow)</div><div class="s-cue">10 slow reps, pause at bottom. Warms hips and knees.</div></div><div class="s-dur"><div class="s-time">10×</div></div></div>
+            <div class="s-row"><div class="s-info"><div class="s-name">Cat-Cow</div><div class="s-cue">10 reps, breathing-led. Loosens spine for full-body work.</div></div><div class="s-dur"><div class="s-time">10×</div></div></div>
+            <div class="s-row"><div class="s-info"><div class="s-name">Dead Hang + Scapular Retractions</div><div class="s-cue">Squeeze blades 10×, then passive hang 20 sec.</div></div><div class="s-dur"><div class="s-time">20s</div></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="phase-block cd"><div class="phase-head" onclick="event.stopPropagation();togglePhase(this)"><span class="phase-icon">❄️</span><span class="phase-title">Cool-Down + Stretch · 7–10 min</span><span class="phase-chev">▼</span></div>
+        <div class="phase-body"><p class="phase-note">Most important stretch of the week. Full body session = full body cool-down. Take your time.</p>
+          <div class="s-list">
+            <div class="s-row"><div class="s-info"><div class="s-name">Slow Walking</div><div class="s-cue">2 min to lower heart rate.</div></div><div class="s-dur"><div class="s-time">2min</div></div></div>
+            <div class="s-row"><div class="s-info"><div class="s-name">Forward Fold</div><div class="s-cue">Interlace fingers behind glutes, fold forward, weight on heels. Hamstrings, lower back, shoulders.</div></div><div class="s-dur"><div class="s-time">30s</div></div></div>
+            <div class="s-row"><div class="s-info"><div class="s-name">Knights Stretch</div><div class="s-cue">Step back, hands on floor, lower hips, extend front leg. Both sides.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">each</div></div></div>
+            <div class="s-row"><div class="s-info"><div class="s-name">Child's Pose</div><div class="s-cue">Sit back on heels, arms extended, breathe into the stretch.</div></div><div class="s-dur"><div class="s-time">30s</div></div></div>
+            <div class="s-row"><div class="s-info"><div class="s-name">Wall Chest Stretch</div><div class="s-cue">Forearm on doorframe, lean forward. Stretches chest. Both sides.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">each</div></div></div>
+            <div class="s-row"><div class="s-info"><div class="s-name">Piriformis Stretch</div><div class="s-cue">On back, ankle over opposite thigh, pull legs to chest. Releases glutes. Both sides.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">each</div></div></div>
+            <div class="s-row"><div class="s-info"><div class="s-name">Dead Hang Finish</div><div class="s-cue">Passive 30-sec hang. Decompresses spine. Perfect end to the week's hardest session.</div></div><div class="s-dur"><div class="s-time">30s</div></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="notes-section"><div class="notes-label"><span>Session Notes</span><span class="saved-badge" id="sv-fri">✓ Saved</span></div><textarea class="notes-ta" id="notes-fri" placeholder="Total rounds, reps per exercise, PR notes..."></textarea><div class="notes-row"><button class="nb nb-save" onclick="event.stopPropagation();saveNote('fri')">Save</button><button class="nb nb-clear" onclick="event.stopPropagation();clearNote('fri')">Clear</button></div></div>
+    </div>
+  </div>
+
+  <!-- SAT -->
+  <div class="day recover" id="day-sat" onclick="toggle(this)">
+    <div class="day-head">
+      <div><div class="day-name">Saturday</div><div class="day-focus">Legs + Core — Optional</div></div>
+      <div style="display:flex;align-items:center"><span class="badge badge-recover">Optional</span><span class="chevron">▼</span></div>
+    </div>
+    <div class="day-body">
+      <div class="divider-thin"></div>
+      <p class="day-desc">Add this once Mon/Wed/Fri feel consistent. Master 3 days before adding a 4th.</p>
+      <div class="ex-list">
+        <div class="ex-row"><div class="ex-info"><div class="ex-name">Squats</div><div class="ex-cue">Focus on depth. 3 sets × 15 reps, 60 sec rest.</div></div><div class="ex-num"><div class="ex-reps">3×15</div></div></div>
+        <div class="ex-row"><div class="ex-info"><div class="ex-name">Jump Squats</div><div class="ex-cue">Explosive up, land soft.</div><div class="ex-prog">Next: assisted pistol → pistol squat</div></div><div class="ex-num"><div class="ex-reps">3×10</div></div></div>
+        <div class="ex-row"><div class="ex-info"><div class="ex-name">Parallel Knee Raises</div><div class="ex-cue">On dip bars or chairs — raise knees to chest, lower slowly.</div></div><div class="ex-num"><div class="ex-reps">3×8</div></div></div>
+      </div>
+      <div class="riw"><span class="riw-lbl">Round Counter</span><button class="riw-rst" onclick="event.stopPropagation();riwReset('sat')">Reset</button><span class="riw-num" id="riw-sat">0</span><button class="riw-add" onclick="event.stopPropagation();riwAdd('sat')">+ Round</button></div>
+      <div class="notes-section"><div class="notes-label"><span>Notes</span><span class="saved-badge" id="sv-sat">✓ Saved</span></div><textarea class="notes-ta" id="notes-sat" placeholder="Squat depth progress, modifications..."></textarea><div class="notes-row"><button class="nb nb-save" onclick="event.stopPropagation();saveNote('sat')">Save</button><button class="nb nb-clear" onclick="event.stopPropagation();clearNote('sat')">Clear</button></div></div>
+    </div>
+  </div>
+
+  <!-- SUN -->
+  <div class="day rest" id="day-sun" onclick="toggle(this)">
+    <div class="day-head">
+      <div><div class="day-name">Sunday</div><div class="day-focus">Full Rest + Stretch</div></div>
+      <div style="display:flex;align-items:center"><span class="badge badge-rest">Rest</span><span class="chevron">▼</span></div>
+    </div>
+    <div class="day-body">
+      <div class="divider-thin"></div>
+      <p class="day-desc">End the week gently. This stretch prepares shoulders and chest for Monday.</p>
+      <div class="phase-block rs" style="margin-top:0"><div class="phase-head" onclick="event.stopPropagation();togglePhase(this)"><span class="phase-icon">🧘</span><span class="phase-title" style="color:var(--green)">Sunday Reset Stretch · 10 min</span><span class="phase-chev">▼</span></div>
+        <div class="phase-body"><p class="phase-note">Slow and restorative. Hold everything 30 seconds minimum.</p>
+          <div class="s-list">
+            <div class="s-row"><div class="s-info"><div class="s-name">Cat-Cow</div><div class="s-cue">10 slow reps. Resets the spine to start fresh.</div></div><div class="s-dur"><div class="s-time">10×</div></div></div>
+            <div class="s-row"><div class="s-info"><div class="s-name">Child's Pose</div><div class="s-cue">Extended arms, breathe deeply, hold and relax.</div></div><div class="s-dur"><div class="s-time">60s</div></div></div>
+            <div class="s-row"><div class="s-info"><div class="s-name">T-Spine Windmill</div><div class="s-cue">Lie on side, arms stacked, knees bent 90°. Roll top arm to opposite side. 5× each.</div></div><div class="s-dur"><div class="s-time">5×</div><div class="s-unit">each</div></div></div>
+            <div class="s-row"><div class="s-info"><div class="s-name">Reclining Bound Angle</div><div class="s-cue">Soles of feet together, breathe knees toward floor.</div></div><div class="s-dur"><div class="s-time">30s</div></div></div>
+            <div class="s-row"><div class="s-info"><div class="s-name">Lunge with Spinal Twist</div><div class="s-cue">Step into lunge, one hand on floor, other reaches ceiling. Both sides.</div></div><div class="s-dur"><div class="s-time">30s</div><div class="s-unit">each</div></div></div>
+            <div class="s-row"><div class="s-info"><div class="s-name">Reverse Shoulder Stretch</div><div class="s-cue">Fingers interlaced behind back, push arms up, squeeze shoulder blades. Opens chest for Monday.</div></div><div class="s-dur"><div class="s-time">30s</div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  </div><!-- /days -->
 </div>
 
-<!-- ══════════════ TIMER ══════════════ -->
+<!-- ══════ TIMER ══════ -->
 <div id="timer" class="section">
   <div class="sec-label">AMRAP Timer</div>
   <div class="timer-card">
-    <div class="timer-h">🥊 SET YOUR WINDOW</div>
-    <div class="sel-row">
-      <select class="inp" id="t-dur" onchange="onDurChange()">
-        <option value="900">15 minutes</option>
-        <option value="1080">18 minutes</option>
-        <option value="1200" selected>20 minutes</option>
-      </select>
-      <select class="inp" id="t-session">
-        <option>Monday — Push</option>
-        <option>Wednesday — Pull + Core</option>
-        <option>Friday — Full Body</option>
-        <option>Saturday — Legs</option>
-      </select>
+    <div class="timer-h">🥊 BOXING BELL TIMER</div>
+    <div class="preset-row">
+      <button class="preset-btn" onclick="setPreset(15,this)">15 min</button>
+      <button class="preset-btn" onclick="setPreset(18,this)">18 min</button>
+      <button class="preset-btn sel" onclick="setPreset(20,this)">20 min</button>
+      <button class="preset-btn" onclick="setPreset(0,this)" id="custom-preset-btn">Custom</button>
+    </div>
+    <div class="custom-row" id="custom-inputs" style="display:none">
+      <div><div class="crl">Min</div><input class="inp-n" id="cust-min" type="number" min="0" max="59" value="20" onchange="applyCustom()"></div>
+      <div class="custom-sep">:</div>
+      <div><div class="crl">Sec</div><input class="inp-n" id="cust-sec" type="number" min="0" max="59" value="0" onchange="applyCustom()"></div>
     </div>
     <div class="clock-wrap">
-      <div class="clock-ring">
-        <div class="clock-num idle" id="clock">20:00</div>
-        <div class="clock-phase" id="clock-phase">READY · TAP START</div>
-      </div>
+      <div class="clock-num idle" id="clock">20:00</div>
+      <div class="clock-phase" id="clock-phase">READY · TAP START</div>
     </div>
-    <div class="timer-progress"><div class="timer-progress-fill" id="t-bar"></div></div>
+    <div class="t-progress"><div class="t-progress-fill" id="t-bar"></div></div>
     <br>
     <div class="btn-row">
-      <button class="btn btn-go" id="btn-start" onclick="timerAction()">START</button>
-      <button class="btn btn-reset" onclick="timerReset()">RESET</button>
+      <button class="btn btn-go" id="btn-start-t" onclick="timerAction()">START</button>
+      <button class="btn btn-rst" onclick="timerReset()">RESET</button>
     </div>
   </div>
-
   <div class="round-section">
     <div class="round-top">
       <div class="round-lbl">Round Counter</div>
-      <button class="small-btn" onclick="resetRounds()">Reset</button>
+      <button class="sm-btn" onclick="resetRounds()">Reset</button>
     </div>
-    <div class="round-counter-row">
+    <div class="round-row">
       <button class="btn-round" onclick="addRound()">+ ROUND</button>
-      <div class="round-num-box">
-        <div class="round-big" id="r-count">0</div>
-        <div class="round-unit">Rounds</div>
-      </div>
+      <div class="round-box"><div class="round-big" id="r-count">0</div><div class="round-unit">Rounds</div></div>
     </div>
   </div>
-
-  <div class="tip" style="margin-top:16px"><b>🔔 Boxing Bell</b>The bell rings when time's up. Hit +Round each time you complete a full circuit. When the bell sounds, that's your score — log it in Tracker.</div>
+  <div class="tip" style="margin-top:14px"><b>🔔 Boxing Bell</b>Three-ring bell sounds when time expires. Hit +Round each time you complete a full circuit. That's your score — log it in Tracker.</div>
 </div>
 
-<!-- ══════════════ STREAK ══════════════ -->
+<!-- ══════ STREAK ══════ -->
 <div id="streak" class="section">
   <div class="sec-label">Training Streak</div>
-
-  <div class="streak-stats">
-    <div class="sstat"><div class="sstat-n" id="st-streak">0</div><div class="sstat-l">Day Streak</div></div>
-    <div class="sstat"><div class="sstat-n" id="st-longest">0</div><div class="sstat-l">Longest</div></div>
+  <div class="str-stats">
+    <div class="sstat"><div class="sstat-n" id="st-streak">0</div><div class="sstat-l">🔥 Current Streak</div></div>
+    <div class="sstat"><div class="sstat-n" id="st-longest">0</div><div class="sstat-l">Best Streak</div></div>
     <div class="sstat"><div class="sstat-n" id="st-total">0</div><div class="sstat-l">Total Days</div></div>
   </div>
-
-  <button class="mark-today-btn" id="mark-btn" onclick="markToday()">✓ MARK TODAY AS TRAINED</button>
-
+  <p class="streak-note">Your streak counts consecutive days you logged a workout by hitting <strong>Finish &amp; Log</strong> on the Schedule tab, or by manually tapping a calendar day. Each day you train keeps the chain alive — don't break it.</p>
   <div class="cal-nav">
     <button class="cal-nav-btn" onclick="calPrev()">‹</button>
     <div class="cal-month-lbl" id="cal-month-lbl"></div>
     <button class="cal-nav-btn" onclick="calNext()">›</button>
   </div>
-
   <div class="cal-grid" id="cal-grid"></div>
-
   <div class="cal-legend">
-    <div class="leg-item"><div class="leg-dot" style="background:rgba(200,168,75,.25);border:1px solid var(--gold)"></div>Trained</div>
+    <div class="leg-item"><div class="leg-dot" style="background:rgba(200,168,75,.18);border:1px solid var(--gold2)"></div>Trained</div>
     <div class="leg-item"><div class="leg-dot" style="background:var(--surface);border:1px solid var(--gold2)"></div>Today</div>
     <div class="leg-item"><div class="leg-dot" style="background:var(--surface);border:1px solid var(--border)"></div>Not trained</div>
   </div>
 </div>
 
-<!-- ══════════════ STRETCHES ══════════════ -->
+<!-- ══════ STRETCHES ══════ -->
 <div id="stretches" class="section">
-  <div class="sec-label">Stretching Library</div>
-  <div class="str-intro">From <em>Use It or Lose It</em> — the stretching companion book. These stretches are organized by body region and used throughout the warmup, cooldown, and rest day routines. Tap any stretch to see full instructions. Hold each stretch for 30 seconds. Stretching should create tension — never sharp pain.</div>
-
-  <div class="str-filter-row">
-    <button class="str-filter active" onclick="filterStr('all',this)">All</button>
-    <button class="str-filter" onclick="filterStr('neck',this)">Neck &amp; Shoulder</button>
-    <button class="str-filter" onclick="filterStr('back',this)">Back</button>
-    <button class="str-filter" onclick="filterStr('hip',this)">Hips &amp; Glutes</button>
-    <button class="str-filter" onclick="filterStr('leg',this)">Legs</button>
-    <button class="str-filter" onclick="filterStr('wrist',this)">Wrist &amp; Arms</button>
+  <div class="sec-label">Stretch Library</div>
+  <p class="lib-intro">All stretches used in warmups, cooldowns and rest days. From <em>Use It or Lose It</em> by Milo Kemp. Tap any entry to see step-by-step instructions and a YouTube tutorial link. Hold each stretch for 30 seconds — tension is normal, pain means stop.</p>
+  <div class="filter-row">
+    <button class="fb str-active" onclick="filterStr('all',this)">All</button>
+    <button class="fb" onclick="filterStr('neck',this)">Neck &amp; Shoulder</button>
+    <button class="fb" onclick="filterStr('back',this)">Back</button>
+    <button class="fb" onclick="filterStr('hip',this)">Hips &amp; Glutes</button>
+    <button class="fb" onclick="filterStr('leg',this)">Legs</button>
+    <button class="fb" onclick="filterStr('wrist',this)">Wrist &amp; Arms</button>
   </div>
-
   <div id="str-lib"></div>
 </div>
 
-<!-- ══════════════ EXERCISES ══════════════ -->
+<!-- ══════ EXERCISES ══════ -->
 <div id="exercises" class="section">
-  <div class="sec-label">Exercise Progressions</div>
+  <div class="sec-label">Exercise Library</div>
+  <p class="lib-intro">Every exercise in the program with beginner → intermediate → advanced progressions. Tap to expand instructions and tutorial links. Always complete the full range of motion — partial reps limit your results.</p>
   <div class="filter-row">
-    <button class="filter-btn active" onclick="filterEx('all',this)">All</button>
-    <button class="filter-btn" onclick="filterEx('push',this)">Push</button>
-    <button class="filter-btn" onclick="filterEx('pull',this)">Pull</button>
-    <button class="filter-btn" onclick="filterEx('legs',this)">Legs</button>
-    <button class="filter-btn" onclick="filterEx('core',this)">Core</button>
+    <button class="fb active" onclick="filterEx('all',this)">All</button>
+    <button class="fb" onclick="filterEx('push',this)">Push</button>
+    <button class="fb" onclick="filterEx('pull',this)">Pull</button>
+    <button class="fb" onclick="filterEx('legs',this)">Legs</button>
+    <button class="fb" onclick="filterEx('core',this)">Core</button>
   </div>
-  <div class="lib-list" id="lib"></div>
+  <div id="ex-lib"></div>
 </div>
 
-<!-- ══════════════ TRACKER ══════════════ -->
+<!-- ══════ TRACKER ══════ -->
 <div id="tracker" class="section">
   <div class="sec-label">Session Log</div>
   <div class="stats-grid">
@@ -729,610 +582,434 @@ textarea.inp:focus{border-color:var(--gold)}
     <div class="stat-box"><div class="stat-n" id="s-total">0</div><div class="stat-l">Total Rounds</div></div>
     <div class="stat-box"><div class="stat-n" id="s-pr">—</div><div class="stat-l">Round PR</div></div>
   </div>
-
   <div class="form-lbl">Log a Session</div>
   <div class="form">
     <div class="form-row">
-      <select class="inp" id="l-day">
-        <option value="">Day</option>
-        <option>Monday — Push</option>
-        <option>Wednesday — Pull + Core</option>
-        <option>Friday — Full Body</option>
-        <option>Saturday — Legs</option>
-      </select>
+      <select class="inp" id="l-day"><option value="">Day</option><option>Monday — Push</option><option>Wednesday — Pull + Core</option><option>Friday — Full Body</option><option>Saturday — Legs</option></select>
       <input class="inp" id="l-rounds" type="number" min="1" max="30" placeholder="Rounds completed">
     </div>
     <div class="form-row">
-      <select class="inp" id="l-dur">
-        <option value="">Duration</option>
-        <option>15 min</option>
-        <option>18 min</option>
-        <option>20 min</option>
-      </select>
-      <select class="inp" id="l-feel">
-        <option value="">Felt like...</option>
-        <option>💪 Strong</option>
-        <option>😐 Average</option>
-        <option>😤 A grind</option>
-      </select>
+      <select class="inp" id="l-dur"><option value="">Duration</option><option>15 min</option><option>18 min</option><option>20 min</option></select>
+      <select class="inp" id="l-feel"><option value="">Felt like...</option><option>💪 Strong</option><option>😐 Average</option><option>😤 A grind</option></select>
     </div>
     <textarea class="inp" id="l-notes" placeholder="Notes: reps per exercise, modifications, what to improve..."></textarea>
     <button class="btn-log" onclick="logSession()">LOG SESSION</button>
   </div>
-
-  <div class="log-head">
-    <div class="form-lbl" style="margin-bottom:0">History</div>
-    <button class="small-btn" onclick="clearLog()">Clear All</button>
-  </div>
-  <div class="log-entries" id="log-entries">
-    <div class="empty" id="log-empty">No sessions yet — start training</div>
-  </div>
+  <div class="log-head"><div class="form-lbl" style="margin-bottom:0">History</div><button class="sm-btn" onclick="clearLog()">Clear All</button></div>
+  <div class="log-entries" id="log-entries"><div class="empty" id="log-empty">No sessions yet — start training</div></div>
 </div>
 
 <div class="footer">Daily Reps Blueprint · Bodyweight · No Equipment</div>
 
 <script>
-// ══════════════════════════════════════
-// TABS
-// ══════════════════════════════════════
-function show(id, btn) {
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+// ─── DATA ───────────────────────────────────────────────
+const DAY_NAMES = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const SCHEDULE = {
+  0: { label:'Sunday', type:'rest',     desc:'Full rest + restorative stretch. Prep for Monday.'},
+  1: { label:'Monday', type:'train',    desc:'Push — Chest, Shoulders, Triceps. AMRAP 15–20 min.'},
+  2: { label:'Tuesday', type:'recover', desc:'Active recovery: easy walk, hip flexors, dead hang.'},
+  3: { label:'Wednesday', type:'train', desc:'Pull + Core — Back, Biceps, Abs. AMRAP 15–20 min.'},
+  4: { label:'Thursday', type:'rest',   desc:'Full rest + lower body mobility stretch session.'},
+  5: { label:'Friday', type:'train',    desc:'Full Body benchmark day. All 4 categories. AMRAP 20 min.'},
+  6: { label:'Saturday', type:'recover',desc:'Optional legs + core session, or active recovery.'},
+};
+const DAY_IDS = ['sun','mon','tue','wed','thu','fri','sat'];
+
+// ─── UTILITIES ──────────────────────────────────────────
+function todayStr(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function fmtDate(d){const opts={weekday:'long',year:'numeric',month:'long',day:'numeric'};return d.toLocaleDateString('en-US',opts);}
+function fmt(s){return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}
+
+// ─── TABS ────────────────────────────────────────────────
+function show(id,btn){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   btn.classList.add('active');
-  if (id === 'streak') renderCal();
+  if(id==='streak')renderCal();
 }
 
-// ══════════════════════════════════════
-// DAY TOGGLE
-// ══════════════════════════════════════
-function toggle(el) {
-  const body = el.querySelector('.day-body');
-  const ch = el.querySelector('.chevron');
-  if (!body) return;
-  const open = body.classList.toggle('open');
-  if (ch) ch.style.transform = open ? 'rotate(180deg)' : '';
+// ─── TOGGLE DAY CARD ─────────────────────────────────────
+function toggle(el){
+  const body=el.querySelector('.day-body');
+  const ch=el.querySelector('.chevron');
+  if(!body)return;
+  const open=body.classList.toggle('open');
+  if(ch)ch.style.transform=open?'rotate(180deg)':'';
+}
+function togglePhase(headEl){
+  const body=headEl.nextElementSibling;
+  const ch=headEl.querySelector('.phase-chev');
+  if(!body)return;
+  const open=body.classList.toggle('open');
+  if(ch)ch.style.transform=open?'rotate(180deg)':'';
 }
 
-// ══════════════════════════════════════
-// PHASE TOGGLE (warmup / cooldown)
-// ══════════════════════════════════════
-function togglePhase(headEl) {
-  const body = headEl.nextElementSibling;
-  const ch = headEl.querySelector('.phase-chevron');
-  if (!body) return;
-  const open = body.classList.toggle('open');
-  if (ch) ch.style.transform = open ? 'rotate(180deg)' : '';
+// ─── HERO / TODAY BANNER ─────────────────────────────────
+function initHero(){
+  const now=new Date();
+  document.getElementById('hero-date').textContent=fmtDate(now);
+  const dow=now.getDay();
+  const sched=SCHEDULE[dow];
+  document.getElementById('hero-today').textContent=sched.label;
+  document.getElementById('tb-title').textContent='TODAY — '+sched.label.toUpperCase();
+  document.getElementById('tb-sub').textContent=sched.desc;
+  // highlight today's day card
+  const dayId='day-'+DAY_IDS[dow];
+  const dayEl=document.getElementById(dayId);
+  if(dayEl){dayEl.classList.add('today-hl');const body=dayEl.querySelector('.day-body');const ch=dayEl.querySelector('.chevron');if(body){body.classList.add('open');if(ch)ch.style.transform='rotate(180deg)';}}
+  // restore button state
+  const ts=todayStr();
+  const worked=trainedDays.has(ts);
+  if(worked){
+    document.getElementById('btn-sw').textContent='✓ STARTED';document.getElementById('btn-sw').className='today-btn btn-start-w done';
+    document.getElementById('btn-fw').textContent='✓ LOGGED';document.getElementById('btn-fw').className='today-btn btn-finish-w done';
+  }
 }
 
-// ══════════════════════════════════════
-// NOTES
-// ══════════════════════════════════════
-const notesKeys = ['mon','tue','wed','thu','fri','sat'];
-function loadNotes() {
-  notesKeys.forEach(k => {
-    const saved = localStorage.getItem('note-' + k) || '';
-    const el = document.getElementById('notes-' + k);
-    if (el) el.value = saved;
-  });
+// ─── START / FINISH WORKOUT ──────────────────────────────
+let workoutStarted=false;
+function startWorkout(){
+  if(workoutStarted)return;
+  workoutStarted=true;
+  document.getElementById('btn-sw').textContent='⏱ IN PROGRESS';
+  document.getElementById('btn-sw').className='today-btn btn-start-w going';
+  document.getElementById('btn-fw').className='today-btn btn-finish-w ready';
+  // auto-start timer
+  if(!tRunning&&tSec>0){timerAction();}
 }
-function saveNote(k) {
-  const el = document.getElementById('notes-' + k);
-  if (!el) return;
-  localStorage.setItem('note-' + k, el.value);
-  const badge = document.getElementById('saved-' + k);
-  if (badge) { badge.style.opacity = '1'; setTimeout(() => badge.style.opacity = '0', 1800); }
+function finishWorkout(){
+  const sw=document.getElementById('btn-sw');
+  const fw=document.getElementById('btn-fw');
+  if(fw.classList.contains('done'))return;
+  // mark today as trained
+  const ts=todayStr();
+  trainedDays.add(ts);
+  saveTrained();
+  updateStreakUI();
+  // auto-log with round count from today's day
+  const dow=new Date().getDay();
+  const dayKey=DAY_IDS[dow];
+  const rounds=parseInt(document.getElementById('riw-'+dayKey)||0);
+  const dayLabel=SCHEDULE[dow].label;
+  const notes=document.getElementById('notes-'+dayKey)?document.getElementById('notes-'+dayKey).value.trim():'';
+  sessions.push({day:dayLabel,rounds:isNaN(rounds)?0:rounds,dur:'',feel:'',notes,date:new Date().toLocaleDateString()});
+  saveSessions();renderTracker();
+  sw.textContent='✓ DONE';sw.className='today-btn btn-start-w done';
+  fw.textContent='✓ LOGGED';fw.className='today-btn btn-finish-w done';
+  workoutStarted=false;
 }
-function clearNote(k) {
-  const el = document.getElementById('notes-' + k);
-  if (!el) return;
-  el.value = '';
-  localStorage.removeItem('note-' + k);
-}
+
+// ─── INLINE ROUND COUNTER ────────────────────────────────
+const riwCounts={mon:0,wed:0,fri:0,sat:0};
+function riwAdd(k){riwCounts[k]=(riwCounts[k]||0)+1;const el=document.getElementById('riw-'+k);if(el)el.textContent=riwCounts[k];}
+function riwReset(k){riwCounts[k]=0;const el=document.getElementById('riw-'+k);if(el)el.textContent=0;}
+
+// ─── NOTES ───────────────────────────────────────────────
+const noteKeys=['mon','tue','wed','thu','fri','sat'];
+function loadNotes(){noteKeys.forEach(k=>{const el=document.getElementById('notes-'+k);if(el)el.value=localStorage.getItem('note-'+k)||'';});}
+function saveNote(k){const el=document.getElementById('notes-'+k);if(!el)return;localStorage.setItem('note-'+k,el.value);const b=document.getElementById('sv-'+k);if(b){b.style.opacity='1';setTimeout(()=>b.style.opacity='0',1800);}}
+function clearNote(k){const el=document.getElementById('notes-'+k);if(!el)return;el.value='';localStorage.removeItem('note-'+k);}
 loadNotes();
 
-// ══════════════════════════════════════
-// BOXING BELL  (Web Audio API)
-// ══════════════════════════════════════
-function ringBell() {
-  try {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    // Three dings like a boxing bell
-    const times = [0, 0.35, 0.7];
-    times.forEach(offset => {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.connect(gain); gain.connect(ctx.destination);
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(880, ctx.currentTime + offset);
-      osc.frequency.exponentialRampToValueAtTime(440, ctx.currentTime + offset + 0.8);
-      gain.gain.setValueAtTime(0.001, ctx.currentTime + offset);
-      gain.gain.exponentialRampToValueAtTime(0.7, ctx.currentTime + offset + 0.01);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + offset + 1.2);
-      osc.start(ctx.currentTime + offset);
-      osc.stop(ctx.currentTime + offset + 1.3);
+// ─── BOXING BELL ─────────────────────────────────────────
+function ringBell(){
+  try{
+    const ctx=new(window.AudioContext||window.webkitAudioContext)();
+    [[0,.7,880,440,1.2],[.38,.5,1100,550,.9],[.76,.45,880,440,1.0]].forEach(([offset,vol,f1,f2,dur])=>{
+      const o=ctx.createOscillator(),g=ctx.createGain();
+      o.connect(g);g.connect(ctx.destination);
+      o.type='sine';o.frequency.setValueAtTime(f1,ctx.currentTime+offset);
+      o.frequency.exponentialRampToValueAtTime(f2,ctx.currentTime+offset+.8);
+      g.gain.setValueAtTime(.001,ctx.currentTime+offset);
+      g.gain.exponentialRampToValueAtTime(vol,ctx.currentTime+offset+.015);
+      g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+offset+dur);
+      o.start(ctx.currentTime+offset);o.stop(ctx.currentTime+offset+dur+.1);
     });
-    // Second higher tone for metallic shimmer
-    const osc2 = ctx.createOscillator();
-    const gain2 = ctx.createGain();
-    osc2.connect(gain2); gain2.connect(ctx.destination);
-    osc2.type = 'triangle';
-    osc2.frequency.setValueAtTime(1320, ctx.currentTime);
-    gain2.gain.setValueAtTime(0.001, ctx.currentTime);
-    gain2.gain.exponentialRampToValueAtTime(0.3, ctx.currentTime + 0.01);
-    gain2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.6);
-    osc2.start(ctx.currentTime);
-    osc2.stop(ctx.currentTime + 0.7);
-  } catch(e) {}
-  // Flash overlay
-  const flash = document.getElementById('bell-flash');
-  flash.classList.add('ring');
-  setTimeout(() => flash.classList.remove('ring'), 300);
-  setTimeout(() => { flash.classList.add('ring'); setTimeout(() => flash.classList.remove('ring'), 300); }, 400);
-  setTimeout(() => { flash.classList.add('ring'); setTimeout(() => flash.classList.remove('ring'), 300); }, 800);
+    // metallic shimmer
+    const o2=ctx.createOscillator(),g2=ctx.createGain();
+    o2.connect(g2);g2.connect(ctx.destination);o2.type='triangle';o2.frequency.value=1760;
+    g2.gain.setValueAtTime(.001,ctx.currentTime);g2.gain.exponentialRampToValueAtTime(.25,ctx.currentTime+.01);g2.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.5);
+    o2.start(ctx.currentTime);o2.stop(ctx.currentTime+.6);
+  }catch(e){}
+  const fl=document.getElementById('bflash');
+  [0,420,840].forEach(t=>setTimeout(()=>{fl.classList.add('ring');setTimeout(()=>fl.classList.remove('ring'),180);},t));
 }
 
-// ══════════════════════════════════════
-// TIMER
-// ══════════════════════════════════════
-let tInterval = null, tRunning = false, tSec = 1200, tTotal = 1200;
+// ─── TIMER ───────────────────────────────────────────────
+let tInterval=null,tRunning=false,tSec=1200,tTotal=1200;
 
-function fmt(s) { return String(Math.floor(s/60)).padStart(2,'0') + ':' + String(s%60).padStart(2,'0'); }
-function updateClock() {
-  document.getElementById('clock').textContent = fmt(tSec);
-  const pct = tTotal > 0 ? (tSec / tTotal) * 100 : 100;
-  document.getElementById('t-bar').style.width = pct + '%';
+function setClockState(cls,phase){
+  document.getElementById('clock').className='clock-num '+cls;
+  document.getElementById('clock-phase').textContent=phase;
 }
-function setClockState(cls, phase) {
-  document.getElementById('clock').className = 'clock-num ' + cls;
-  document.getElementById('clock-phase').textContent = phase;
+function updateClock(){
+  document.getElementById('clock').textContent=fmt(tSec);
+  document.getElementById('t-bar').style.width=(tTotal>0?(tSec/tTotal)*100:100)+'%';
 }
-function onDurChange() {
-  if (!tRunning) {
-    tTotal = parseInt(document.getElementById('t-dur').value);
-    tSec = tTotal;
-    updateClock();
-    setClockState('idle', 'READY · TAP START');
+function setPreset(min,btn){
+  if(tRunning)return;
+  document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');
+  if(min===0){
+    document.getElementById('custom-inputs').style.display='flex';
+    applyCustom();
+  } else {
+    document.getElementById('custom-inputs').style.display='none';
+    tTotal=min*60;tSec=tTotal;updateClock();setClockState('idle','READY · TAP START');
   }
 }
-function timerAction() {
-  if (!tRunning) {
-    if (tSec === 0) timerReset();
-    tRunning = true;
-    document.getElementById('btn-start').textContent = 'PAUSE';
-    setClockState('running', 'GO — AMRAP IN PROGRESS');
-    tInterval = setInterval(() => {
-      tSec--;
-      updateClock();
-      if (tSec === 30) setClockState('running', '30 SECONDS LEFT');
-      if (tSec === 10) setClockState('running', 'ALMOST DONE — PUSH!');
-      if (tSec <= 0) {
-        clearInterval(tInterval); tRunning = false;
-        document.getElementById('btn-start').textContent = 'START';
-        document.getElementById('clock').textContent = 'DONE';
-        document.getElementById('t-bar').style.width = '0%';
-        setClockState('done', '🔔 TIME\'S UP — LOG YOUR ROUNDS');
+function applyCustom(){
+  if(tRunning)return;
+  const m=parseInt(document.getElementById('cust-min').value)||0;
+  const s=parseInt(document.getElementById('cust-sec').value)||0;
+  tTotal=m*60+s;tSec=tTotal;updateClock();setClockState('idle','READY · TAP START');
+}
+function timerAction(){
+  if(!tRunning){
+    if(tSec<=0)timerReset();
+    tRunning=true;
+    document.getElementById('btn-start-t').textContent='PAUSE';
+    setClockState('running','GO — AMRAP IN PROGRESS');
+    tInterval=setInterval(()=>{
+      tSec--;updateClock();
+      if(tSec===30)setClockState('running','30 SECONDS LEFT');
+      if(tSec===10)setClockState('running','PUSH THROUGH — ALMOST DONE!');
+      if(tSec<=0){
+        clearInterval(tInterval);tRunning=false;
+        document.getElementById('clock').textContent='DONE';
+        document.getElementById('t-bar').style.width='0%';
+        setClockState('done','🔔 TIME\'S UP — LOG YOUR ROUNDS');
+        document.getElementById('btn-start-t').textContent='START';
         ringBell();
       }
-    }, 1000);
+    },1000);
   } else {
-    clearInterval(tInterval); tRunning = false;
-    document.getElementById('btn-start').textContent = 'RESUME';
-    setClockState('paused', 'PAUSED');
+    clearInterval(tInterval);tRunning=false;
+    document.getElementById('btn-start-t').textContent='RESUME';
+    setClockState('paused','PAUSED');
   }
 }
-function timerReset() {
-  clearInterval(tInterval); tRunning = false;
-  tTotal = parseInt(document.getElementById('t-dur').value);
-  tSec = tTotal;
-  updateClock();
-  setClockState('idle', 'READY · TAP START');
-  document.getElementById('btn-start').textContent = 'START';
+function timerReset(){
+  clearInterval(tInterval);tRunning=false;
+  // re-read current preset
+  const selBtn=document.querySelector('.preset-btn.sel');
+  if(selBtn&&selBtn.id!=='custom-preset-btn'){
+    const txt=selBtn.textContent;const m=parseInt(txt);tTotal=m*60;}
+  tSec=tTotal;updateClock();
+  setClockState('idle','READY · TAP START');
+  document.getElementById('btn-start-t').textContent='START';
 }
-let roundCount = 0;
-function addRound() { document.getElementById('r-count').textContent = ++roundCount; }
-function resetRounds() { roundCount = 0; document.getElementById('r-count').textContent = 0; }
+let roundCount=0;
+function addRound(){document.getElementById('r-count').textContent=++roundCount;}
+function resetRounds(){roundCount=0;document.getElementById('r-count').textContent=0;}
 
-// ══════════════════════════════════════
-// STREAK / CALENDAR
-// ══════════════════════════════════════
-let trainedDays = new Set(JSON.parse(localStorage.getItem('trained-days') || '[]'));
-let calYear, calMonth;
-
-function todayStr() {
-  const d = new Date();
-  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
-}
-
-function calcStreak() {
-  let streak = 0, longest = 0, cur = 0;
-  const sorted = [...trainedDays].sort();
-  if (!sorted.length) return { streak: 0, longest: 0, total: 0 };
-  // current streak: count back from today
-  const today = new Date(); today.setHours(0,0,0,0);
-  let d = new Date(today);
-  while (true) {
-    const s = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
-    if (trainedDays.has(s)) { streak++; d.setDate(d.getDate()-1); }
-    else break;
+// ─── STREAK / CALENDAR ───────────────────────────────────
+let trainedDays=new Set(JSON.parse(localStorage.getItem('trained-days')||'[]'));
+function saveTrained(){localStorage.setItem('trained-days',JSON.stringify([...trainedDays]));}
+let calYear,calMonth;
+function calcStreak(){
+  if(!trainedDays.size)return{streak:0,longest:0,total:0};
+  const sorted=[...trainedDays].sort();
+  // current streak
+  let streak=0;const today=new Date();today.setHours(0,0,0,0);
+  let d=new Date(today);
+  while(true){
+    const s=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    if(trainedDays.has(s)){streak++;d.setDate(d.getDate()-1);}else break;
   }
-  // longest streak
-  let prev = null;
-  for (const s of sorted) {
-    const dd = new Date(s);
-    if (prev) {
-      const diff = (dd - prev) / 86400000;
-      cur = diff === 1 ? cur + 1 : 1;
-    } else { cur = 1; }
-    longest = Math.max(longest, cur);
-    prev = dd;
+  // longest
+  let longest=0,cur=0,prev=null;
+  for(const s of sorted){
+    const dd=new Date(s);
+    if(prev){const diff=(dd-prev)/86400000;cur=diff===1?cur+1:1;}else cur=1;
+    longest=Math.max(longest,cur);prev=dd;
   }
-  return { streak, longest, total: trainedDays.size };
+  return{streak,longest,total:trainedDays.size};
 }
-
-function updateStreakUI() {
-  const { streak, longest, total } = calcStreak();
-  document.getElementById('st-streak').textContent = streak;
-  document.getElementById('st-longest').textContent = longest;
-  document.getElementById('st-total').textContent = total;
-  document.getElementById('hero-streak').textContent = streak;
-  const today = todayStr();
-  const btn = document.getElementById('mark-btn');
-  if (trainedDays.has(today)) {
-    btn.textContent = '✓ TODAY MARKED AS TRAINED';
-    btn.classList.add('marked');
-  } else {
-    btn.textContent = '✓ MARK TODAY AS TRAINED';
-    btn.classList.remove('marked');
+function updateStreakUI(){
+  const{streak,longest,total}=calcStreak();
+  document.getElementById('st-streak').textContent=streak;
+  document.getElementById('st-longest').textContent=longest;
+  document.getElementById('st-total').textContent=total;
+  document.getElementById('hero-streak').textContent=streak;
+}
+function renderCal(){
+  const now=new Date();
+  if(calYear===undefined){calYear=now.getFullYear();calMonth=now.getMonth();}
+  const months=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('cal-month-lbl').textContent=months[calMonth]+' '+calYear;
+  const todStr=todayStr();
+  const first=new Date(calYear,calMonth,1).getDay();
+  const daysInM=new Date(calYear,calMonth+1,0).getDate();
+  let html=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(d=>`<div class="cal-dow">${d}</div>`).join('');
+  for(let i=0;i<first;i++)html+=`<div class="cal-day cal-empty"></div>`;
+  for(let d=1;d<=daysInM;d++){
+    const ds=calYear+'-'+String(calMonth+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+    let cls='cal-day';
+    if(ds===todStr)cls+=' cal-today';
+    if(trainedDays.has(ds))cls+=' cal-worked';
+    html+=`<div class="${cls}" onclick="toggleCalDay('${ds}')">${d}</div>`;
   }
+  document.getElementById('cal-grid').innerHTML=html;
 }
+function toggleCalDay(ds){
+  if(trainedDays.has(ds))trainedDays.delete(ds);else trainedDays.add(ds);
+  saveTrained();updateStreakUI();renderCal();
+}
+function calPrev(){calMonth--;if(calMonth<0){calMonth=11;calYear--;}renderCal();}
+function calNext(){calMonth++;if(calMonth>11){calMonth=0;calYear++;}renderCal();}
 
-function markToday() {
-  const today = todayStr();
-  if (trainedDays.has(today)) {
-    trainedDays.delete(today);
-  } else {
-    trainedDays.add(today);
-  }
-  localStorage.setItem('trained-days', JSON.stringify([...trainedDays]));
-  updateStreakUI();
-  renderCal();
-}
-
-function renderCal() {
-  const now = new Date();
-  if (calYear === undefined) { calYear = now.getFullYear(); calMonth = now.getMonth(); }
-  const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-  document.getElementById('cal-month-lbl').textContent = monthNames[calMonth] + ' ' + calYear;
-  const grid = document.getElementById('cal-grid');
-  const dows = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-  let html = dows.map(d => `<div class="cal-dow">${d}</div>`).join('');
-  const firstDay = new Date(calYear, calMonth, 1).getDay();
-  const daysInMonth = new Date(calYear, calMonth+1, 0).getDate();
-  const todStr = todayStr();
-  for (let i = 0; i < firstDay; i++) html += `<div class="cal-day cal-empty"></div>`;
-  for (let d = 1; d <= daysInMonth; d++) {
-    const ds = calYear + '-' + String(calMonth+1).padStart(2,'0') + '-' + String(d).padStart(2,'0');
-    let cls = 'cal-day';
-    if (ds === todStr) cls += ' cal-today';
-    if (trainedDays.has(ds)) cls += ' cal-worked';
-    html += `<div class="${cls}" onclick="toggleCalDay('${ds}')">${d}</div>`;
-  }
-  grid.innerHTML = html;
-}
-
-function toggleCalDay(ds) {
-  if (trainedDays.has(ds)) trainedDays.delete(ds);
-  else trainedDays.add(ds);
-  localStorage.setItem('trained-days', JSON.stringify([...trainedDays]));
-  updateStreakUI();
-  renderCal();
-}
-
-function calPrev() { calMonth--; if (calMonth < 0) { calMonth = 11; calYear--; } renderCal(); }
-function calNext() { calMonth++; if (calMonth > 11) { calMonth = 0; calYear++; } renderCal(); }
-
-updateStreakUI();
-
-// ══════════════════════════════════════
-// EXERCISE LIBRARY
-// ══════════════════════════════════════
-const exData = [
-  { cat:'push', name:'Push-Ups', progs:[{l:'beg',t:'Knee push-ups or incline push-ups on chair'},{l:'int',t:'Standard push-ups — chest to floor'},{l:'adv',t:'Diamond push-ups or decline push-ups'}]},
-  { cat:'push', name:'Pike Push-Ups', progs:[{l:'beg',t:'Negative pike: lower slowly, no press'},{l:'int',t:'Full pike push-ups'},{l:'adv',t:'Feet-elevated pike push-ups'}]},
-  { cat:'push', name:'Dips', progs:[{l:'beg',t:'Bench dips with knees bent'},{l:'int',t:'Bench dips with legs straight'},{l:'adv',t:'Bar dips, then weighted dips'}]},
-  { cat:'push', name:'High-to-Low Plank', progs:[{l:'beg',t:'Slow and controlled, one limb at a time'},{l:'int',t:'Smooth alternating movement'},{l:'adv',t:'Add a push-up at the top of each rep'}]},
-  { cat:'pull', name:'Pull-Ups', progs:[{l:'beg',t:'Australian pull-ups (low bar, body angled)'},{l:'int',t:'Jumping pull-ups (jump up, lower slowly)'},{l:'adv',t:'Full pull-ups, then weighted pull-ups'}]},
-  { cat:'pull', name:'Chin-Ups', progs:[{l:'beg',t:'Negative chin-ups: jump to top, 3–5 sec descent'},{l:'int',t:'Full chin-ups'},{l:'adv',t:'L-sit chin-ups or weighted chin-ups'}]},
-  { cat:'legs', name:'Squats', progs:[{l:'beg',t:'Chair squats — sit motion before touching seat'},{l:'int',t:'Full bodyweight squats, deep as possible'},{l:'adv',t:'Jump squats → Assisted pistol → Pistol squat'}]},
-  { cat:'legs', name:'Pistol Squats', progs:[{l:'beg',t:'Assisted: hold a door frame or chair'},{l:'int',t:'Box pistol: lower onto a chair, press back up'},{l:'adv',t:'Full pistol squat — one leg, full depth'}]},
-  { cat:'core', name:'Lying Leg Raises', progs:[{l:'beg',t:'Assisted: legs rest on chair between reps'},{l:'int',t:'Lying leg raises to 30–45°, lower back flat'},{l:'adv',t:'Hanging knee raises → Hanging leg raises'}]},
-  { cat:'core', name:'Plank', progs:[{l:'beg',t:'30 sec hold on knees'},{l:'int',t:'Full plank hold, body rigid'},{l:'adv',t:'Plank shoulder taps or RKC plank'}]},
-  { cat:'core', name:'Hanging Knee Raises', progs:[{l:'beg',t:'Parallel knee raises on dip bars or chairs'},{l:'int',t:'Hanging knee raises from pull-up bar'},{l:'adv',t:'Hanging leg raises, then toes-to-bar'}]},
-];
-let curFilter = 'all';
-function filterEx(cat, btn) {
-  curFilter = cat;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  renderLib();
-}
-function renderLib() {
-  const data = curFilter === 'all' ? exData : exData.filter(e => e.cat === curFilter);
-  document.getElementById('lib').innerHTML = data.map(e => `
-    <div class="lib-card">
-      <div class="lib-name">${e.name}</div>
-      <div class="prog-rows">${e.progs.map(p => `
-        <div class="prog-item"><div class="dot ${p.l}"></div><div class="prog-lv">${p.l.toUpperCase()}</div><div>${p.t}</div></div>
-      `).join('')}</div>
-    </div>`).join('');
-}
-renderLib();
-
-// ══════════════════════════════════════
-// TRACKER
-// ══════════════════════════════════════
-let sessions = JSON.parse(localStorage.getItem('drb-v2') || '[]');
-function renderTracker() {
-  const total = sessions.reduce((a,s) => a + (s.rounds||0), 0);
-  const pr = sessions.length ? Math.max(...sessions.map(s => s.rounds||0)) : null;
-  document.getElementById('s-sessions').textContent = sessions.length;
-  document.getElementById('s-total').textContent = total;
-  document.getElementById('s-pr').textContent = pr !== null ? pr : '—';
-  const el = document.getElementById('log-entries');
-  const empty = document.getElementById('log-empty');
-  if (!sessions.length) { el.innerHTML = ''; el.appendChild(empty); empty.style.display='block'; return; }
-  empty.style.display = 'none';
-  el.innerHTML = [...sessions].reverse().map(s => `
-    <div class="entry">
-      <div class="entry-top">
-        <div class="entry-l">
-          <div class="entry-day">${s.day}</div>
-          <div class="entry-meta">${[s.dur, s.feel, s.date].filter(Boolean).join(' · ')}</div>
-        </div>
-        <div class="entry-rounds">${s.rounds}<span>rounds</span></div>
-      </div>
-      ${s.notes ? `<div class="entry-notes">${s.notes}</div>` : ''}
-    </div>`).join('');
-}
-function logSession() {
-  const day = document.getElementById('l-day').value;
-  const rounds = parseInt(document.getElementById('l-rounds').value);
-  const dur = document.getElementById('l-dur').value;
-  const feel = document.getElementById('l-feel').value;
-  const notes = document.getElementById('l-notes').value.trim();
-  document.getElementById('l-day').style.borderColor = day ? '' : 'var(--red)';
-  document.getElementById('l-rounds').style.borderColor = rounds ? '' : 'var(--red)';
-  if (!day || !rounds) return;
-  sessions.push({ day, rounds, dur, feel, notes, date: new Date().toLocaleDateString() });
-  localStorage.setItem('drb-v2', JSON.stringify(sessions));
-  renderTracker();
-  ['l-day','l-rounds','l-dur','l-feel'].forEach(id => { const e = document.getElementById(id); e.value=''; e.style.borderColor=''; });
-  document.getElementById('l-notes').value = '';
-}
-function clearLog() {
-  if (confirm('Clear all session history?')) { sessions=[]; localStorage.removeItem('drb-v2'); renderTracker(); }
-}
-// ══════════════════════════════════════
-// STRETCH LIBRARY
-// ══════════════════════════════════════
-const strData = [
-  // NECK & SHOULDER
-  { cat:'neck', name:'Thread the Needle', target:'Shoulder girdle, pectoralis minor', dur:'30s each side', steps:[
-    'Kneel on all fours, hands under shoulders, knees under hips.',
-    'Take right arm and thread it through the gap between left arm and thigh, palm facing up.',
-    'Bend left arm slightly to allow right side to sink deeper. Feel the stretch at back of right shoulder.',
-    'Hold a few seconds, repeat several times, then switch sides.'
-  ]},
-  { cat:'neck', name:'Upper Trapezius Stretch', target:'Neck muscles', dur:'30s each side', steps:[
-    'Sit or stand with back straight.',
-    'Place one hand on your lower back or between shoulder blades.',
-    'Use opposite hand to gently pull your head toward your shoulder.',
-    'Feel the stretch in the neck on the opposite side. Hold 20–30 seconds. Repeat on other side.'
-  ]},
-  { cat:'neck', name:'Cervical Side Bend', target:'Neck lateral muscles', dur:'30s each side', steps:[
-    'Sit or stand with back and neck straight.',
-    'Move right ear toward right shoulder while keeping eyes looking forward.',
-    'Feel the stretch in the left neck muscles.',
-    'Hold a few seconds then repeat on the other side.'
-  ]},
-  { cat:'neck', name:'T-Spine Windmill', target:'Shoulder, thoracic spine, chest', dur:'5–10 reps each side', steps:[
-    'Lie on your side, arms stretched out in front, knees and hips bent at 90°.',
-    'Lay arms on top of each other, same with legs.',
-    'Move top hand over to the other side of your body — arms now form a T shape.',
-    'Slowly return to starting position. Repeat 5–10 times, then switch sides.'
-  ]},
-  { cat:'neck', name:'Reverse Shoulder Stretch', target:'Deltoids, pectorals', dur:'30s hold', steps:[
-    'Interlace fingers behind your back with palms facing up.',
-    'Keep back and arms straight, pull shoulder blades together.',
-    'Push arms upward until you feel the stretch in your chest.',
-    'Hold for 30 seconds.'
-  ]},
-  { cat:'neck', name:'Wall Chest Stretch', target:'Chest, front shoulders', dur:'30s each side', steps:[
-    'Place straight arm on a wall at shoulder height.',
-    'Step forward with the leg furthest from the wall.',
-    'Gently move chest forward until you feel the stretch.',
-    'Move hand higher or lower to target different parts of the chest. Repeat on other side.'
-  ]},
-  // BACK
-  { cat:'back', name:'Child\'s Pose', target:'Back, neck, shoulders, hips, glutes', dur:'30–60s hold', steps:[
-    'Kneel on floor and sit back on your heels. Knees slightly wider than hips, feet touching.',
-    'Fold torso over thighs, reach arms forward overhead, forehead to ground.',
-    'Pull chest and shoulders toward floor for a deeper stretch.',
-    'Hold and breathe deeply for 30+ seconds.'
-  ]},
-  { cat:'back', name:'Cat-Cow', target:'Spine, upper body', dur:'60s slow', steps:[
-    'Start on all fours, hands under shoulders, knees under hips.',
-    'Breathe in: push belly toward ground, lift head — this is Cow.',
-    'Breathe out: tuck chin, round spine toward ceiling — this is Cat.',
-    'Move between the two in one smooth motion for about 60 seconds.'
-  ]},
-  { cat:'back', name:'Cobra Stretch', target:'Upper body, spine, abdomen', dur:'30s × 3', steps:[
-    'Lie face down. Bring hands directly under shoulders.',
-    'Breathe in, push up with hands until arms are fully extended.',
-    'Look up toward ceiling to stretch neck. Hold 30 seconds.',
-    'Exhale slowly and return to floor. Repeat 3 times.'
-  ]},
-  { cat:'back', name:'Sphinx Pose', target:'Spine, abdomen, core', dur:'10 breaths', steps:[
-    'Lie on belly, tops of feet facing down.',
-    'Bring elbows under shoulders, palms flat, forearms parallel.',
-    'Inhale and lift head and chest toward ceiling.',
-    'Engage core and glutes, push pelvis into ground. Hold for 10 slow breaths.'
-  ]},
-  { cat:'back', name:'Knee-to-Chest Stretch', target:'Lower back', dur:'30s each side', steps:[
-    'Lie flat on back. Bring right knee up toward chest.',
-    'Grip shin with both hands, pull knee down firmly toward chest.',
-    'Do not lift hips — focus on lengthening the spine.',
-    'Hold 5–30 seconds, release, repeat 3 times each side.'
-  ]},
-  { cat:'back', name:'Piriformis Stretch', target:'Buttocks, lower back, hips', dur:'30–60s each side', steps:[
-    'Lie on back with knees bent.',
-    'Place right ankle over left thigh.',
-    'Grab left thigh and pull toward chest as far as comfortable.',
-    'Hold 30–60 seconds, then repeat on the other side.'
-  ]},
-  { cat:'back', name:'Pelvic Tilt', target:'Lower back, abdomen', dur:'5–10s × 10', steps:[
-    'Lie on back with knees bent, hands to sides, palms flat.',
-    'Flatten lower back into the floor and engage core muscles.',
-    'Hold for 5–10 seconds and slowly release.',
-    'Repeat as many times as desired.'
-  ]},
-  // HIP & GLUTES
-  { cat:'hip', name:'Knights Stretch', target:'Hip flexors, legs', dur:'30s each side', steps:[
-    'Stand feet shoulder-width, step one leg back, hands on floor either side of front foot.',
-    'Lower hips and hold — feel the stretch in hip and leg.',
-    'Extend front leg as far as possible while hands remain on floor. Hold 30 seconds.',
-    'Repeat on the other side.'
-  ]},
-  { cat:'hip', name:'Lunging Hip Flexor Stretch', target:'Hip flexors, quads', dur:'30s each side', steps:[
-    'Kneel on one knee. Front foot at 90° angle, back knee down, top of foot flat.',
-    'Lean forward, pushing hips toward floor.',
-    'Squeeze glutes and lift the arm on the opposite side of your front leg.',
-    'Hold 30 seconds. Repeat on other side.'
-  ]},
-  { cat:'hip', name:'Pigeon Pose', target:'Glutes, hips, piriformis', dur:'30s each side', steps:[
-    'Get down on right knee. Drop left knee to left and slide right leg behind you.',
-    'Push hips into ground and walk hands forward as far as possible, palms down.',
-    'Keep hips centered and square.',
-    'Hold 20–30 seconds. Repeat on other side.'
-  ]},
-  { cat:'hip', name:'90/90 Hip Stretch', target:'Hip internal and external rotation', dur:'30s each side', steps:[
-    'Sit on floor: left leg in front at 90°, right knee to the right at 90° pointing behind you.',
-    'Left glute on ground. Try to get right glute as close to ground as possible by pushing hips down.',
-    'Sit tall through the stretch.',
-    'Hold 30+ seconds. Repeat on other side.'
-  ]},
-  { cat:'hip', name:'Lunge with Spinal Twist', target:'Hip flexors, back, quads', dur:'30s each side', steps:[
-    'Step forward into a deep lunge with right foot. Back leg stretched behind.',
-    'Place left hand on floor for stability.',
-    'Reach right hand up toward ceiling, allowing upper body to twist.',
-    'Look up at your raised hand. Hold 30 seconds. Repeat on left side.'
-  ]},
-  { cat:'hip', name:'Reclining Bound Angle', target:'Hips, inner thighs', dur:'30s hold', steps:[
-    'Sit with back straight, soles of feet touching each other.',
-    'Place hands on knees and keep spine tall.',
-    'On each exhale, let knees sink closer to the ground.',
-    'Hold as far as comfortable for 30 seconds.'
-  ]},
-  { cat:'hip', name:'Seated Piriformis Stretch', target:'Lower back, hips, glutes', dur:'30s each side', steps:[
-    'Sit on floor with right leg crossed over the left (left leg extended forward).',
-    'Twist your shoulder toward the right. Push against right leg for support.',
-    'Pull and rotate as far as manageable. Hold 30 seconds.',
-    'Repeat on the right side.'
-  ]},
-  // LEGS
-  { cat:'leg', name:'Forward Fold', target:'Hamstrings, lower back, shoulders, chest', dur:'30s hold', steps:[
-    'Stand feet shoulder-width apart. Interlace fingers behind glutes.',
-    'Bend at waist, shifting hips backward, weight on heels.',
-    'Pull arms up above head as you fold forward as far as shoulders allow.',
-    'Hold 30 seconds. Relax and repeat.'
-  ]},
-  { cat:'leg', name:'Supine Hamstring Stretch', target:'Hamstrings, thighs', dur:'30–60s each side', steps:[
-    'Lie on back with knees bent.',
-    'Wrap a towel or resistance band around one foot.',
-    'Pull the leg toward you, keeping it as straight as possible.',
-    'Hold 30–60 seconds. Repeat 3 times, then switch sides.'
-  ]},
-  { cat:'leg', name:'Wide-Legged Forward Fold', target:'Inner thighs, hamstrings', dur:'5+ breaths', steps:[
-    'Stand with legs 3–4 feet apart, feet parallel (not turned in).',
-    'Breathe in. On the exhale, bend at hips keeping back straight.',
-    'Reach fingers toward ground, head as close to floor as possible.',
-    'Hold for at least 5 slow breaths.'
-  ]},
-  { cat:'leg', name:'Quad Stretch', target:'Quadriceps, knee area', dur:'30s each side', steps:[
-    'Lie on your side, legs stacked. Use bottom arm to prop yourself up.',
-    'Bend top knee and grab foot with free hand.',
-    'Pull foot toward glutes until you feel the stretch in the quad.',
-    'Hold 30+ seconds. Repeat on other side.'
-  ]},
-  { cat:'leg', name:'Side Lunge (Adductor Stretch)', target:'Inner thigh muscles', dur:'15–30s each side', steps:[
-    'Stand upright then step one leg out to the side into a side lunge.',
-    'Bend one knee, keep the other leg extended.',
-    'Keep as much of the extended leg\'s foot on the floor as possible.',
-    'Hold 15–30 seconds. Repeat on other side.'
-  ]},
-  // WRIST & ARMS
-  { cat:'wrist', name:'Wrist Extensor Stretch', target:'Forearm, wrist', dur:'30s × 3 each', steps:[
-    'Lift hand out in front, bend wrist down so palm faces you.',
-    'Use other hand to gently pull bent wrist further toward you.',
-    'Feel the stretch in forearm and wrist.',
-    'Hold 30 seconds. Repeat 3 times. Switch hands.'
-  ]},
-  { cat:'wrist', name:'Wrist Flexor Stretch', target:'Wrist, forearm', dur:'30s × 3 each', steps:[
-    'Stretch hand out in front with palm facing down.',
-    'Bend wrist upward.',
-    'Use other hand to gently pull wrist back toward you until you feel the stretch down the forearm.',
-    'Hold 30 seconds. Repeat 3 times. Switch hands.'
-  ]},
-  { cat:'wrist', name:'Eagle Arms', target:'Wrists, shoulders', dur:'5 breaths each side', steps:[
-    'Sit or stand with arms in front of you.',
-    'Cross left arm over right, both elbows bent upward.',
-    'Intertwine arms until palms touch.',
-    'Lift both arms away from body in upward motion. Feel the spread between shoulder blades. Hold 5 deep breaths, then switch hands.'
-  ]},
-  { cat:'wrist', name:'Quadruped Thoracic Rotation', target:'Upper spine, shoulders', dur:'30s each side', steps:[
-    'Begin on all fours, hands under shoulders, knees under hips, core engaged.',
-    'Touch back of head with right hand — no pressure.',
-    'Slowly move head and shoulder inward toward opposite arm.',
-    'Then rotate all the way back until elbow points to ceiling. Hold a few seconds. Repeat 30 seconds, then switch.'
-  ]},
+// ─── STRETCH LIBRARY DATA ────────────────────────────────
+const strData=[
+  {cat:'neck',name:'Thread the Needle',target:'Shoulder girdle, pectoralis minor',dur:'30s each',yt:'https://www.youtube.com/results?search_query=thread+the+needle+stretch',steps:['Kneel on all fours, hands under shoulders, knees under hips.','Take right arm and slide it through the gap between left arm and thigh, palm facing up.','Bend left arm slightly to allow right shoulder to sink deeper to floor.','Hold a few seconds, repeat several times, then switch sides.']},
+  {cat:'neck',name:'Upper Trapezius Stretch',target:'Neck muscles, traps',dur:'30s each',yt:'https://www.youtube.com/results?search_query=upper+trapezius+neck+stretch',steps:['Sit or stand with back straight.','Place one hand on your lower back or between shoulder blades.','Use opposite hand to gently pull head toward that shoulder.','Feel stretch in neck on opposite side. Switch sides.']},
+  {cat:'neck',name:'Cervical Side Bend',target:'Lateral neck muscles',dur:'30s each',yt:'https://www.youtube.com/results?search_query=cervical+side+bend+stretch',steps:['Sit or stand, back and neck straight.','Move right ear toward right shoulder, keeping eyes forward.','Feel stretch in left neck. Hold a few seconds.','Repeat on other side.']},
+  {cat:'neck',name:'T-Spine Windmill',target:'Thoracic spine, shoulders, chest',dur:'5–10 reps each',yt:'https://www.youtube.com/results?search_query=t+spine+windmill+stretch',steps:['Lie on side, arms stretched out in front, knees and hips bent at 90°.','Stack arms and legs on top of each other.','Move top hand to opposite side of body — arms form a T.','Slowly return to starting position. Repeat 5–10 times each side.']},
+  {cat:'neck',name:'Reverse Shoulder Stretch',target:'Deltoids, pectorals',dur:'30s hold',yt:'https://www.youtube.com/results?search_query=reverse+shoulder+stretch+interlaced+fingers',steps:['Interlace fingers behind your back with palms facing up.','Keep back and arms straight. Pull shoulder blades together.','Push arms upward until you feel stretch in chest.','Hold 30 seconds.']},
+  {cat:'neck',name:'Wall Chest Stretch',target:'Chest, anterior shoulder',dur:'30s each',yt:'https://www.youtube.com/results?search_query=wall+chest+stretch+doorway',steps:['Place forearm on a doorframe at shoulder height.','Step forward with opposite leg.','Gently lean chest forward until you feel the pec stretch.','Move hand position higher or lower to target different chest areas. Switch sides.']},
+  {cat:'back',name:"Child's Pose",target:'Back, neck, shoulders, hips',dur:'30–60s',yt:'https://www.youtube.com/results?search_query=child%27s+pose+stretch+how+to',steps:["Kneel on floor, sit back on heels. Knees slightly wider than hips, feet touching.",'Fold torso over thighs, reach arms forward, forehead to floor.','Pull chest and shoulders toward floor for deeper stretch.','Hold and breathe deeply for 30+ seconds.']},
+  {cat:'back',name:'Cat-Cow',target:'Full spine, upper body',dur:'60s slow',yt:'https://www.youtube.com/results?search_query=cat+cow+stretch+yoga',steps:['Start on all fours, hands under shoulders, knees under hips.','Breathe in: push belly toward ground, lift head (Cow).','Breathe out: tuck chin, round spine toward ceiling (Cat).','Move between the two in one smooth motion for 60 seconds.']},
+  {cat:'back',name:'Cobra Stretch',target:'Spine, abdomen, chest',dur:'30s × 3',yt:'https://www.youtube.com/results?search_query=cobra+pose+stretch+back',steps:['Lie face down. Bring hands directly under shoulders.','Breathe in and push up until arms are fully extended.','Look up toward ceiling to stretch neck. Hold 30 seconds.','Exhale slowly and return to floor. Repeat 3 times.']},
+  {cat:'back',name:'Sphinx Pose',target:'Spine, abdomen, core',dur:'10 breaths',yt:'https://www.youtube.com/results?search_query=sphinx+pose+stretch',steps:['Lie on belly, tops of feet facing down.','Bring elbows under shoulders, palms flat, forearms parallel.','Inhale and lift head and chest toward ceiling.','Engage core and glutes. Push pelvis into ground. Hold 10 slow breaths.']},
+  {cat:'back',name:'Knee-to-Chest Stretch',target:'Lower back',dur:'30s each',yt:'https://www.youtube.com/results?search_query=knee+to+chest+stretch+lower+back',steps:['Lie flat on back. Bring right knee toward chest.','Grip shin with both hands, pull firmly toward chest.','Do NOT lift hips — focus on lengthening the spine.','Hold 5–30 seconds. Repeat 3× each side.']},
+  {cat:'back',name:'Piriformis Stretch',target:'Buttocks, lower back, hips',dur:'30–60s each',yt:'https://www.youtube.com/results?search_query=piriformis+stretch+lower+back',steps:['Lie on back with knees bent.','Place right ankle over left thigh.','Grab left thigh and pull both legs toward chest.','Hold 30–60 seconds. Repeat on other side.']},
+  {cat:'back',name:'Pelvic Tilt',target:'Lower back, abdomen',dur:'5–10s × 10',yt:'https://www.youtube.com/results?search_query=pelvic+tilt+exercise+lower+back',steps:['Lie on back, knees bent, hands to sides, palms flat.','Flatten lower back into the floor and engage core.','Hold 5–10 seconds and slowly release.','Repeat as desired.']},
+  {cat:'hip',name:'Knights Stretch',target:'Hip flexors, thighs',dur:'30s each',yt:'https://www.youtube.com/results?search_query=knight+stretch+hip+flexor',steps:['Stand feet shoulder-width. Step one leg back, hands on floor beside front foot.','Lower hips and hold — feel the stretch in hip and leg.','Extend front leg forward as far as possible while hands stay on floor.','Hold 30 seconds each position. Repeat other side.']},
+  {cat:'hip',name:'Lunging Hip Flexor Stretch',target:'Hip flexors, quads',dur:'30s each',yt:'https://www.youtube.com/results?search_query=lunging+hip+flexor+stretch',steps:['Kneel on one knee. Front foot at 90°, back knee down, top of foot flat.','Lean forward, pushing hips toward floor. Squeeze glutes.','Lift arm on opposite side of front leg.','Hold 30 seconds. Switch sides.']},
+  {cat:'hip',name:'Pigeon Pose',target:'Glutes, hips, piriformis',dur:'30s each',yt:'https://www.youtube.com/results?search_query=pigeon+pose+hip+stretch',steps:['Get down on right knee. Drop left knee left, slide right leg behind.','Push hips into ground. Walk hands forward as far as possible, palms down.','Keep hips centered and square.','Hold 20–30 seconds. Repeat other side.']},
+  {cat:'hip',name:'90/90 Hip Stretch',target:'Internal and external hip rotation',dur:'30s each',yt:'https://www.youtube.com/results?search_query=90+90+hip+stretch',steps:['Sit on floor: left leg in front at 90°, right knee to right at 90° pointing behind.','Left glute on ground — try to get right glute as close to ground as possible.','Sit tall. Push hips downward.','Hold 30+ seconds. Repeat other side.']},
+  {cat:'hip',name:'Lunge with Spinal Twist',target:'Hip flexors, back, quads',dur:'30s each',yt:'https://www.youtube.com/results?search_query=lunge+with+spinal+twist+stretch',steps:['Step forward into deep lunge, right foot. Back leg stretched behind.','Place left hand on floor for stability.','Reach right hand toward ceiling, upper body twists. Look up.','Hold 30 seconds. Repeat left side.']},
+  {cat:'hip',name:'Reclining Bound Angle',target:'Hips, inner thighs',dur:'30s',yt:'https://www.youtube.com/results?search_query=reclining+bound+angle+stretch+butterfly',steps:['Sit, back straight, soles of feet touching.','Hands on knees, spine tall.','On each exhale, let knees sink toward floor.','Hold as far as comfortable for 30 seconds.']},
+  {cat:'hip',name:'Seated Piriformis Stretch',target:'Lower back, hips, glutes',dur:'30s each',yt:'https://www.youtube.com/results?search_query=seated+piriformis+stretch',steps:['Sit with right leg crossed over left (left leg extended).','Twist shoulder toward right. Push against right leg for support.','Hold 30 seconds.','Repeat on other side.']},
+  {cat:'leg',name:'Forward Fold',target:'Hamstrings, lower back, shoulders',dur:'30s',yt:'https://www.youtube.com/results?search_query=standing+forward+fold+stretch',steps:['Stand feet shoulder-width. Interlace fingers behind glutes.','Bend at waist, hips back, weight on heels.','Pull arms up above head as you fold forward.','Hold 30 seconds.']},
+  {cat:'leg',name:'Supine Hamstring Stretch',target:'Hamstrings, thighs',dur:'30–60s each',yt:'https://www.youtube.com/results?search_query=supine+hamstring+stretch',steps:['Lie on back, knees bent.','Wrap towel around one foot. Pull that leg toward you as straight as possible.','Hold 30–60 seconds. Repeat 3×. Switch sides.']},
+  {cat:'leg',name:'Wide-Legged Forward Fold',target:'Inner thighs, hamstrings',dur:'5+ breaths',yt:'https://www.youtube.com/results?search_query=wide+legged+forward+fold+stretch',steps:['Stand with legs 3–4 feet apart, feet parallel.','Breathe in. On exhale, bend at hips keeping back flat.','Reach fingers toward ground, head as close to floor as possible.','Hold for 5+ slow breaths.']},
+  {cat:'leg',name:'Quad Stretch',target:'Quadriceps, knee area',dur:'30s each',yt:'https://www.youtube.com/results?search_query=side+lying+quad+stretch',steps:['Lie on side, legs stacked. Bottom arm props you up.','Bend top knee and grab foot with free hand.','Pull foot toward glutes until you feel quad stretch.','Hold 30+ seconds. Switch sides.']},
+  {cat:'leg',name:'Side Lunge (Adductor)',target:'Inner thigh muscles',dur:'15–30s each',yt:'https://www.youtube.com/results?search_query=side+lunge+adductor+stretch',steps:['Stand upright, step one leg out to side into side lunge.','Bend that knee, keep other leg extended.','Keep extended foot on floor as much as possible.','Hold 15–30 seconds. Switch sides.']},
+  {cat:'wrist',name:'Wrist Extensor Stretch',target:'Forearm extensors, wrist',dur:'30s × 3 each',yt:'https://www.youtube.com/results?search_query=wrist+extensor+stretch',steps:['Lift hand in front, bend wrist down so palm faces you.','Use other hand to gently pull bent wrist further toward you.','Feel stretch in forearm and wrist.','Hold 30 seconds. Repeat 3×. Switch hands.']},
+  {cat:'wrist',name:'Wrist Flexor Stretch',target:'Forearm flexors, wrist',dur:'30s × 3 each',yt:'https://www.youtube.com/results?search_query=wrist+flexor+stretch',steps:['Stretch hand in front with palm facing down.','Bend wrist upward.','Use other hand to gently pull wrist back toward you until you feel stretch down forearm.','Hold 30 seconds. Repeat 3×. Switch hands.']},
+  {cat:'wrist',name:'Eagle Arms',target:'Wrists, shoulders, upper back',dur:'5 breaths each',yt:'https://www.youtube.com/results?search_query=eagle+arms+stretch+yoga',steps:['Sit or stand with arms in front.','Cross left arm over right, both elbows bent upward.','Intertwine arms until palms touch.','Lift arms away from body upward. Feel spread between shoulder blades. 5 deep breaths. Switch.']},
+  {cat:'wrist',name:'Quadruped Thoracic Rotation',target:'Upper spine, shoulder rotation',dur:'30s each',yt:'https://www.youtube.com/results?search_query=quadruped+thoracic+rotation+stretch',steps:['On all fours, hands under shoulders, knees under hips, core engaged.','Touch back of head with right hand — no pressure on neck.','Slowly rotate shoulder inward toward opposite arm.','Then rotate all the way back until elbow points to ceiling. 30 seconds. Switch.']},
 ];
 
-let strFilter = 'all';
-function filterStr(cat, btn) {
-  strFilter = cat;
-  document.querySelectorAll('.str-filter').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
+let strFilter='all';
+function filterStr(cat,btn){
+  strFilter=cat;
+  document.querySelectorAll('#stretches .fb').forEach(b=>{b.classList.remove('str-active');b.classList.remove('active');});
+  btn.classList.add('str-active');
   renderStrLib();
 }
-function renderStrLib() {
-  const data = strFilter === 'all' ? strData : strData.filter(s => s.cat === strFilter);
-  document.getElementById('str-lib').innerHTML = data.map((s, i) => `
-    <div class="str-card">
-      <div class="str-card-head" onclick="toggleStrCard(this)">
-        <div class="str-card-left">
-          <div class="str-card-name">${s.name}</div>
-          <div class="str-card-target">${s.target}</div>
-        </div>
-        <span class="str-card-dur">${s.dur}</span>
-        <span style="color:var(--muted);font-size:10px;transition:transform .2s">▼</span>
+function renderStrLib(){
+  const data=strFilter==='all'?strData:strData.filter(s=>s.cat===strFilter);
+  document.getElementById('str-lib').innerHTML=data.map(s=>`
+    <div class="lib-card">
+      <div class="lib-head" onclick="toggleLib(this)">
+        <div><div class="lib-name">${s.name}</div><div class="lib-sub">${s.target}</div></div>
+        <div class="lib-right"><span class="lib-dur">${s.dur}</span><span style="color:var(--muted);font-size:10px;transition:transform .2s">▼</span></div>
       </div>
-      <div class="str-card-body">
-        <ul class="str-steps">${s.steps.map(st => `<li>${st}</li>`).join('')}</ul>
-        <div class="str-benefit">${s.target}</div>
+      <div class="lib-body">
+        <ul class="str-steps">${s.steps.map(st=>`<li>${st}</li>`).join('')}</ul>
+        <a class="yt-link" href="${s.yt}" target="_blank">▶ YouTube Tutorial</a>
       </div>
     </div>`).join('');
-}
-function toggleStrCard(head) {
-  const body = head.nextElementSibling;
-  const ch = head.querySelector('span:last-child');
-  const open = body.classList.toggle('open');
-  if (ch) ch.style.transform = open ? 'rotate(180deg)' : '';
 }
 renderStrLib();
 
-renderTracker();
+// ─── EXERCISE LIBRARY DATA ───────────────────────────────
+const exData=[
+  {cat:'push',name:'Push-Ups',desc:'The foundation of all pressing. Targets chest, shoulders, and triceps.',yt:'https://www.youtube.com/results?search_query=push+up+proper+form+calisthenics',progs:[{l:'beg',t:'Knee push-ups or incline push-ups with hands on a chair'},{l:'int',t:'Standard push-ups — chest to floor, full lock-out'},{l:'adv',t:'Diamond push-ups or decline push-ups with feet elevated'}]},
+  {cat:'push',name:'Pike Push-Ups',desc:'Vertical pressing movement that targets the shoulders and upper chest.',yt:'https://www.youtube.com/results?search_query=pike+push+up+tutorial',progs:[{l:'beg',t:'Negative pike: lower slowly, do not press back up'},{l:'int',t:'Full pike push-ups — head toward floor, triangle position'},{l:'adv',t:'Feet-elevated pike push-ups on a chair or box'}]},
+  {cat:'push',name:'Dips',desc:'Heavy tricep and lower chest movement. One of the most effective pushing exercises.',yt:'https://www.youtube.com/results?search_query=dips+calisthenics+form',progs:[{l:'beg',t:'Bench dips with knees bent'},{l:'int',t:'Bench dips with legs straight'},{l:'adv',t:'Parallel bar dips with full range of motion'}]},
+  {cat:'push',name:'High-to-Low Plank',desc:'Dynamic core and shoulder stability movement.',yt:'https://www.youtube.com/results?search_query=high+to+low+plank+exercise',progs:[{l:'beg',t:'Slow and controlled, one limb at a time, pausing each'},{l:'int',t:'Smooth continuous alternating movement'},{l:'adv',t:'Add a push-up at the top of every rep'}]},
+  {cat:'pull',name:'Pull-Ups',desc:'The king of upper body pulling. Targets lats, biceps, and upper back.',yt:'https://www.youtube.com/results?search_query=pull+up+proper+form+beginners',progs:[{l:'beg',t:'Australian pull-ups (low bar, body angled, feet on floor)'},{l:'int',t:'Jumping pull-ups: jump to top, lower slowly 3–5 sec'},{l:'adv',t:'Full pull-ups dead hang to chin over bar, then weighted'}]},
+  {cat:'pull',name:'Chin-Ups',desc:'Underhand pull-up that heavily recruits the biceps.',yt:'https://www.youtube.com/results?search_query=chin+up+vs+pull+up+form',progs:[{l:'beg',t:'Negative chin-ups: jump to top, 3–5 sec controlled descent'},{l:'int',t:'Full chin-ups with dead hang start'},{l:'adv',t:'L-sit chin-ups or weighted chin-ups'}]},
+  {cat:'pull',name:'Hanging Knee Raises',desc:'Core movement performed from a hang. Builds ab strength and grip.',yt:'https://www.youtube.com/results?search_query=hanging+knee+raises+form',progs:[{l:'beg',t:'Lying leg raises on floor with lower back flat'},{l:'int',t:'Hanging knee raises — no swinging, controlled descent'},{l:'adv',t:'Straight leg raises or toes-to-bar'}]},
+  {cat:'pull',name:'Plank Hold',desc:'Isometric core exercise that builds stability for every other movement.',yt:'https://www.youtube.com/results?search_query=plank+proper+form',progs:[{l:'beg',t:'30 second hold on knees'},{l:'int',t:'Full plank, elbows under shoulders, body rigid'},{l:'adv',t:'Plank shoulder taps or RKC plank with maximum tension'}]},
+  {cat:'legs',name:'Squats',desc:'Fundamental lower body movement. Trains quads, glutes, and hamstrings.',yt:'https://www.youtube.com/results?search_query=bodyweight+squat+proper+form',progs:[{l:'beg',t:'Chair squats — controlled sit motion before touching seat'},{l:'int',t:'Full bodyweight squats, as deep as possible'},{l:'adv',t:'Jump squats, then pistol squat progressions'}]},
+  {cat:'legs',name:'Pistol Squats',desc:'Single-leg squat — the peak of bodyweight leg training.',yt:'https://www.youtube.com/results?search_query=pistol+squat+progression+tutorial',progs:[{l:'beg',t:'Assisted: hold door frame or chair for balance'},{l:'int',t:'Box pistol: lower onto a chair, press back up'},{l:'adv',t:'Full free-standing pistol squat — one leg, full depth'}]},
+  {cat:'legs',name:'Jump Squats',desc:'Explosive plyometric variation that builds power and cardio.',yt:'https://www.youtube.com/results?search_query=jump+squat+form',progs:[{l:'beg',t:'Quarter-depth jump squat'},{l:'int',t:'Full-depth jump squat, land softly'},{l:'adv',t:'Continuous jump squats with minimal ground contact time'}]},
+  {cat:'core',name:'Lying Leg Raises',desc:'Core movement that builds lower ab strength and hip flexors.',yt:'https://www.youtube.com/results?search_query=lying+leg+raises+form',progs:[{l:'beg',t:'Assisted: rest legs on a chair between reps'},{l:'int',t:'Full leg raises to 30–45°, lower back flat'},{l:'adv',t:'Hanging knee raises then hanging leg raises'}]},
+  {cat:'core',name:'High-to-Low Plank',desc:'Dynamic core stability and shoulder endurance exercise.',yt:'https://www.youtube.com/results?search_query=plank+up+down+exercise',progs:[{l:'beg',t:'Slow, 1 limb at a time with a pause'},{l:'int',t:'Smooth continuous alternating movement'},{l:'adv',t:'Add a push-up at the top'}]},
+  {cat:'core',name:'Parallel Knee Raises',desc:'Core exercise on dip bars that builds hip flexor and ab strength.',yt:'https://www.youtube.com/results?search_query=parallel+bar+knee+raises',progs:[{l:'beg',t:'Seated knee raises on a chair'},{l:'int',t:'Parallel bar or dip bar knee raises'},{l:'adv',t:'Straight leg raises on the bars'}]},
+];
+
+let exFilter='all';
+function filterEx(cat,btn){
+  exFilter=cat;
+  document.querySelectorAll('#exercises .fb').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderExLib();
+}
+function renderExLib(){
+  const data=exFilter==='all'?exData:exData.filter(e=>e.cat===exFilter);
+  document.getElementById('ex-lib').innerHTML=data.map(e=>`
+    <div class="lib-card">
+      <div class="lib-head" onclick="toggleLib(this)">
+        <div><div class="lib-name">${e.name}</div><div class="lib-sub">${e.desc}</div></div>
+        <div class="lib-right"><span style="color:var(--muted);font-size:10px;transition:transform .2s">▼</span></div>
+      </div>
+      <div class="lib-body">
+        <div class="prog-rows">${e.progs.map(p=>`
+          <div class="prog-item"><div class="dot ${p.l}"></div><div class="prog-lv">${p.l.toUpperCase()}</div><div>${p.t}</div></div>`).join('')}
+        </div>
+        <a class="yt-link" href="${e.yt}" target="_blank">▶ YouTube Tutorial</a>
+      </div>
+    </div>`).join('');
+}
+renderExLib();
+
+function toggleLib(headEl){
+  const body=headEl.nextElementSibling;
+  const ch=headEl.querySelector('span:last-child');
+  if(!body)return;
+  const open=body.classList.toggle('open');
+  if(ch)ch.style.transform=open?'rotate(180deg)':'';
+}
+
+// ─── TRACKER ─────────────────────────────────────────────
+let sessions=JSON.parse(localStorage.getItem('drb-v3')||'[]');
+function saveSessions(){localStorage.setItem('drb-v3',JSON.stringify(sessions));}
+function renderTracker(){
+  const total=sessions.reduce((a,s)=>a+(s.rounds||0),0);
+  const pr=sessions.length?Math.max(...sessions.map(s=>s.rounds||0)):null;
+  document.getElementById('s-sessions').textContent=sessions.length;
+  document.getElementById('s-total').textContent=total;
+  document.getElementById('s-pr').textContent=pr!==null?pr:'—';
+  const el=document.getElementById('log-entries');
+  const empty=document.getElementById('log-empty');
+  if(!sessions.length){el.innerHTML='';el.appendChild(empty);empty.style.display='block';return;}
+  empty.style.display='none';
+  el.innerHTML=[...sessions].reverse().map(s=>`
+    <div class="entry">
+      <div class="entry-top">
+        <div><div class="entry-day">${s.day}</div><div class="entry-meta">${[s.dur,s.feel,s.date].filter(Boolean).join(' · ')}</div></div>
+        <div class="entry-rounds">${s.rounds}<span>rounds</span></div>
+      </div>
+      ${s.notes?`<div class="entry-notes">${s.notes}</div>`:''}
+    </div>`).join('');
+}
+function logSession(){
+  const day=document.getElementById('l-day').value;
+  const rounds=parseInt(document.getElementById('l-rounds').value);
+  const dur=document.getElementById('l-dur').value;
+  const feel=document.getElementById('l-feel').value;
+  const notes=document.getElementById('l-notes').value.trim();
+  document.getElementById('l-day').style.borderColor=day?'':'var(--red)';
+  document.getElementById('l-rounds').style.borderColor=rounds?'':'var(--red)';
+  if(!day||!rounds)return;
+  sessions.push({day,rounds,dur,feel,notes,date:new Date().toLocaleDateString()});
+  saveSessions();renderTracker();
+  ['l-day','l-rounds','l-dur','l-feel'].forEach(id=>{const e=document.getElementById(id);e.value='';e.style.borderColor='';});
+  document.getElementById('l-notes').value='';
+}
+function clearLog(){if(confirm('Clear all session history?')){sessions=[];localStorage.removeItem('drb-v3');renderTracker();}}
+
+// ─── INIT ─────────────────────────────────────────────────
+updateStreakUI();
 updateClock();
+renderTracker();
+initHero();
 </script>
 </body>
 </html>
