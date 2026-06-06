@@ -642,12 +642,18 @@ function todaySeed() {
   var d = new Date();
   return (d.getFullYear() * 10000 + (d.getMonth()+1) * 100 + d.getDate()) >>> 0;
 }
+
+// Safe localStorage wrappers — GitHub Pages can block localStorage in some contexts
+function lsGet(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+function lsSet(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+function lsDel(k){ try{ localStorage.removeItem(k); }catch(e){} }
+
 function rerollOffset() {
-  return parseInt(localStorage.getItem('rr-' + todaySeed()) || '0');
+  return parseInt(lsGet('rr-' + todaySeed()) || '0');
 }
 function bumpReroll() {
   var n = rerollOffset() + 1;
-  localStorage.setItem('rr-' + todaySeed(), n);
+  lsSet('rr-' + todaySeed(), n);
   return n;
 }
 
@@ -714,7 +720,7 @@ function renderWod(wod) {
   var wuHtml = f.wu.map(function(w){ return '<div class="s-row">'+w+'</div>'; }).join('');
   var cdHtml = f.cd.map(function(w){ return '<div class="s-row">'+w+'</div>'; }).join('');
 
-  var savedNote = localStorage.getItem('note-'+todayKey()) || '';
+  var savedNote = lsGet('note-'+todayKey()) || '';
 
   var html = '<div class="wod-hdr">' +
     '<div class="wod-top-row">' +
@@ -758,7 +764,7 @@ var d = new Date();
 return d.getFullYear()+’-’+pad(d.getMonth()+1)+’-’+pad(d.getDate());
 }
 function todayWorked() {
-try { return (JSON.parse(localStorage.getItem(‘hr-worked’)||’[]’)).indexOf(todayKey()) !== -1; }
+try { return (JSON.parse(lsGet(‘hr-worked’)||’[]’)).indexOf(todayKey()) !== -1; }
 catch(e){ return false; }
 }
 function pad(n){ return n < 10 ? ‘0’+n : ‘’+n; }
@@ -828,9 +834,9 @@ function finishWorkout() {
 var fb = document.getElementById(‘wf-finish’);
 if (!fb || fb.classList.contains(‘done’)) return;
 var worked;
-try { worked = JSON.parse(localStorage.getItem(‘hr-worked’)||’[]’); } catch(e){ worked=[]; }
+try { worked = JSON.parse(lsGet(‘hr-worked’)||’[]’); } catch(e){ worked=[]; }
 if (worked.indexOf(todayKey()) === -1) { worked.push(todayKey()); }
-localStorage.setItem(‘hr-worked’, JSON.stringify(worked));
+lsSet(‘hr-worked’, JSON.stringify(worked));
 var rn = document.getElementById(‘riw-n’);
 var rounds = rn ? parseInt(rn.textContent)||0 : 0;
 var ta = document.getElementById(‘notes-ta’);
@@ -855,14 +861,14 @@ function riwReset() { riwCount=0; var el=document.getElementById(‘riw-n’); i
 function saveNote() {
 var ta = document.getElementById(‘notes-ta’);
 if (!ta) return;
-localStorage.setItem(‘note-’+todayKey(), ta.value);
+lsSet(‘note-’+todayKey(), ta.value);
 var b = document.getElementById(‘sv-badge’);
 if (b) { b.style.opacity=‘1’; setTimeout(function(){ b.style.opacity=‘0’; }, 1800); }
 }
 function clearNote() {
 var ta = document.getElementById(‘notes-ta’);
 if (ta) ta.value = ‘’;
-localStorage.removeItem(‘note-’+todayKey());
+lsDel(‘note-’+todayKey());
 }
 
 // ═══════════════════════════════════════════════════════
@@ -1209,8 +1215,8 @@ return ‘<div class="hist-card"><div class="hist-date">’+s.date+’</div><div
 // TRACKER
 // ═══════════════════════════════════════════════════════
 var sessions=[];
-function loadSessions(){ try{ sessions=JSON.parse(localStorage.getItem(‘hr-v2’)||’[]’); }catch(e){ sessions=[]; } }
-function saveSessions(){ localStorage.setItem(‘hr-v2’,JSON.stringify(sessions)); }
+function loadSessions(){ try{ sessions=JSON.parse(lsGet(‘hr-v2’)||’[]’); }catch(e){ sessions=[]; } }
+function saveSessions(){ lsSet(‘hr-v2’,JSON.stringify(sessions)); }
 
 function renderTracker() {
 var tot=sessions.reduce(function(a,s){ return a+(s.rounds||0); },0);
