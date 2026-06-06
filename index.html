@@ -524,7 +524,7 @@ input.inp::placeholder, textarea.inp::placeholder { color:var(–muted); }
 <div class="footer">Hybrid Recomp · Daily Generator · NML × BOXROX × Cavemantraining</div>
 
 <script>
-// ─── Polyfills ────────────────────────────────────────
+// Polyfill for Math.imul (missing in some older browsers)
 if (!Math.imul) {
   Math.imul = function(a, b) {
     var ah = (a >>> 16) & 0xffff, al = a & 0xffff;
@@ -533,124 +533,132 @@ if (!Math.imul) {
   };
 }
 
-// ═══════════════════════════════════════════════════════
-// DATA
-// ═══════════════════════════════════════════════════════
+// Safe localStorage wrappers - never throw even if storage is blocked
+function lsGet(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+function lsSet(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+function lsDel(k){ try{ localStorage.removeItem(k); }catch(e){} }
+
+// DATA - Exercise Pool
 var POOL = {
   hinge:[
-    {n:'KB Swing',t:'kb',r:15,u:'reps',c:'Explosive hip drive — power from hips, not arms. Bell to shoulder height.',m:'No KB → DB Romanian Deadlift ×12',s:'Cavemantraining'},
-    {n:'KB Single-Arm Swing',t:'kb',r:10,u:'each',c:'5 each side. More core demand than two-hand swing. Switch hands at top.',m:'No KB → Single-leg RDL ×8 each',s:'Cavemantraining'},
-    {n:'KB Dead Clean',t:'kb',r:6,u:'each',c:'Dead stop on floor each rep. Full hip extension at top. Clean to rack.',m:'No KB → DB Hang Clean ×8',s:'Cavemantraining'},
-    {n:'KB High Pull',t:'kb',r:10,u:'each',c:'Swing arc then elbow drives high and wide. 5 each side.',m:'No KB → DB Upright Row ×10',s:'BOXROX'},
+    {n:'KB Swing',t:'kb',r:15,u:'reps',c:'Explosive hip drive - power from hips, not arms. Bell to shoulder height.',m:'No KB -> DB Romanian Deadlift x12',s:'Cavemantraining'},
+    {n:'KB Single-Arm Swing',t:'kb',r:10,u:'each',c:'5 each side. More core demand than two-hand swing. Switch hands at top.',m:'No KB -> Single-leg RDL x8 each',s:'Cavemantraining'},
+    {n:'KB Dead Clean',t:'kb',r:6,u:'each',c:'Dead stop on floor each rep. Full hip extension at top. Clean to rack.',m:'No KB -> DB Hang Clean x8',s:'Cavemantraining'},
+    {n:'KB High Pull',t:'kb',r:10,u:'each',c:'Swing arc then elbow drives high and wide. 5 each side.',m:'No KB -> DB Upright Row x10',s:'BOXROX'},
     {n:'DB Romanian Deadlift',t:'db',r:12,u:'reps',c:'Hip hinge, flat back, hamstring stretch at bottom. Full hip extension at top.',m:'Can use KB in suitcase hold',s:'Nourish Move Love'},
-    {n:'KB Sumo Deadlift',t:'kb',r:12,u:'reps',c:'Wide stance, toes out, bell between legs. Drive hips through at top.',m:'No KB → DB wide-stance deadlift',s:'Nourish Move Love'},
-    {n:'KB Dead Snatch',t:'kb',r:5,u:'each',c:'Dead stop to snatch overhead in one explosive move. Lock out elbow.',m:'Beginner → KB dead clean instead',s:'Cavemantraining'},
+    {n:'KB Sumo Deadlift',t:'kb',r:12,u:'reps',c:'Wide stance, toes out, bell between legs. Drive hips through at top.',m:'No KB -> DB wide-stance deadlift',s:'Nourish Move Love'},
+    {n:'KB Dead Snatch',t:'kb',r:5,u:'each',c:'Dead stop to snatch overhead in one explosive move. Lock out elbow.',m:'Beginner -> KB dead clean instead',s:'Cavemantraining'}
   ],
   squat:[
-    {n:'KB Goblet Squat',t:'kb',r:10,u:'reps',c:'Bell at chest, sit deep, drive knees out. Full extension at top.',m:'No KB → bodyweight deep squat ×15',s:'Nourish Move Love'},
-    {n:'KB Goblet Squat + Press',t:'kb',r:8,u:'reps',c:'Squat deep, stand, press bell overhead in one fluid combo.',m:'No KB → DB thruster',s:'Nourish Move Love'},
-    {n:'DB Thruster',t:'db',r:8,u:'reps',c:'Front squat + overhead press in one movement. Most metabolically expensive per rep.',m:'No DB → KB goblet + press',s:'BOXROX'},
+    {n:'KB Goblet Squat',t:'kb',r:10,u:'reps',c:'Bell at chest, sit deep, drive knees out. Full extension at top.',m:'No KB -> bodyweight deep squat x15',s:'Nourish Move Love'},
+    {n:'KB Goblet Squat + Press',t:'kb',r:8,u:'reps',c:'Squat deep, stand, press bell overhead in one fluid combo.',m:'No KB -> DB thruster',s:'Nourish Move Love'},
+    {n:'DB Thruster',t:'db',r:8,u:'reps',c:'Front squat + overhead press in one movement. Most metabolically expensive per rep.',m:'No DB -> KB goblet + press',s:'BOXROX'},
     {n:'Jump Squats',t:'bw',r:12,u:'reps',c:'Explosive up, land softly through full foot.',m:'Scale: bodyweight squat if knees hurt',s:'BOXROX'},
-    {n:'KB Reverse Lunge',t:'kb',r:6,u:'each',c:'Bell in rack or suitcase. Step back, back knee close to floor.',m:'No KB → BW reverse lunge ×8 each',s:'Cavemantraining'},
+    {n:'KB Reverse Lunge',t:'kb',r:6,u:'each',c:'Bell in rack or suitcase. Step back, back knee close to floor.',m:'No KB -> BW reverse lunge x8 each',s:'Cavemantraining'},
     {n:'DB Reverse Lunge',t:'db',r:8,u:'each',c:'DBs at sides. Control descent. Drive through front heel to stand.',m:'Add a curl at top for extra bicep work',s:'Nourish Move Love'},
-    {n:'DB Split Squat',t:'db',r:8,u:'each',c:'Rear foot elevated on chair. Deep stretch at bottom. Knees track over toes.',m:'No DB → bodyweight split squat ×10',s:'Nourish Move Love'},
-    {n:'Pistol Squat',t:'bw',r:5,u:'each',c:'Assisted: hold a door frame for balance. Box pistol: lower onto chair, press back up.',m:'Beginner → regular squat ×15',s:'Calisthenics'},
+    {n:'DB Split Squat',t:'db',r:8,u:'each',c:'Rear foot elevated on chair. Deep stretch at bottom. Knees track over toes.',m:'No DB -> bodyweight split squat x10',s:'Nourish Move Love'},
+    {n:'Pistol Squat',t:'bw',r:5,u:'each',c:'Assisted: hold a door frame for balance. Box pistol: lower onto chair, press back up.',m:'Beginner -> regular squat x15',s:'Calisthenics'}
   ],
   push:[
-    {n:'Push-Ups',t:'bw',r:12,u:'reps',c:'Chest to floor, full lock-out. Wide = chest, diamond = triceps.',m:'Easier → incline push-ups on chair',s:'BOXROX'},
-    {n:'Pike Push-Ups',t:'bw',r:8,u:'reps',c:'Hips high, head toward floor. Triangle at bottom. Targets shoulders.',m:'Too hard → negative pike only (lower slowly)',s:'Calisthenics'},
-    {n:'KB Push Press',t:'kb',r:8,u:'each',c:'Slight knee dip, drive bell overhead. 4 each side or both.',m:'No KB → DB shoulder press ×8',s:'BOXROX'},
+    {n:'Push-Ups',t:'bw',r:12,u:'reps',c:'Chest to floor, full lock-out. Wide = chest, diamond = triceps.',m:'Easier -> incline push-ups on chair',s:'BOXROX'},
+    {n:'Pike Push-Ups',t:'bw',r:8,u:'reps',c:'Hips high, head toward floor. Triangle at bottom. Targets shoulders.',m:'Too hard -> negative pike only (lower slowly)',s:'Calisthenics'},
+    {n:'KB Push Press',t:'kb',r:8,u:'each',c:'Slight knee dip, drive bell overhead. 4 each side or both.',m:'No KB -> DB shoulder press x8',s:'BOXROX'},
     {n:'DB Overhead Press',t:'db',r:10,u:'reps',c:'Core tight, press straight up. Do not arch lower back. Full lockout at top.',m:'Can substitute KB press',s:'Nourish Move Love'},
-    {n:'Dips',t:'bw',r:10,u:'reps',c:'Two chairs. Elbows to 90°, press to lockout. Slow descent.',m:'Scale → bench dips, feet flat',s:'Calisthenics'},
-    {n:'KB Floor Press',t:'kb',r:8,u:'each',c:'Lie on floor, KB in one hand. Stabilizes shoulder. 4 each side.',m:'No KB → DB floor press ×8 each',s:'Cavemantraining'},
-    {n:'KB Clean and Press',t:'kb',r:5,u:'each',c:'Dead clean to rack, pause, then strict overhead press.',m:'No KB → DB hang clean + press',s:'Cavemantraining'},
-    {n:'Decline Push-Ups',t:'bw',r:10,u:'reps',c:'Feet on chair, hands on floor. Upper chest and shoulder emphasis.',m:'Easier → standard push-ups',s:'BOXROX'},
+    {n:'Dips',t:'bw',r:10,u:'reps',c:'Two chairs. Elbows to 90 degrees, press to lockout. Slow descent.',m:'Scale -> bench dips, feet flat',s:'Calisthenics'},
+    {n:'KB Floor Press',t:'kb',r:8,u:'each',c:'Lie on floor, KB in one hand. Stabilizes shoulder. 4 each side.',m:'No KB -> DB floor press x8 each',s:'Cavemantraining'},
+    {n:'KB Clean and Press',t:'kb',r:5,u:'each',c:'Dead clean to rack, pause, then strict overhead press.',m:'No KB -> DB hang clean + press',s:'Cavemantraining'},
+    {n:'Decline Push-Ups',t:'bw',r:10,u:'reps',c:'Feet on chair, hands on floor. Upper chest and shoulder emphasis.',m:'Easier -> standard push-ups',s:'BOXROX'}
   ],
   pull:[
-    {n:'Pull-Ups',t:'bw',r:5,u:'reps',c:'Dead hang to chin over bar. Lock scapula first. Slow 3-sec descent.',m:'No bar → Australian pull-ups under a table',s:'BOXROX'},
-    {n:'Chin-Ups',t:'bw',r:5,u:'reps',c:'Underhand grip. Bicep squeeze at top. Fully control the descent.',m:'Too hard → jump to top, lower slowly',s:'Calisthenics'},
-    {n:'DB Bent-Over Row',t:'db',r:10,u:'each',c:'Hip hinge, flat back. Row to hip. Full scapular retraction at top.',m:'No DB → KB bent-over row',s:'Nourish Move Love'},
-    {n:'KB Bent-Over Row',t:'kb',r:8,u:'each',c:'Dead row each side. Bell from floor, full scapular retraction.',m:'No KB → DB row or inverted row',s:'Cavemantraining'},
-    {n:'DB Renegade Row',t:'db',r:4,u:'each',c:'Plank on DBs, row one side at a time. Hips stay square — 4 each side.',m:'Scale → plank hold + separate rows',s:'Nourish Move Love'},
-    {n:'Inverted Rows',t:'bw',r:10,u:'reps',c:'Under a table or low bar. Body rigid, pull chest to bar.',m:'Easier → raise the bar height',s:'Calisthenics'},
-    {n:'Hanging Knee Raises',t:'bw',r:10,u:'reps',c:'From dead hang. Pull knees to chest using core. No swinging.',m:'No bar → lying leg raises, back flat',s:'BOXROX'},
-    {n:'DB High Pull',t:'db',r:10,u:'reps',c:'Hip hinge, explosive pull with elbows high and wide.',m:'No DB → KB high pull',s:'Nourish Move Love'},
+    {n:'Pull-Ups',t:'bw',r:5,u:'reps',c:'Dead hang to chin over bar. Lock scapula first. Slow 3-sec descent.',m:'No bar -> Australian pull-ups under a table',s:'BOXROX'},
+    {n:'Chin-Ups',t:'bw',r:5,u:'reps',c:'Underhand grip. Bicep squeeze at top. Fully control the descent.',m:'Too hard -> jump to top, lower slowly',s:'Calisthenics'},
+    {n:'DB Bent-Over Row',t:'db',r:10,u:'each',c:'Hip hinge, flat back. Row to hip. Full scapular retraction at top.',m:'No DB -> KB bent-over row',s:'Nourish Move Love'},
+    {n:'KB Bent-Over Row',t:'kb',r:8,u:'each',c:'Dead row each side. Bell from floor, full scapular retraction.',m:'No KB -> DB row or inverted row',s:'Cavemantraining'},
+    {n:'DB Renegade Row',t:'db',r:4,u:'each',c:'Plank on DBs, row one side at a time. Hips stay square - 4 each side.',m:'Scale -> plank hold + separate rows',s:'Nourish Move Love'},
+    {n:'Inverted Rows',t:'bw',r:10,u:'reps',c:'Under a table or low bar. Body rigid, pull chest to bar.',m:'Easier -> raise the bar height',s:'Calisthenics'},
+    {n:'Hanging Knee Raises',t:'bw',r:10,u:'reps',c:'From dead hang. Pull knees to chest using core. No swinging.',m:'No bar -> lying leg raises, back flat',s:'BOXROX'},
+    {n:'DB High Pull',t:'db',r:10,u:'reps',c:'Hip hinge, explosive pull with elbows high and wide.',m:'No DB -> KB high pull',s:'Nourish Move Love'}
   ],
   core:[
-    {n:'Plank Hold',t:'bw',r:30,u:'sec',c:'Elbows under shoulders. Squeeze glutes and abs. No raised hips.',m:'Easier → knee plank',s:'BOXROX'},
-    {n:'Mountain Climbers',t:'bw',r:20,u:'total',c:'Fast and controlled — 10 each leg. Spikes heart rate between loaded movements.',m:'Slower → 10 each leg, controlled',s:'BOXROX'},
-    {n:'Hollow Body Hold',t:'bw',r:25,u:'sec',c:'Lower back flat to floor, arms and legs extended. Full tension throughout.',m:'Easier → half hollow, knees bent',s:'Calisthenics'},
-    {n:'V-Ups',t:'bw',r:10,u:'reps',c:'Legs and torso rise together to form V shape. Control both halves.',m:'Easier → alternating single-leg V-up',s:'BOXROX'},
-    {n:'Lying Leg Raises',t:'bw',r:12,u:'reps',c:'Legs together, raise to 45°. Lower back flat the whole time.',m:'Easier → bent-knee raises',s:'Calisthenics'},
-    {n:'KB Turkish Get-Up',t:'kb',r:2,u:'each',c:'1 rep each side. Slow and deliberate. The most complete exercise that exists.',m:'Beginner → shoe on fist, no weight',s:'Cavemantraining'},
-    {n:'DB Woodchop',t:'db',r:10,u:'each',c:'Diagonal chop from hip to opposite shoulder. Rotational power, core braced.',m:'No DB → bodyweight rotational twist',s:'Nourish Move Love'},
-    {n:'Burpees',t:'bw',r:6,u:'reps',c:'Chest to floor, full extension at top. The most efficient fat-burning movement.',m:'Scale → step-back burpee, no jump',s:'BOXROX'},
-    {n:'High-to-Low Plank',t:'bw',r:8,u:'reps',c:'Push-up → lower elbow by elbow → press back up. Core anti-rotation.',m:'Slow down each transition',s:'Calisthenics'},
-    {n:'KB Suitcase Carry',t:'kb',r:20,u:'meters',c:'One KB at side, resist leaning sideways. Core anti-lateral flexion.',m:'No space → stationary hold 20 sec each',s:'Cavemantraining'},
+    {n:'Plank Hold',t:'bw',r:30,u:'sec',c:'Elbows under shoulders. Squeeze glutes and abs. No raised hips.',m:'Easier -> knee plank',s:'BOXROX'},
+    {n:'Mountain Climbers',t:'bw',r:20,u:'total',c:'Fast and controlled - 10 each leg. Spikes heart rate between loaded movements.',m:'Slower -> 10 each leg, controlled',s:'BOXROX'},
+    {n:'Hollow Body Hold',t:'bw',r:25,u:'sec',c:'Lower back flat to floor, arms and legs extended. Full tension throughout.',m:'Easier -> half hollow, knees bent',s:'Calisthenics'},
+    {n:'V-Ups',t:'bw',r:10,u:'reps',c:'Legs and torso rise together to form V shape. Control both halves.',m:'Easier -> alternating single-leg V-up',s:'BOXROX'},
+    {n:'Lying Leg Raises',t:'bw',r:12,u:'reps',c:'Legs together, raise to 45 degrees. Lower back flat the whole time.',m:'Easier -> bent-knee raises',s:'Calisthenics'},
+    {n:'KB Turkish Get-Up',t:'kb',r:2,u:'each',c:'1 rep each side. Slow and deliberate. The most complete exercise that exists.',m:'Beginner -> shoe on fist, no weight',s:'Cavemantraining'},
+    {n:'DB Woodchop',t:'db',r:10,u:'each',c:'Diagonal chop from hip to opposite shoulder. Rotational power, core braced.',m:'No DB -> bodyweight rotational twist',s:'Nourish Move Love'},
+    {n:'Burpees',t:'bw',r:6,u:'reps',c:'Chest to floor, full extension at top. The most efficient fat-burning movement.',m:'Scale -> step-back burpee, no jump',s:'BOXROX'},
+    {n:'High-to-Low Plank',t:'bw',r:8,u:'reps',c:'Push-up then lower elbow by elbow then press back up. Core anti-rotation.',m:'Slow down each transition',s:'Calisthenics'},
+    {n:'KB Suitcase Carry',t:'kb',r:20,u:'meters',c:'One KB at side, resist leaning sideways. Core anti-lateral flexion.',m:'No space -> stationary hold 20 sec each',s:'Cavemantraining'}
   ],
   carry:[
-    {n:'KB Farmer Carry',t:'kb',r:20,u:'meters',c:'Two KBs, walk tall. Grip, traps, and core under load.',m:'No space → march in place 20 steps',s:'BOXROX'},
-    {n:'DB Waiter Walk',t:'db',r:20,u:'meters',c:'One DB overhead, arm locked. Walk slow. Shoulder stability and core.',m:'No space → overhead hold 20 sec',s:'Nourish Move Love'},
-    {n:'KB Rack Carry',t:'kb',r:20,u:'meters',c:'KB in front rack, elbow down, core braced. Both sides.',m:'No space → rack hold and march 20 steps',s:'Cavemantraining'},
+    {n:'KB Farmer Carry',t:'kb',r:20,u:'meters',c:'Two KBs, walk tall. Grip, traps, and core under load.',m:'No space -> march in place 20 steps',s:'BOXROX'},
+    {n:'DB Waiter Walk',t:'db',r:20,u:'meters',c:'One DB overhead, arm locked. Walk slow. Shoulder stability and core.',m:'No space -> overhead hold 20 sec',s:'Nourish Move Love'},
+    {n:'KB Rack Carry',t:'kb',r:20,u:'meters',c:'KB in front rack, elbow down, core braced. Both sides.',m:'No space -> rack hold and march 20 steps',s:'Cavemantraining'}
   ]
 };
 
 var FOCUSES = [
-  {name:'Push Focus',color:'var(--orange)',bc:'var(--odim)',
-   desc:'Full-body AMRAP with a push emphasis. KB ballistics alternate with pressing movements to keep heart rate high while push muscles recover between sets.',
-   tip:{t:'Cavemantraining Push Method',b:'Alternating KB ballistics (swing/hinge) with pressing keeps the heart rate high while the pushing muscles get just enough recovery.'},
-   slots:['hinge','push','squat','push','core'],
-   wu:['Jumping Jacks — 60s','Wrist Circles + Arm Circles — 30s','KB Halos — 5 each direction','Easy Incline Push-Up — 10 reps'],
-   cd:['Slow Walk — 2 min','Wall Chest Stretch — 30s each side','Reverse Shoulder Stretch — 30s','Wrist Extensor Stretch — 30s each']},
-  {name:'Pull Focus',color:'var(--cyan)',bc:'var(--cdim)',
-   desc:'Posterior chain emphasis. KB cleans, rows, and pull-ups paired with explosive hinges target your largest muscle group for maximum calorie burn.',
-   tip:{t:'BOXROX Posterior Chain Principle',b:'The back and posterior chain are your biggest calorie-burning asset. Keep transitions fast — the KB moving is the warm-up for the next pull.'},
-   slots:['hinge','pull','pull','squat','core'],
-   wu:['March in Place — 2 min','Arm Circles — 10 forward + 10 back','KB Halos — 5 each direction','Dead Hang — 30s'],
-   cd:['Slow Walk — 2 min','Dead Hang Stretch — 30s','Thread the Needle — 30s each','Forward Fold — 30s']},
-  {name:'Legs Focus',color:'var(--green)',bc:'#1d5c38',
-   desc:'Legs are your biggest calorie-burning asset. KB squats, lunges, and explosive jumps attack glutes, quads, and hamstrings while keeping cardio output maximal.',
-   tip:{t:'NML Legs Protocol',b:'The clean → squat → press sequence is the most metabolically expensive chain you can run. Track your Friday rounds — improvement week over week proves the recomp is working.'},
-   slots:['hinge','squat','squat','push','core'],
-   wu:['High Knees — 90s','Slow Bodyweight Squat — 10 reps','Hip Circles + Lunges — 1 min','KB Halos + Dead Swing — 5 each'],
-   cd:['Slow Walk — 2 min','Knights Stretch — 30s each','Pigeon Pose — 30s each','Forward Fold — 30s']},
-  {name:'Full Body',color:'#b8a060',bc:'#5a4f2a',
-   desc:'All three tools in one circuit. KB ballistics, DB strength, and bodyweight calisthenics — maximum metabolic demand and EPOC effect.',
-   tip:{t:'EPOC Effect',b:'Mixed-modal circuits keep heart rate in 75–85% MHR — the optimal zone for simultaneous fat loss and muscle preservation. Caloric burn stays elevated 24–48 hours post-workout.'},
-   slots:['hinge','push','pull','squat','core'],
-   wu:['Jumping Jacks + High Knees — 90s','KB Halos + Wrist Circles — 1 min','Slow Goblet Squat — 5 reps','Dead Hang — 20s'],
-   cd:["Slow Walk — 2 min","Child's Pose — 30s","Piriformis Stretch — 30s each","T-Spine Windmill — 5 each side"]},
-  {name:'Core Focus',color:'#9b6eda',bc:'#5a3a8a',
-   desc:'Core stability and anti-rotation paired with KB ballistics. Every carry, plank, and explosive movement here builds the foundation for every other lift.',
-   tip:{t:'Cavemantraining Core Method',b:"Core here isn't crunches — it's resisting rotation during carries, bracing during swings, and stabilizing during presses. Every exercise is a core exercise."},
-   slots:['hinge','core','push','carry','core'],
-   wu:['Jumping Jacks — 60s','Cat-Cow — 10 slow reps','Dead Bug — 5 each side','Wrist Circles — 30s'],
-   cd:["Slow Walk — 2 min","Child's Pose — 60s","Cat-Cow — 10 reps","Cobra Stretch — 30s"]},
+  {
+    name:'Push Focus', color:'var(--orange)', bc:'var(--odim)',
+    desc:'Full-body AMRAP with a push emphasis. KB ballistics alternate with pressing movements to keep heart rate high while push muscles recover between sets.',
+    tip:{t:'Cavemantraining Push Method',b:'Alternating KB ballistics with pressing keeps heart rate high while pushing muscles get just enough recovery.'},
+    slots:['hinge','push','squat','push','core'],
+    wu:['Jumping Jacks - 60s','Wrist Circles + Arm Circles - 30s','KB Halos - 5 each direction','Easy Incline Push-Up - 10 reps'],
+    cd:['Slow Walk - 2 min','Wall Chest Stretch - 30s each side','Reverse Shoulder Stretch - 30s','Wrist Extensor Stretch - 30s each']
+  },
+  {
+    name:'Pull Focus', color:'var(--cyan)', bc:'var(--cdim)',
+    desc:'Posterior chain emphasis. KB cleans, rows, and pull-ups paired with explosive hinges target your largest muscle group for maximum calorie burn.',
+    tip:{t:'BOXROX Posterior Chain Principle',b:'The back and posterior chain are your biggest calorie-burning asset. Keep transitions fast - the KB moving is the warm-up for the next pull.'},
+    slots:['hinge','pull','pull','squat','core'],
+    wu:['March in Place - 2 min','Arm Circles - 10 forward + 10 back','KB Halos - 5 each direction','Dead Hang - 30s'],
+    cd:['Slow Walk - 2 min','Dead Hang Stretch - 30s','Thread the Needle - 30s each','Forward Fold - 30s']
+  },
+  {
+    name:'Legs Focus', color:'var(--green)', bc:'#1d5c38',
+    desc:'Legs are your biggest calorie-burning asset. KB squats, lunges, and explosive jumps attack glutes, quads, and hamstrings while keeping cardio output maximal.',
+    tip:{t:'NML Legs Protocol',b:'The clean to squat to press sequence is the most metabolically expensive chain you can run. Track your rounds - improvement proves the recomp is working.'},
+    slots:['hinge','squat','squat','push','core'],
+    wu:['High Knees - 90s','Slow Bodyweight Squat - 10 reps','Hip Circles + Lunges - 1 min','KB Halos + Dead Swing - 5 each'],
+    cd:['Slow Walk - 2 min','Knights Stretch - 30s each','Pigeon Pose - 30s each','Forward Fold - 30s']
+  },
+  {
+    name:'Full Body', color:'#b8a060', bc:'#5a4f2a',
+    desc:'All three tools in one circuit. KB ballistics, DB strength, and bodyweight calisthenics - maximum metabolic demand and EPOC effect.',
+    tip:{t:'EPOC Effect',b:'Mixed-modal circuits keep heart rate in 75-85% MHR - the optimal zone for simultaneous fat loss and muscle preservation. Caloric burn stays elevated 24-48 hours post-workout.'},
+    slots:['hinge','push','pull','squat','core'],
+    wu:['Jumping Jacks + High Knees - 90s','KB Halos + Wrist Circles - 1 min','Slow Goblet Squat - 5 reps','Dead Hang - 20s'],
+    cd:["Slow Walk - 2 min","Child's Pose - 30s","Piriformis Stretch - 30s each","T-Spine Windmill - 5 each side"]
+  },
+  {
+    name:'Core Focus', color:'#9b6eda', bc:'#5a3a8a',
+    desc:'Core stability and anti-rotation paired with KB ballistics. Every carry, plank, and explosive movement builds the foundation for every other lift.',
+    tip:{t:'Cavemantraining Core Method',b:"Core training here is about resisting rotation during carries, bracing during swings, and stabilizing during presses. Every exercise is a core exercise."},
+    slots:['hinge','core','push','carry','core'],
+    wu:['Jumping Jacks - 60s','Cat-Cow - 10 slow reps','Dead Bug - 5 each side','Wrist Circles - 30s'],
+    cd:["Slow Walk - 2 min","Child's Pose - 60s","Cat-Cow - 10 reps","Cobra Stretch - 30s"]
+  }
 ];
 
-// ═══════════════════════════════════════════════════════
-// SEEDED RNG
-// ═══════════════════════════════════════════════════════
+// Seeded RNG - same seed = same workout for the day
 function seededRng(seed) {
-  var s = seed >>> 0;
+  var s = (seed >>> 0);
   return function() {
     s = (Math.imul(s, 1664525) + 1013904223) >>> 0;
     return s / 4294967295;
   };
 }
+
 function todaySeed() {
   var d = new Date();
-  return (d.getFullYear() * 10000 + (d.getMonth()+1) * 100 + d.getDate()) >>> 0;
+  return (d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate()) >>> 0;
 }
-
-// Safe localStorage wrappers — GitHub Pages can block localStorage in some contexts
-function lsGet(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
-function lsSet(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
-function lsDel(k){ try{ localStorage.removeItem(k); }catch(e){} }
 
 function rerollOffset() {
   return parseInt(lsGet('rr-' + todaySeed()) || '0');
 }
+
 function bumpReroll() {
   var n = rerollOffset() + 1;
   lsSet('rr-' + todaySeed(), n);
@@ -665,7 +673,7 @@ function generateWod(seed) {
     var pool = POOL[pat];
     var ex = pool[Math.floor(rng() * pool.length)];
     if (seen[ex.n]) {
-      var alts = pool.filter(function(e){ return !seen[e.n]; });
+      var alts = pool.filter(function(e) { return !seen[e.n]; });
       if (alts.length) ex = alts[Math.floor(rng() * alts.length)];
     }
     seen[ex.n] = true;
@@ -674,10 +682,7 @@ function generateWod(seed) {
   return { focus: focus, exercises: exercises };
 }
 
-// ═══════════════════════════════════════════════════════
-// RENDER WOD
-// ═══════════════════════════════════════════════════════
-var currentWod = null;
+// Render helpers
 var DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 var MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 var SRC_URLS = {
@@ -690,89 +695,120 @@ var SRC_URLS = {
 function srcPillHtml(src) {
   var url = SRC_URLS[src] || '#';
   var cls = src === 'Nourish Move Love' ? 'p-nml' : src === 'Cavemantraining' ? 'p-cm' : 'p-bx';
-  return '<a class="pill '+cls+'" href="'+url+'" target="_blank" rel="noopener">'+src+'</a>';
+  return '<a class="pill ' + cls + '" href="' + url + '" target="_blank" rel="noopener">' + src + '</a>';
 }
+
 function typePillHtml(t) {
-  if (t==='kb') return '<span class="type-pill tp-kb">KB</span>';
-  if (t==='db') return '<span class="type-pill tp-db">DB</span>';
+  if (t === 'kb') return '<span class="type-pill tp-kb">KB</span>';
+  if (t === 'db') return '<span class="type-pill tp-db">DB</span>';
   return '<span class="type-pill tp-bw">BW</span>';
 }
-function rowClass(t) { return t==='kb' ? 'kb' : t==='db' ? 'db' : 'bw'; }
+
+function rowClass(t) {
+  return t === 'kb' ? 'kb' : t === 'db' ? 'db' : 'bw';
+}
+
+var currentWod = null;
+
+function todayKey() {
+  var d = new Date();
+  return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+}
+
+function pad(n) { return n < 10 ? '0' + n : '' + n; }
+
+function todayWorked() {
+  try {
+    return (JSON.parse(lsGet('hr-worked') || '[]')).indexOf(todayKey()) !== -1;
+  } catch(e) { return false; }
+}
+
+function markDone() {
+  var s = document.getElementById('wf-start');
+  var f = document.getElementById('wf-finish');
+  if (s) { s.textContent = 'DONE'; s.className = 'wf-btn wfb-s done'; }
+  if (f) { f.textContent = 'LOGGED'; f.className = 'wf-btn wfb-f done'; }
+}
 
 function renderWod(wod) {
+  var wc = document.getElementById('wod-card');
+  if (!wc) return;
   currentWod = wod;
   var f = wod.focus;
   var exs = wod.exercises;
 
   var exHtml = exs.map(function(ex, i) {
-    return '<div class="ex-row '+rowClass(ex.t)+'">' +
-      '<div class="ex-n">'+(i+1)+'</div>' +
+    return '<div class="ex-row ' + rowClass(ex.t) + '">' +
+      '<div class="ex-n">' + (i + 1) + '</div>' +
       '<div class="ex-info">' +
-        '<div class="ex-name">'+ex.n+typePillHtml(ex.t)+'</div>' +
-        '<div class="ex-cue">'+ex.c+'</div>' +
-        (ex.m ? '<div class="ex-mod">\u2197 '+ex.m+'</div>' : '') +
-        '<div class="ex-src">'+srcPillHtml(ex.s)+'</div>' +
+        '<div class="ex-name">' + ex.n + typePillHtml(ex.t) + '</div>' +
+        '<div class="ex-cue">' + ex.c + '</div>' +
+        (ex.m ? '<div class="ex-mod">Scale: ' + ex.m + '</div>' : '') +
+        '<div class="ex-src">' + srcPillHtml(ex.s) + '</div>' +
       '</div>' +
-      '<div class="ex-tgt"><div class="ex-reps">'+ex.r+'</div><div class="ex-unit">'+ex.u+'</div></div>' +
+      '<div class="ex-tgt"><div class="ex-reps">' + ex.r + '</div><div class="ex-unit">' + ex.u + '</div></div>' +
     '</div>';
   }).join('');
 
-  var wuHtml = f.wu.map(function(w){ return '<div class="s-row">'+w+'</div>'; }).join('');
-  var cdHtml = f.cd.map(function(w){ return '<div class="s-row">'+w+'</div>'; }).join('');
+  var wuHtml = f.wu.map(function(w) { return '<div class="s-row">' + w + '</div>'; }).join('');
+  var cdHtml = f.cd.map(function(w) { return '<div class="s-row">' + w + '</div>'; }).join('');
+  var savedNote = lsGet('note-' + todayKey()) || '';
 
-  var savedNote = lsGet('note-'+todayKey()) || '';
-
-  var html = '<div class="wod-hdr">' +
-    '<div class="wod-top-row">' +
-      '<div class="wod-day">'+DAYS[new Date().getDay()]+'</div>' +
-      '<div class="wod-focus-tag" style="color:'+f.color+';border-color:'+f.bc+';background:rgba(255,255,255,.03)">'+f.name+'</div>' +
+  var html =
+    '<div class="wod-hdr">' +
+      '<div class="wod-top-row">' +
+        '<div class="wod-day">' + DAYS[new Date().getDay()] + '</div>' +
+        '<div class="wod-focus-tag" style="color:' + f.color + ';border-color:' + f.bc + ';background:rgba(255,255,255,.03)">' + f.name + '</div>' +
+      '</div>' +
+      '<div class="wod-desc">' + f.desc + '</div>' +
+      '<div class="wod-chips">' +
+        '<div class="chip hi">20 min AMRAP</div>' +
+        '<div class="chip">KB 16-20kg / DB 15-20lb</div>' +
+        '<div class="chip">' + exs.length + ' movements</div>' +
+      '</div>' +
+      '<div class="wf-row">' +
+        '<button class="wf-btn wfb-s" id="wf-start" onclick="startWorkout()">START</button>' +
+        '<button class="wf-btn wfb-f" id="wf-finish" onclick="finishWorkout()">FINISH &amp; LOG</button>' +
+      '</div>' +
     '</div>' +
-    '<div class="wod-desc">'+f.desc+'</div>' +
-    '<div class="wod-chips"><div class="chip hi">20 min AMRAP</div><div class="chip">KB 16-20kg / DB 15-20lb</div><div class="chip">'+exs.length+' movements</div></div>' +
-    '<div class="wf-row">' +
-      '<button class="wf-btn wfb-s" id="wf-start" onclick="startWorkout()">&#9654; START</button>' +
-      '<button class="wf-btn wfb-f" id="wf-finish" onclick="finishWorkout()">&#10003; FINISH &amp; LOG</button>' +
+    '<div class="ex-lbl">One Round - Complete in Order</div>' +
+    '<div class="ex-list">' + exHtml + '</div>' +
+    '<div class="tip"><b>' + f.tip.t + '</b>' + f.tip.b + '</div>' +
+    '<div class="riw">' +
+      '<span class="riw-lbl">Round Counter</span>' +
+      '<button class="riw-rst" onclick="riwReset()">Reset</button>' +
+      '<span class="riw-n" id="riw-n">0</span>' +
+      '<button class="riw-add" onclick="riwAdd()">+ Round</button>' +
     '</div>' +
-  '</div>' +
-  '<div class="ex-lbl">One Round \u2014 Complete in Order</div>' +
-  '<div class="ex-list">'+exHtml+'</div>' +
-  '<div class="tip"><b>'+f.tip.t+'</b>'+f.tip.b+'</div>' +
-  '<div class="riw"><span class="riw-lbl">Round Counter</span><button class="riw-rst" onclick="riwReset()">Reset</button><span class="riw-n" id="riw-n">0</span><button class="riw-add" onclick="riwAdd()">+ Round</button></div>' +
-  '<div class="phase wu"><div class="ph-head" onclick="phToggle(this)"><span class="ph-icon">\uD83D\uDD25</span><span class="ph-title">Warm-Up \u00B7 4 min</span><span class="ph-chev">\u25BC</span></div><div class="ph-body"><p class="ph-note">Complete before starting the clock.</p><div class="s-list">'+wuHtml+'</div></div></div>' +
-  '<div class="phase cd" style="margin-top:6px"><div class="ph-head" onclick="phToggle(this)"><span class="ph-icon">\u2744\uFE0F</span><span class="ph-title">Cool-Down \u00B7 5 min</span><span class="ph-chev">\u25BC</span></div><div class="ph-body"><p class="ph-note">Walk 2 min then hold each stretch 30 seconds.</p><div class="s-list">'+cdHtml+'</div></div></div>' +
-  '<div class="notes-wrap">' +
-    '<div class="notes-lbl"><span>Session Notes</span><span class="sv-badge" id="sv-badge">\u2713 Saved</span></div>' +
-    '<textarea class="notes-ta" id="notes-ta" placeholder="Rounds, weights used, how it felt...">' + savedNote.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</textarea>' +
+    '<div class="phase wu">' +
+      '<div class="ph-head" onclick="phToggle(this)">' +
+        '<span class="ph-icon">&#x1F525;</span>' +
+        '<span class="ph-title">Warm-Up - 4 min</span>' +
+        '<span class="ph-chev">&#x25BC;</span>' +
+      '</div>' +
+      '<div class="ph-body"><p class="ph-note">Complete before starting the clock.</p><div class="s-list">' + wuHtml + '</div></div>' +
+    '</div>' +
+    '<div class="phase cd" style="margin-top:6px">' +
+      '<div class="ph-head" onclick="phToggle(this)">' +
+        '<span class="ph-icon">&#x2744;&#xFE0F;</span>' +
+        '<span class="ph-title">Cool-Down - 5 min</span>' +
+        '<span class="ph-chev">&#x25BC;</span>' +
+      '</div>' +
+      '<div class="ph-body"><p class="ph-note">Walk 2 min then hold each stretch 30 seconds.</p><div class="s-list">' + cdHtml + '</div></div>' +
+    '</div>' +
+    '<div class="notes-wrap">' +
+      '<div class="notes-lbl"><span>Session Notes</span><span class="sv-badge" id="sv-badge">Saved</span></div>' +
+      '<textarea class="notes-ta" id="notes-ta" placeholder="Rounds, weights used, how it felt...">' + savedNote.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</textarea>' +
 
 ```
-'<div class="notes-btns"><button class="nb nb-sv" onclick="saveNote()">Save</button><button class="nb nb-cl" onclick="clearNote()">Clear</button></div>' +
+  '<div class="notes-btns"><button class="nb nb-sv" onclick="saveNote()">Save</button><button class="nb nb-cl" onclick="clearNote()">Clear</button></div>' +
+'</div>';
 ```
 
-‘</div>’;
-
-var wc = document.getElementById(‘wod-card’);
-if (!wc) return;
 wc.innerHTML = html;
 var hf = document.getElementById(‘hero-focus’);
 if (hf) hf.textContent = f.name;
-
 if (todayWorked()) markDone();
-}
-
-function todayKey() {
-var d = new Date();
-return d.getFullYear()+’-’+pad(d.getMonth()+1)+’-’+pad(d.getDate());
-}
-function todayWorked() {
-try { return (JSON.parse(lsGet(‘hr-worked’)||’[]’)).indexOf(todayKey()) !== -1; }
-catch(e){ return false; }
-}
-function pad(n){ return n < 10 ? ‘0’+n : ‘’+n; }
-function markDone() {
-var s = document.getElementById(‘wf-start’);
-var f = document.getElementById(‘wf-finish’);
-if (s) { s.textContent = ‘\u2713 DONE’; s.className = ‘wf-btn wfb-s done’; }
-if (f) { f.textContent = ‘\u2713 LOGGED’; f.className = ‘wf-btn wfb-f done’; }
 }
 
 function initWod() {
@@ -781,32 +817,29 @@ var seed = todaySeed() + rerollOffset() * 999983;
 renderWod(generateWod(seed));
 } catch(e) {
 var wc = document.getElementById(‘wod-card’);
-if (wc) wc.innerHTML = ‘<div style="padding:20px;color:#c24040;font-family:monospace;font-size:11px">Error loading workout. Try refreshing.<br>’ + e.message + ‘</div>’;
-console.error(‘initWod error:’, e);
+if (wc) wc.innerHTML = ’<div style="padding:20px;color:#c24040;font-family:monospace;font-size:11px">Error: ’ + e.message + ‘</div>’;
 }
 }
+
 function reroll() {
 var n = bumpReroll();
-document.getElementById(‘reroll-note’).textContent = ‘Variation #’+(n+1);
+var rn = document.getElementById(‘reroll-note’);
+if (rn) rn.textContent = ‘Variation #’ + (n + 1);
 initWod();
 }
 
-// ═══════════════════════════════════════════════════════
-// TABS
-// ═══════════════════════════════════════════════════════
+// Tab switching
 function show(id, btn) {
-var sections = document.querySelectorAll(’.section’);
-for (var i=0; i<sections.length; i++) sections[i].classList.remove(‘active’);
+var secs = document.querySelectorAll(’.section’);
+for (var i = 0; i < secs.length; i++) secs[i].classList.remove(‘active’);
 var tabs = document.querySelectorAll(’.tab’);
-for (var i=0; i<tabs.length; i++) tabs[i].classList.remove(‘active’);
+for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove(‘active’);
 document.getElementById(id).classList.add(‘active’);
 btn.classList.add(‘active’);
 if (id === ‘history’) renderHistory();
 }
 
-// ═══════════════════════════════════════════════════════
-// PHASE TOGGLE
-// ═══════════════════════════════════════════════════════
+// Phase toggle (warmup/cooldown)
 function phToggle(h) {
 var b = h.nextElementSibling;
 var c = h.querySelector(’.ph-chev’);
@@ -815,465 +848,562 @@ var open = b.classList.toggle(‘open’);
 if (c) c.style.transform = open ? ‘rotate(180deg)’ : ‘’;
 }
 
-// ═══════════════════════════════════════════════════════
-// START / FINISH
-// ═══════════════════════════════════════════════════════
+// Inline Timer Overlay
+var itoSec = 1200, itoTotal = 1200, itoRunning = false, itoInterval = null, itoRounds = 0;
+
+function showITO() {
+var el = document.getElementById(‘ito’);
+if (el) el.classList.add(‘visible’);
+}
+
+function hideITO() {
+var el = document.getElementById(‘ito’);
+if (el) el.classList.remove(‘visible’);
+}
+
+function fmtTime(s) { return pad(Math.floor(s / 60)) + ‘:’ + pad(s % 60); }
+
+function itoSetState(cls, ph) {
+var c = document.getElementById(‘ito-clock’);
+var p = document.getElementById(‘ito-phase’);
+if (c) c.className = ’ito-clock ’ + cls;
+if (p) p.textContent = ph;
+}
+
+function itoUpdateClock() {
+var c = document.getElementById(‘ito-clock’);
+var b = document.getElementById(‘ito-bar’);
+if (c) c.textContent = fmtTime(itoSec);
+if (b) b.style.width = (itoTotal > 0 ? (itoSec / itoTotal) * 100 : 100) + ‘%’;
+}
+
+function itoPreset(min, btn) {
+if (itoRunning) return;
+var btns = document.querySelectorAll(’.ito-preset’);
+for (var i = 0; i < btns.length; i++) btns[i].classList.remove(‘sel’);
+btn.classList.add(‘sel’);
+itoTotal = min * 60;
+itoSec = itoTotal;
+itoUpdateClock();
+itoSetState(‘idle’, ‘READY’);
+}
+
+function itoAction() {
+if (!itoRunning) {
+if (itoSec <= 0) itoReset();
+itoRunning = true;
+var sb = document.getElementById(‘ito-btn’);
+if (sb) sb.textContent = ‘PAUSE’;
+itoSetState(‘running’, ‘GO - AMRAP IN PROGRESS’);
+itoInterval = setInterval(function() {
+itoSec–;
+itoUpdateClock();
+if (itoSec === 30) itoSetState(‘running’, ‘30 SECONDS LEFT’);
+if (itoSec === 10) itoSetState(‘running’, ‘PUSH - FINAL 10’);
+if (itoSec <= 0) {
+clearInterval(itoInterval);
+itoRunning = false;
+var c = document.getElementById(‘ito-clock’);
+var b = document.getElementById(‘ito-bar’);
+var sb2 = document.getElementById(‘ito-btn’);
+if (c) c.textContent = ‘DONE’;
+if (b) b.style.width = ‘0%’;
+itoSetState(‘done’, “TIME’S UP”);
+if (sb2) sb2.textContent = ‘START’;
+ringBell();
+}
+}, 1000);
+} else {
+clearInterval(itoInterval);
+itoRunning = false;
+var sb = document.getElementById(‘ito-btn’);
+if (sb) sb.textContent = ‘RESUME’;
+itoSetState(‘paused’, ‘PAUSED’);
+}
+}
+
+function itoReset() {
+clearInterval(itoInterval);
+itoRunning = false;
+var sel = document.querySelector(’.ito-preset.sel’);
+if (sel) itoTotal = parseInt(sel.textContent) * 60;
+itoSec = itoTotal;
+itoUpdateClock();
+itoSetState(‘idle’, ‘READY’);
+var sb = document.getElementById(‘ito-btn’);
+if (sb) sb.textContent = ‘START’;
+}
+
+function itoRoundAdd() {
+var el = document.getElementById(‘ito-rnum’);
+if (el) el.textContent = ++itoRounds;
+}
+
+// Start/Finish workout
 var wStarted = false;
+
 function startWorkout() {
 var sb = document.getElementById(‘wf-start’);
 if (!sb || sb.classList.contains(‘done’) || sb.classList.contains(‘going’)) return;
 wStarted = true;
-sb.textContent = ‘\u23F1 IN PROGRESS’;
+sb.textContent = ‘IN PROGRESS’;
 sb.className = ‘wf-btn wfb-s going’;
 var fb = document.getElementById(‘wf-finish’);
 if (fb) fb.className = ‘wf-btn wfb-f ready’;
 showITO();
 if (!itoRunning && itoSec > 0) itoAction();
 }
+
 function finishWorkout() {
 var fb = document.getElementById(‘wf-finish’);
 if (!fb || fb.classList.contains(‘done’)) return;
 var worked;
-try { worked = JSON.parse(lsGet(‘hr-worked’)||’[]’); } catch(e){ worked=[]; }
-if (worked.indexOf(todayKey()) === -1) { worked.push(todayKey()); }
+try { worked = JSON.parse(lsGet(‘hr-worked’) || ‘[]’); } catch(e) { worked = []; }
+if (worked.indexOf(todayKey()) === -1) worked.push(todayKey());
 lsSet(‘hr-worked’, JSON.stringify(worked));
 var rn = document.getElementById(‘riw-n’);
-var rounds = rn ? parseInt(rn.textContent)||0 : 0;
+var rounds = rn ? parseInt(rn.textContent) || 0 : 0;
 var ta = document.getElementById(‘notes-ta’);
 var notes = ta ? ta.value : ‘’;
-sessions.push({day: currentWod ? currentWod.focus.name : ‘Workout’, rounds:rounds, wt:’’, feel:’’, notes:notes, date:new Date().toLocaleDateString(), wod:currentWod});
+sessions.push({
+day: currentWod ? currentWod.focus.name : ‘Workout’,
+rounds: rounds, wt: ‘’, feel: ‘’, notes: notes,
+date: new Date().toLocaleDateString(),
+wod: currentWod
+});
 saveSessions();
 renderTracker();
 markDone();
 wStarted = false;
 }
 
-// ═══════════════════════════════════════════════════════
-// INLINE ROUND COUNTER
-// ═══════════════════════════════════════════════════════
+// Round counter
 var riwCount = 0;
-function riwAdd() { var el=document.getElementById(‘riw-n’); if(el) el.textContent=++riwCount; }
-function riwReset() { riwCount=0; var el=document.getElementById(‘riw-n’); if(el) el.textContent=0; }
+function riwAdd() {
+var el = document.getElementById(‘riw-n’);
+if (el) el.textContent = ++riwCount;
+}
+function riwReset() {
+riwCount = 0;
+var el = document.getElementById(‘riw-n’);
+if (el) el.textContent = 0;
+}
 
-// ═══════════════════════════════════════════════════════
-// NOTES
-// ═══════════════════════════════════════════════════════
+// Notes
 function saveNote() {
 var ta = document.getElementById(‘notes-ta’);
 if (!ta) return;
-lsSet(‘note-’+todayKey(), ta.value);
+lsSet(‘note-’ + todayKey(), ta.value);
 var b = document.getElementById(‘sv-badge’);
-if (b) { b.style.opacity=‘1’; setTimeout(function(){ b.style.opacity=‘0’; }, 1800); }
+if (b) { b.style.opacity = ‘1’; setTimeout(function() { b.style.opacity = ‘0’; }, 1800); }
 }
 function clearNote() {
 var ta = document.getElementById(‘notes-ta’);
 if (ta) ta.value = ‘’;
-lsDel(‘note-’+todayKey());
+lsDel(‘note-’ + todayKey());
 }
 
-// ═══════════════════════════════════════════════════════
-// BELL SOUND
-// ═══════════════════════════════════════════════════════
+// Boxing Bell sound
 function ringBell() {
 try {
 var ctx = new (window.AudioContext || window.webkitAudioContext)();
-[[0,.7,880,440,1.2],[.38,.5,1100,550,.9],[.76,.45,880,440,1.0]].forEach(function(p){
-var o=ctx.createOscillator(), g=ctx.createGain();
+var params = [[0,.7,880,440,1.2],[.38,.5,1100,550,.9],[.76,.45,880,440,1.0]];
+params.forEach(function(p) {
+var o = ctx.createOscillator(), g = ctx.createGain();
 o.connect(g); g.connect(ctx.destination);
-o.type=‘sine’; o.frequency.setValueAtTime(p[2],ctx.currentTime+p[0]);
-o.frequency.exponentialRampToValueAtTime(p[3],ctx.currentTime+p[0]+.8);
-g.gain.setValueAtTime(.001,ctx.currentTime+p[0]);
-g.gain.exponentialRampToValueAtTime(p[1],ctx.currentTime+p[0]+.015);
-g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+p[0]+p[4]);
-o.start(ctx.currentTime+p[0]); o.stop(ctx.currentTime+p[0]+p[4]+.1);
+o.type = ‘sine’;
+o.frequency.setValueAtTime(p[2], ctx.currentTime + p[0]);
+o.frequency.exponentialRampToValueAtTime(p[3], ctx.currentTime + p[0] + .8);
+g.gain.setValueAtTime(.001, ctx.currentTime + p[0]);
+g.gain.exponentialRampToValueAtTime(p[1], ctx.currentTime + p[0] + .015);
+g.gain.exponentialRampToValueAtTime(.001, ctx.currentTime + p[0] + p[4]);
+o.start(ctx.currentTime + p[0]);
+o.stop(ctx.currentTime + p[0] + p[4] + .1);
 });
-var o2=ctx.createOscillator(), g2=ctx.createGain();
-o2.connect(g2); g2.connect(ctx.destination); o2.type=‘triangle’; o2.frequency.value=1760;
-g2.gain.setValueAtTime(.001,ctx.currentTime); g2.gain.exponentialRampToValueAtTime(.25,ctx.currentTime+.01);
-g2.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.5);
-o2.start(ctx.currentTime); o2.stop(ctx.currentTime+.6);
+var o2 = ctx.createOscillator(), g2 = ctx.createGain();
+o2.connect(g2); g2.connect(ctx.destination);
+o2.type = ‘triangle’; o2.frequency.value = 1760;
+g2.gain.setValueAtTime(.001, ctx.currentTime);
+g2.gain.exponentialRampToValueAtTime(.25, ctx.currentTime + .01);
+g2.gain.exponentialRampToValueAtTime(.001, ctx.currentTime + .5);
+o2.start(ctx.currentTime); o2.stop(ctx.currentTime + .6);
 } catch(e) {}
-flash(‘bflash’);
+flashEl(‘bflash’);
 }
-function flash(id) {
+
+function flashEl(id) {
 var el = document.getElementById(id);
 if (!el) return;
-[0,420,840].forEach(function(t){
-setTimeout(function(){ el.classList.add(‘ring’); setTimeout(function(){ el.classList.remove(‘ring’); },180); },t);
+[0, 420, 840].forEach(function(t) {
+setTimeout(function() {
+el.classList.add(‘ring’);
+setTimeout(function() { el.classList.remove(‘ring’); }, 180);
+}, t);
 });
 }
 
-// ═══════════════════════════════════════════════════════
-// INLINE TIMER OVERLAY
-// ═══════════════════════════════════════════════════════
-var itoSec=1200, itoTotal=1200, itoRunning=false, itoInterval=null, itoRounds=0;
-
-function showITO() { document.getElementById(‘ito’).classList.add(‘visible’); }
-function hideITO() { document.getElementById(‘ito’).classList.remove(‘visible’); }
-function fmtTime(s) { return pad(Math.floor(s/60))+’:’+pad(s%60); }
-
-function itoSetState(cls, ph) {
-var c=document.getElementById(‘ito-clock’), p=document.getElementById(‘ito-phase’);
-if(c) c.className=‘ito-clock ‘+cls;
-if(p) p.textContent=ph;
-}
-function itoUpdateClock() {
-var c=document.getElementById(‘ito-clock’), b=document.getElementById(‘ito-bar’);
-if(c) c.textContent=fmtTime(itoSec);
-if(b) b.style.width=(itoTotal>0?(itoSec/itoTotal)*100:100)+’%’;
-}
-function itoPreset(min, btn) {
-if (itoRunning) return;
-document.querySelectorAll(’.ito-preset’).forEach(function(b){b.classList.remove(‘sel’);});
-btn.classList.add(‘sel’);
-itoTotal=min*60; itoSec=itoTotal;
-itoUpdateClock(); itoSetState(‘idle’,‘READY’);
-}
-function itoAction() {
-if (!itoRunning) {
-if (itoSec<=0) itoReset();
-itoRunning=true;
-var sb=document.getElementById(‘ito-btn’);
-if(sb) sb.textContent=‘PAUSE’;
-itoSetState(‘running’,‘GO — AMRAP IN PROGRESS’);
-itoInterval=setInterval(function(){
-itoSec–; itoUpdateClock();
-if(itoSec===30) itoSetState(‘running’,‘30 SECONDS LEFT’);
-if(itoSec===10) itoSetState(‘running’,‘PUSH — FINAL 10’);
-if(itoSec<=0){
-clearInterval(itoInterval); itoRunning=false;
-var c=document.getElementById(‘ito-clock’), b=document.getElementById(‘ito-bar’), sb=document.getElementById(‘ito-btn’);
-if(c) c.textContent=‘DONE’;
-if(b) b.style.width=‘0%’;
-itoSetState(‘done’,”\uD83D\uDD14 TIME’S UP”);
-if(sb) sb.textContent=‘START’;
-ringBell();
-}
-},1000);
-} else {
-clearInterval(itoInterval); itoRunning=false;
-var sb=document.getElementById(‘ito-btn’);
-if(sb) sb.textContent=‘RESUME’;
-itoSetState(‘paused’,‘PAUSED’);
-}
-}
-function itoReset() {
-clearInterval(itoInterval); itoRunning=false;
-var sel=document.querySelector(’.ito-preset.sel’);
-if(sel) itoTotal=parseInt(sel.textContent)*60;
-itoSec=itoTotal; itoUpdateClock();
-itoSetState(‘idle’,‘READY’);
-var sb=document.getElementById(‘ito-btn’);
-if(sb) sb.textContent=‘START’;
-}
-function itoRoundAdd() {
-var el=document.getElementById(‘ito-rnum’);
-if(el) el.textContent=++itoRounds;
-}
-
-// ═══════════════════════════════════════════════════════
-// STANDALONE TIMER
-// ═══════════════════════════════════════════════════════
-var tSec=1200, tTotal=1200, tRunning=false, tInterval=null, tRounds=0;
+// Standalone Timer tab
+var tSec = 1200, tTotal = 1200, tRunning = false, tInterval = null, tRounds = 0;
 
 function tSetState(cls, ph) {
-var c=document.getElementById(‘t-clock’), p=document.getElementById(‘t-phase’);
-if(c) c.className=‘clock-num ‘+cls;
-if(p) p.textContent=ph;
+var c = document.getElementById(‘t-clock’);
+var p = document.getElementById(‘t-phase’);
+if (c) c.className = ’clock-num ’ + cls;
+if (p) p.textContent = ph;
 }
+
 function tUpdateClock() {
-var c=document.getElementById(‘t-clock’), b=document.getElementById(‘t-bar’);
-if(c) c.textContent=fmtTime(tSec);
-if(b) b.style.width=(tTotal>0?(tSec/tTotal)*100:100)+’%’;
+var c = document.getElementById(‘t-clock’);
+var b = document.getElementById(‘t-bar’);
+if (c) c.textContent = fmtTime(tSec);
+if (b) b.style.width = (tTotal > 0 ? (tSec / tTotal) * 100 : 100) + ‘%’;
 }
+
 function tPreset(min, btn) {
-if(tRunning) return;
-document.querySelectorAll(’.pbtn’).forEach(function(b){b.classList.remove(‘sel’);});
+if (tRunning) return;
+var btns = document.querySelectorAll(’.pbtn’);
+for (var i = 0; i < btns.length; i++) btns[i].classList.remove(‘sel’);
 btn.classList.add(‘sel’);
-if(min===0){ document.getElementById(‘cust-inputs’).style.display=‘flex’; tCustom(); }
-else{ document.getElementById(‘cust-inputs’).style.display=‘none’; tTotal=min*60; tSec=tTotal; tUpdateClock(); tSetState(‘idle’,‘READY \u00B7 TAP START’); }
+if (min === 0) {
+var ci = document.getElementById(‘cust-inputs’);
+if (ci) ci.style.display = ‘flex’;
+tCustom();
+} else {
+var ci = document.getElementById(‘cust-inputs’);
+if (ci) ci.style.display = ‘none’;
+tTotal = min * 60; tSec = tTotal;
+tUpdateClock(); tSetState(‘idle’, ‘READY - TAP START’);
 }
+}
+
 function tCustom() {
-if(tRunning) return;
-var m=parseInt(document.getElementById(‘cm’).value)||0;
-var s=parseInt(document.getElementById(‘cs’).value)||0;
-tTotal=m*60+s; tSec=tTotal; tUpdateClock(); tSetState(‘idle’,‘READY \u00B7 TAP START’);
+if (tRunning) return;
+var m = parseInt((document.getElementById(‘cm’) || {}).value) || 0;
+var s = parseInt((document.getElementById(‘cs’) || {}).value) || 0;
+tTotal = m * 60 + s; tSec = tTotal;
+tUpdateClock(); tSetState(‘idle’, ‘READY - TAP START’);
 }
+
 function tAction() {
-if(!tRunning){
-if(tSec<=0) tReset();
-tRunning=true;
-var sb=document.getElementById(‘t-btn’);
-if(sb) sb.textContent=‘PAUSE’;
-tSetState(‘running’,‘GO \u2014 AMRAP IN PROGRESS’);
-tInterval=setInterval(function(){
+if (!tRunning) {
+if (tSec <= 0) tReset();
+tRunning = true;
+var sb = document.getElementById(‘t-btn’);
+if (sb) sb.textContent = ‘PAUSE’;
+tSetState(‘running’, ‘GO - AMRAP IN PROGRESS’);
+tInterval = setInterval(function() {
 tSec–; tUpdateClock();
-if(tSec===30) tSetState(‘running’,‘30 SECONDS LEFT’);
-if(tSec===10) tSetState(‘running’,‘PUSH \u2014 FINAL 10’);
-if(tSec<=0){
-clearInterval(tInterval); tRunning=false;
-var c=document.getElementById(‘t-clock’), b=document.getElementById(‘t-bar’), sb=document.getElementById(‘t-btn’);
-if(c) c.textContent=‘DONE’;
-if(b) b.style.width=‘0%’;
-tSetState(‘done’,”\uD83D\uDD14 TIME’S UP \u2014 LOG YOUR ROUNDS”);
-if(sb) sb.textContent=‘START’;
+if (tSec === 30) tSetState(‘running’, ‘30 SECONDS LEFT’);
+if (tSec === 10) tSetState(‘running’, ‘PUSH - FINAL 10’);
+if (tSec <= 0) {
+clearInterval(tInterval); tRunning = false;
+var c = document.getElementById(‘t-clock’);
+var b = document.getElementById(‘t-bar’);
+var sb2 = document.getElementById(‘t-btn’);
+if (c) c.textContent = ‘DONE’;
+if (b) b.style.width = ‘0%’;
+tSetState(‘done’, “TIME’S UP - LOG YOUR ROUNDS”);
+if (sb2) sb2.textContent = ‘START’;
 ringBell();
 }
-},1000);
+}, 1000);
 } else {
-clearInterval(tInterval); tRunning=false;
-var sb=document.getElementById(‘t-btn’);
-if(sb) sb.textContent=‘RESUME’;
-tSetState(‘paused’,‘PAUSED’);
+clearInterval(tInterval); tRunning = false;
+var sb = document.getElementById(‘t-btn’);
+if (sb) sb.textContent = ‘RESUME’;
+tSetState(‘paused’, ‘PAUSED’);
 }
 }
-function tReset() {
-clearInterval(tInterval); tRunning=false;
-var sel=document.querySelector(’.pbtn.sel’);
-if(sel && sel.id!==‘cust-btn’) tTotal=parseInt(sel.textContent)*60;
-tSec=tTotal; tUpdateClock();
-tSetState(‘idle’,‘READY \u00B7 TAP START’);
-var sb=document.getElementById(‘t-btn’);
-if(sb) sb.textContent=‘START’;
-}
-function tRoundAdd() { var el=document.getElementById(‘t-rcount’); if(el) el.textContent=++tRounds; }
-function tRoundReset() { tRounds=0; var el=document.getElementById(‘t-rcount’); if(el) el.textContent=0; }
 
-// ═══════════════════════════════════════════════════════
-// TABATA ENGINE
-// ═══════════════════════════════════════════════════════
-var tabState=‘idle’, tabSec=20, tabIntvl=null;
-var tabWork=20, tabRest=10, tabTotal=8;
-var tabRound=0, tabPhase=‘work’;
+function tReset() {
+clearInterval(tInterval); tRunning = false;
+var sel = document.querySelector(’.pbtn.sel’);
+if (sel && sel.id !== ‘cust-btn’) tTotal = parseInt(sel.textContent) * 60;
+tSec = tTotal; tUpdateClock();
+tSetState(‘idle’, ‘READY - TAP START’);
+var sb = document.getElementById(‘t-btn’);
+if (sb) sb.textContent = ‘START’;
+}
+
+function tRoundAdd() {
+var el = document.getElementById(‘t-rcount’);
+if (el) el.textContent = ++tRounds;
+}
+function tRoundReset() {
+tRounds = 0;
+var el = document.getElementById(‘t-rcount’);
+if (el) el.textContent = 0;
+}
+
+// Tabata Engine
+var tabState = ‘idle’, tabSec = 20, tabIntvl = null;
+var tabWork = 20, tabRest = 10, tabTotal = 8;
+var tabRound = 0, tabPhase = ‘work’;
 
 function tabGetSettings() {
-var tw=document.getElementById(‘tab-work’);
-var tr=document.getElementById(‘tab-rest’);
-var tn=document.getElementById(‘tab-rounds’);
-tabWork  = Math.max(5, parseInt((tw&&tw.value)||‘20’) || 20);
-tabRest  = Math.max(5, parseInt((tr&&tr.value)||‘10’) || 10);
-tabTotal = Math.max(1, parseInt((tn&&tn.value)||‘8’)  || 8);
+var tw = document.getElementById(‘tab-work’);
+var tr = document.getElementById(‘tab-rest’);
+var tn = document.getElementById(‘tab-rounds’);
+tabWork  = Math.max(5, parseInt((tw && tw.value) || ‘20’) || 20);
+tabRest  = Math.max(5, parseInt((tr && tr.value) || ‘10’) || 10);
+tabTotal = Math.max(1, parseInt((tn && tn.value) || ‘8’)  || 8);
 }
+
 function tabPreset(w, r, n) {
-var tw=document.getElementById(‘tab-work’);
-var tr=document.getElementById(‘tab-rest’);
-var tn=document.getElementById(‘tab-rounds’);
-if(tw) tw.value = w;
-if(tr) tr.value = r;
-if(tn) tn.value = n;
-tabWork=w; tabRest=r; tabTotal=n;
-if(tabState===‘idle’) tabShowReset();
+var tw = document.getElementById(‘tab-work’);
+var tr = document.getElementById(‘tab-rest’);
+var tn = document.getElementById(‘tab-rounds’);
+if (tw) tw.value = w;
+if (tr) tr.value = r;
+if (tn) tn.value = n;
+tabWork = w; tabRest = r; tabTotal = n;
+if (tabState === ‘idle’) tabShowReset();
 }
-function tabReset() { tabGetSettings(); clearInterval(tabIntvl); tabIntvl=null; tabState=‘idle’; tabPhase=‘work’; tabRound=0; tabSec=tabWork; tabShowReset(); }
+
+function tabReset() {
+tabGetSettings();
+clearInterval(tabIntvl); tabIntvl = null;
+tabState = ‘idle’; tabPhase = ‘work’; tabRound = 0; tabSec = tabWork;
+tabShowReset();
+}
+
 function tabShowReset() {
-var clk=document.getElementById(‘tab-clock’);
-var bdg=document.getElementById(‘tab-badge’);
-var inf=document.getElementById(‘tab-info’);
-var prg=document.getElementById(‘tab-prog’);
-var btn=document.getElementById(‘tab-btn’);
-if(clk){ clk.textContent=tabWork; clk.className=‘tab-clock idle’; }
-if(bdg){ bdg.textContent=‘READY’; bdg.className=‘tab-badge idle’; }
-if(inf) inf.textContent=‘Round \u2014 / ‘+tabTotal;
-if(prg){ prg.style.width=‘100%’; prg.className=‘tab-prog work’; }
-if(btn) btn.textContent=‘START’;
+var clk = document.getElementById(‘tab-clock’);
+var bdg = document.getElementById(‘tab-badge’);
+var inf = document.getElementById(‘tab-info’);
+var prg = document.getElementById(‘tab-prog’);
+var btn = document.getElementById(‘tab-btn’);
+if (clk) { clk.textContent = tabWork; clk.className = ‘tab-clock idle’; }
+if (bdg) { bdg.textContent = ‘READY’; bdg.className = ‘tab-badge idle’; }
+if (inf) inf.textContent = ’Round - / ’ + tabTotal;
+if (prg) { prg.style.width = ‘100%’; prg.className = ‘tab-prog work’; }
+if (btn) btn.textContent = ‘START’;
 tabUpdateExercise();
 }
+
 function tabAction() {
-if(tabState===‘done’){ tabReset(); return; }
-if(tabState===‘idle’){
+if (tabState === ‘done’) { tabReset(); return; }
+if (tabState === ‘idle’) {
 tabGetSettings();
-tabRound=1; tabPhase=‘work’; tabSec=tabWork; tabState=‘work’;
+tabRound = 1; tabPhase = ‘work’; tabSec = tabWork; tabState = ‘work’;
 tabStartPhase();
-} else if(tabIntvl){
-clearInterval(tabIntvl); tabIntvl=null;
-var btn=document.getElementById(‘tab-btn’);
-if(btn) btn.textContent=‘RESUME’;
+} else if (tabIntvl) {
+clearInterval(tabIntvl); tabIntvl = null;
+var btn = document.getElementById(‘tab-btn’);
+if (btn) btn.textContent = ‘RESUME’;
 } else {
 tabStartTick();
-var btn=document.getElementById(‘tab-btn’);
-if(btn) btn.textContent=‘PAUSE’;
+var btn = document.getElementById(‘tab-btn’);
+if (btn) btn.textContent = ‘PAUSE’;
 }
 }
+
 function tabStartPhase() {
-var isWork=tabPhase===‘work’;
-var clk=document.getElementById(‘tab-clock’);
-var bdg=document.getElementById(‘tab-badge’);
-var inf=document.getElementById(‘tab-info’);
-var prg=document.getElementById(‘tab-prog’);
-var btn=document.getElementById(‘tab-btn’);
-if(clk){ clk.textContent=tabSec; clk.className=‘tab-clock ‘+tabPhase; }
-if(bdg){ bdg.textContent=isWork ? ‘\uD83D\uDD25 WORK’ : ‘\u2744\uFE0F REST’; bdg.className=‘tab-badge ‘+tabPhase; }
-if(inf) inf.textContent=‘Round ‘+tabRound+’ / ‘+tabTotal;
-if(prg) prg.className=‘tab-prog ‘+tabPhase;
-if(btn) btn.textContent=‘PAUSE’;
+var isWork = tabPhase === ‘work’;
+var clk = document.getElementById(‘tab-clock’);
+var bdg = document.getElementById(‘tab-badge’);
+var inf = document.getElementById(‘tab-info’);
+var prg = document.getElementById(‘tab-prog’);
+var btn = document.getElementById(‘tab-btn’);
+if (clk) { clk.textContent = tabSec; clk.className = ’tab-clock ’ + tabPhase; }
+if (bdg) { bdg.textContent = isWork ? ‘WORK’ : ‘REST’; bdg.className = ’tab-badge ’ + tabPhase; }
+if (inf) inf.textContent = ’Round ’ + tabRound + ’ / ’ + tabTotal;
+if (prg) prg.className = ’tab-prog ’ + tabPhase;
+if (btn) btn.textContent = ‘PAUSE’;
 tabUpdateExercise();
 tabStartTick();
 }
+
 function tabStartTick() {
-var total=tabPhase===‘work’?tabWork:tabRest;
+var total = tabPhase === ‘work’ ? tabWork : tabRest;
 clearInterval(tabIntvl);
-tabIntvl=setInterval(function(){
+tabIntvl = setInterval(function() {
 tabSec–;
-var clk=document.getElementById(‘tab-clock’);
-if(clk) clk.textContent=tabSec;
-var prg=document.getElementById(‘tab-prog’);
-if(prg) prg.style.width=((tabSec/total)*100)+’%’;
-if(tabSec<=0){ clearInterval(tabIntvl); tabIntvl=null; tabNext(); }
-},1000);
+var clk = document.getElementById(‘tab-clock’);
+if (clk) clk.textContent = tabSec;
+var prg = document.getElementById(‘tab-prog’);
+if (prg) prg.style.width = ((tabSec / total) * 100) + ‘%’;
+if (tabSec <= 0) { clearInterval(tabIntvl); tabIntvl = null; tabNext(); }
+}, 1000);
 }
+
 function tabNext() {
-if(tabPhase===‘work’){
+if (tabPhase === ‘work’) {
 dingWork();
-if(tabRound>=tabTotal){
-tabState=‘done’;
-var clk=document.getElementById(‘tab-clock’);
-var bdg=document.getElementById(‘tab-badge’);
-var inf=document.getElementById(‘tab-info’);
-var prg=document.getElementById(‘tab-prog’);
-var btn=document.getElementById(‘tab-btn’);
-if(clk){ clk.textContent=’\u2713’; clk.className=‘tab-clock done’; }
-if(bdg){ bdg.textContent=‘COMPLETE!’; bdg.className=‘tab-badge work’; }
-if(inf) inf.textContent=‘All ‘+tabTotal+’ rounds done!’;
-if(prg) prg.style.width=‘100%’;
-if(btn) btn.textContent=‘RESET’;
+if (tabRound >= tabTotal) {
+tabState = ‘done’;
+var clk = document.getElementById(‘tab-clock’);
+var bdg = document.getElementById(‘tab-badge’);
+var inf = document.getElementById(‘tab-info’);
+var prg = document.getElementById(‘tab-prog’);
+var btn = document.getElementById(‘tab-btn’);
+if (clk) { clk.textContent = ‘DONE’; clk.className = ‘tab-clock done’; }
+if (bdg) { bdg.textContent = ‘COMPLETE!’; bdg.className = ‘tab-badge work’; }
+if (inf) inf.textContent = ‘All ’ + tabTotal + ’ rounds done!’;
+if (prg) prg.style.width = ‘100%’;
+if (btn) btn.textContent = ‘RESET’;
 ringBell();
 return;
 }
-tabPhase=‘rest’; tabSec=tabRest; tabState=‘rest’;
+tabPhase = ‘rest’; tabSec = tabRest; tabState = ‘rest’;
 tabStartPhase();
 } else {
 dingRest();
-tabRound++; tabPhase=‘work’; tabSec=tabWork; tabState=‘work’;
+tabRound++; tabPhase = ‘work’; tabSec = tabWork; tabState = ‘work’;
 tabStartPhase();
 }
 }
+
 function tabUpdateExercise() {
-var wrap=document.getElementById(‘tab-ex-wrap’);
-if(!wrap) return;
-if(!currentWod||!currentWod.exercises||!currentWod.exercises.length){ wrap.style.display=‘none’; return; }
-wrap.style.display=‘block’;
-var exs=currentWod.exercises;
-var idx=Math.max(0,tabRound-1)%exs.length;
-var ex=exs[idx];
-var nxt=exs[(idx+1)%exs.length];
-var isRest=tabPhase===‘rest’;
-var card=document.getElementById(‘tab-ex-card’);
-var nm=document.getElementById(‘tab-ex-name’);
-var cu=document.getElementById(‘tab-ex-cue’);
-var nx=document.getElementById(‘tab-ex-next’);
-if(card) card.className=‘tab-ex-card’+(isRest?’ resting’:’’);
-if(nm) nm.textContent=isRest?’\uD83D\uDCA4 REST’:ex.n;
-if(cu) cu.textContent=isRest?‘Breathe. Recover. Next: ‘+nxt.n:ex.c;
-if(nx) nx.textContent=isRest?’’:‘Next up: ‘+nxt.n+’ (’+nxt.r+’ ‘+nxt.u+’)’;
+var wrap = document.getElementById(‘tab-ex-wrap’);
+if (!wrap) return;
+if (!currentWod || !currentWod.exercises || !currentWod.exercises.length) {
+wrap.style.display = ‘none’; return;
 }
+wrap.style.display = ‘block’;
+var exs = currentWod.exercises;
+var idx = Math.max(0, tabRound - 1) % exs.length;
+var ex = exs[idx];
+var nxt = exs[(idx + 1) % exs.length];
+var isRest = tabPhase === ‘rest’;
+var card = document.getElementById(‘tab-ex-card’);
+var nm = document.getElementById(‘tab-ex-name’);
+var cu = document.getElementById(‘tab-ex-cue’);
+var nx = document.getElementById(‘tab-ex-next’);
+if (card) card.className = ‘tab-ex-card’ + (isRest ? ’ resting’ : ‘’);
+if (nm) nm.textContent = isRest ? ‘REST’ : ex.n;
+if (cu) cu.textContent = isRest ? ’Breathe. Recover. Next: ’ + nxt.n : ex.c;
+if (nx) nx.textContent = isRest ? ‘’ : ‘Next up: ’ + nxt.n + ’ (’ + nxt.r + ’ ’ + nxt.u + ‘)’;
+}
+
 function dingWork() {
-try{
-var ctx=new(window.AudioContext||window.webkitAudioContext)();
-var o=ctx.createOscillator(), g=ctx.createGain();
+try {
+var ctx = new (window.AudioContext || window.webkitAudioContext)();
+var o = ctx.createOscillator(), g = ctx.createGain();
 o.connect(g); g.connect(ctx.destination);
-o.type=‘sine’; o.frequency.setValueAtTime(1047,ctx.currentTime);
-o.frequency.exponentialRampToValueAtTime(880,ctx.currentTime+.3);
-g.gain.setValueAtTime(.001,ctx.currentTime); g.gain.exponentialRampToValueAtTime(.8,ctx.currentTime+.01);
-g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.5);
-o.start(ctx.currentTime); o.stop(ctx.currentTime+.55);
-}catch(e){}
-flash(‘tf-work’);
+o.type = ‘sine’;
+o.frequency.setValueAtTime(1047, ctx.currentTime);
+o.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + .3);
+g.gain.setValueAtTime(.001, ctx.currentTime);
+g.gain.exponentialRampToValueAtTime(.8, ctx.currentTime + .01);
+g.gain.exponentialRampToValueAtTime(.001, ctx.currentTime + .5);
+o.start(ctx.currentTime); o.stop(ctx.currentTime + .55);
+} catch(e) {}
+flashEl(‘tf-work’);
 }
+
 function dingRest() {
-try{
-var ctx=new(window.AudioContext||window.webkitAudioContext)();
-[0,.25].forEach(function(off){
-var o=ctx.createOscillator(), g=ctx.createGain();
+try {
+var ctx = new (window.AudioContext || window.webkitAudioContext)();
+[0, .25].forEach(function(off) {
+var o = ctx.createOscillator(), g = ctx.createGain();
 o.connect(g); g.connect(ctx.destination);
-o.type=‘sine’; o.frequency.setValueAtTime(660,ctx.currentTime+off);
-o.frequency.exponentialRampToValueAtTime(880,ctx.currentTime+off+.2);
-g.gain.setValueAtTime(.001,ctx.currentTime+off); g.gain.exponentialRampToValueAtTime(.6,ctx.currentTime+off+.01);
-g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+off+.35);
-o.start(ctx.currentTime+off); o.stop(ctx.currentTime+off+.4);
+o.type = ‘sine’;
+o.frequency.setValueAtTime(660, ctx.currentTime + off);
+o.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + off + .2);
+g.gain.setValueAtTime(.001, ctx.currentTime + off);
+g.gain.exponentialRampToValueAtTime(.6, ctx.currentTime + off + .01);
+g.gain.exponentialRampToValueAtTime(.001, ctx.currentTime + off + .35);
+o.start(ctx.currentTime + off); o.stop(ctx.currentTime + off + .4);
 });
-}catch(e){}
-flash(‘tf-rest’);
+} catch(e) {}
+flashEl(‘tf-rest’);
 }
 
-// ═══════════════════════════════════════════════════════
-// HISTORY
-// ═══════════════════════════════════════════════════════
+// History tab
 function renderHistory() {
-var el=document.getElementById(‘hist-list’);
-var withWod=sessions.filter(function(s){ return s.wod; });
-if(!withWod.length){ el.innerHTML=’<div class="empty">No workouts logged yet</div>’; return; }
-el.innerHTML=withWod.slice().reverse().map(function(s){
-var exRows=s.wod.exercises.map(function(ex){
-return ‘<div class="hist-ex"><span>’+ex.n+’</span><span class="hist-reps">’+ex.r+’ ‘+ex.u+’</span></div>’;
+var el = document.getElementById(‘hist-list’);
+if (!el) return;
+var withWod = sessions.filter(function(s) { return s.wod; });
+if (!withWod.length) { el.innerHTML = ‘<div class="empty">No workouts logged yet</div>’; return; }
+el.innerHTML = withWod.slice().reverse().map(function(s) {
+var exRows = s.wod.exercises.map(function(ex) {
+return ‘<div class="hist-ex"><span>’ + ex.n + ‘</span><span class="hist-reps">’ + ex.r + ’ ’ + ex.u + ‘</span></div>’;
 }).join(’’);
-var notePrev=s.notes?(’ \u00B7 ‘+s.notes.slice(0,50)+(s.notes.length>50?’\u2026’:’’)):’’;
-return ‘<div class="hist-card"><div class="hist-date">’+s.date+’</div><div class="hist-focus">’+s.wod.focus.name+’ \u00B7 ‘+s.rounds+’ rounds’+notePrev+’</div>’+exRows+’</div>’;
+var notePrev = s.notes ? (’ - ’ + s.notes.slice(0, 50) + (s.notes.length > 50 ? ‘…’ : ‘’)) : ‘’;
+return ‘<div class="hist-card"><div class="hist-date">’ + s.date + ‘</div><div class="hist-focus">’ + s.wod.focus.name + ’ - ’ + s.rounds + ’ rounds’ + notePrev + ‘</div>’ + exRows + ‘</div>’;
 }).join(’’);
 }
 
-// ═══════════════════════════════════════════════════════
-// TRACKER
-// ═══════════════════════════════════════════════════════
-var sessions=[];
-function loadSessions(){ try{ sessions=JSON.parse(lsGet(‘hr-v2’)||’[]’); }catch(e){ sessions=[]; } }
-function saveSessions(){ lsSet(‘hr-v2’,JSON.stringify(sessions)); }
+// Tracker
+var sessions = [];
+function loadSessions() {
+try { sessions = JSON.parse(lsGet(‘hr-v2’) || ‘[]’); } catch(e) { sessions = []; }
+}
+function saveSessions() { lsSet(‘hr-v2’, JSON.stringify(sessions)); }
 
 function renderTracker() {
-var tot=sessions.reduce(function(a,s){ return a+(s.rounds||0); },0);
-var pr=sessions.length?Math.max.apply(null,sessions.map(function(s){ return s.rounds||0; })):null;
-var eSess=document.getElementById(‘s-sess’);
-var eTotal=document.getElementById(‘s-total’);
-var ePr=document.getElementById(‘s-pr’);
-if(eSess) eSess.textContent=sessions.length;
-if(eTotal) eTotal.textContent=tot;
-if(ePr) ePr.textContent=pr!==null?pr:’—’;
-var el=document.getElementById(‘log-list’);
-if(!el) return;
-if(!sessions.length){
-el.innerHTML=’<div class="empty" id="log-empty">No sessions yet</div>’;
+var tot = sessions.reduce(function(a, s) { return a + (s.rounds || 0); }, 0);
+var pr = sessions.length ? Math.max.apply(null, sessions.map(function(s) { return s.rounds || 0; })) : null;
+var eSess = document.getElementById(‘s-sess’);
+var eTotal = document.getElementById(‘s-total’);
+var ePr = document.getElementById(‘s-pr’);
+if (eSess) eSess.textContent = sessions.length;
+if (eTotal) eTotal.textContent = tot;
+if (ePr) ePr.textContent = pr !== null ? pr : ‘-’;
+var el = document.getElementById(‘log-list’);
+if (!el) return;
+if (!sessions.length) {
+el.innerHTML = ‘<div class="empty" id="log-empty">No sessions yet</div>’;
 return;
 }
-el.innerHTML=sessions.slice().reverse().map(function(s){
-return ‘<div class="entry"><div class="entry-top"><div><div class="entry-day">’+s.day+’</div><div class="entry-meta">’+[s.wt,s.feel,s.date].filter(Boolean).join(’ · ‘)+’</div></div><div class="entry-rounds">’+s.rounds+’<span>rounds</span></div></div>’+(s.notes?’<div class="entry-notes">’+s.notes+’</div>’:’’)+’</div>’;
+el.innerHTML = sessions.slice().reverse().map(function(s) {
+return ‘<div class="entry">’ +
+‘<div class="entry-top">’ +
+‘<div><div class="entry-day">’ + s.day + ‘</div>’ +
+‘<div class="entry-meta">’ + [s.wt, s.feel, s.date].filter(Boolean).join(’ - ‘) + ‘</div></div>’ +
+‘<div class="entry-rounds">’ + s.rounds + ‘<span>rounds</span></div>’ +
+‘</div>’ +
+(s.notes ? ‘<div class="entry-notes">’ + s.notes + ‘</div>’ : ‘’) +
+‘</div>’;
 }).join(’’);
 }
+
 function logSession() {
-var fEl=document.getElementById(‘l-focus’);
-var rEl=document.getElementById(‘l-rounds’);
-var wEl=document.getElementById(‘l-wt’);
-var feEl=document.getElementById(‘l-feel’);
-var nEl=document.getElementById(‘l-notes’);
-if(!fEl||!rEl) return;
-var focus=fEl.value;
-var rounds=parseInt(rEl.value);
-var wt=wEl?wEl.value:’’;
-var feel=feEl?feEl.value:’’;
-var notes=nEl?nEl.value.trim():’’;
-fEl.style.borderColor=focus?’’:‘var(–red)’;
-rEl.style.borderColor=rounds?’’:‘var(–red)’;
-if(!focus||!rounds) return;
-sessions.push({day:focus,rounds:rounds,wt:wt,feel:feel,notes:notes,date:new Date().toLocaleDateString()});
-saveSessions(); renderTracker();
-fEl.value=’’; fEl.style.borderColor=’’;
-rEl.value=’’; rEl.style.borderColor=’’;
-if(wEl) wEl.value=’’;
-if(feEl) feEl.value=’’;
-if(nEl) nEl.value=’’;
+var fEl = document.getElementById(‘l-focus’);
+var rEl = document.getElementById(‘l-rounds’);
+var wEl = document.getElementById(‘l-wt’);
+var feEl = document.getElementById(‘l-feel’);
+var nEl = document.getElementById(‘l-notes’);
+if (!fEl || !rEl) return;
+var focus = fEl.value;
+var rounds = parseInt(rEl.value);
+if (!focus || !rounds) {
+if (!focus) fEl.style.borderColor = ‘var(–red)’;
+if (!rounds) rEl.style.borderColor = ‘var(–red)’;
+return;
 }
-function clearLog() {
-if(!confirm(‘Clear all session history?’)) return;
-sessions=[]; saveSessions(); renderTracker();
+sessions.push({
+day: focus, rounds: rounds,
+wt: wEl ? wEl.value : ‘’,
+feel: feEl ? feEl.value : ‘’,
+notes: nEl ? nEl.value.trim() : ‘’,
+date: new Date().toLocaleDateString()
+});
+saveSessions();
+renderTracker();
+fEl.value = ‘’; fEl.style.borderColor = ‘’;
+rEl.value = ‘’; rEl.style.borderColor = ‘’;
+if (wEl) wEl.value = ‘’;
+if (feEl) feEl.value = ‘’;
+if (nEl) nEl.value = ‘’;
 }
 
-// ═══════════════════════════════════════════════════════
-// INIT
-// ═══════════════════════════════════════════════════════
-(function() {
-var d=new Date();
-var dateEl=document.getElementById(‘hero-date’);
-if(dateEl) dateEl.textContent=DAYS[d.getDay()]+’ ‘+MONTHS[d.getMonth()]+’ ‘+d.getDate()+’, ’+d.getFullYear();
-var off=rerollOffset();
-if(off>0){ var rn=document.getElementById(‘reroll-note’); if(rn) rn.textContent=‘Variation #’+(off+1); }
+function clearLog() {
+if (!confirm(‘Clear all session history?’)) return;
+sessions = []; saveSessions(); renderTracker();
+}
+
+// Init - runs after DOM is ready
+(function init() {
+var d = new Date();
+var dateEl = document.getElementById(‘hero-date’);
+if (dateEl) dateEl.textContent = DAYS[d.getDay()] + ’ ’ + MONTHS[d.getMonth()] + ’ ’ + d.getDate() + ’, ’ + d.getFullYear();
+var off = rerollOffset();
+if (off > 0) {
+var rn = document.getElementById(‘reroll-note’);
+if (rn) rn.textContent = ‘Variation #’ + (off + 1);
+}
 itoUpdateClock();
 tUpdateClock();
 loadSessions();
