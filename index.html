@@ -4,287 +4,338 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hybrid Recomp — Daily Generator</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<title>Hybrid Recomp — Daily WOD Generator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Space+Mono&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0d0e0f;--surface:#141516;--card:#1a1c1e;--border:#252729;--orange:#e8622a;--orange-dim:#7a3415;--orange-glow:rgba(232,98,42,.12);--cyan:#2ab8c8;--cyan-dim:#155f68;--green:#3aad6a;--red:#c24040;--white:#f0ede6;--muted:#6a6d72;--muted2:#4a4d52;}
-*{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--white);font-family:'Barlow',sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden}
-body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;opacity:.35}
+:root {
+  --bg:#0d0e0f; --surface:#141516; --card:#1a1c1e; --border:#252729;
+  --orange:#e8622a; --odim:#7a3415; --oglow:rgba(232,98,42,.12);
+  --cyan:#2ab8c8; --cdim:#155f68;
+  --green:#3aad6a; --red:#c24040;
+  --white:#f0ede6; --muted:#6a6d72; --muted2:#3a3d42;
+}
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { background:var(--bg); color:var(--white); font-family:'Barlow',sans-serif; font-weight:300; min-height:100vh; overflow-x:hidden; }
 
 /* HERO */
-.hero{position:relative;padding:40px 20px 28px;border-bottom:1px solid var(–border);overflow:hidden}
-.hero-bg{position:absolute;right:-8px;bottom:-10px;font-family:‘Syne’,sans-serif;font-size:130px;font-weight:800;line-height:.85;color:rgba(232,98,42,.04);pointer-events:none;letter-spacing:-4px;user-select:none}
-.hero-tag{font-family:‘Space Mono’,monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(–orange-dim);margin-bottom:9px;display:flex;align-items:center;gap:8px}
-.hero-tag::before{content:’’;width:20px;height:1px;background:var(–orange-dim)}
-h1{font-family:‘Syne’,sans-serif;font-size:clamp(44px,10vw,76px);font-weight:800;line-height:.9;letter-spacing:-2px;margin-bottom:8px}
-h1 .accent{color:var(–orange)}
-.hero-sub{font-size:12px;color:var(–muted);line-height:1.7;max-width:340px;margin-bottom:14px}
-.source-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
-.stag{font-family:‘Space Mono’,monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;padding:2px 7px;border-radius:2px;border:1px solid}
-.st-nml{color:var(–cyan);border-color:var(–cyan-dim);background:rgba(42,184,200,.07)}
-.st-bx{color:var(–orange);border-color:var(–orange-dim);background:var(–orange-glow)}
-.st-cm{color:var(–green);border-color:#1d5c38;background:rgba(58,173,106,.07)}
-.hero-date-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.hero-date{font-family:‘Space Mono’,monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(–muted)}
-.wod-badge{font-family:‘Space Mono’,monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;padding:3px 9px;border:1px solid var(–orange-dim);background:var(–orange-glow);color:var(–orange)}
+.hero { position:relative; padding:36px 20px 24px; border-bottom:1px solid var(–border); overflow:hidden; }
+.hero-bg { position:absolute; right:-8px; bottom:-10px; font-family:‘Syne’,sans-serif; font-size:120px; font-weight:800; line-height:.85; color:rgba(232,98,42,.04); pointer-events:none; user-select:none; }
+.eyebrow { font-family:‘Space Mono’,monospace; font-size:9px; letter-spacing:3px; text-transform:uppercase; color:var(–odim); margin-bottom:8px; display:flex; align-items:center; gap:8px; }
+.eyebrow::before { content:’’; width:18px; height:1px; background:var(–odim); }
+h1 { font-family:‘Syne’,sans-serif; font-size:clamp(42px,10vw,74px); font-weight:800; line-height:.9; letter-spacing:-2px; margin-bottom:8px; }
+h1 .ac { color:var(–orange); }
+.hero-sub { font-size:12px; color:var(–muted); line-height:1.7; max-width:340px; margin-bottom:12px; }
+.pills { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px; }
+.pill { font-family:‘Space Mono’,monospace; font-size:8px; letter-spacing:2px; text-transform:uppercase; padding:2px 7px; border-radius:2px; border:1px solid; }
+.p-nml { color:var(–cyan); border-color:var(–cdim); background:rgba(42,184,200,.07); }
+.p-bx  { color:var(–orange); border-color:var(–odim); background:var(–oglow); }
+.p-cm  { color:var(–green); border-color:#1d5c38; background:rgba(58,173,106,.07); }
+.hero-meta { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.hero-date { font-family:‘Space Mono’,monospace; font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(–muted); }
+.hero-focus { font-family:‘Space Mono’,monospace; font-size:8px; letter-spacing:2px; text-transform:uppercase; padding:3px 9px; border:1px solid var(–odim); background:var(–oglow); color:var(–orange); }
 
 /* TABS */
-.tabs{display:flex;border-bottom:1px solid var(–border);overflow-x:auto;scrollbar-width:none}
-.tabs::-webkit-scrollbar{display:none}
-.tab{font-family:‘Space Mono’,monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(–muted);padding:12px 14px;cursor:pointer;border:none;border-bottom:2px solid transparent;background:none;white-space:nowrap;transition:.2s}
-.tab.active{color:var(–orange);border-bottom-color:var(–orange)}
+.tabs { display:flex; border-bottom:1px solid var(–border); overflow-x:auto; scrollbar-width:none; }
+.tabs::-webkit-scrollbar { display:none; }
+.tab { font-family:‘Space Mono’,monospace; font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(–muted); padding:12px 14px; cursor:pointer; border:none; border-bottom:2px solid transparent; background:none; white-space:nowrap; transition:.2s; }
+.tab.active { color:var(–orange); border-bottom-color:var(–orange); }
 
 /* SECTIONS */
-.section{display:none;padding:18px 18px 60px}.section.active{display:block}
-.sec-label{font-family:‘Space Mono’,monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(–orange-dim);margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.sec-label::after{content:’’;flex:1;height:1px;background:var(–border)}
-
-/* TODAY WORKOUT CARD */
-.wod-card{background:var(–surface);border:1px solid var(–border);border-top:3px solid var(–orange);margin-bottom:16px;overflow:hidden}
-.wod-header{padding:14px 16px 10px;background:linear-gradient(135deg,rgba(232,98,42,.08),transparent)}
-.wod-day-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
-.wod-day-name{font-family:‘Syne’,sans-serif;font-size:26px;font-weight:800;letter-spacing:-1px;line-height:1}
-.wod-focus-tag{font-family:‘Space Mono’,monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;padding:3px 8px;border-radius:2px;border:1px solid}
-.wod-desc{font-size:12px;color:var(–muted);line-height:1.6;margin-bottom:12px}
-.wod-meta-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
-.wmeta{font-family:‘Space Mono’,monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;padding:3px 9px;background:var(–card);border:1px solid var(–border);color:var(–muted)}
-.wmeta.hi{color:var(–orange);border-color:var(–orange-dim);background:var(–orange-glow)}
-
-/* REROLL */
-.reroll-row{display:flex;gap:7px;margin-bottom:14px;align-items:center}
-.reroll-btn{flex:1;background:none;border:1px solid var(–border);color:var(–muted);font-family:‘Space Mono’,monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;padding:8px 12px;cursor:pointer;transition:.2s}
-.reroll-btn:hover{color:var(–white);border-color:var(–orange)}
-.reroll-note{font-family:‘Space Mono’,monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(–muted2)}
-
-/* START / FINISH */
-.wf-row{display:flex;gap:7px;margin-bottom:14px}
-.wf-btn{flex:1;padding:11px;border:none;cursor:pointer;font-family:‘Syne’,sans-serif;font-size:15px;font-weight:700;letter-spacing:1px;transition:.15s}
-.wfb-start{background:var(–orange);color:var(–bg)}.wfb-start:hover{background:#f07a42}
-.wfb-start.going{background:#c07030;color:var(–white);cursor:default}
-.wfb-start.done{background:#2a6a40;color:var(–white);cursor:default}
-.wfb-finish{background:var(–surface);color:var(–muted);border:1px solid var(–border)}.wfb-finish.ready{background:var(–green);color:var(–white);border:none}
-.wfb-finish.done{background:var(–card);color:var(–muted);border:1px solid var(–border);cursor:default}
-
-/* EXERCISE LIST */
-.ex-section-lbl{font-family:‘Space Mono’,monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(–muted);margin-bottom:7px;padding:0 16px}
-.ex-list{display:flex;flex-direction:column;gap:4px;padding:0 16px;margin-bottom:14px}
-.ex-row{display:flex;align-items:flex-start;gap:10px;padding:9px 11px;background:rgba(255,255,255,.02);border:1px solid var(–border);border-left:2px solid transparent;position:relative}
-.ex-row.kb{border-left-color:var(–orange)}
-.ex-row.bw{border-left-color:var(–cyan)}
-.ex-row.db{border-left-color:var(–green)}
-.ex-num-badge{font-family:‘Syne’,sans-serif;font-size:11px;font-weight:700;color:var(–muted2);min-width:16px;flex-shrink:0;padding-top:2px}
-.ex-info{flex:1;min-width:0}
-.ex-name{font-size:14px;font-weight:500;color:var(–white);line-height:1.2}
-.ex-type-pill{display:inline-block;font-family:‘Space Mono’,monospace;font-size:7px;letter-spacing:1.5px;text-transform:uppercase;padding:1px 5px;border-radius:2px;margin-left:6px;vertical-align:middle}
-.tp-kb{background:var(–orange-glow);color:var(–orange)}
-.tp-bw{background:rgba(42,184,200,.1);color:var(–cyan)}
-.tp-db{background:rgba(58,173,106,.1);color:var(–green)}
-.ex-cue{font-size:11px;color:var(–muted);margin-top:3px;line-height:1.45}
-.ex-mod{font-size:10px;color:var(–orange-dim);margin-top:2px;font-style:italic}
-.ex-src{font-family:‘Space Mono’,monospace;font-size:7px;letter-spacing:1px;text-transform:uppercase;color:var(–muted2);margin-top:2px}
-.ex-target{flex-shrink:0;text-align:right}
-.ex-reps{font-family:‘Syne’,sans-serif;font-size:19px;font-weight:700;color:var(–orange);line-height:1}
-.ex-unit{font-family:‘Space Mono’,monospace;font-size:7px;letter-spacing:1px;text-transform:uppercase;color:var(–muted)}
-
-/* TIP */
-.wod-tip{border-left:2px solid var(–orange-dim);background:var(–orange-glow);padding:8px 11px;font-size:12px;color:var(–muted);line-height:1.65;margin:0 16px 14px}
-.wod-tip b{display:block;font-family:‘Space Mono’,monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(–orange);margin-bottom:2px}
-
-/* INLINE ROUND COUNTER */
-.riw{display:flex;align-items:center;gap:8px;margin:0 16px 12px;padding:8px 11px;background:var(–orange-glow);border:1px solid var(–orange-dim)}
-.riw-lbl{font-family:‘Space Mono’,monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(–muted);flex:1}
-.riw-n{font-family:‘Syne’,sans-serif;font-size:28px;font-weight:700;color:var(–orange);line-height:1;min-width:36px;text-align:center}
-.riw-add{background:var(–orange);color:var(–bg);border:none;font-family:‘Syne’,sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;padding:6px 11px;cursor:pointer;transition:.15s}.riw-add:hover{background:#f07a42}
-.riw-rst{background:var(–card);color:var(–muted);border:1px solid var(–border);font-family:‘Space Mono’,monospace;font-size:8px;letter-spacing:1px;text-transform:uppercase;padding:4px 8px;cursor:pointer;transition:.15s}.riw-rst:hover{color:var(–white)}
-
-/* PHASE BLOCKS */
-.phase{margin:0 16px 10px;border:1px solid var(–border)}
-.phase.wu{border-top:2px solid #e07b30}.phase.cd{border-top:2px solid var(–cyan-dim)}
-.phase-head{display:flex;align-items:center;gap:6px;padding:7px 11px;cursor:pointer;background:rgba(255,255,255,.015)}.phase-head:hover{background:rgba(255,255,255,.025)}
-.phase-icon{font-size:12px}.phase-title{font-family:‘Space Mono’,monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase}
-.phase.wu .phase-title{color:#e07b30}.phase.cd .phase-title{color:var(–cyan)}
-.phase-chev{margin-left:auto;font-size:9px;color:var(–muted);transition:transform .2s}
-.phase-body{display:none;padding:2px 11px 10px}.phase-body.open{display:block}
-.phase-note{font-size:11px;color:var(–muted);line-height:1.6;margin-bottom:7px}
-.s-list{display:flex;flex-direction:column;gap:3px}
-.s-row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:6px 9px;background:rgba(255,255,255,.015);border:1px solid var(–border)}
-.s-name{font-size:12px;font-weight:500;color:var(–white)}.s-cue{font-size:10px;color:var(–muted);margin-top:1px;line-height:1.4}
-.s-dur{flex-shrink:0;font-family:‘Syne’,sans-serif;font-size:15px;font-weight:700;color:var(–cyan);text-align:right}
-
-/* NOTES */
-.notes-wrap{padding:0 16px 16px}
-.notes-lbl{font-family:‘Space Mono’,monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(–muted);margin-bottom:5px;display:flex;justify-content:space-between;align-items:center}
-.sv-badge{font-size:8px;color:var(–green);opacity:0;transition:opacity .4s}
-.notes-ta{width:100%;background:var(–card);border:1px solid var(–border);color:var(–white);font-family:‘Barlow’,sans-serif;font-size:12px;font-weight:300;padding:8px 11px;resize:vertical;min-height:60px;outline:none;transition:border-color .2s;line-height:1.6}
-.notes-ta:focus{border-color:var(–orange)}.notes-ta::placeholder{color:var(–muted)}
-.notes-btns{display:flex;gap:5px;margin-top:5px}
-.nb{font-family:‘Space Mono’,monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;padding:5px 10px;cursor:pointer;border:none;transition:.15s}
-.nb-sv{background:var(–orange);color:var(–bg)}.nb-sv:hover{background:#f07a42}
-.nb-cl{background:var(–card);color:var(–muted);border:1px solid var(–border)}.nb-cl:hover{color:var(–red)}
+.section { display:none; padding:18px 18px 60px; }
+.section.active { display:block; }
+.sec-lbl { font-family:‘Space Mono’,monospace; font-size:8px; letter-spacing:3px; text-transform:uppercase; color:var(–odim); margin-bottom:14px; display:flex; align-items:center; gap:8px; }
+.sec-lbl::after { content:’’; flex:1; height:1px; background:var(–border); }
 
 /* LEGEND */
-.legend{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px;padding:9px 11px;background:var(–surface);border:1px solid var(–border)}
-.lg-item{display:flex;align-items:center;gap:5px;font-family:‘Space Mono’,monospace;font-size:8px;letter-spacing:1px;text-transform:uppercase;color:var(–muted)}
-.lg-bar{width:3px;height:14px;border-radius:1px}
+.legend { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:14px; padding:9px 11px; background:var(–surface); border:1px solid var(–border); }
+.lg { display:flex; align-items:center; gap:5px; font-family:‘Space Mono’,monospace; font-size:8px; letter-spacing:1px; text-transform:uppercase; color:var(–muted); }
+.lg-bar { width:3px; height:14px; border-radius:1px; }
 
-/* HISTORY ACCORDION */
-.hist-section{margin-top:20px}
-.hist-toggle{display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:10px 0;border-top:1px solid var(–border)}
-.hist-toggle-lbl{font-family:‘Space Mono’,monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(–muted)}
-.hist-chev{font-size:10px;color:var(–muted);transition:transform .2s}
-.hist-body{display:none}.hist-body.open{display:block}
-.hist-card{background:var(–surface);border:1px solid var(–border);padding:12px 14px;margin-bottom:8px;margin-top:8px}
-.hist-card-date{font-family:‘Space Mono’,monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(–orange);margin-bottom:6px}
-.hist-card-focus{font-size:12px;font-weight:500;color:var(–white);margin-bottom:6px}
-.hist-ex-item{font-size:11px;color:var(–muted);padding:3px 0;border-bottom:1px solid var(–border);display:flex;justify-content:space-between}
-.hist-ex-item:last-child{border-bottom:none}
-.hist-ex-reps{font-family:‘Syne’,sans-serif;font-size:14px;font-weight:700;color:var(–orange)}
+/* WOD CARD */
+.wod-card { background:var(–surface); border:1px solid var(–border); border-top:3px solid var(–orange); margin-bottom:14px; overflow:hidden; }
+.wod-hdr { padding:14px 16px 10px; background:linear-gradient(135deg,rgba(232,98,42,.07),transparent); }
+.wod-top-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:4px; }
+.wod-day { font-family:‘Syne’,sans-serif; font-size:24px; font-weight:800; letter-spacing:-1px; line-height:1; }
+.wod-focus-tag { font-family:‘Space Mono’,monospace; font-size:8px; letter-spacing:2px; text-transform:uppercase; padding:3px 8px; border-radius:2px; border:1px solid; }
+.wod-desc { font-size:12px; color:var(–muted); line-height:1.6; margin-bottom:10px; }
+.wod-chips { display:flex; gap:5px; flex-wrap:wrap; margin-bottom:10px; }
+.chip { font-family:‘Space Mono’,monospace; font-size:8px; letter-spacing:1.5px; text-transform:uppercase; padding:3px 8px; background:var(–card); border:1px solid var(–border); color:var(–muted); }
+.chip.hi { color:var(–orange); border-color:var(–odim); background:var(–oglow); }
 
-/* TIMER */
-.timer-card{background:var(–surface);border:1px solid var(–border);border-top:2px solid var(–orange);padding:16px;margin-bottom:14px}
-.timer-h{font-family:‘Syne’,sans-serif;font-size:17px;font-weight:700;letter-spacing:-0.5px;margin-bottom:12px}
-.preset-row{display:flex;gap:5px;margin-bottom:10px}
-.pbtn{flex:1;font-family:‘Space Mono’,monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;padding:8px 4px;cursor:pointer;border:1px solid var(–border);background:var(–card);color:var(–muted);transition:.15s}
-.pbtn:hover{color:var(–white)}.pbtn.sel{background:var(–orange-glow);color:var(–orange);border-color:var(–orange-dim)}
-.cust-row{display:flex;gap:8px;align-items:flex-end;margin-bottom:10px}
-.cust-lbl{font-family:‘Space Mono’,monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(–muted);margin-bottom:3px}
-.inp-n{background:var(–card);border:1px solid var(–border);color:var(–white);font-family:‘Syne’,sans-serif;font-size:22px;font-weight:700;padding:6px 10px;outline:none;width:64px;text-align:center;transition:border-color .2s}
-.inp-n:focus{border-color:var(–orange)}
-.cust-sep{font-family:‘Syne’,sans-serif;font-size:28px;font-weight:700;color:var(–muted);padding-bottom:2px}
-.clock-wrap{text-align:center;padding:14px 0 6px}
-.clock-num{font-family:‘Syne’,sans-serif;font-size:84px;font-weight:800;letter-spacing:-2px;line-height:1;transition:color .3s}
-.clock-num.idle{color:var(–white)}.clock-num.running{color:var(–orange)}.clock-num.paused{color:var(–muted)}.clock-num.done{color:var(–green)}
-.clock-phase{font-family:‘Space Mono’,monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(–muted);margin-top:3px}
-.t-prog{height:3px;background:var(–border);margin:10px 0;overflow:hidden}
-.t-prog-fill{height:100%;background:var(–orange);transition:width .95s linear;width:100%}
-.btn-row{display:flex;gap:7px}
-.tbtn{flex:1;padding:12px;border:none;cursor:pointer;font-family:‘Syne’,sans-serif;font-size:16px;font-weight:700;letter-spacing:1px;transition:.15s}
-.tbtn-go{background:var(–orange);color:var(–bg)}.tbtn-go:hover{background:#f07a42}
-.tbtn-rst{background:var(–card);color:var(–muted);border:1px solid var(–border)}.tbtn-rst:hover{color:var(–white)}
-.bell-flash{position:fixed;inset:0;background:rgba(232,98,42,.2);pointer-events:none;opacity:0;z-index:9998;transition:opacity .08s}
-.bell-flash.ring{opacity:1}
-.round-sec{margin-top:14px}
-.round-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.round-lbl{font-family:‘Space Mono’,monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(–white)}
-.sm-btn{font-family:‘Space Mono’,monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;background:none;border:none;color:var(–muted);cursor:pointer;transition:.2s}.sm-btn:hover{color:var(–red)}
-.round-row{display:flex;gap:10px;align-items:center}
-.btn-round{flex:1;background:var(–orange);color:var(–bg);border:none;font-family:‘Syne’,sans-serif;font-size:20px;font-weight:700;letter-spacing:1px;padding:13px;cursor:pointer;transition:.15s}.btn-round:hover{background:#f07a42}
-.round-box{flex-shrink:0;text-align:center;min-width:70px}
-.round-big{font-family:‘Syne’,sans-serif;font-size:60px;font-weight:800;color:var(–white);line-height:1}
-.round-unit{font-family:‘Space Mono’,monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(–muted)}
+/* START/FINISH BUTTONS */
+.wf-row { display:flex; gap:7px; margin-bottom:12px; }
+.wf-btn { flex:1; padding:11px; border:none; cursor:pointer; font-family:‘Syne’,sans-serif; font-size:15px; font-weight:700; letter-spacing:1px; transition:.15s; }
+.wfb-s { background:var(–orange); color:var(–bg); }
+.wfb-s:hover { background:#f07a42; }
+.wfb-s.going { background:#c07030; color:var(–white); cursor:default; }
+.wfb-s.done { background:#2a6a40; color:var(–white); cursor:default; }
+.wfb-f { background:var(–surface); color:var(–muted); border:1px solid var(–border); }
+.wfb-f.ready { background:var(–green); color:var(–white); border:none; }
+.wfb-f.done { background:var(–card); color:var(–muted); border:1px solid var(–border); cursor:default; }
 
-/* TRACKER */
-.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:16px}
-.stat-box{background:var(–surface);border:1px solid var(–border);padding:12px 8px;text-align:center}
-.stat-n{font-family:‘Syne’,sans-serif;font-size:34px;font-weight:700;color:var(–orange);line-height:1}
-.stat-l{font-family:‘Space Mono’,monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(–muted);margin-top:2px}
-.form-lbl{font-family:‘Space Mono’,monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(–white);margin-bottom:8px}
-.form{display:flex;flex-direction:column;gap:7px;margin-bottom:14px}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:7px}
-input.inp,select.inp{background:var(–surface);border:1px solid var(–border);color:var(–white);font-family:‘Barlow’,sans-serif;font-size:14px;padding:8px 11px;outline:none;width:100%;transition:border-color .2s}
-input.inp::placeholder{color:var(–muted)}
-input.inp:focus,select.inp:focus{border-color:var(–orange)}
-select.inp option{background:var(–card)}
-textarea.inp{background:var(–surface);border:1px solid var(–border);color:var(–white);font-family:‘Barlow’,sans-serif;font-size:13px;font-weight:300;padding:8px 11px;outline:none;width:100%;transition:border-color .2s;resize:vertical;min-height:56px;line-height:1.6}
-textarea.inp::placeholder{color:var(–muted)}
-textarea.inp:focus{border-color:var(–orange)}
-.btn-log{background:var(–orange);color:var(–bg);border:none;font-family:‘Syne’,sans-serif;font-size:15px;font-weight:700;letter-spacing:1px;padding:11px;cursor:pointer;transition:.15s;width:100%}.btn-log:hover{background:#f07a42}
-.log-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
-.log-list{display:flex;flex-direction:column;gap:5px}
-.entry{background:var(–surface);border:1px solid var(–border);padding:10px 12px;animation:fadeIn .25s ease}
-@keyframes fadeIn{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:translateY(0)}}
-.entry-top{display:flex;justify-content:space-between;align-items:flex-start}
-.entry-day{font-size:13px;font-weight:500;color:var(–orange)}.entry-meta{font-family:‘Space Mono’,monospace;font-size:9px;color:var(–muted);margin-top:2px}
-.entry-rounds{font-family:‘Syne’,sans-serif;font-size:22px;font-weight:700;color:var(–white);line-height:1}
-.entry-rounds span{font-family:‘Space Mono’,monospace;font-size:8px;color:var(–muted);margin-left:2px;vertical-align:middle}
-.entry-notes{font-size:11px;color:var(–muted);margin-top:6px;padding-top:6px;border-top:1px solid var(–border);line-height:1.55;white-space:pre-wrap}
-.empty{text-align:center;padding:26px;font-family:‘Space Mono’,monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(–muted);border:1px dashed var(–border)}
-/* INLINE TIMER OVERLAY — slides up from bottom over today tab */
-.inline-timer-overlay{position:fixed;bottom:0;left:0;right:0;z-index:900;background:var(–bg);border-top:2px solid var(–orange);padding:16px 18px 28px;transform:translateY(100%);transition:transform .35s cubic-bezier(.22,.68,0,1.2);box-shadow:0 -8px 40px rgba(0,0,0,.6)}
-.inline-timer-overlay.visible{transform:translateY(0)}
-.ito-drag{width:36px;height:3px;background:var(–border);border-radius:2px;margin:0 auto 14px;cursor:pointer}
-.ito-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.ito-title{font-family:‘Space Mono’,monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(–muted)}
-.ito-close{background:none;border:1px solid var(–border);color:var(–muted);font-family:‘Space Mono’,monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:4px 10px;cursor:pointer;transition:.15s}.ito-close:hover{color:var(–white);border-color:var(–orange)}
-.ito-clock{font-family:‘Syne’,sans-serif;font-size:72px;font-weight:800;letter-spacing:-2px;line-height:1;text-align:center;margin:6px 0 4px;transition:color .3s}
-.ito-clock.idle{color:var(–white)}.ito-clock.running{color:var(–orange)}.ito-clock.paused{color:var(–muted)}.ito-clock.done{color:var(–green)}
-.ito-phase{font-family:‘Space Mono’,monospace;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(–muted);text-align:center;margin-bottom:10px}
-.ito-prog{height:3px;background:var(–border);margin-bottom:12px;overflow:hidden}
-.ito-prog-fill{height:100%;background:var(–orange);transition:width .95s linear;width:100%}
-.ito-controls{display:flex;gap:8px;margin-bottom:12px}
-.ito-btn{flex:1;padding:11px;border:none;cursor:pointer;font-family:‘Syne’,sans-serif;font-size:15px;font-weight:700;letter-spacing:1px;transition:.15s}
-.ito-go{background:var(–orange);color:var(–bg)}.ito-go:hover{background:#f07a42}
-.ito-rst{background:var(–card);color:var(–muted);border:1px solid var(–border)}.ito-rst:hover{color:var(–white)}
-.ito-presets{display:flex;gap:5px}
-.ito-preset{flex:1;font-family:‘Space Mono’,monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;padding:7px 4px;cursor:pointer;border:1px solid var(–border);background:var(–card);color:var(–muted);transition:.15s}
-.ito-preset:hover{color:var(–white)}.ito-preset.sel{background:var(–orange-glow);color:var(–orange);border-color:var(–orange-dim)}
-.ito-round-row{display:flex;align-items:center;gap:8px;margin-top:10px;padding:8px 10px;background:var(–orange-glow);border:1px solid var(–orange-dim)}
-.ito-rlbl{font-family:‘Space Mono’,monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(–muted);flex:1}
-.ito-rnum{font-family:‘Syne’,sans-serif;font-size:26px;font-weight:700;color:var(–orange);min-width:34px;text-align:center}
-.ito-radd{background:var(–orange);color:var(–bg);border:none;font-family:‘Syne’,sans-serif;font-size:13px;font-weight:700;padding:5px 10px;cursor:pointer;transition:.15s}.ito-radd:hover{background:#f07a42}
+/* EXERCISE LIST */
+.ex-lbl { font-family:‘Space Mono’,monospace; font-size:8px; letter-spacing:2px; text-transform:uppercase; color:var(–muted); margin-bottom:6px; padding:0 16px; }
+.ex-list { display:flex; flex-direction:column; gap:4px; padding:0 16px; margin-bottom:12px; }
+.ex-row { display:flex; align-items:flex-start; gap:8px; padding:9px 11px; background:rgba(255,255,255,.02); border:1px solid var(–border); border-left:2px solid transparent; }
+.ex-row.kb { border-left-color:var(–orange); }
+.ex-row.bw { border-left-color:var(–cyan); }
+.ex-row.db { border-left-color:var(–green); }
+.ex-n { font-family:‘Space Mono’,monospace; font-size:11px; font-weight:700; color:var(–muted2); min-width:16px; flex-shrink:0; padding-top:2px; }
+.ex-info { flex:1; min-width:0; }
+.ex-name { font-size:14px; font-weight:500; color:var(–white); line-height:1.2; }
+.type-pill { display:inline-block; font-family:‘Space Mono’,monospace; font-size:7px; letter-spacing:1.5px; text-transform:uppercase; padding:1px 5px; border-radius:2px; margin-left:5px; vertical-align:middle; }
+.tp-kb { background:var(–oglow); color:var(–orange); }
+.tp-bw { background:rgba(42,184,200,.1); color:var(–cyan); }
+.tp-db { background:rgba(58,173,106,.1); color:var(–green); }
+.ex-cue { font-size:11px; color:var(–muted); margin-top:2px; line-height:1.45; }
+.ex-mod { font-size:10px; color:var(–odim); margin-top:2px; font-style:italic; }
+.ex-src { margin-top:3px; }
+.ex-src a { font-family:‘Space Mono’,monospace; font-size:7px; letter-spacing:1.5px; text-transform:uppercase; padding:1px 5px; border-radius:2px; border:1px solid; text-decoration:none; transition:opacity .2s; }
+.ex-src a:hover { opacity:.7; }
+.ex-tgt { flex-shrink:0; text-align:right; }
+.ex-reps { font-family:‘Syne’,sans-serif; font-size:19px; font-weight:700; color:var(–orange); line-height:1; }
+.ex-unit { font-family:‘Space Mono’,monospace; font-size:7px; letter-spacing:1px; text-transform:uppercase; color:var(–muted); }
+
+/* TIP */
+.tip { border-left:2px solid var(–odim); background:var(–oglow); padding:8px 11px; font-size:12px; color:var(–muted); line-height:1.65; margin:0 16px 12px; }
+.tip b { display:block; font-family:‘Space Mono’,monospace; font-size:8px; letter-spacing:2px; text-transform:uppercase; color:var(–orange); margin-bottom:2px; }
+
+/* ROUND COUNTER */
+.riw { display:flex; align-items:center; gap:8px; margin:0 16px 10px; padding:8px 11px; background:var(–oglow); border:1px solid var(–odim); }
+.riw-lbl { font-family:‘Space Mono’,monospace; font-size:8px; letter-spacing:1.5px; text-transform:uppercase; color:var(–muted); flex:1; }
+.riw-n { font-family:‘Syne’,sans-serif; font-size:28px; font-weight:700; color:var(–orange); min-width:36px; text-align:center; }
+.riw-add { background:var(–orange); color:var(–bg); border:none; font-family:‘Syne’,sans-serif; font-size:13px; font-weight:700; padding:6px 11px; cursor:pointer; }
+.riw-add:hover { background:#f07a42; }
+.riw-rst { background:var(–card); color:var(–muted); border:1px solid var(–border); font-family:‘Space Mono’,monospace; font-size:8px; letter-spacing:1px; text-transform:uppercase; padding:4px 8px; cursor:pointer; }
+.riw-rst:hover { color:var(–white); }
+
+/* PHASE BLOCKS */
+.phase { margin:0 16px 8px; border:1px solid var(–border); }
+.phase.wu { border-top:2px solid #e07b30; }
+.phase.cd { border-top:2px solid var(–cdim); }
+.ph-head { display:flex; align-items:center; gap:6px; padding:7px 11px; cursor:pointer; background:rgba(255,255,255,.015); }
+.ph-head:hover { background:rgba(255,255,255,.025); }
+.ph-icon { font-size:12px; }
+.ph-title { font-family:‘Space Mono’,monospace; font-size:8px; letter-spacing:2px; text-transform:uppercase; }
+.phase.wu .ph-title { color:#e07b30; }
+.phase.cd .ph-title { color:var(–cyan); }
+.ph-chev { margin-left:auto; font-size:9px; color:var(–muted); transition:transform .2s; }
+.ph-body { display:none; padding:2px 11px 10px; }
+.ph-body.open { display:block; }
+.ph-note { font-size:11px; color:var(–muted); line-height:1.6; margin-bottom:7px; }
+.s-list { display:flex; flex-direction:column; gap:3px; }
+.s-row { padding:6px 9px; background:rgba(255,255,255,.015); border:1px solid var(–border); font-size:12px; color:var(–muted); }
+
+/* NOTES */
+.notes-wrap { padding:0 16px 14px; }
+.notes-lbl { font-family:‘Space Mono’,monospace; font-size:8px; letter-spacing:2px; text-transform:uppercase; color:var(–muted); margin-bottom:5px; display:flex; justify-content:space-between; align-items:center; }
+.sv-badge { font-size:8px; color:var(–green); opacity:0; transition:opacity .4s; }
+.notes-ta { width:100%; background:var(–card); border:1px solid var(–border); color:var(–white); font-family:‘Barlow’,sans-serif; font-size:12px; font-weight:300; padding:8px 11px; resize:vertical; min-height:60px; outline:none; transition:border-color .2s; line-height:1.6; }
+.notes-ta:focus { border-color:var(–orange); }
+.notes-ta::placeholder { color:var(–muted); }
+.notes-btns { display:flex; gap:5px; margin-top:5px; }
+.nb { font-family:‘Space Mono’,monospace; font-size:8px; letter-spacing:1.5px; text-transform:uppercase; padding:5px 10px; cursor:pointer; border:none; }
+.nb-sv { background:var(–orange); color:var(–bg); }
+.nb-sv:hover { background:#f07a42; }
+.nb-cl { background:var(–card); color:var(–muted); border:1px solid var(–border); }
+.nb-cl:hover { color:var(–red); }
+
+/* REROLL */
+.reroll-row { display:flex; gap:7px; margin-bottom:14px; align-items:center; }
+.reroll-btn { flex:1; background:none; border:1px solid var(–border); color:var(–muted); font-family:‘Space Mono’,monospace; font-size:8px; letter-spacing:2px; text-transform:uppercase; padding:8px 12px; cursor:pointer; }
+.reroll-btn:hover { color:var(–white); border-color:var(–orange); }
+.reroll-note { font-family:‘Space Mono’,monospace; font-size:8px; letter-spacing:1.5px; text-transform:uppercase; color:var(–muted2); }
+
+/* INLINE TIMER OVERLAY */
+.ito { position:fixed; bottom:0; left:0; right:0; z-index:900; background:var(–bg); border-top:2px solid var(–orange); padding:14px 18px 24px; transform:translateY(100%); transition:transform .35s cubic-bezier(.22,.68,0,1.2); box-shadow:0 -8px 40px rgba(0,0,0,.7); }
+.ito.visible { transform:translateY(0); }
+.ito-drag { width:36px; height:3px; background:var(–border); border-radius:2px; margin:0 auto 12px; cursor:pointer; }
+.ito-hdr { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+.ito-title { font-family:‘Space Mono’,monospace; font-size:9px; letter-spacing:3px; text-transform:uppercase; color:var(–muted); }
+.ito-close { background:none; border:1px solid var(–border); color:var(–muted); font-family:‘Space Mono’,monospace; font-size:8px; letter-spacing:1px; text-transform:uppercase; padding:4px 10px; cursor:pointer; }
+.ito-close:hover { color:var(–white); border-color:var(–orange); }
+.ito-presets { display:flex; gap:5px; margin-bottom:8px; }
+.ito-preset { flex:1; font-family:‘Space Mono’,monospace; font-size:8px; letter-spacing:1.5px; text-transform:uppercase; padding:7px 4px; cursor:pointer; border:1px solid var(–border); background:var(–card); color:var(–muted); }
+.ito-preset:hover { color:var(–white); }
+.ito-preset.sel { background:var(–oglow); color:var(–orange); border-color:var(–odim); }
+.ito-clock { font-family:‘Syne’,sans-serif; font-size:68px; font-weight:800; letter-spacing:-2px; line-height:1; text-align:center; margin:4px 0; }
+.ito-clock.idle { color:var(–white); }
+.ito-clock.running { color:var(–orange); }
+.ito-clock.paused { color:var(–muted); }
+.ito-clock.done { color:var(–green); }
+.ito-phase { font-family:‘Space Mono’,monospace; font-size:9px; letter-spacing:2.5px; text-transform:uppercase; color:var(–muted); text-align:center; margin-bottom:8px; }
+.ito-prog { height:3px; background:var(–border); margin-bottom:10px; overflow:hidden; }
+.ito-prog-fill { height:100%; background:var(–orange); transition:width .95s linear; }
+.ito-btns { display:flex; gap:8px; margin-bottom:10px; }
+.ito-btn { flex:1; padding:11px; border:none; cursor:pointer; font-family:‘Syne’,sans-serif; font-size:15px; font-weight:700; letter-spacing:1px; }
+.ito-go { background:var(–orange); color:var(–bg); }
+.ito-go:hover { background:#f07a42; }
+.ito-rst { background:var(–card); color:var(–muted); border:1px solid var(–border); }
+.ito-rst:hover { color:var(–white); }
+.ito-rounds { display:flex; align-items:center; gap:8px; padding:8px 10px; background:var(–oglow); border:1px solid var(–odim); }
+.ito-rlbl { font-family:‘Space Mono’,monospace; font-size:8px; letter-spacing:1.5px; text-transform:uppercase; color:var(–muted); flex:1; }
+.ito-rnum { font-family:‘Syne’,sans-serif; font-size:26px; font-weight:700; color:var(–orange); min-width:34px; text-align:center; }
+.ito-radd { background:var(–orange); color:var(–bg); border:none; font-family:‘Syne’,sans-serif; font-size:13px; font-weight:700; padding:5px 10px; cursor:pointer; }
+.ito-radd:hover { background:#f07a42; }
+
+/* BELL FLASH */
+.bell-flash { position:fixed; inset:0; background:rgba(232,98,42,.2); pointer-events:none; opacity:0; z-index:9000; transition:opacity .08s; }
+.bell-flash.ring { opacity:1; }
+
+/* STANDALONE TIMER */
+.timer-card { background:var(–surface); border:1px solid var(–border); border-top:2px solid var(–orange); padding:16px; margin-bottom:14px; }
+.timer-h { font-family:‘Syne’,sans-serif; font-size:17px; font-weight:700; letter-spacing:-.5px; margin-bottom:12px; }
+.preset-row { display:flex; gap:5px; margin-bottom:10px; }
+.pbtn { flex:1; font-family:‘Space Mono’,monospace; font-size:8px; letter-spacing:1.5px; text-transform:uppercase; padding:8px 4px; cursor:pointer; border:1px solid var(–border); background:var(–card); color:var(–muted); }
+.pbtn:hover { color:var(–white); }
+.pbtn.sel { background:var(–oglow); color:var(–orange); border-color:var(–odim); }
+.cust-row { display:flex; gap:8px; align-items:flex-end; margin-bottom:10px; }
+.cust-lbl { font-family:‘Space Mono’,monospace; font-size:8px; letter-spacing:2px; text-transform:uppercase; color:var(–muted); margin-bottom:3px; }
+.inp-n { background:var(–card); border:1px solid var(–border); color:var(–white); font-family:‘Syne’,sans-serif; font-size:22px; font-weight:700; padding:6px 10px; outline:none; width:64px; text-align:center; }
+.inp-n:focus { border-color:var(–orange); }
+.cust-sep { font-family:‘Syne’,sans-serif; font-size:28px; font-weight:700; color:var(–muted); padding-bottom:2px; }
+.clock-wrap { text-align:center; padding:14px 0 6px; }
+.clock-num { font-family:‘Syne’,sans-serif; font-size:82px; font-weight:800; letter-spacing:-2px; line-height:1; transition:color .3s; }
+.clock-num.idle { color:var(–white); }
+.clock-num.running { color:var(–orange); }
+.clock-num.paused { color:var(–muted); }
+.clock-num.done { color:var(–green); }
+.clock-phase { font-family:‘Space Mono’,monospace; font-size:9px; letter-spacing:3px; text-transform:uppercase; color:var(–muted); margin-top:3px; }
+.t-prog { height:3px; background:var(–border); margin:10px 0; overflow:hidden; }
+.t-prog-fill { height:100%; background:var(–orange); transition:width .95s linear; }
+.t-btns { display:flex; gap:7px; }
+.tbtn { flex:1; padding:12px; border:none; cursor:pointer; font-family:‘Syne’,sans-serif; font-size:16px; font-weight:700; letter-spacing:1px; }
+.tbtn-go { background:var(–orange); color:var(–bg); }
+.tbtn-go:hover { background:#f07a42; }
+.tbtn-rst { background:var(–card); color:var(–muted); border:1px solid var(–border); }
+.tbtn-rst:hover { color:var(–white); }
+.round-sec { margin-top:14px; }
+.round-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+.round-lbl { font-family:‘Space Mono’,monospace; font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(–white); }
+.sm-btn { font-family:‘Space Mono’,monospace; font-size:8px; letter-spacing:2px; text-transform:uppercase; background:none; border:none; color:var(–muted); cursor:pointer; }
+.sm-btn:hover { color:var(–red); }
+.round-row { display:flex; gap:10px; align-items:center; }
+.btn-round { flex:1; background:var(–orange); color:var(–bg); border:none; font-family:‘Syne’,sans-serif; font-size:20px; font-weight:700; letter-spacing:1px; padding:13px; cursor:pointer; }
+.btn-round:hover { background:#f07a42; }
+.round-box { flex-shrink:0; text-align:center; min-width:68px; }
+.round-big { font-family:‘Syne’,sans-serif; font-size:58px; font-weight:800; color:var(–white); line-height:1; }
+.round-unit { font-family:‘Space Mono’,monospace; font-size:8px; letter-spacing:2px; text-transform:uppercase; color:var(–muted); }
 
 /* TABATA */
-.tabata-card{background:var(–surface);border:1px solid var(–border);border-top:2px solid var(–cyan);padding:18px;margin-bottom:14px}
-.tabata-h{font-family:‘Syne’,sans-serif;font-size:17px;font-weight:700;letter-spacing:-0.5px;margin-bottom:4px}
-.tabata-sub{font-size:12px;color:var(–muted);line-height:1.6;margin-bottom:14px}
-.tabata-settings{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
-.tsetting{background:var(–card);border:1px solid var(–border);padding:12px}
-.tsetting-lbl{font-family:‘Space Mono’,monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(–muted);margin-bottom:6px}
-.tsetting-row{display:flex;align-items:center;gap:6px}
-.tsetting-inp{background:var(–bg);border:1px solid var(–border);color:var(–white);font-family:‘Syne’,sans-serif;font-size:26px;font-weight:700;padding:4px 8px;outline:none;width:72px;text-align:center;transition:border-color .2s}
-.tsetting-inp:focus{border-color:var(–cyan)}
-.tsetting-unit{font-family:‘Space Mono’,monospace;font-size:8px;letter-spacing:1px;text-transform:uppercase;color:var(–muted)}
-.tabata-extra{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
-.tab-clock-wrap{text-align:center;padding:20px 0 8px;position:relative}
-.tab-phase-badge{font-family:‘Syne’,sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;padding:4px 14px;border-radius:2px;margin-bottom:10px;display:inline-block;transition:all .3s}
-.tab-phase-badge.work{background:rgba(232,98,42,.2);color:var(–orange);border:1px solid var(–orange-dim)}
-.tab-phase-badge.rest{background:rgba(42,184,200,.15);color:var(–cyan);border:1px solid var(–cyan-dim)}
-.tab-phase-badge.idle{background:var(–card);color:var(–muted);border:1px solid var(–border)}
-.tab-clock-num{font-family:‘Syne’,sans-serif;font-size:96px;font-weight:800;letter-spacing:-3px;line-height:1;transition:color .3s}
-.tab-clock-num.work{color:var(–orange)}.tab-clock-num.rest{color:var(–cyan)}.tab-clock-num.idle{color:var(–white)}.tab-clock-num.done{color:var(–green)}
-.tab-prog-ring{display:flex;justify-content:center;margin:6px 0 10px}
-.tab-round-info{font-family:‘Space Mono’,monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(–muted);text-align:center;margin-bottom:10px}
-.tab-prog-bar{height:5px;background:var(–border);margin-bottom:14px;overflow:hidden;position:relative}
-.tab-prog-fill{position:absolute;left:0;top:0;bottom:0;transition:width .95s linear}
-.tab-prog-fill.work{background:var(–orange)}.tab-prog-fill.rest{background:var(–cyan)}
-.tab-btn-row{display:flex;gap:8px}
-.tbbtn{flex:1;padding:13px;border:none;cursor:pointer;font-family:‘Syne’,sans-serif;font-size:16px;font-weight:700;letter-spacing:1px;transition:.15s}
-.tbbtn-go{background:var(–cyan);color:var(–bg)}.tbbtn-go:hover{background:#3dd0e0}
-.tbbtn-rst{background:var(–card);color:var(–muted);border:1px solid var(–border)}.tbbtn-rst:hover{color:var(–white)}
-.tab-exercises{margin-top:14px}
-.tab-ex-lbl{font-family:‘Space Mono’,monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(–muted);margin-bottom:8px}
-.tab-ex-current{background:var(–card);border:1px solid var(–border);border-left:3px solid var(–orange);padding:12px 14px;transition:all .3s}
-.tab-ex-current.rest-phase{border-left-color:var(–cyan)}
-.tab-ex-name{font-family:‘Syne’,sans-serif;font-size:20px;font-weight:700;color:var(–white);margin-bottom:3px}
-.tab-ex-next{font-size:11px;color:var(–muted);margin-top:6px;padding-top:6px;border-top:1px solid var(–border)}
-.tab-flash{position:fixed;inset:0;pointer-events:none;opacity:0;z-index:8998;transition:opacity .06s}
-.tab-flash.work-flash{background:rgba(232,98,42,.18)}.tab-flash.rest-flash{background:rgba(42,184,200,.15)}
-.tab-flash.ring{opacity:1}
+.tab-card { background:var(–surface); border:1px solid var(–border); border-top:2px solid var(–cyan); padding:16px; margin-bottom:14px; }
+.tab-h { font-family:‘Syne’,sans-serif; font-size:17px; font-weight:700; letter-spacing:-.5px; margin-bottom:4px; }
+.tab-sub { font-size:12px; color:var(–muted); line-height:1.6; margin-bottom:14px; }
+.tab-settings { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:10px; }
+.tsetting { background:var(–card); border:1px solid var(–border); padding:10px; }
+.tsetting-lbl { font-family:‘Space Mono’,monospace; font-size:8px; letter-spacing:2px; text-transform:uppercase; color:var(–muted); margin-bottom:5px; }
+.tsetting-row { display:flex; align-items:center; gap:6px; }
+.tsetting-inp { background:var(–bg); border:1px solid var(–border); color:var(–white); font-family:‘Syne’,sans-serif; font-size:26px; font-weight:700; padding:4px 8px; outline:none; width:70px; text-align:center; }
+.tsetting-inp:focus { border-color:var(–cyan); }
+.tsetting-unit { font-family:‘Space Mono’,monospace; font-size:8px; letter-spacing:1px; text-transform:uppercase; color:var(–muted); }
+.tab-presets { display:flex; gap:5px; margin-bottom:14px; }
+.tab-preset { flex:1; font-family:‘Space Mono’,monospace; font-size:8px; letter-spacing:1px; text-transform:uppercase; padding:7px 4px; cursor:pointer; border:1px solid var(–border); background:var(–card); color:var(–muted); }
+.tab-preset:hover { color:var(–white); }
+.tab-clock-wrap { text-align:center; padding:16px 0 6px; }
+.tab-badge { font-family:‘Syne’,sans-serif; font-size:11px; font-weight:700; letter-spacing:3px; text-transform:uppercase; padding:4px 14px; border-radius:2px; margin-bottom:8px; display:inline-block; }
+.tab-badge.idle { background:var(–card); color:var(–muted); border:1px solid var(–border); }
+.tab-badge.work { background:rgba(232,98,42,.2); color:var(–orange); border:1px solid var(–odim); }
+.tab-badge.rest { background:rgba(42,184,200,.15); color:var(–cyan); border:1px solid var(–cdim); }
+.tab-clock { font-family:‘Syne’,sans-serif; font-size:94px; font-weight:800; letter-spacing:-3px; line-height:1; }
+.tab-clock.idle { color:var(–white); }
+.tab-clock.work { color:var(–orange); }
+.tab-clock.rest { color:var(–cyan); }
+.tab-clock.done { color:var(–green); }
+.tab-info { font-family:‘Space Mono’,monospace; font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(–muted); text-align:center; margin:6px 0 10px; }
+.tab-prog-bar { height:5px; background:var(–border); margin-bottom:14px; overflow:hidden; position:relative; }
+.tab-prog { position:absolute; left:0; top:0; bottom:0; transition:width .95s linear; }
+.tab-prog.work { background:var(–orange); }
+.tab-prog.rest { background:var(–cyan); }
+.tab-btns { display:flex; gap:7px; }
+.tbbtn { flex:1; padding:12px; border:none; cursor:pointer; font-family:‘Syne’,sans-serif; font-size:16px; font-weight:700; letter-spacing:1px; }
+.tbbtn-go { background:var(–cyan); color:var(–bg); }
+.tbbtn-go:hover { background:#3dd0e0; }
+.tbbtn-rst { background:var(–card); color:var(–muted); border:1px solid var(–border); }
+.tbbtn-rst:hover { color:var(–white); }
+.tab-exercises { margin-top:14px; }
+.tab-ex-lbl { font-family:‘Space Mono’,monospace; font-size:8px; letter-spacing:2px; text-transform:uppercase; color:var(–muted); margin-bottom:7px; }
+.tab-ex-card { background:var(–card); border:1px solid var(–border); border-left:3px solid var(–orange); padding:12px 14px; }
+.tab-ex-card.resting { border-left-color:var(–cyan); }
+.tab-ex-name { font-family:‘Syne’,sans-serif; font-size:19px; font-weight:700; color:var(–white); margin-bottom:3px; }
+.tab-ex-cue { font-size:11px; color:var(–muted); line-height:1.5; }
+.tab-ex-next { font-size:11px; color:var(–muted); margin-top:7px; padding-top:7px; border-top:1px solid var(–border); }
+.tab-flash { position:fixed; inset:0; pointer-events:none; opacity:0; z-index:8998; transition:opacity .06s; }
+.tab-flash.ring { opacity:1; }
 
-.footer{padding:18px;border-top:1px solid var(–border);text-align:center;font-family:‘Space Mono’,monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(–muted)}
+/* HISTORY & TRACKER */
+.hist-card { background:var(–surface); border:1px solid var(–border); padding:12px 14px; margin-bottom:6px; }
+.hist-date { font-family:‘Space Mono’,monospace; font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(–orange); margin-bottom:4px; }
+.hist-focus { font-size:12px; font-weight:500; color:var(–white); margin-bottom:6px; }
+.hist-ex { display:flex; justify-content:space-between; font-size:11px; color:var(–muted); padding:3px 0; border-bottom:1px solid var(–border); }
+.hist-ex:last-child { border-bottom:none; }
+.hist-reps { font-family:‘Syne’,sans-serif; font-size:14px; font-weight:700; color:var(–orange); }
+.stats-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:7px; margin-bottom:16px; }
+.stat-box { background:var(–surface); border:1px solid var(–border); padding:12px 8px; text-align:center; }
+.stat-n { font-family:‘Syne’,sans-serif; font-size:34px; font-weight:700; color:var(–orange); line-height:1; }
+.stat-l { font-family:‘Space Mono’,monospace; font-size:8px; letter-spacing:1.5px; text-transform:uppercase; color:var(–muted); margin-top:2px; }
+.form-lbl { font-family:‘Space Mono’,monospace; font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(–white); margin-bottom:8px; }
+.form { display:flex; flex-direction:column; gap:7px; margin-bottom:14px; }
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:7px; }
+input.inp, select.inp { background:var(–surface); border:1px solid var(–border); color:var(–white); font-family:‘Barlow’,sans-serif; font-size:14px; padding:8px 11px; outline:none; width:100%; }
+input.inp:focus, select.inp:focus { border-color:var(–orange); }
+select.inp option { background:var(–card); }
+textarea.inp { background:var(–surface); border:1px solid var(–border); color:var(–white); font-family:‘Barlow’,sans-serif; font-size:13px; font-weight:300; padding:8px 11px; outline:none; width:100%; resize:vertical; min-height:56px; line-height:1.6; }
+textarea.inp:focus { border-color:var(–orange); }
+input.inp::placeholder, textarea.inp::placeholder { color:var(–muted); }
+.btn-log { background:var(–orange); color:var(–bg); border:none; font-family:‘Syne’,sans-serif; font-size:15px; font-weight:700; letter-spacing:1px; padding:11px; cursor:pointer; width:100%; }
+.btn-log:hover { background:#f07a42; }
+.log-head { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:8px; }
+.log-list { display:flex; flex-direction:column; gap:5px; }
+.entry { background:var(–surface); border:1px solid var(–border); padding:10px 12px; }
+.entry-top { display:flex; justify-content:space-between; align-items:flex-start; }
+.entry-day { font-size:13px; font-weight:500; color:var(–orange); }
+.entry-meta { font-family:‘Space Mono’,monospace; font-size:9px; color:var(–muted); margin-top:2px; }
+.entry-rounds { font-family:‘Syne’,sans-serif; font-size:22px; font-weight:700; color:var(–white); line-height:1; }
+.entry-rounds span { font-family:‘Space Mono’,monospace; font-size:8px; color:var(–muted); margin-left:2px; vertical-align:middle; }
+.entry-notes { font-size:11px; color:var(–muted); margin-top:6px; padding-top:6px; border-top:1px solid var(–border); line-height:1.55; white-space:pre-wrap; }
+.empty { text-align:center; padding:26px; font-family:‘Space Mono’,monospace; font-size:9px; letter-spacing:1.5px; text-transform:uppercase; color:var(–muted); border:1px dashed var(–border); }
+.info-box { border-left:2px solid var(–odim); background:var(–oglow); padding:9px 11px; font-size:12px; color:var(–muted); line-height:1.65; margin-top:14px; }
+.info-box b { display:block; font-family:‘Space Mono’,monospace; font-size:8px; letter-spacing:2px; text-transform:uppercase; color:var(–orange); margin-bottom:2px; }
+.info-box.cyan-box { border-left-color:var(–cdim); background:rgba(42,184,200,.07); }
+.info-box.cyan-box b { color:var(–cyan); }
+.footer { padding:18px; border-top:1px solid var(–border); text-align:center; font-family:‘Space Mono’,monospace; font-size:8px; letter-spacing:2px; text-transform:uppercase; color:var(–muted); }
 </style>
 
 </head>
 <body>
+
+<!-- Bell flash overlay -->
+
 <div class="bell-flash" id="bflash"></div>
+<!-- Tabata flash overlays -->
+<div class="tab-flash" id="tf-work" style="background:rgba(232,98,42,.18)"></div>
+<div class="tab-flash" id="tf-rest" style="background:rgba(42,184,200,.15)"></div>
+
+<!-- HERO -->
 
 <div class="hero">
   <div class="hero-bg">WOD</div>
-  <div class="hero-tag">Daily Generator · Fat Loss · Recomp</div>
-  <h1>HYBRID<br><span class="accent">RECOMP</span></h1>
-  <p class="hero-sub">A fresh 20-min AMRAP every day. Randomized from 60+ exercises across kettlebell, dumbbell, and bodyweight — balanced for fat loss and body recomposition.</p>
-  <div class="source-row">
-    <span class="stag st-nml">Nourish Move Love</span>
-    <span class="stag st-bx">BOXROX</span>
-    <span class="stag st-cm">Cavemantraining</span>
+  <div class="eyebrow">Daily Generator · Fat Loss · Recomp</div>
+  <h1>HYBRID<br><span class="ac">RECOMP</span></h1>
+  <p class="hero-sub">A fresh 20-min AMRAP every day — randomized from 60+ exercises across kettlebell, dumbbell, and bodyweight.</p>
+  <div class="pills">
+    <span class="pill p-nml">Nourish Move Love</span>
+    <span class="pill p-bx">BOXROX</span>
+    <span class="pill p-cm">Cavemantraining</span>
   </div>
-  <div class="hero-date-row">
+  <div class="hero-meta">
     <div class="hero-date" id="hero-date"></div>
-    <div class="wod-badge" id="hero-focus"></div>
+    <div class="hero-focus" id="hero-focus"></div>
   </div>
 </div>
+
+<!-- TABS -->
 
 <div class="tabs">
   <button class="tab active" onclick="show('today',this)">Today's WOD</button>
@@ -294,113 +345,163 @@ textarea.inp:focus{border-color:var(–orange)}
   <button class="tab" onclick="show('tracker',this)">Tracker</button>
 </div>
 
-<!-- INLINE TIMER OVERLAY (slides up when workout started) -->
+<!-- INLINE TIMER OVERLAY -->
 
-<div class="inline-timer-overlay" id="ito">
+<div class="ito" id="ito">
   <div class="ito-drag" onclick="hideITO()"></div>
-  <div class="ito-header">
+  <div class="ito-hdr">
     <div class="ito-title">🥊 AMRAP Timer</div>
     <button class="ito-close" onclick="hideITO()">Minimize ↓</button>
   </div>
-  <div class="ito-presets" style="margin-bottom:10px">
-    <button class="ito-preset" onclick="itoSetPreset(15,this)">15 min</button>
-    <button class="ito-preset" onclick="itoSetPreset(18,this)">18 min</button>
-    <button class="ito-preset sel" onclick="itoSetPreset(20,this)">20 min</button>
+  <div class="ito-presets">
+    <button class="ito-preset" onclick="itoPreset(15,this)">15 min</button>
+    <button class="ito-preset" onclick="itoPreset(18,this)">18 min</button>
+    <button class="ito-preset sel" onclick="itoPreset(20,this)">20 min</button>
   </div>
   <div class="ito-clock idle" id="ito-clock">20:00</div>
   <div class="ito-phase" id="ito-phase">READY</div>
-  <div class="ito-prog"><div class="ito-prog-fill" id="ito-bar"></div></div>
-  <div class="ito-controls">
-    <button class="ito-btn ito-go" id="ito-start-btn" onclick="itoAction()">START</button>
+  <div class="ito-prog"><div class="ito-prog-fill" id="ito-bar" style="width:100%"></div></div>
+  <div class="ito-btns">
+    <button class="ito-btn ito-go" id="ito-btn" onclick="itoAction()">START</button>
     <button class="ito-btn ito-rst" onclick="itoReset()">RESET</button>
   </div>
-  <div class="ito-round-row">
+  <div class="ito-rounds">
     <span class="ito-rlbl">Rounds</span>
-    <span class="ito-rnum" id="ito-rounds">0</span>
-    <button class="ito-radd" onclick="itoAddRound()">+ Round</button>
+    <span class="ito-rnum" id="ito-rnum">0</span>
+    <button class="ito-radd" onclick="itoRoundAdd()">+ Round</button>
   </div>
 </div>
 
-<!-- TAB FLASH for Tabata -->
-
-<div class="tab-flash work-flash" id="tab-flash-work"></div>
-<div class="tab-flash rest-flash" id="tab-flash-rest"></div>
-
-<!-- ══════ TODAY'S WOD ══════ -->
+<!-- TODAY'S WOD -->
 
 <div id="today" class="section active">
-  <div class="sec-label">Today's Workout</div>
-
+  <div class="sec-lbl">Today's Workout</div>
   <div class="legend">
-    <div class="lg-item"><div class="lg-bar" style="background:var(--orange)"></div>KB Kettlebell</div>
-    <div class="lg-item"><div class="lg-bar" style="background:var(--cyan)"></div>BW Bodyweight</div>
-    <div class="lg-item"><div class="lg-bar" style="background:var(--green)"></div>DB Dumbbell</div>
+    <div class="lg"><div class="lg-bar" style="background:var(--orange)"></div>KB Kettlebell</div>
+    <div class="lg"><div class="lg-bar" style="background:var(--cyan)"></div>BW Bodyweight</div>
+    <div class="lg"><div class="lg-bar" style="background:var(--green)"></div>DB Dumbbell</div>
   </div>
-
-  <div class="wod-card" id="wod-card">
-    <!-- Injected by JS -->
-  </div>
-
+  <div class="wod-card" id="wod-card"><div style="padding:20px;text-align:center;color:var(--muted);font-family:'Space Mono',monospace;font-size:10px">Loading workout...</div></div>
   <div class="reroll-row">
-    <button class="reroll-btn" onclick="rerollWod()">⟳ Generate New Workout</button>
-    <span class="reroll-note" id="reroll-note">Seeded to today's date</span>
+    <button class="reroll-btn" onclick="reroll()">⟳ Generate New Workout</button>
+    <span class="reroll-note" id="reroll-note">Seeded to today</span>
   </div>
 </div>
 
-<!-- ══════ TIMER ══════ -->
+<!-- TIMER -->
 
 <div id="timer" class="section">
-  <div class="sec-label">AMRAP Timer</div>
+  <div class="sec-lbl">AMRAP Timer</div>
   <div class="timer-card">
-    <div class="timer-h">🥊 BOXING BELL TIMER</div>
+    <div class="timer-h">🥊 Boxing Bell Timer</div>
     <div class="preset-row">
-      <button class="pbtn" onclick="setPreset(15,this)">15 min</button>
-      <button class="pbtn" onclick="setPreset(18,this)">18 min</button>
-      <button class="pbtn sel" onclick="setPreset(20,this)">20 min</button>
-      <button class="pbtn" onclick="setPreset(0,this)" id="cust-btn">Custom</button>
+      <button class="pbtn" onclick="tPreset(15,this)">15 min</button>
+      <button class="pbtn" onclick="tPreset(18,this)">18 min</button>
+      <button class="pbtn sel" onclick="tPreset(20,this)">20 min</button>
+      <button class="pbtn" onclick="tPreset(0,this)" id="cust-btn">Custom</button>
     </div>
     <div class="cust-row" id="cust-inputs" style="display:none">
-      <div><div class="cust-lbl">Min</div><input class="inp-n" id="cm" type="number" min="0" max="59" value="20" onchange="applyCustom()"></div>
+      <div><div class="cust-lbl">Min</div><input class="inp-n" id="cm" type="number" min="0" max="59" value="20" oninput="tCustom()"></div>
       <div class="cust-sep">:</div>
-      <div><div class="cust-lbl">Sec</div><input class="inp-n" id="cs" type="number" min="0" max="59" value="0" onchange="applyCustom()"></div>
+      <div><div class="cust-lbl">Sec</div><input class="inp-n" id="cs" type="number" min="0" max="59" value="0" oninput="tCustom()"></div>
     </div>
     <div class="clock-wrap">
-      <div class="clock-num idle" id="clock">20:00</div>
-      <div class="clock-phase" id="clock-phase">READY · TAP START</div>
+      <div class="clock-num idle" id="t-clock">20:00</div>
+      <div class="clock-phase" id="t-phase">READY · TAP START</div>
     </div>
-    <div class="t-prog"><div class="t-prog-fill" id="t-bar"></div></div><br>
-    <div class="btn-row">
-      <button class="tbtn tbtn-go" id="btn-t" onclick="timerAction()">START</button>
-      <button class="tbtn tbtn-rst" onclick="timerReset()">RESET</button>
+    <div class="t-prog"><div class="t-prog-fill" id="t-bar" style="width:100%"></div></div>
+    <br>
+    <div class="t-btns">
+      <button class="tbtn tbtn-go" id="t-btn" onclick="tAction()">START</button>
+      <button class="tbtn tbtn-rst" onclick="tReset()">RESET</button>
     </div>
   </div>
   <div class="round-sec">
-    <div class="round-top"><div class="round-lbl">Round Counter</div><button class="sm-btn" onclick="resetRounds()">Reset</button></div>
+    <div class="round-top"><div class="round-lbl">Round Counter</div><button class="sm-btn" onclick="tRoundReset()">Reset</button></div>
     <div class="round-row">
-      <button class="btn-round" onclick="addRound()">+ ROUND</button>
-      <div class="round-box"><div class="round-big" id="r-count">0</div><div class="round-unit">Rounds</div></div>
+      <button class="btn-round" onclick="tRoundAdd()">+ ROUND</button>
+      <div class="round-box"><div class="round-big" id="t-rcount">0</div><div class="round-unit">Rounds</div></div>
     </div>
   </div>
-  <div style="border-left:2px solid var(--orange-dim);background:var(--orange-glow);padding:8px 11px;font-size:12px;color:var(--muted);line-height:1.65;margin-top:14px">
-    <b style="display:block;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:2px">🔔 Boxing Bell</b>
-    Three-ring bell fires when the clock hits zero. Hit +Round each time you complete the full circuit. Log your score in Tracker.
-  </div>
+  <div class="info-box" style="margin-top:14px"><b>🔔 Boxing Bell</b>Three-ring bell fires when the clock hits zero. Hit +Round each time you finish a circuit. Log your total in Tracker.</div>
 </div>
 
-<!-- ══════ HISTORY ══════ -->
+<!-- TABATA -->
+
+<div id="tabata" class="section">
+  <div class="sec-lbl">Tabata Timer</div>
+  <div class="tab-card">
+    <div class="tab-h">⚡ Tabata Timer</div>
+    <div class="tab-sub">Set work and rest in seconds. Classic Tabata = 20s work / 10s rest × 8 rounds. Fully customizable.</div>
+    <div class="tab-settings">
+      <div class="tsetting">
+        <div class="tsetting-lbl">🔥 Work</div>
+        <div class="tsetting-row">
+          <input class="tsetting-inp" id="tab-work" type="number" min="5" max="120" value="20">
+          <div class="tsetting-unit">sec</div>
+        </div>
+      </div>
+      <div class="tsetting">
+        <div class="tsetting-lbl">❄️ Rest</div>
+        <div class="tsetting-row">
+          <input class="tsetting-inp" id="tab-rest" type="number" min="5" max="120" value="10">
+          <div class="tsetting-unit">sec</div>
+        </div>
+      </div>
+    </div>
+    <div class="tab-settings" style="margin-bottom:10px">
+      <div class="tsetting">
+        <div class="tsetting-lbl">Rounds</div>
+        <div class="tsetting-row">
+          <input class="tsetting-inp" id="tab-rounds" type="number" min="1" max="40" value="8">
+          <div class="tsetting-unit">rds</div>
+        </div>
+      </div>
+      <div class="tsetting">
+        <div class="tsetting-lbl">Presets</div>
+        <div style="display:flex;flex-direction:column;gap:4px;margin-top:2px">
+          <button class="tab-preset" onclick="tabPreset(20,10,8)">Classic 20/10 ×8</button>
+          <button class="tab-preset" onclick="tabPreset(40,20,6)">Endurance 40/20 ×6</button>
+          <button class="tab-preset" onclick="tabPreset(30,15,8)">Strength 30/15 ×8</button>
+        </div>
+      </div>
+    </div>
+    <div class="tab-clock-wrap">
+      <div class="tab-badge idle" id="tab-badge">READY</div><br>
+      <div class="tab-clock idle" id="tab-clock">20</div>
+      <div class="tab-info" id="tab-info">Round — / —</div>
+    </div>
+    <div class="tab-prog-bar"><div class="tab-prog work" id="tab-prog" style="width:100%"></div></div>
+    <div class="tab-btns">
+      <button class="tbbtn tbbtn-go" id="tab-btn" onclick="tabAction()">START</button>
+      <button class="tbbtn tbbtn-rst" onclick="tabReset()">RESET</button>
+    </div>
+  </div>
+  <div class="tab-exercises" id="tab-ex-wrap" style="display:none">
+    <div class="tab-ex-lbl">Current Exercise</div>
+    <div class="tab-ex-card" id="tab-ex-card">
+      <div class="tab-ex-name" id="tab-ex-name">—</div>
+      <div class="tab-ex-cue" id="tab-ex-cue"></div>
+      <div class="tab-ex-next" id="tab-ex-next"></div>
+    </div>
+  </div>
+  <div class="info-box cyan-box"><b>🔔 Interval Dings</b>Sharp ding = work ends. Double ding = rest ends / next round starts. Boxing bell = all rounds complete. If Today's WOD is loaded, exercises rotate automatically.</div>
+</div>
+
+<!-- HISTORY -->
 
 <div id="history" class="section">
-  <div class="sec-label">Workout History</div>
+  <div class="sec-lbl">Workout History</div>
   <div id="hist-list"><div class="empty">No workouts logged yet</div></div>
 </div>
 
-<!-- ══════ TRACKER ══════ -->
+<!-- TRACKER -->
 
 <div id="tracker" class="section">
-  <div class="sec-label">Session Log</div>
+  <div class="sec-lbl">Session Log</div>
   <div class="stats-grid">
     <div class="stat-box"><div class="stat-n" id="s-sess">0</div><div class="stat-l">Sessions</div></div>
-    <div class="stat-box"><div class="stat-n" id="s-rounds">0</div><div class="stat-l">Total Rounds</div></div>
+    <div class="stat-box"><div class="stat-n" id="s-total">0</div><div class="stat-l">Total Rounds</div></div>
     <div class="stat-box"><div class="stat-n" id="s-pr">—</div><div class="stat-l">Round PR</div></div>
   </div>
   <div class="form-lbl">Log a Session</div>
@@ -413,820 +514,729 @@ textarea.inp:focus{border-color:var(–orange)}
       <select class="inp" id="l-wt"><option value="">KB Weight</option><option>8kg</option><option>12kg</option><option>16kg</option><option>20kg</option><option>24kg</option></select>
       <select class="inp" id="l-feel"><option value="">Felt like...</option><option>🔥 Crushed it</option><option>💪 Strong</option><option>😐 Average</option><option>😤 A grind</option></select>
     </div>
-    <textarea class="inp" id="l-notes" placeholder="Weights used, what to improve, PRs..."></textarea>
+    <textarea class="inp" id="l-notes" placeholder="Weights used, PRs, what to improve..."></textarea>
     <button class="btn-log" onclick="logSession()">LOG SESSION</button>
   </div>
   <div class="log-head"><div class="form-lbl" style="margin-bottom:0">History</div><button class="sm-btn" onclick="clearLog()">Clear All</button></div>
   <div class="log-list" id="log-list"><div class="empty" id="log-empty">No sessions yet</div></div>
 </div>
 
-<!-- ══════ TABATA ══════ -->
-
-<div id="tabata" class="section">
-  <div class="sec-label">Tabata Timer</div>
-
-  <div class="tabata-card">
-    <div class="tabata-h">⚡ TABATA TIMER</div>
-    <div class="tabata-sub">Set your work and rest intervals in seconds. Classic Tabata is 20s work / 10s rest × 8 rounds. Customize for any protocol — 40/20, 30/15, or whatever your program calls for.</div>
-
-```
-<div class="tabata-settings">
-  <div class="tsetting">
-    <div class="tsetting-lbl">🔥 Work</div>
-    <div class="tsetting-row">
-      <input class="tsetting-inp" id="tab-work" type="number" min="5" max="120" value="20" onchange="tabUpdate()">
-      <div class="tsetting-unit">sec</div>
-    </div>
-  </div>
-  <div class="tsetting">
-    <div class="tsetting-lbl">❄️ Rest</div>
-    <div class="tsetting-row">
-      <input class="tsetting-inp" id="tab-rest" type="number" min="5" max="120" value="10" onchange="tabUpdate()">
-      <div class="tsetting-unit">sec</div>
-    </div>
-  </div>
-</div>
-
-<div class="tabata-extra">
-  <div class="tsetting">
-    <div class="tsetting-lbl">Rounds</div>
-    <div class="tsetting-row">
-      <input class="tsetting-inp" id="tab-rounds-total" type="number" min="1" max="40" value="8" onchange="tabUpdate()">
-      <div class="tsetting-unit">rounds</div>
-    </div>
-  </div>
-  <div class="tsetting">
-    <div class="tsetting-lbl">Protocol</div>
-    <div style="display:flex;flex-direction:column;gap:4px;margin-top:2px">
-      <button class="ito-preset" style="padding:5px" onclick="tabLoadPreset(20,10,8,this)">Classic 20/10</button>
-      <button class="ito-preset" style="padding:5px" onclick="tabLoadPreset(40,20,6,this)">Endurance 40/20</button>
-      <button class="ito-preset" style="padding:5px" onclick="tabLoadPreset(30,15,8,this)">Strength 30/15</button>
-    </div>
-  </div>
-</div>
-
-<div class="tab-clock-wrap">
-  <div class="tab-phase-badge idle" id="tab-badge">READY</div><br>
-  <div class="tab-clock-num idle" id="tab-clock">20</div>
-  <div class="tab-round-info" id="tab-round-info">Round — / —</div>
-</div>
-
-<div class="tab-prog-bar"><div class="tab-prog-fill work" id="tab-prog" style="width:100%"></div></div>
-
-<div class="tab-btn-row">
-  <button class="tbbtn tbbtn-go" id="tab-start-btn" onclick="tabAction()">START</button>
-  <button class="tbbtn tbbtn-rst" onclick="tabReset()">RESET</button>
-</div>
-```
-
-  </div>
-
-  <div class="tab-exercises" id="tab-exercises" style="display:none">
-    <div class="tab-ex-lbl">Current Exercise</div>
-    <div class="tab-ex-current" id="tab-ex-current">
-      <div class="tab-ex-name" id="tab-ex-name">—</div>
-      <div class="ex-cue" id="tab-ex-cue" style="font-size:11px;color:var(--muted);margin-top:3px"></div>
-      <div class="tab-ex-next" id="tab-ex-next"></div>
-    </div>
-  </div>
-
-  <div style="border-left:2px solid var(--cyan-dim);background:rgba(42,184,200,.07);padding:10px 12px;font-size:12px;color:var(--muted);line-height:1.65;margin-top:14px">
-    <b style="display:block;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--cyan);margin-bottom:3px">🔔 Interval Dings</b>
-    A sharp ding fires at the end of each work period, and a lower double-ding signals rest start. When all rounds are done the boxing bell fires. If Today's WOD is loaded, exercises rotate automatically through your Tabata sets.
-  </div>
-</div>
-
 <div class="footer">Hybrid Recomp · Daily Generator · NML × BOXROX × Cavemantraining</div>
 
 <script>
-// ═══════════════════════════════════════════════
-// EXERCISE POOL
-// ═══════════════════════════════════════════════
-const POOL = {
-  hinge: [
-    {name:'KB Swing',type:'kb',reps:15,unit:'reps',cue:'Explosive hip drive — power from hips not arms. Bell to shoulder height.',mod:'No KB → DB Romanian Deadlift ×12',src:'Cavemantraining'},
-    {name:'KB Single-Arm Swing',type:'kb',reps:10,unit:'each',cue:'5 each side. More core demand than two-hand swing. Switch hands at top.',mod:'No KB → Single-leg RDL ×8 each',src:'Cavemantraining'},
-    {name:'KB Dead Clean',type:'kb',reps:6,unit:'each',cue:'Start from dead stop on floor each rep. Full hip extension at top. Clean to rack.',mod:'No KB → DB Hang Clean ×8',src:'Cavemantraining'},
-    {name:'KB High Pull',type:'kb',reps:10,unit:'each',cue:'Swing arc then elbow drives up and out, bell to shoulder. 5 each side.',mod:'No KB → DB Upright Row ×10',src:'BOXROX'},
-    {name:'DB Romanian Deadlift',type:'db',reps:12,unit:'reps',cue:'Hip hinge, flat back, feel hamstring stretch at bottom. Full hip extension at top.',mod:'Can also use KB in suitcase hold',src:'Nourish Move Love'},
-    {name:'KB Sumo Deadlift',type:'kb',reps:12,unit:'reps',cue:'Wide stance, toes out, bell between legs. Drive hips through. Posterior chain.',mod:'No KB → Wide-stance DB deadlift',src:'Nourish Move Love'},
-    {name:'KB Swing + High Pull Combo',type:'kb',reps:8,unit:'reps',cue:'Alternate: one rep swing, one rep high pull. Cavemantraining combination drill.',mod:'Use same KB throughout',src:'Cavemantraining'},
-    {name:'KB Dead Snatch',type:'kb',reps:5,unit:'each',cue:'From dead stop, snatch overhead in one explosive movement. Lock out elbow overhead.',mod:'Beginner: KB dead clean instead',src:'Cavemantraining'},
+'use strict';
+
+// ═══════════════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════════════
+var POOL = {
+  hinge:[
+    {n:'KB Swing',t:'kb',r:15,u:'reps',c:'Explosive hip drive — power from hips, not arms. Bell to shoulder height.',m:'No KB → DB Romanian Deadlift ×12',s:'Cavemantraining'},
+    {n:'KB Single-Arm Swing',t:'kb',r:10,u:'each',c:'5 each side. More core demand than two-hand swing. Switch hands at top.',m:'No KB → Single-leg RDL ×8 each',s:'Cavemantraining'},
+    {n:'KB Dead Clean',t:'kb',r:6,u:'each',c:'Dead stop on floor each rep. Full hip extension at top. Clean to rack.',m:'No KB → DB Hang Clean ×8',s:'Cavemantraining'},
+    {n:'KB High Pull',t:'kb',r:10,u:'each',c:'Swing arc then elbow drives high and wide. 5 each side.',m:'No KB → DB Upright Row ×10',s:'BOXROX'},
+    {n:'DB Romanian Deadlift',t:'db',r:12,u:'reps',c:'Hip hinge, flat back, hamstring stretch at bottom. Full hip extension at top.',m:'Can use KB in suitcase hold',s:'Nourish Move Love'},
+    {n:'KB Sumo Deadlift',t:'kb',r:12,u:'reps',c:'Wide stance, toes out, bell between legs. Drive hips through at top.',m:'No KB → DB wide-stance deadlift',s:'Nourish Move Love'},
+    {n:'KB Dead Snatch',t:'kb',r:5,u:'each',c:'Dead stop to snatch overhead in one explosive move. Lock out elbow.',m:'Beginner → KB dead clean instead',s:'Cavemantraining'},
   ],
-  squat: [
-    {name:'KB Goblet Squat',type:'kb',reps:10,unit:'reps',cue:'Hold bell at chest. Sit deep, drive knees out. Full hip extension at top.',mod:'No KB → Bodyweight deep squat ×15',src:'Nourish Move Love'},
-    {name:'KB Front Rack Squat',type:'kb',reps:8,unit:'each',cue:'Clean to one-arm rack, squat deep keeping chest tall.',mod:'No KB → DB goblet squat',src:'Nourish Move Love'},
-    {name:'KB Goblet Squat + Press',type:'kb',reps:8,unit:'reps',cue:'Squat deep, stand, then press bell overhead in one fluid combo.',mod:'No KB → DB thruster',src:'Nourish Move Love'},
-    {name:'DB Thruster',type:'db',reps:8,unit:'reps',cue:'Front squat + overhead press in one movement. Most metabolically expensive exercise per rep.',mod:'No DB → KB goblet squat + press',src:'BOXROX'},
-    {name:'Jump Squats',type:'bw',reps:12,unit:'reps',cue:'Explosive up, land softly through full foot.',mod:'Scale: bodyweight squat if joint pain',src:'BOXROX'},
-    {name:'KB Reverse Lunge',type:'kb',reps:6,unit:'each',cue:'Bell in front rack or suitcase hold. Step back, back knee close to floor.',mod:'No KB → BW reverse lunge ×8 each',src:'Cavemantraining'},
-    {name:'DB Reverse Lunge',type:'db',reps:8,unit:'each',cue:'Dumbbells at sides. Control the descent. Drive through front heel to stand.',mod:'Add a curl at the top for bicep work',src:'Nourish Move Love'},
-    {name:'DB Split Squat',type:'db',reps:8,unit:'each',cue:'Rear foot on chair for Bulgarian variation. Deep stretch at bottom. Knees track toes.',mod:'No DB → bodyweight split squat ×10',src:'Nourish Move Love'},
-    {name:'Pistol Squat Progressions',type:'bw',reps:5,unit:'each',cue:'Assisted: hold a door frame or chair for balance. Box pistol: lower onto chair, press up.',mod:'Beginner: regular squat × 15',src:'Calisthenics'},
-    {name:'DB Lateral Lunge',type:'db',reps:8,unit:'each',cue:'Step wide to side, sit into hip, keep extended leg straight.',mod:'No DB → bodyweight cossack squat',src:'Nourish Move Love'},
+  squat:[
+    {n:'KB Goblet Squat',t:'kb',r:10,u:'reps',c:'Bell at chest, sit deep, drive knees out. Full extension at top.',m:'No KB → bodyweight deep squat ×15',s:'Nourish Move Love'},
+    {n:'KB Goblet Squat + Press',t:'kb',r:8,u:'reps',c:'Squat deep, stand, press bell overhead in one fluid combo.',m:'No KB → DB thruster',s:'Nourish Move Love'},
+    {n:'DB Thruster',t:'db',r:8,u:'reps',c:'Front squat + overhead press in one movement. Most metabolically expensive per rep.',m:'No DB → KB goblet + press',s:'BOXROX'},
+    {n:'Jump Squats',t:'bw',r:12,u:'reps',c:'Explosive up, land softly through full foot.',m:'Scale: bodyweight squat if knees hurt',s:'BOXROX'},
+    {n:'KB Reverse Lunge',t:'kb',r:6,u:'each',c:'Bell in rack or suitcase. Step back, back knee close to floor.',m:'No KB → BW reverse lunge ×8 each',s:'Cavemantraining'},
+    {n:'DB Reverse Lunge',t:'db',r:8,u:'each',c:'DBs at sides. Control descent. Drive through front heel to stand.',m:'Add a curl at top for extra bicep work',s:'Nourish Move Love'},
+    {n:'DB Split Squat',t:'db',r:8,u:'each',c:'Rear foot elevated on chair. Deep stretch at bottom. Knees track over toes.',m:'No DB → bodyweight split squat ×10',s:'Nourish Move Love'},
+    {n:'Pistol Squat',t:'bw',r:5,u:'each',c:'Assisted: hold a door frame for balance. Box pistol: lower onto chair, press back up.',m:'Beginner → regular squat ×15',s:'Calisthenics'},
   ],
-  push: [
-    {name:'Push-Ups',type:'bw',reps:12,unit:'reps',cue:'Chest to floor, full lock-out. Wide grip = chest. Diamond = triceps.',mod:'Easier: incline push-ups on chair',src:'BOXROX'},
-    {name:'Pike Push-Ups',type:'bw',reps:8,unit:'reps',cue:'Hips high, head toward floor. Triangle position at bottom. Targets shoulders.',mod:'Too hard: negative pike only',src:'Calisthenics'},
-    {name:'KB Push Press',type:'kb',reps:8,unit:'each',cue:'Slight knee dip, drive bell overhead. 4 each side or both arms.',mod:'No KB → DB shoulder press ×8',src:'BOXROX'},
-    {name:'DB Overhead Press',type:'db',reps:10,unit:'reps',cue:'Core tight, press straight up. Full lockout at top.',mod:'Can substitute KB press',src:'Nourish Move Love'},
-    {name:'Dips',type:'bw',reps:10,unit:'reps',cue:'Two chairs. Elbows to 90°, press to lock. Slow descent.',mod:'Scale: bench dips, feet flat on floor',src:'Calisthenics'},
-    {name:'KB Floor Press',type:'kb',reps:8,unit:'each',cue:'Lie on floor, KB in one hand, press up. Stabilizes shoulder. 4 each side.',mod:'No KB → DB floor press ×8 each',src:'Cavemantraining'},
-    {name:'DB Lateral Raise',type:'db',reps:12,unit:'reps',cue:'Arms to shoulder height, control the descent. Isolates lateral deltoid.',mod:'Use lighter DB than you think',src:'Nourish Move Love'},
-    {name:'Decline Push-Ups',type:'bw',reps:10,unit:'reps',cue:'Feet on chair, hands on floor. Upper chest and shoulders.',mod:'Easier: standard push-ups',src:'BOXROX'},
-    {name:'KB Clean and Press',type:'kb',reps:5,unit:'each',cue:'Dead clean to rack, pause, then strict press overhead.',mod:'No KB → DB hang clean + press',src:'Cavemantraining'},
+  push:[
+    {n:'Push-Ups',t:'bw',r:12,u:'reps',c:'Chest to floor, full lock-out. Wide = chest, diamond = triceps.',m:'Easier → incline push-ups on chair',s:'BOXROX'},
+    {n:'Pike Push-Ups',t:'bw',r:8,u:'reps',c:'Hips high, head toward floor. Triangle at bottom. Targets shoulders.',m:'Too hard → negative pike only (lower slowly)',s:'Calisthenics'},
+    {n:'KB Push Press',t:'kb',r:8,u:'each',c:'Slight knee dip, drive bell overhead. 4 each side or both.',m:'No KB → DB shoulder press ×8',s:'BOXROX'},
+    {n:'DB Overhead Press',t:'db',r:10,u:'reps',c:'Core tight, press straight up. Do not arch lower back. Full lockout at top.',m:'Can substitute KB press',s:'Nourish Move Love'},
+    {n:'Dips',t:'bw',r:10,u:'reps',c:'Two chairs. Elbows to 90°, press to lockout. Slow descent.',m:'Scale → bench dips, feet flat',s:'Calisthenics'},
+    {n:'KB Floor Press',t:'kb',r:8,u:'each',c:'Lie on floor, KB in one hand. Stabilizes shoulder. 4 each side.',m:'No KB → DB floor press ×8 each',s:'Cavemantraining'},
+    {n:'KB Clean and Press',t:'kb',r:5,u:'each',c:'Dead clean to rack, pause, then strict overhead press.',m:'No KB → DB hang clean + press',s:'Cavemantraining'},
+    {n:'Decline Push-Ups',t:'bw',r:10,u:'reps',c:'Feet on chair, hands on floor. Upper chest and shoulder emphasis.',m:'Easier → standard push-ups',s:'BOXROX'},
   ],
-  pull: [
-    {name:'Pull-Ups',type:'bw',reps:5,unit:'reps',cue:'Dead hang to chin over bar. Lock scapula first. Slow 3-sec descent.',mod:'No bar: Australian pull-ups under table',src:'BOXROX'},
-    {name:'Chin-Ups',type:'bw',reps:5,unit:'reps',cue:'Underhand grip. Bicep squeeze at top. Control the descent fully.',mod:'Too hard: jump to top, lower slowly',src:'Calisthenics'},
-    {name:'DB Bent-Over Row',type:'db',reps:10,unit:'each',cue:'Hip hinge, flat back. Row to hip. Full scapular retraction — squeeze at top.',mod:'No DB → KB bent-over row',src:'Nourish Move Love'},
-    {name:'KB Bent-Over Row',type:'kb',reps:8,unit:'each',cue:'Dead row each side. Bell from floor, full retraction.',mod:'No KB → DB row or inverted row',src:'Cavemantraining'},
-    {name:'KB Renegade Row',type:'kb',reps:4,unit:'each',cue:'Plank on two KBs, row one at a time. Anti-rotation core demand.',mod:'No KB → DB renegade row',src:'Cavemantraining'},
-    {name:'DB Renegade Row',type:'db',reps:4,unit:'each',cue:'Plank on DBs, row one side at a time. Keep hips square.',mod:'Scale: plank hold + separate rows',src:'Nourish Move Love'},
-    {name:'Inverted Rows',type:'bw',reps:10,unit:'reps',cue:'Under a table or low bar. Body rigid, pull chest to bar.',mod:'Easier: raise the bar height',src:'Calisthenics'},
-    {name:'Hanging Knee Raises',type:'bw',reps:10,unit:'reps',cue:'From dead hang, pull knees to chest using core. No swinging.',mod:'No bar: lying leg raises, back flat',src:'BOXROX'},
-    {name:'DB High Pull',type:'db',reps:10,unit:'reps',cue:'Hip hinge, explosive pull with elbows high and wide.',mod:'No DB → KB high pull',src:'Nourish Move Love'},
-    {name:'Face Pulls',type:'db',reps:12,unit:'reps',cue:'Light weight, pull to face with elbows high. Rear delts and rotator cuff.',mod:'Use resistance band if available',src:'Nourish Move Love'},
+  pull:[
+    {n:'Pull-Ups',t:'bw',r:5,u:'reps',c:'Dead hang to chin over bar. Lock scapula first. Slow 3-sec descent.',m:'No bar → Australian pull-ups under a table',s:'BOXROX'},
+    {n:'Chin-Ups',t:'bw',r:5,u:'reps',c:'Underhand grip. Bicep squeeze at top. Fully control the descent.',m:'Too hard → jump to top, lower slowly',s:'Calisthenics'},
+    {n:'DB Bent-Over Row',t:'db',r:10,u:'each',c:'Hip hinge, flat back. Row to hip. Full scapular retraction at top.',m:'No DB → KB bent-over row',s:'Nourish Move Love'},
+    {n:'KB Bent-Over Row',t:'kb',r:8,u:'each',c:'Dead row each side. Bell from floor, full scapular retraction.',m:'No KB → DB row or inverted row',s:'Cavemantraining'},
+    {n:'DB Renegade Row',t:'db',r:4,u:'each',c:'Plank on DBs, row one side at a time. Hips stay square — 4 each side.',m:'Scale → plank hold + separate rows',s:'Nourish Move Love'},
+    {n:'Inverted Rows',t:'bw',r:10,u:'reps',c:'Under a table or low bar. Body rigid, pull chest to bar.',m:'Easier → raise the bar height',s:'Calisthenics'},
+    {n:'Hanging Knee Raises',t:'bw',r:10,u:'reps',c:'From dead hang. Pull knees to chest using core. No swinging.',m:'No bar → lying leg raises, back flat',s:'BOXROX'},
+    {n:'DB High Pull',t:'db',r:10,u:'reps',c:'Hip hinge, explosive pull with elbows high and wide.',m:'No DB → KB high pull',s:'Nourish Move Love'},
   ],
-  core: [
-    {name:'Plank Hold',type:'bw',reps:30,unit:'sec',cue:'Elbows under shoulders. Squeeze glutes, brace abs. No raised hips.',mod:'Easier: knee plank',src:'BOXROX'},
-    {name:'Mountain Climbers',type:'bw',reps:20,unit:'total',cue:'Fast and controlled. 10 each leg. Keeps heart rate elevated.',mod:'Slower: 10 each leg, controlled',src:'BOXROX'},
-    {name:'Hollow Body Hold',type:'bw',reps:25,unit:'sec',cue:'Lower back flat to floor, arms and legs extended. Full tension.',mod:'Easier: half hollow, knees bent',src:'Calisthenics'},
-    {name:'V-Ups',type:'bw',reps:10,unit:'reps',cue:'Legs and torso rise simultaneously to form V. Control both halves.',mod:'Easier: alternating single leg V-up',src:'BOXROX'},
-    {name:'Lying Leg Raises',type:'bw',reps:12,unit:'reps',cue:'Legs together, raise to 45°. Lower back flat throughout. Slow descent.',mod:'Easier: bent-knee raises',src:'Calisthenics'},
-    {name:'KB Turkish Get-Up',type:'kb',reps:2,unit:'each',cue:'1 rep each side. Slow and deliberate. Full body movement.',mod:'Beginner: shoe on fist, no weight',src:'Cavemantraining'},
-    {name:'DB Woodchop',type:'db',reps:10,unit:'each',cue:'Diagonal chop from hip to opposite shoulder. Rotational power.',mod:'No DB → bodyweight twist',src:'Nourish Move Love'},
-    {name:'Burpees',type:'bw',reps:6,unit:'reps',cue:'Chest to floor, full extension at top. Most efficient fat-burning exercise.',mod:'Scale: step-back burpee, no jump',src:'BOXROX'},
-    {name:'High-to-Low Plank',type:'bw',reps:8,unit:'reps',cue:'Push-up → lower elbow by elbow → press back up. Core anti-rotation.',mod:'Slow each transition down',src:'Calisthenics'},
-    {name:'KB Suitcase Carry',type:'kb',reps:20,unit:'meters',cue:'Walk with KB in one hand, resist leaning. Core anti-lateral flexion.',mod:'No space: stationary hold 20 seconds',src:'Cavemantraining'},
+  core:[
+    {n:'Plank Hold',t:'bw',r:30,u:'sec',c:'Elbows under shoulders. Squeeze glutes and abs. No raised hips.',m:'Easier → knee plank',s:'BOXROX'},
+    {n:'Mountain Climbers',t:'bw',r:20,u:'total',c:'Fast and controlled — 10 each leg. Spikes heart rate between loaded movements.',m:'Slower → 10 each leg, controlled',s:'BOXROX'},
+    {n:'Hollow Body Hold',t:'bw',r:25,u:'sec',c:'Lower back flat to floor, arms and legs extended. Full tension throughout.',m:'Easier → half hollow, knees bent',s:'Calisthenics'},
+    {n:'V-Ups',t:'bw',r:10,u:'reps',c:'Legs and torso rise together to form V shape. Control both halves.',m:'Easier → alternating single-leg V-up',s:'BOXROX'},
+    {n:'Lying Leg Raises',t:'bw',r:12,u:'reps',c:'Legs together, raise to 45°. Lower back flat the whole time.',m:'Easier → bent-knee raises',s:'Calisthenics'},
+    {n:'KB Turkish Get-Up',t:'kb',r:2,u:'each',c:'1 rep each side. Slow and deliberate. The most complete exercise that exists.',m:'Beginner → shoe on fist, no weight',s:'Cavemantraining'},
+    {n:'DB Woodchop',t:'db',r:10,u:'each',c:'Diagonal chop from hip to opposite shoulder. Rotational power, core braced.',m:'No DB → bodyweight rotational twist',s:'Nourish Move Love'},
+    {n:'Burpees',t:'bw',r:6,u:'reps',c:'Chest to floor, full extension at top. The most efficient fat-burning movement.',m:'Scale → step-back burpee, no jump',s:'BOXROX'},
+    {n:'High-to-Low Plank',t:'bw',r:8,u:'reps',c:'Push-up → lower elbow by elbow → press back up. Core anti-rotation.',m:'Slow down each transition',s:'Calisthenics'},
+    {n:'KB Suitcase Carry',t:'kb',r:20,u:'meters',c:'One KB at side, resist leaning sideways. Core anti-lateral flexion.',m:'No space → stationary hold 20 sec each',s:'Cavemantraining'},
   ],
-  carry: [
-    {name:'KB Farmer Carry',type:'kb',reps:20,unit:'meters',cue:'Two KBs, walk tall. Grip, traps, core. Fat loss through metabolic demand.',mod:'No space: march in place 20 steps',src:'BOXROX'},
-    {name:'DB Waiter Walk',type:'db',reps:20,unit:'meters',cue:'One DB overhead, arm locked. Walk slow and steady. Shoulder stability.',mod:'No space: overhead hold 20 sec',src:'Nourish Move Love'},
-    {name:'KB Rack Carry',type:'kb',reps:20,unit:'meters',cue:'One KB in front rack position. Keep elbow down, core braced. Both sides.',mod:'No space: rack hold march 20 steps',src:'Cavemantraining'},
+  carry:[
+    {n:'KB Farmer Carry',t:'kb',r:20,u:'meters',c:'Two KBs, walk tall. Grip, traps, and core under load.',m:'No space → march in place 20 steps',s:'BOXROX'},
+    {n:'DB Waiter Walk',t:'db',r:20,u:'meters',c:'One DB overhead, arm locked. Walk slow. Shoulder stability and core.',m:'No space → overhead hold 20 sec',s:'Nourish Move Love'},
+    {n:'KB Rack Carry',t:'kb',r:20,u:'meters',c:'KB in front rack, elbow down, core braced. Both sides.',m:'No space → rack hold and march 20 steps',s:'Cavemantraining'},
   ]
 };
 
-const FOCUSES = [
-  {name:'Push Focus',color:'var(--orange)',borderColor:'var(--orange-dim)',
-   desc:'Full-body AMRAP with a push emphasis. KB ballistics paired with pressing movements keep heart rate high while push muscles recover between sets.',
-   tip:{title:'Cavemantraining Push Method',body:'Alternate KB ballistic (swing/hinge) with pressing movements — heart rate stays high while pushing muscles get just enough rest.'},
+var FOCUSES = [
+  {name:'Push Focus',color:'var(--orange)',bc:'var(--odim)',
+   desc:'Full-body AMRAP with a push emphasis. KB ballistics alternate with pressing movements to keep heart rate high while push muscles recover between sets.',
+   tip:{t:'Cavemantraining Push Method',b:'Alternating KB ballistics (swing/hinge) with pressing keeps the heart rate high while the pushing muscles get just enough recovery.'},
    slots:['hinge','push','squat','push','core'],
-   warmup:['Jumping Jacks — 60s','Wrist Circles + Arm Circles — 30s','KB Halos — 5 each way','Easy Incline Push-Up — 10 reps'],
-   cooldown:['Slow Walk — 2 min','Wall Chest Stretch — 30s each side','Reverse Shoulder Stretch — 30s','Wrist Extensor Stretch — 30s each']},
-  {name:'Pull Focus',color:'var(--cyan)',borderColor:'var(--cyan-dim)',
-   desc:'Posterior chain emphasis. KB cleans, rows, and pull-ups paired with explosive hinges — targets your largest muscle group for maximum calorie burn.',
-   tip:{title:'BOXROX Posterior Chain Principle',body:'The back and posterior chain are your biggest calorie-burning asset. Keep transitions fast — the KB moving is the warm-up for the pull movement.'},
+   wu:['Jumping Jacks — 60s','Wrist Circles + Arm Circles — 30s','KB Halos — 5 each direction','Easy Incline Push-Up — 10 reps'],
+   cd:['Slow Walk — 2 min','Wall Chest Stretch — 30s each side','Reverse Shoulder Stretch — 30s','Wrist Extensor Stretch — 30s each']},
+  {name:'Pull Focus',color:'var(--cyan)',bc:'var(--cdim)',
+   desc:'Posterior chain emphasis. KB cleans, rows, and pull-ups paired with explosive hinges target your largest muscle group for maximum calorie burn.',
+   tip:{t:'BOXROX Posterior Chain Principle',b:'The back and posterior chain are your biggest calorie-burning asset. Keep transitions fast — the KB moving is the warm-up for the next pull.'},
    slots:['hinge','pull','pull','squat','core'],
-   warmup:['March in Place — 2 min','Arm Circles — 10 forward + 10 back','KB Halos — 5 each way','Dead Hang — 30s'],
-   cooldown:['Slow Walk — 2 min','Dead Hang Stretch — 30s','Thread the Needle — 30s each','Forward Fold — 30s']},
-  {name:'Legs Focus',color:'var(--green)',borderColor:'#1d5c38',
-   desc:'Legs are your biggest calorie-burning asset. KB squats, lunges and explosive jump work attack glutes, quads, and hamstrings while keeping cardio output maximal.',
-   tip:{title:'NML Legs Protocol',body:'The clean → squat → press sequence is the most metabolically expensive chain you can run. Track your rounds week over week — improvement here proves recomp is working.'},
+   wu:['March in Place — 2 min','Arm Circles — 10 forward + 10 back','KB Halos — 5 each direction','Dead Hang — 30s'],
+   cd:['Slow Walk — 2 min','Dead Hang Stretch — 30s','Thread the Needle — 30s each','Forward Fold — 30s']},
+  {name:'Legs Focus',color:'var(--green)',bc:'#1d5c38',
+   desc:'Legs are your biggest calorie-burning asset. KB squats, lunges, and explosive jumps attack glutes, quads, and hamstrings while keeping cardio output maximal.',
+   tip:{t:'NML Legs Protocol',b:'The clean → squat → press sequence is the most metabolically expensive chain you can run. Track your Friday rounds — improvement week over week proves the recomp is working.'},
    slots:['hinge','squat','squat','push','core'],
-   warmup:['High Knees — 90s','Slow Bodyweight Squat — 10 reps','Hip Circles + Lunges — 1 min','KB Halo + Dead Swing — 5 each'],
-   cooldown:['Slow Walk — 2 min','Knights Stretch — 30s each','Pigeon Pose — 30s each','Forward Fold — 30s']},
-  {name:'Full Body',color:'#b8a060',borderColor:'#5a4f2a',
+   wu:['High Knees — 90s','Slow Bodyweight Squat — 10 reps','Hip Circles + Lunges — 1 min','KB Halos + Dead Swing — 5 each'],
+   cd:['Slow Walk — 2 min','Knights Stretch — 30s each','Pigeon Pose — 30s each','Forward Fold — 30s']},
+  {name:'Full Body',color:'#b8a060',bc:'#5a4f2a',
    desc:'All three tools in one circuit. KB ballistics, DB strength, and bodyweight calisthenics — maximum metabolic demand and EPOC effect.',
-   tip:{title:'EPOC Effect',body:'Mixed-modal circuits keep heart rate in 75–85% MHR — optimal for simultaneous fat loss and muscle preservation. Elevated caloric burn continues 24–48 hours post-workout.'},
+   tip:{t:'EPOC Effect',b:'Mixed-modal circuits keep heart rate in 75–85% MHR — the optimal zone for simultaneous fat loss and muscle preservation. Caloric burn stays elevated 24–48 hours post-workout.'},
    slots:['hinge','push','pull','squat','core'],
-   warmup:['Jumping Jacks + High Knees — 90s','KB Halos + Wrist Circles — 1 min','Slow Goblet Squat — 5 reps','Dead Hang — 20s'],
-   cooldown:["Slow Walk — 2 min","Child's Pose — 30s","Piriformis Stretch — 30s each","T-Spine Windmill — 5 each"]},
-  {name:'Core Focus',color:'#9b6eda',borderColor:'#5a3a8a',
-   desc:'Core stability and anti-rotation emphasis paired with KB ballistics. Every carry, plank and explosive movement builds the foundation for all other lifts.',
-   tip:{title:'Cavemantraining Core Method',body:"Core training here isn't crunches — it's resisting rotation during carries, bracing during swings, and stabilizing during presses. Every exercise is a core exercise."},
+   wu:['Jumping Jacks + High Knees — 90s','KB Halos + Wrist Circles — 1 min','Slow Goblet Squat — 5 reps','Dead Hang — 20s'],
+   cd:["Slow Walk — 2 min","Child's Pose — 30s","Piriformis Stretch — 30s each","T-Spine Windmill — 5 each side"]},
+  {name:'Core Focus',color:'#9b6eda',bc:'#5a3a8a',
+   desc:'Core stability and anti-rotation paired with KB ballistics. Every carry, plank, and explosive movement here builds the foundation for every other lift.',
+   tip:{t:'Cavemantraining Core Method',b:"Core here isn't crunches — it's resisting rotation during carries, bracing during swings, and stabilizing during presses. Every exercise is a core exercise."},
    slots:['hinge','core','push','carry','core'],
-   warmup:['Jumping Jacks — 60s','Cat-Cow — 10 slow reps','Dead Bug — 5 each side','Wrist Circles — 30s'],
-   cooldown:["Slow Walk — 2 min","Child's Pose — 60s","Cat-Cow — 10 reps","Cobra Stretch — 30s"]},
+   wu:['Jumping Jacks — 60s','Cat-Cow — 10 slow reps','Dead Bug — 5 each side','Wrist Circles — 30s'],
+   cd:["Slow Walk — 2 min","Child's Pose — 60s","Cat-Cow — 10 reps","Cobra Stretch — 30s"]},
 ];
 
-// ═══════════════════════════════════════════════
-// SEEDED RANDOM
-// ═══════════════════════════════════════════════
-function seededRandom(seed) {
-  let s = seed;
+// ═══════════════════════════════════════════════════════
+// SEEDED RNG
+// ═══════════════════════════════════════════════════════
+function seededRng(seed) {
+  var s = seed >>> 0;
   return function() {
-    s = (s * 1664525 + 1013904223) & 0xffffffff;
-    return (s >>> 0) / 0xffffffff;
+    s = (Math.imul(s, 1664525) + 1013904223) >>> 0;
+    return s / 4294967295;
   };
 }
-function getTodaySeed() {
-  const d = new Date();
-  return d.getFullYear() * 10000 + (d.getMonth()+1) * 100 + d.getDate();
+function todaySeed() {
+  var d = new Date();
+  return (d.getFullYear() * 10000 + (d.getMonth()+1) * 100 + d.getDate()) >>> 0;
 }
-function getRerollOffset() {
-  return parseInt(localStorage.getItem('reroll-' + getTodaySeed()) || '0');
+function rerollOffset() {
+  return parseInt(localStorage.getItem('rr-' + todaySeed()) || '0');
 }
 function bumpReroll() {
-  const n = getRerollOffset() + 1;
-  localStorage.setItem('reroll-' + getTodaySeed(), n);
+  var n = rerollOffset() + 1;
+  localStorage.setItem('rr-' + todaySeed(), n);
   return n;
 }
 
 function generateWod(seed) {
-  const rng = seededRandom(seed);
-  const focus = FOCUSES[Math.floor(rng() * FOCUSES.length)];
-  const seen = new Set();
-  const exercises = focus.slots.map((pattern, i) => {
-    const pool = POOL[pattern];
-    let ex = pool[Math.floor(rng() * pool.length)];
-    if (seen.has(ex.name)) {
-      const alt = pool.filter(e => !seen.has(e.name));
-      if (alt.length) ex = alt[Math.floor(rng() * alt.length)];
+  var rng = seededRng(seed >>> 0);
+  var focus = FOCUSES[Math.floor(rng() * FOCUSES.length)];
+  var seen = {};
+  var exercises = focus.slots.map(function(pat) {
+    var pool = POOL[pat];
+    var ex = pool[Math.floor(rng() * pool.length)];
+    if (seen[ex.n]) {
+      var alts = pool.filter(function(e){ return !seen[e.n]; });
+      if (alts.length) ex = alts[Math.floor(rng() * alts.length)];
     }
-    seen.add(ex.name);
+    seen[ex.n] = true;
     return ex;
   });
-  return { focus, exercises };
+  return { focus: focus, exercises: exercises };
 }
 
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 // RENDER WOD
-// ═══════════════════════════════════════════════
-let currentWod = null;
+// ═══════════════════════════════════════════════════════
+var currentWod = null;
+var DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+var MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+var SRC_URLS = {
+  'Nourish Move Love':'https://www.youtube.com/c/NourishMoveLove',
+  'BOXROX':'https://www.boxrox.com/20-minute-amrap-kettlebell-workouts/',
+  'Cavemantraining':'https://www.cavemantraining.com/kettlebell-workouts/',
+  'Calisthenics':'https://www.youtube.com/results?search_query=calisthenics+beginners'
+};
 
-function typeClass(t) { return t === 'kb' ? 'kb' : t === 'db' ? 'db' : 'bw'; }
-function typePill(t) {
-  if (t === 'kb') return '<span class="ex-type-pill tp-kb">KB</span>';
-  if (t === 'db') return '<span class="ex-type-pill tp-db">DB</span>';
-  return '<span class="ex-type-pill tp-bw">BW</span>';
+function srcPillHtml(src) {
+  var url = SRC_URLS[src] || '#';
+  var cls = src === 'Nourish Move Love' ? 'p-nml' : src === 'Cavemantraining' ? 'p-cm' : 'p-bx';
+  return '<a class="pill '+cls+'" href="'+url+'" target="_blank" rel="noopener">'+src+'</a>';
 }
-function srcLink(src) {
-  const links = {
-    'Nourish Move Love':'https://www.youtube.com/c/NourishMoveLove',
-    'BOXROX':'https://www.boxrox.com/20-minute-amrap-kettlebell-workouts/',
-    'Cavemantraining':'https://www.cavemantraining.com/kettlebell-workouts/',
-    'Calisthenics':'https://www.youtube.com/results?search_query=calisthenics+beginner',
-    'BOXROX / Calisthenics':'https://www.boxrox.com/',
-    'Cavemantraining / BOXROX':'https://www.cavemantraining.com/',
-  };
-  const url = links[src] || '#';
-  const cls = src.includes('Nourish') ? 'st-nml' : src.includes('Caveman') ? 'st-cm' : 'st-bx';
-  return `<a class="stag ${cls}" href="${url}" target="_blank" style="text-decoration:none;font-size:7px">${src}</a>`;
+function typePillHtml(t) {
+  if (t==='kb') return '<span class="type-pill tp-kb">KB</span>';
+  if (t==='db') return '<span class="type-pill tp-db">DB</span>';
+  return '<span class="type-pill tp-bw">BW</span>';
 }
+function rowClass(t) { return t==='kb' ? 'kb' : t==='db' ? 'db' : 'bw'; }
 
 function renderWod(wod) {
   currentWod = wod;
-  const { focus, exercises } = wod;
+  var f = wod.focus;
+  var exs = wod.exercises;
 
-  const exHtml = exercises.map((ex, i) => `
-    <div class="ex-row ${typeClass(ex.type)}">
-      <div class="ex-num-badge">${i+1}</div>
-      <div class="ex-info">
-        <div class="ex-name">${ex.name}${typePill(ex.type)}</div>
-        <div class="ex-cue">${ex.cue}</div>
-        ${ex.mod ? `<div class="ex-mod">↳ ${ex.mod}</div>` : ''}
-        <div class="ex-src">${srcLink(ex.src)}</div>
-      </div>
-      <div class="ex-target">
-        <div class="ex-reps">${ex.reps}</div>
-        <div class="ex-unit">${ex.unit}</div>
-      </div>
-    </div>`).join('');
+  var exHtml = exs.map(function(ex, i) {
+    return '<div class="ex-row '+rowClass(ex.t)+'">' +
+      '<div class="ex-n">'+(i+1)+'</div>' +
+      '<div class="ex-info">' +
+        '<div class="ex-name">'+ex.n+typePillHtml(ex.t)+'</div>' +
+        '<div class="ex-cue">'+ex.c+'</div>' +
+        (ex.m ? '<div class="ex-mod">\u2197 '+ex.m+'</div>' : '') +
+        '<div class="ex-src">'+srcPillHtml(ex.s)+'</div>' +
+      '</div>' +
+      '<div class="ex-tgt"><div class="ex-reps">'+ex.r+'</div><div class="ex-unit">'+ex.u+'</div></div>' +
+    '</div>';
+  }).join('');
 
-  const warmupHtml = focus.warmup.map(w => `
-    <div class="s-row"><div><div class="s-name">${w}</div></div></div>`).join('');
+  var wuHtml = f.wu.map(function(w){ return '<div class="s-row">'+w+'</div>'; }).join('');
+  var cdHtml = f.cd.map(function(w){ return '<div class="s-row">'+w+'</div>'; }).join('');
 
-  const coolHtml = focus.cooldown.map(w => `
-    <div class="s-row"><div><div class="s-name">${w}</div></div></div>`).join('');
+  var savedNote = localStorage.getItem('note-'+todayKey()) || '';
 
-  document.getElementById('wod-card').innerHTML = `
-    <div class="wod-header">
-      <div class="wod-day-row">
-        <div class="wod-day-name">${['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][new Date().getDay()]}</div>
-        <div class="wod-focus-tag" style="color:${focus.color};border-color:${focus.borderColor};background:rgba(255,255,255,.03)">${focus.name}</div>
-      </div>
-      <div class="wod-desc">${focus.desc}</div>
-      <div class="wod-meta-row">
-        <div class="wmeta hi">20 min AMRAP</div>
-        <div class="wmeta">KB 16–20kg / DB 15–20lb</div>
-        <div class="wmeta">${exercises.length} movements</div>
-      </div>
-      <div class="wf-row">
-        <button class="wf-btn wfb-start" id="wf-start" onclick="startWorkout()">▶ START</button>
-        <button class="wf-btn wfb-finish" id="wf-finish" onclick="finishWorkout()">✓ FINISH &amp; LOG</button>
-      </div>
-    </div>
-    <div class="ex-section-lbl">One Round — Complete in Order</div>
-    <div class="ex-list">${exHtml}</div>
-    <div class="wod-tip"><b>${focus.tip.title}</b>${focus.tip.body}</div>
-    <div class="riw">
-      <span class="riw-lbl">Round Counter</span>
-      <button class="riw-rst" onclick="riwReset()">Reset</button>
-      <span class="riw-n" id="riw-count">0</span>
-      <button class="riw-add" onclick="riwAdd()">+ Round</button>
-    </div>
-    <div class="phase wu">
-      <div class="phase-head" onclick="togglePhase(this)">
-        <span class="phase-icon">🔥</span><span class="phase-title">Warm-Up · 4 min</span><span class="phase-chev">▼</span>
-      </div>
-      <div class="phase-body">
-        <p class="phase-note">Complete before starting the clock.</p>
-        <div class="s-list">${warmupHtml}</div>
-      </div>
-    </div>
-    <div class="phase cd" style="margin-top:6px">
-      <div class="phase-head" onclick="togglePhase(this)">
-        <span class="phase-icon">❄️</span><span class="phase-title">Cool-Down · 5 min</span><span class="phase-chev">▼</span>
-      </div>
-      <div class="phase-body">
-        <p class="phase-note">Walk 2 min then hold each stretch 30 seconds.</p>
-        <div class="s-list">${coolHtml}</div>
-      </div>
-    </div>
-    <div class="notes-wrap">
-      <div class="notes-lbl"><span>Session Notes</span><span class="sv-badge" id="sv-today">✓ Saved</span></div>
-      <textarea class="notes-ta" id="notes-today" placeholder="Rounds, weights used, how it felt...">${localStorage.getItem('note-today-' + todayKey()) || ''}</textarea>
+  var html = '<div class="wod-hdr">' +
+    '<div class="wod-top-row">' +
+      '<div class="wod-day">'+DAYS[new Date().getDay()]+'</div>' +
+      '<div class="wod-focus-tag" style="color:'+f.color+';border-color:'+f.bc+';background:rgba(255,255,255,.03)">'+f.name+'</div>' +
+    '</div>' +
+    '<div class="wod-desc">'+f.desc+'</div>' +
+    '<div class="wod-chips"><div class="chip hi">20 min AMRAP</div><div class="chip">KB 16-20kg / DB 15-20lb</div><div class="chip">'+exs.length+' movements</div></div>' +
+    '<div class="wf-row">' +
+      '<button class="wf-btn wfb-s" id="wf-start" onclick="startWorkout()">&#9654; START</button>' +
+      '<button class="wf-btn wfb-f" id="wf-finish" onclick="finishWorkout()">&#10003; FINISH &amp; LOG</button>' +
+    '</div>' +
+  '</div>' +
+  '<div class="ex-lbl">One Round \u2014 Complete in Order</div>' +
+  '<div class="ex-list">'+exHtml+'</div>' +
+  '<div class="tip"><b>'+f.tip.t+'</b>'+f.tip.b+'</div>' +
+  '<div class="riw"><span class="riw-lbl">Round Counter</span><button class="riw-rst" onclick="riwReset()">Reset</button><span class="riw-n" id="riw-n">0</span><button class="riw-add" onclick="riwAdd()">+ Round</button></div>' +
+  '<div class="phase wu"><div class="ph-head" onclick="phToggle(this)"><span class="ph-icon">\uD83D\uDD25</span><span class="ph-title">Warm-Up \u00B7 4 min</span><span class="ph-chev">\u25BC</span></div><div class="ph-body"><p class="ph-note">Complete before starting the clock.</p><div class="s-list">'+wuHtml+'</div></div></div>' +
+  '<div class="phase cd" style="margin-top:6px"><div class="ph-head" onclick="phToggle(this)"><span class="ph-icon">\u2744\uFE0F</span><span class="ph-title">Cool-Down \u00B7 5 min</span><span class="ph-chev">\u25BC</span></div><div class="ph-body"><p class="ph-note">Walk 2 min then hold each stretch 30 seconds.</p><div class="s-list">'+cdHtml+'</div></div></div>' +
+  '<div class="notes-wrap">' +
+    '<div class="notes-lbl"><span>Session Notes</span><span class="sv-badge" id="sv-badge">\u2713 Saved</span></div>' +
+    '<textarea class="notes-ta" id="notes-ta" placeholder="Rounds, weights used, how it felt...">' + savedNote.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</textarea>' +
 
 ```
-  <div class="notes-btns">
-    <button class="nb nb-sv" onclick="saveNote()">Save</button>
-    <button class="nb nb-cl" onclick="clearNote()">Clear</button>
-  </div>
-</div>`;
+'<div class="notes-btns"><button class="nb nb-sv" onclick="saveNote()">Save</button><button class="nb nb-cl" onclick="clearNote()">Clear</button></div>' +
 ```
 
-document.getElementById(‘hero-focus’).textContent = focus.name;
+‘</div>’;
 
-if (todayWorked()) {
-document.getElementById(‘wf-start’).textContent = ‘✓ DONE’;
-document.getElementById(‘wf-start’).className = ‘wf-btn wfb-start done’;
-document.getElementById(‘wf-finish’).textContent = ‘✓ LOGGED’;
-document.getElementById(‘wf-finish’).className = ‘wf-btn wfb-finish done’;
-}
+document.getElementById(‘wod-card’).innerHTML = html;
+document.getElementById(‘hero-focus’).textContent = f.name;
+
+if (todayWorked()) markDone();
 }
 
 function todayKey() {
-const d = new Date();
-return d.getFullYear() + ‘-’ + String(d.getMonth()+1).padStart(2,‘0’) + ‘-’ + String(d.getDate()).padStart(2,‘0’);
+var d = new Date();
+return d.getFullYear()+’-’+pad(d.getMonth()+1)+’-’+pad(d.getDate());
 }
 function todayWorked() {
-return (JSON.parse(localStorage.getItem(‘hr-worked’) || ‘[]’)).includes(todayKey());
+try { return (JSON.parse(localStorage.getItem(‘hr-worked’)||’[]’)).indexOf(todayKey()) !== -1; }
+catch(e){ return false; }
 }
+function pad(n){ return n < 10 ? ‘0’+n : ‘’+n; }
+function markDone() {
+var s = document.getElementById(‘wf-start’);
+var f = document.getElementById(‘wf-finish’);
+if (s) { s.textContent = ‘\u2713 DONE’; s.className = ‘wf-btn wfb-s done’; }
+if (f) { f.textContent = ‘\u2713 LOGGED’; f.className = ‘wf-btn wfb-f done’; }
+}
+
 function initWod() {
-const wod = generateWod(getTodaySeed() + getRerollOffset() * 999983);
-renderWod(wod);
+var seed = todaySeed() + rerollOffset() * 999983;
+renderWod(generateWod(seed));
 }
-function rerollWod() {
-const n = bumpReroll();
-document.getElementById(‘reroll-note’).textContent = ‘Variation #’ + (n + 1);
+function reroll() {
+var n = bumpReroll();
+document.getElementById(‘reroll-note’).textContent = ‘Variation #’+(n+1);
 initWod();
 }
 
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 // TABS
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 function show(id, btn) {
-document.querySelectorAll(’.section’).forEach(s => s.classList.remove(‘active’));
-document.querySelectorAll(’.tab’).forEach(t => t.classList.remove(‘active’));
+var sections = document.querySelectorAll(’.section’);
+for (var i=0; i<sections.length; i++) sections[i].classList.remove(‘active’);
+var tabs = document.querySelectorAll(’.tab’);
+for (var i=0; i<tabs.length; i++) tabs[i].classList.remove(‘active’);
 document.getElementById(id).classList.add(‘active’);
 btn.classList.add(‘active’);
 if (id === ‘history’) renderHistory();
 }
 
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 // PHASE TOGGLE
-// ═══════════════════════════════════════════════
-function togglePhase(h) {
-const b = h.nextElementSibling;
-const c = h.querySelector(’.phase-chev’);
+// ═══════════════════════════════════════════════════════
+function phToggle(h) {
+var b = h.nextElementSibling;
+var c = h.querySelector(’.ph-chev’);
 if (!b) return;
-const open = b.classList.toggle(‘open’);
+var open = b.classList.toggle(‘open’);
 if (c) c.style.transform = open ? ‘rotate(180deg)’ : ‘’;
 }
 
-// ═══════════════════════════════════════════════
-// INLINE TIMER OVERLAY (ITO)
-// ═══════════════════════════════════════════════
-let itoSec = 1200, itoTotal = 1200, itoRunning = false, itoInterval = null, itoRoundCount = 0;
-
-function showITO() { document.getElementById(‘ito’).classList.add(‘visible’); }
-function hideITO() { document.getElementById(‘ito’).classList.remove(‘visible’); }
-
-function itoFmt(s) { return String(Math.floor(s/60)).padStart(2,‘0’) + ‘:’ + String(s%60).padStart(2,‘0’); }
-function itoSetState(cls, phase) {
-document.getElementById(‘ito-clock’).className = ‘ito-clock ’ + cls;
-document.getElementById(‘ito-phase’).textContent = phase;
-}
-function itoUpdateClock() {
-document.getElementById(‘ito-clock’).textContent = itoFmt(itoSec);
-document.getElementById(‘ito-bar’).style.width = (itoTotal > 0 ? (itoSec / itoTotal) * 100 : 100) + ‘%’;
-}
-function itoSetPreset(min, btn) {
-if (itoRunning) return;
-document.querySelectorAll(’.ito-preset’).forEach(b => b.classList.remove(‘sel’));
-btn.classList.add(‘sel’);
-itoTotal = min * 60; itoSec = itoTotal;
-itoUpdateClock(); itoSetState(‘idle’, ‘READY’);
-}
-function itoAction() {
-if (!itoRunning) {
-if (itoSec <= 0) itoReset();
-itoRunning = true;
-document.getElementById(‘ito-start-btn’).textContent = ‘PAUSE’;
-itoSetState(‘running’, ‘GO — AMRAP IN PROGRESS’);
-itoInterval = setInterval(() => {
-itoSec–; itoUpdateClock();
-if (itoSec === 30) itoSetState(‘running’, ‘30 SECONDS LEFT’);
-if (itoSec === 10) itoSetState(‘running’, ‘PUSH — FINAL 10’);
-if (itoSec <= 0) {
-clearInterval(itoInterval); itoRunning = false;
-document.getElementById(‘ito-clock’).textContent = ‘DONE’;
-document.getElementById(‘ito-bar’).style.width = ‘0%’;
-itoSetState(‘done’, “🔔 TIME’S UP”);
-document.getElementById(‘ito-start-btn’).textContent = ‘START’;
-ringBell();
-}
-}, 1000);
-} else {
-clearInterval(itoInterval); itoRunning = false;
-document.getElementById(‘ito-start-btn’).textContent = ‘RESUME’;
-itoSetState(‘paused’, ‘PAUSED’);
-}
-}
-function itoReset() {
-clearInterval(itoInterval); itoRunning = false;
-const sel = document.querySelector(’.ito-preset.sel’);
-if (sel) itoTotal = parseInt(sel.textContent) * 60;
-itoSec = itoTotal; itoUpdateClock();
-itoSetState(‘idle’, ‘READY’);
-document.getElementById(‘ito-start-btn’).textContent = ‘START’;
-}
-function itoAddRound() {
-document.getElementById(‘ito-rounds’).textContent = ++itoRoundCount;
-}
-
-// ═══════════════════════════════════════════════
-// START / FINISH WORKOUT
-// ═══════════════════════════════════════════════
-let workoutStarted = false;
+// ═══════════════════════════════════════════════════════
+// START / FINISH
+// ═══════════════════════════════════════════════════════
+var wStarted = false;
 function startWorkout() {
-const btn = document.getElementById(‘wf-start’);
-if (!btn || btn.classList.contains(‘done’) || btn.classList.contains(‘going’)) return;
-workoutStarted = true;
-btn.textContent = ‘⏱ IN PROGRESS’;
-btn.className = ‘wf-btn wfb-start going’;
-document.getElementById(‘wf-finish’).className = ‘wf-btn wfb-finish ready’;
+var sb = document.getElementById(‘wf-start’);
+if (!sb || sb.classList.contains(‘done’) || sb.classList.contains(‘going’)) return;
+wStarted = true;
+sb.textContent = ‘\u23F1 IN PROGRESS’;
+sb.className = ‘wf-btn wfb-s going’;
+var fb = document.getElementById(‘wf-finish’);
+if (fb) fb.className = ‘wf-btn wfb-f ready’;
 showITO();
 if (!itoRunning && itoSec > 0) itoAction();
 }
 function finishWorkout() {
-const fb = document.getElementById(‘wf-finish’);
+var fb = document.getElementById(‘wf-finish’);
 if (!fb || fb.classList.contains(‘done’)) return;
-const worked = JSON.parse(localStorage.getItem(‘hr-worked’) || ‘[]’);
-if (!worked.includes(todayKey())) { worked.push(todayKey()); localStorage.setItem(‘hr-worked’, JSON.stringify(worked)); }
-const rounds = parseInt((document.getElementById(‘riw-count’) || {}).textContent) || 0;
-const notes = (document.getElementById(‘notes-today’) || {}).value || ‘’;
-sessions.push({ day: currentWod ? currentWod.focus.name : ‘Workout’, rounds, feel:’’, wt:’’, notes, date: new Date().toLocaleDateString(), wod: currentWod });
-localStorage.setItem(‘hr-sessions-v1’, JSON.stringify(sessions));
+var worked;
+try { worked = JSON.parse(localStorage.getItem(‘hr-worked’)||’[]’); } catch(e){ worked=[]; }
+if (worked.indexOf(todayKey()) === -1) { worked.push(todayKey()); }
+localStorage.setItem(‘hr-worked’, JSON.stringify(worked));
+var rn = document.getElementById(‘riw-n’);
+var rounds = rn ? parseInt(rn.textContent)||0 : 0;
+var ta = document.getElementById(‘notes-ta’);
+var notes = ta ? ta.value : ‘’;
+sessions.push({day: currentWod ? currentWod.focus.name : ‘Workout’, rounds:rounds, wt:’’, feel:’’, notes:notes, date:new Date().toLocaleDateString(), wod:currentWod});
+saveSessions();
 renderTracker();
-document.getElementById(‘wf-start’).textContent = ‘✓ DONE’;
-document.getElementById(‘wf-start’).className = ‘wf-btn wfb-start done’;
-fb.textContent = ‘✓ LOGGED’;
-fb.className = ‘wf-btn wfb-finish done’;
-workoutStarted = false;
+markDone();
+wStarted = false;
 }
 
-// ═══════════════════════════════════════════════
-// ROUND COUNTER (inline)
-// ═══════════════════════════════════════════════
-let riwCount = 0;
-function riwAdd() { document.getElementById(‘riw-count’).textContent = ++riwCount; }
-function riwReset() { riwCount = 0; document.getElementById(‘riw-count’).textContent = 0; }
+// ═══════════════════════════════════════════════════════
+// INLINE ROUND COUNTER
+// ═══════════════════════════════════════════════════════
+var riwCount = 0;
+function riwAdd() { var el=document.getElementById(‘riw-n’); if(el) el.textContent=++riwCount; }
+function riwReset() { riwCount=0; var el=document.getElementById(‘riw-n’); if(el) el.textContent=0; }
 
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 // NOTES
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 function saveNote() {
-const el = document.getElementById(‘notes-today’);
-if (!el) return;
-localStorage.setItem(‘note-today-’ + todayKey(), el.value);
-const b = document.getElementById(‘sv-today’);
-if (b) { b.style.opacity = ‘1’; setTimeout(() => b.style.opacity = ‘0’, 1800); }
+var ta = document.getElementById(‘notes-ta’);
+if (!ta) return;
+localStorage.setItem(‘note-’+todayKey(), ta.value);
+var b = document.getElementById(‘sv-badge’);
+if (b) { b.style.opacity=‘1’; setTimeout(function(){ b.style.opacity=‘0’; }, 1800); }
 }
 function clearNote() {
-const el = document.getElementById(‘notes-today’);
-if (el) el.value = ‘’;
-localStorage.removeItem(‘note-today-’ + todayKey());
+var ta = document.getElementById(‘notes-ta’);
+if (ta) ta.value = ‘’;
+localStorage.removeItem(‘note-’+todayKey());
 }
 
-// ═══════════════════════════════════════════════
-// HISTORY
-// ═══════════════════════════════════════════════
-function renderHistory() {
-const el = document.getElementById(‘hist-list’);
-const withWod = sessions.filter(s => s.wod);
-if (!withWod.length) { el.innerHTML = ‘<div class="empty">No workouts logged yet</div>’; return; }
-el.innerHTML = […withWod].reverse().map(s => `<div class="hist-card"> <div class="hist-card-date">${s.date}</div> <div class="hist-card-focus">${s.wod.focus.name} · ${s.rounds} rounds${s.notes ? ' · ' + s.notes.slice(0,50) + (s.notes.length > 50 ? '…' : '') : ''}</div> ${s.wod.exercises.map(ex =>`
-<div class="hist-ex-item"><span>${ex.name}</span><span class="hist-ex-reps">${ex.reps} ${ex.unit}</span></div>`).join('')} </div>`).join(’’);
-}
-
-// ═══════════════════════════════════════════════
-// BOXING BELL
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
+// BELL SOUND
+// ═══════════════════════════════════════════════════════
 function ringBell() {
 try {
-const ctx = new (window.AudioContext || window.webkitAudioContext)();
-[[0,.7,880,440,1.2],[.38,.5,1100,550,.9],[.76,.45,880,440,1.0]].forEach(([off,vol,f1,f2,dur]) => {
-const o = ctx.createOscillator(), g = ctx.createGain();
+var ctx = new (window.AudioContext || window.webkitAudioContext)();
+[[0,.7,880,440,1.2],[.38,.5,1100,550,.9],[.76,.45,880,440,1.0]].forEach(function(p){
+var o=ctx.createOscillator(), g=ctx.createGain();
 o.connect(g); g.connect(ctx.destination);
-o.type = ‘sine’; o.frequency.setValueAtTime(f1, ctx.currentTime+off);
-o.frequency.exponentialRampToValueAtTime(f2, ctx.currentTime+off+.8);
-g.gain.setValueAtTime(.001, ctx.currentTime+off);
-g.gain.exponentialRampToValueAtTime(vol, ctx.currentTime+off+.015);
-g.gain.exponentialRampToValueAtTime(.001, ctx.currentTime+off+dur);
-o.start(ctx.currentTime+off); o.stop(ctx.currentTime+off+dur+.1);
+o.type=‘sine’; o.frequency.setValueAtTime(p[2],ctx.currentTime+p[0]);
+o.frequency.exponentialRampToValueAtTime(p[3],ctx.currentTime+p[0]+.8);
+g.gain.setValueAtTime(.001,ctx.currentTime+p[0]);
+g.gain.exponentialRampToValueAtTime(p[1],ctx.currentTime+p[0]+.015);
+g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+p[0]+p[4]);
+o.start(ctx.currentTime+p[0]); o.stop(ctx.currentTime+p[0]+p[4]+.1);
 });
-const o2 = ctx.createOscillator(), g2 = ctx.createGain();
+var o2=ctx.createOscillator(), g2=ctx.createGain();
 o2.connect(g2); g2.connect(ctx.destination); o2.type=‘triangle’; o2.frequency.value=1760;
 g2.gain.setValueAtTime(.001,ctx.currentTime); g2.gain.exponentialRampToValueAtTime(.25,ctx.currentTime+.01);
 g2.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.5);
 o2.start(ctx.currentTime); o2.stop(ctx.currentTime+.6);
-} catch(e){}
-const fl = document.getElementById(‘bflash’);
-if (fl) [0,420,840].forEach(t => setTimeout(()=>{ fl.classList.add(‘ring’); setTimeout(()=>fl.classList.remove(‘ring’),180); },t));
+} catch(e) {}
+flash(‘bflash’);
+}
+function flash(id) {
+var el = document.getElementById(id);
+if (!el) return;
+[0,420,840].forEach(function(t){
+setTimeout(function(){ el.classList.add(‘ring’); setTimeout(function(){ el.classList.remove(‘ring’); },180); },t);
+});
 }
 
-// ═══════════════════════════════════════════════
-// STANDALONE TIMER TAB
-// ═══════════════════════════════════════════════
-let tI = null, tRun = false, tSec = 1200, tTot = 1200;
-function fmt(s) { return String(Math.floor(s/60)).padStart(2,‘0’) + ‘:’ + String(s%60).padStart(2,‘0’); }
-function updClock() {
-document.getElementById(‘clock’).textContent = fmt(tSec);
-document.getElementById(‘t-bar’).style.width = (tTot > 0 ? (tSec/tTot)*100 : 100) + ‘%’;
+// ═══════════════════════════════════════════════════════
+// INLINE TIMER OVERLAY
+// ═══════════════════════════════════════════════════════
+var itoSec=1200, itoTotal=1200, itoRunning=false, itoInterval=null, itoRounds=0;
+
+function showITO() { document.getElementById(‘ito’).classList.add(‘visible’); }
+function hideITO() { document.getElementById(‘ito’).classList.remove(‘visible’); }
+function fmtTime(s) { return pad(Math.floor(s/60))+’:’+pad(s%60); }
+
+function itoSetState(cls, ph) {
+var c=document.getElementById(‘ito-clock’), p=document.getElementById(‘ito-phase’);
+if(c) c.className=‘ito-clock ‘+cls;
+if(p) p.textContent=ph;
 }
-function setClkState(c, p) {
-document.getElementById(‘clock’).className = ‘clock-num ’ + c;
-document.getElementById(‘clock-phase’).textContent = p;
+function itoUpdateClock() {
+var c=document.getElementById(‘ito-clock’), b=document.getElementById(‘ito-bar’);
+if(c) c.textContent=fmtTime(itoSec);
+if(b) b.style.width=(itoTotal>0?(itoSec/itoTotal)*100:100)+’%’;
 }
-function setPreset(m, btn) {
-if (tRun) return;
-document.querySelectorAll(’.pbtn’).forEach(b => b.classList.remove(‘sel’)); btn.classList.add(‘sel’);
-if (m === 0) { document.getElementById(‘cust-inputs’).style.display = ‘flex’; applyCustom(); }
-else { document.getElementById(‘cust-inputs’).style.display = ‘none’; tTot = m*60; tSec = tTot; updClock(); setClkState(‘idle’,‘READY · TAP START’); }
+function itoPreset(min, btn) {
+if (itoRunning) return;
+document.querySelectorAll(’.ito-preset’).forEach(function(b){b.classList.remove(‘sel’);});
+btn.classList.add(‘sel’);
+itoTotal=min*60; itoSec=itoTotal;
+itoUpdateClock(); itoSetState(‘idle’,‘READY’);
 }
-function applyCustom() {
-if (tRun) return;
-tTot = (parseInt(document.getElementById(‘cm’).value)||0)*60 + (parseInt(document.getElementById(‘cs’).value)||0);
-tSec = tTot; updClock(); setClkState(‘idle’,‘READY · TAP START’);
-}
-function timerAction() {
-if (!tRun) {
-if (tSec <= 0) timerReset();
-tRun = true; document.getElementById(‘btn-t’).textContent = ‘PAUSE’;
-setClkState(‘running’,‘GO — AMRAP IN PROGRESS’);
-tI = setInterval(() => {
-tSec–; updClock();
-if (tSec === 30) setClkState(‘running’,‘30 SECONDS LEFT’);
-if (tSec === 10) setClkState(‘running’,‘PUSH — FINAL 10’);
-if (tSec <= 0) {
-clearInterval(tI); tRun = false;
-document.getElementById(‘clock’).textContent = ‘DONE’;
-document.getElementById(‘t-bar’).style.width = ‘0%’;
-setClkState(‘done’,“🔔 TIME’S UP”);
-document.getElementById(‘btn-t’).textContent = ‘START’;
+function itoAction() {
+if (!itoRunning) {
+if (itoSec<=0) itoReset();
+itoRunning=true;
+var sb=document.getElementById(‘ito-btn’);
+if(sb) sb.textContent=‘PAUSE’;
+itoSetState(‘running’,‘GO — AMRAP IN PROGRESS’);
+itoInterval=setInterval(function(){
+itoSec–; itoUpdateClock();
+if(itoSec===30) itoSetState(‘running’,‘30 SECONDS LEFT’);
+if(itoSec===10) itoSetState(‘running’,‘PUSH — FINAL 10’);
+if(itoSec<=0){
+clearInterval(itoInterval); itoRunning=false;
+var c=document.getElementById(‘ito-clock’), b=document.getElementById(‘ito-bar’), sb=document.getElementById(‘ito-btn’);
+if(c) c.textContent=‘DONE’;
+if(b) b.style.width=‘0%’;
+itoSetState(‘done’,”\uD83D\uDD14 TIME’S UP”);
+if(sb) sb.textContent=‘START’;
 ringBell();
 }
-}, 1000);
+},1000);
 } else {
-clearInterval(tI); tRun = false;
-document.getElementById(‘btn-t’).textContent = ‘RESUME’;
-setClkState(‘paused’,‘PAUSED’);
+clearInterval(itoInterval); itoRunning=false;
+var sb=document.getElementById(‘ito-btn’);
+if(sb) sb.textContent=‘RESUME’;
+itoSetState(‘paused’,‘PAUSED’);
 }
 }
-function timerReset() {
-clearInterval(tI); tRun = false;
-const sel = document.querySelector(’.pbtn.sel’);
-if (sel && sel.id !== ‘cust-btn’) tTot = parseInt(sel.textContent)*60;
-tSec = tTot; updClock(); setClkState(‘idle’,‘READY · TAP START’);
-document.getElementById(‘btn-t’).textContent = ‘START’;
+function itoReset() {
+clearInterval(itoInterval); itoRunning=false;
+var sel=document.querySelector(’.ito-preset.sel’);
+if(sel) itoTotal=parseInt(sel.textContent)*60;
+itoSec=itoTotal; itoUpdateClock();
+itoSetState(‘idle’,‘READY’);
+var sb=document.getElementById(‘ito-btn’);
+if(sb) sb.textContent=‘START’;
 }
-let rCount = 0;
-function addRound() { document.getElementById(‘r-count’).textContent = ++rCount; }
-function resetRounds() { rCount = 0; document.getElementById(‘r-count’).textContent = 0; }
+function itoRoundAdd() {
+var el=document.getElementById(‘ito-rnum’);
+if(el) el.textContent=++itoRounds;
+}
 
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
+// STANDALONE TIMER
+// ═══════════════════════════════════════════════════════
+var tSec=1200, tTotal=1200, tRunning=false, tInterval=null, tRounds=0;
+
+function tSetState(cls, ph) {
+var c=document.getElementById(‘t-clock’), p=document.getElementById(‘t-phase’);
+if(c) c.className=‘clock-num ‘+cls;
+if(p) p.textContent=ph;
+}
+function tUpdateClock() {
+var c=document.getElementById(‘t-clock’), b=document.getElementById(‘t-bar’);
+if(c) c.textContent=fmtTime(tSec);
+if(b) b.style.width=(tTotal>0?(tSec/tTotal)*100:100)+’%’;
+}
+function tPreset(min, btn) {
+if(tRunning) return;
+document.querySelectorAll(’.pbtn’).forEach(function(b){b.classList.remove(‘sel’);});
+btn.classList.add(‘sel’);
+if(min===0){ document.getElementById(‘cust-inputs’).style.display=‘flex’; tCustom(); }
+else{ document.getElementById(‘cust-inputs’).style.display=‘none’; tTotal=min*60; tSec=tTotal; tUpdateClock(); tSetState(‘idle’,‘READY \u00B7 TAP START’); }
+}
+function tCustom() {
+if(tRunning) return;
+var m=parseInt(document.getElementById(‘cm’).value)||0;
+var s=parseInt(document.getElementById(‘cs’).value)||0;
+tTotal=m*60+s; tSec=tTotal; tUpdateClock(); tSetState(‘idle’,‘READY \u00B7 TAP START’);
+}
+function tAction() {
+if(!tRunning){
+if(tSec<=0) tReset();
+tRunning=true;
+var sb=document.getElementById(‘t-btn’);
+if(sb) sb.textContent=‘PAUSE’;
+tSetState(‘running’,‘GO \u2014 AMRAP IN PROGRESS’);
+tInterval=setInterval(function(){
+tSec–; tUpdateClock();
+if(tSec===30) tSetState(‘running’,‘30 SECONDS LEFT’);
+if(tSec===10) tSetState(‘running’,‘PUSH \u2014 FINAL 10’);
+if(tSec<=0){
+clearInterval(tInterval); tRunning=false;
+var c=document.getElementById(‘t-clock’), b=document.getElementById(‘t-bar’), sb=document.getElementById(‘t-btn’);
+if(c) c.textContent=‘DONE’;
+if(b) b.style.width=‘0%’;
+tSetState(‘done’,”\uD83D\uDD14 TIME’S UP \u2014 LOG YOUR ROUNDS”);
+if(sb) sb.textContent=‘START’;
+ringBell();
+}
+},1000);
+} else {
+clearInterval(tInterval); tRunning=false;
+var sb=document.getElementById(‘t-btn’);
+if(sb) sb.textContent=‘RESUME’;
+tSetState(‘paused’,‘PAUSED’);
+}
+}
+function tReset() {
+clearInterval(tInterval); tRunning=false;
+var sel=document.querySelector(’.pbtn.sel’);
+if(sel && sel.id!==‘cust-btn’) tTotal=parseInt(sel.textContent)*60;
+tSec=tTotal; tUpdateClock();
+tSetState(‘idle’,‘READY \u00B7 TAP START’);
+var sb=document.getElementById(‘t-btn’);
+if(sb) sb.textContent=‘START’;
+}
+function tRoundAdd() { var el=document.getElementById(‘t-rcount’); if(el) el.textContent=++tRounds; }
+function tRoundReset() { tRounds=0; var el=document.getElementById(‘t-rcount’); if(el) el.textContent=0; }
+
+// ═══════════════════════════════════════════════════════
 // TABATA ENGINE
-// ═══════════════════════════════════════════════
-let tabState = ‘idle’, tabSec = 20, tabInterval = null;
-let tabWorkSec = 20, tabRestSec = 10, tabTotalRounds = 8;
-let tabCurrentRound = 0, tabPhase = ‘work’;
+// ═══════════════════════════════════════════════════════
+var tabState=‘idle’, tabSec=20, tabIntvl=null;
+var tabWork=20, tabRest=10, tabTotal=8;
+var tabRound=0, tabPhase=‘work’;
 
 function tabGetSettings() {
-tabWorkSec  = Math.max(5, parseInt(document.getElementById(‘tab-work’).value)  || 20);
-tabRestSec  = Math.max(5, parseInt(document.getElementById(‘tab-rest’).value)  || 10);
-tabTotalRounds = Math.max(1, parseInt(document.getElementById(‘tab-rounds-total’).value) || 8);
+tabWork  = Math.max(5, parseInt(document.getElementById(‘tab-work’).value)  || 20);
+tabRest  = Math.max(5, parseInt(document.getElementById(‘tab-rest’).value)  || 10);
+tabTotal = Math.max(1, parseInt(document.getElementById(‘tab-rounds’).value) || 8);
 }
-function tabUpdate() { tabGetSettings(); if (tabState === ‘idle’) tabApplyReset(); }
-
-function tabLoadPreset(w, r, rounds) {
+function tabPreset(w, r, n) {
 document.getElementById(‘tab-work’).value = w;
 document.getElementById(‘tab-rest’).value = r;
-document.getElementById(‘tab-rounds-total’).value = rounds;
-tabWorkSec = w; tabRestSec = r; tabTotalRounds = rounds;
-tabApplyReset();
+document.getElementById(‘tab-rounds’).value = n;
+tabWork=w; tabRest=r; tabTotal=n;
+if(tabState===‘idle’) tabShowReset();
 }
-
-function tabApplyReset() {
-clearInterval(tabInterval); tabInterval = null;
-tabState = ‘idle’; tabPhase = ‘work’; tabCurrentRound = 0;
-tabSec = tabWorkSec;
-const clk = document.getElementById(‘tab-clock’);
-const badge = document.getElementById(‘tab-badge’);
-const info = document.getElementById(‘tab-round-info’);
-const prog = document.getElementById(‘tab-prog’);
-const startBtn = document.getElementById(‘tab-start-btn’);
-if (clk) { clk.textContent = tabSec; clk.className = ‘tab-clock-num idle’; }
-if (badge) { badge.textContent = ‘READY’; badge.className = ‘tab-phase-badge idle’; }
-if (info) info.textContent = ’Round — / ’ + tabTotalRounds;
-if (prog) { prog.style.width = ‘100%’; prog.className = ‘tab-prog-fill work’; }
-if (startBtn) startBtn.textContent = ‘START’;
-updateTabExercise();
+function tabReset() { tabGetSettings(); clearInterval(tabIntvl); tabIntvl=null; tabState=‘idle’; tabPhase=‘work’; tabRound=0; tabSec=tabWork; tabShowReset(); }
+function tabShowReset() {
+var clk=document.getElementById(‘tab-clock’);
+var bdg=document.getElementById(‘tab-badge’);
+var inf=document.getElementById(‘tab-info’);
+var prg=document.getElementById(‘tab-prog’);
+var btn=document.getElementById(‘tab-btn’);
+if(clk){ clk.textContent=tabWork; clk.className=‘tab-clock idle’; }
+if(bdg){ bdg.textContent=‘READY’; bdg.className=‘tab-badge idle’; }
+if(inf) inf.textContent=‘Round \u2014 / ‘+tabTotal;
+if(prg){ prg.style.width=‘100%’; prg.className=‘tab-prog work’; }
+if(btn) btn.textContent=‘START’;
+tabUpdateExercise();
 }
-
-function tabReset() { tabGetSettings(); tabApplyReset(); }
-
 function tabAction() {
-if (tabState === ‘done’) { tabReset(); return; }
-if (tabState === ‘idle’) {
+if(tabState===‘done’){ tabReset(); return; }
+if(tabState===‘idle’){
 tabGetSettings();
-tabCurrentRound = 1; tabPhase = ‘work’; tabSec = tabWorkSec; tabState = ‘work’;
+tabRound=1; tabPhase=‘work’; tabSec=tabWork; tabState=‘work’;
 tabStartPhase();
-} else if (tabInterval) {
-clearInterval(tabInterval); tabInterval = null;
-document.getElementById(‘tab-start-btn’).textContent = ‘RESUME’;
+} else if(tabIntvl){
+clearInterval(tabIntvl); tabIntvl=null;
+var btn=document.getElementById(‘tab-btn’);
+if(btn) btn.textContent=‘RESUME’;
 } else {
 tabStartTick();
-document.getElementById(‘tab-start-btn’).textContent = ‘PAUSE’;
+var btn=document.getElementById(‘tab-btn’);
+if(btn) btn.textContent=‘PAUSE’;
 }
 }
-
 function tabStartPhase() {
-const isWork = tabPhase === ‘work’;
-const clk = document.getElementById(‘tab-clock’);
-const badge = document.getElementById(‘tab-badge’);
-if (clk) clk.className = ’tab-clock-num ’ + tabPhase;
-if (badge) { badge.textContent = isWork ? ‘🔥 WORK’ : ‘❄️ REST’; badge.className = ’tab-phase-badge ’ + tabPhase; }
-const info = document.getElementById(‘tab-round-info’);
-if (info) info.textContent = ’Round ’ + tabCurrentRound + ’ / ’ + tabTotalRounds;
-const prog = document.getElementById(‘tab-prog’);
-if (prog) prog.className = ’tab-prog-fill ’ + tabPhase;
-const startBtn = document.getElementById(‘tab-start-btn’);
-if (startBtn) startBtn.textContent = ‘PAUSE’;
-updateTabExercise();
+var isWork=tabPhase===‘work’;
+var clk=document.getElementById(‘tab-clock’);
+var bdg=document.getElementById(‘tab-badge’);
+var inf=document.getElementById(‘tab-info’);
+var prg=document.getElementById(‘tab-prog’);
+var btn=document.getElementById(‘tab-btn’);
+if(clk){ clk.textContent=tabSec; clk.className=‘tab-clock ‘+tabPhase; }
+if(bdg){ bdg.textContent=isWork ? ‘\uD83D\uDD25 WORK’ : ‘\u2744\uFE0F REST’; bdg.className=‘tab-badge ‘+tabPhase; }
+if(inf) inf.textContent=‘Round ‘+tabRound+’ / ‘+tabTotal;
+if(prg) prg.className=‘tab-prog ‘+tabPhase;
+if(btn) btn.textContent=‘PAUSE’;
+tabUpdateExercise();
 tabStartTick();
 }
-
 function tabStartTick() {
-const total = tabPhase === ‘work’ ? tabWorkSec : tabRestSec;
-clearInterval(tabInterval);
-tabInterval = setInterval(() => {
+var total=tabPhase===‘work’?tabWork:tabRest;
+clearInterval(tabIntvl);
+tabIntvl=setInterval(function(){
 tabSec–;
-const clk = document.getElementById(‘tab-clock’);
-if (clk) clk.textContent = tabSec;
-const prog = document.getElementById(‘tab-prog’);
-if (prog) prog.style.width = ((tabSec / total) * 100) + ‘%’;
-if (tabSec <= 0) { clearInterval(tabInterval); tabInterval = null; tabNextPhase(); }
-}, 1000);
+var clk=document.getElementById(‘tab-clock’);
+if(clk) clk.textContent=tabSec;
+var prg=document.getElementById(‘tab-prog’);
+if(prg) prg.style.width=((tabSec/total)*100)+’%’;
+if(tabSec<=0){ clearInterval(tabIntvl); tabIntvl=null; tabNext(); }
+},1000);
 }
-
-function tabNextPhase() {
-if (tabPhase === ‘work’) {
+function tabNext() {
+if(tabPhase===‘work’){
 dingWork();
-if (tabCurrentRound >= tabTotalRounds) {
-tabState = ‘done’;
-const clk = document.getElementById(‘tab-clock’);
-const badge = document.getElementById(‘tab-badge’);
-const info = document.getElementById(‘tab-round-info’);
-const prog = document.getElementById(‘tab-prog’);
-const startBtn = document.getElementById(‘tab-start-btn’);
-if (clk) { clk.textContent = ‘✓’; clk.className = ‘tab-clock-num done’; }
-if (badge) { badge.textContent = ‘COMPLETE!’; badge.className = ‘tab-phase-badge work’; }
-if (info) info.textContent = ‘All ’ + tabTotalRounds + ’ rounds done!’;
-if (prog) prog.style.width = ‘100%’;
-if (startBtn) startBtn.textContent = ‘RESET’;
+if(tabRound>=tabTotal){
+tabState=‘done’;
+var clk=document.getElementById(‘tab-clock’);
+var bdg=document.getElementById(‘tab-badge’);
+var inf=document.getElementById(‘tab-info’);
+var prg=document.getElementById(‘tab-prog’);
+var btn=document.getElementById(‘tab-btn’);
+if(clk){ clk.textContent=’\u2713’; clk.className=‘tab-clock done’; }
+if(bdg){ bdg.textContent=‘COMPLETE!’; bdg.className=‘tab-badge work’; }
+if(inf) inf.textContent=‘All ‘+tabTotal+’ rounds done!’;
+if(prg) prg.style.width=‘100%’;
+if(btn) btn.textContent=‘RESET’;
 ringBell();
 return;
 }
-tabPhase = ‘rest’; tabSec = tabRestSec; tabState = ‘rest’;
+tabPhase=‘rest’; tabSec=tabRest; tabState=‘rest’;
 tabStartPhase();
 } else {
 dingRest();
-tabCurrentRound++; tabPhase = ‘work’; tabSec = tabWorkSec; tabState = ‘work’;
+tabRound++; tabPhase=‘work’; tabSec=tabWork; tabState=‘work’;
 tabStartPhase();
 }
 }
-
-function updateTabExercise() {
-const wrap = document.getElementById(‘tab-exercises’);
-if (!wrap) return;
-if (!currentWod || !currentWod.exercises || !currentWod.exercises.length) { wrap.style.display = ‘none’; return; }
-wrap.style.display = ‘block’;
-const exes = currentWod.exercises;
-const idx = Math.max(0, tabCurrentRound - 1) % exes.length;
-const ex = exes[idx];
-const next = exes[(idx + 1) % exes.length];
-const isRest = tabPhase === ‘rest’;
-const cur = document.getElementById(‘tab-ex-current’);
-const name = document.getElementById(‘tab-ex-name’);
-const cue = document.getElementById(‘tab-ex-cue’);
-const nxt = document.getElementById(‘tab-ex-next’);
-if (cur) cur.className = ‘tab-ex-current’ + (isRest ? ’ rest-phase’ : ‘’);
-if (name) name.textContent = isRest ? ‘💤 REST’ : ex.name;
-if (cue) cue.textContent = isRest ? ’Breathe. Recover. Next: ’ + next.name : ex.cue;
-if (nxt) nxt.textContent = isRest ? ‘’ : ‘Next up: ’ + next.name + ’ (’ + next.reps + ’ ’ + next.unit + ‘)’;
+function tabUpdateExercise() {
+var wrap=document.getElementById(‘tab-ex-wrap’);
+if(!wrap) return;
+if(!currentWod||!currentWod.exercises||!currentWod.exercises.length){ wrap.style.display=‘none’; return; }
+wrap.style.display=‘block’;
+var exs=currentWod.exercises;
+var idx=Math.max(0,tabRound-1)%exs.length;
+var ex=exs[idx];
+var nxt=exs[(idx+1)%exs.length];
+var isRest=tabPhase===‘rest’;
+var card=document.getElementById(‘tab-ex-card’);
+var nm=document.getElementById(‘tab-ex-name’);
+var cu=document.getElementById(‘tab-ex-cue’);
+var nx=document.getElementById(‘tab-ex-next’);
+if(card) card.className=‘tab-ex-card’+(isRest?’ resting’:’’);
+if(nm) nm.textContent=isRest?’\uD83D\uDCA4 REST’:ex.n;
+if(cu) cu.textContent=isRest?‘Breathe. Recover. Next: ‘+nxt.n:ex.c;
+if(nx) nx.textContent=isRest?’’:‘Next up: ‘+nxt.n+’ (’+nxt.r+’ ‘+nxt.u+’)’;
 }
-
 function dingWork() {
-try {
-const ctx = new (window.AudioContext || window.webkitAudioContext)();
-const o = ctx.createOscillator(), g = ctx.createGain();
+try{
+var ctx=new(window.AudioContext||window.webkitAudioContext)();
+var o=ctx.createOscillator(), g=ctx.createGain();
 o.connect(g); g.connect(ctx.destination);
-o.type = ‘sine’; o.frequency.setValueAtTime(1047, ctx.currentTime);
-o.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + .3);
-g.gain.setValueAtTime(.001, ctx.currentTime);
-g.gain.exponentialRampToValueAtTime(.8, ctx.currentTime + .01);
-g.gain.exponentialRampToValueAtTime(.001, ctx.currentTime + .5);
-o.start(ctx.currentTime); o.stop(ctx.currentTime + .55);
-} catch(e) {}
-const f = document.getElementById(‘tab-flash-work’);
-if (f) { f.classList.add(‘ring’); setTimeout(() => f.classList.remove(‘ring’), 200); }
+o.type=‘sine’; o.frequency.setValueAtTime(1047,ctx.currentTime);
+o.frequency.exponentialRampToValueAtTime(880,ctx.currentTime+.3);
+g.gain.setValueAtTime(.001,ctx.currentTime); g.gain.exponentialRampToValueAtTime(.8,ctx.currentTime+.01);
+g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.5);
+o.start(ctx.currentTime); o.stop(ctx.currentTime+.55);
+}catch(e){}
+flash(‘tf-work’);
 }
-
 function dingRest() {
-try {
-const ctx = new (window.AudioContext || window.webkitAudioContext)();
-[0, .25].forEach(off => {
-const o = ctx.createOscillator(), g = ctx.createGain();
+try{
+var ctx=new(window.AudioContext||window.webkitAudioContext)();
+[0,.25].forEach(function(off){
+var o=ctx.createOscillator(), g=ctx.createGain();
 o.connect(g); g.connect(ctx.destination);
-o.type = ‘sine’; o.frequency.setValueAtTime(660, ctx.currentTime + off);
-o.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + off + .2);
-g.gain.setValueAtTime(.001, ctx.currentTime + off);
-g.gain.exponentialRampToValueAtTime(.6, ctx.currentTime + off + .01);
-g.gain.exponentialRampToValueAtTime(.001, ctx.currentTime + off + .35);
-o.start(ctx.currentTime + off); o.stop(ctx.currentTime + off + .4);
+o.type=‘sine’; o.frequency.setValueAtTime(660,ctx.currentTime+off);
+o.frequency.exponentialRampToValueAtTime(880,ctx.currentTime+off+.2);
+g.gain.setValueAtTime(.001,ctx.currentTime+off); g.gain.exponentialRampToValueAtTime(.6,ctx.currentTime+off+.01);
+g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+off+.35);
+o.start(ctx.currentTime+off); o.stop(ctx.currentTime+off+.4);
 });
-} catch(e) {}
-const f = document.getElementById(‘tab-flash-rest’);
-if (f) { f.classList.add(‘ring’); setTimeout(() => f.classList.remove(‘ring’), 200); }
+}catch(e){}
+flash(‘tf-rest’);
 }
 
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
+// HISTORY
+// ═══════════════════════════════════════════════════════
+function renderHistory() {
+var el=document.getElementById(‘hist-list’);
+var withWod=sessions.filter(function(s){ return s.wod; });
+if(!withWod.length){ el.innerHTML=’<div class="empty">No workouts logged yet</div>’; return; }
+el.innerHTML=withWod.slice().reverse().map(function(s){
+var exRows=s.wod.exercises.map(function(ex){
+return ‘<div class="hist-ex"><span>’+ex.n+’</span><span class="hist-reps">’+ex.r+’ ‘+ex.u+’</span></div>’;
+}).join(’’);
+var notePrev=s.notes?(’ \u00B7 ‘+s.notes.slice(0,50)+(s.notes.length>50?’\u2026’:’’)):’’;
+return ‘<div class="hist-card"><div class="hist-date">’+s.date+’</div><div class="hist-focus">’+s.wod.focus.name+’ \u00B7 ‘+s.rounds+’ rounds’+notePrev+’</div>’+exRows+’</div>’;
+}).join(’’);
+}
+
+// ═══════════════════════════════════════════════════════
 // TRACKER
-// ═══════════════════════════════════════════════
-let sessions = JSON.parse(localStorage.getItem(‘hr-sessions-v1’) || ‘[]’);
+// ═══════════════════════════════════════════════════════
+var sessions=[];
+function loadSessions(){ try{ sessions=JSON.parse(localStorage.getItem(‘hr-v2’)||’[]’); }catch(e){ sessions=[]; } }
+function saveSessions(){ localStorage.setItem(‘hr-v2’,JSON.stringify(sessions)); }
 
 function renderTracker() {
-const tot = sessions.reduce((a,s) => a + (s.rounds||0), 0);
-const pr = sessions.length ? Math.max(…sessions.map(s => s.rounds||0)) : null;
-document.getElementById(‘s-sess’).textContent = sessions.length;
-document.getElementById(‘s-rounds’).textContent = tot;
-document.getElementById(‘s-pr’).textContent = pr !== null ? pr : ‘—’;
-const el = document.getElementById(‘log-list’);
-const empty = document.getElementById(‘log-empty’);
-if (!sessions.length) { el.innerHTML = ‘’; el.appendChild(empty); empty.style.display = ‘block’; return; }
-empty.style.display = ‘none’;
-el.innerHTML = […sessions].reverse().map(s => `<div class="entry"> <div class="entry-top"> <div> <div class="entry-day">${s.day}</div> <div class="entry-meta">${[s.wt, s.feel, s.date].filter(Boolean).join(' · ')}</div> </div> <div class="entry-rounds">${s.rounds}<span>rounds</span></div> </div> ${s.notes ?`<div class="entry-notes">${s.notes}</div>` : ''}</div>`).join(’’);
+var tot=sessions.reduce(function(a,s){ return a+(s.rounds||0); },0);
+var pr=sessions.length?Math.max.apply(null,sessions.map(function(s){ return s.rounds||0; })):null;
+document.getElementById(‘s-sess’).textContent=sessions.length;
+document.getElementById(‘s-total’).textContent=tot;
+document.getElementById(‘s-pr’).textContent=pr!==null?pr:’\u2014’;
+var el=document.getElementById(‘log-list’);
+var empty=document.getElementById(‘log-empty’);
+if(!sessions.length){ el.innerHTML=’’; el.appendChild(empty); empty.style.display=‘block’; return; }
+empty.style.display=‘none’;
+el.innerHTML=sessions.slice().reverse().map(function(s){
+return ‘<div class="entry"><div class="entry-top"><div><div class="entry-day">’+s.day+’</div><div class="entry-meta">’+[s.wt,s.feel,s.date].filter(Boolean).join(’ \u00B7 ‘)+’</div></div><div class="entry-rounds">’+s.rounds+’<span>rounds</span></div></div>’+(s.notes?’<div class="entry-notes">’+s.notes+’</div>’:’’)+’</div>’;
+}).join(’’);
 }
-
 function logSession() {
-const focus = document.getElementById(‘l-focus’).value;
-const rounds = parseInt(document.getElementById(‘l-rounds’).value);
-const wt = document.getElementById(‘l-wt’).value;
-const feel = document.getElementById(‘l-feel’).value;
-const notes = document.getElementById(‘l-notes’).value.trim();
-document.getElementById(‘l-focus’).style.borderColor = focus ? ‘’ : ‘var(–red)’;
-document.getElementById(‘l-rounds’).style.borderColor = rounds ? ‘’ : ‘var(–red)’;
-if (!focus || !rounds) return;
-sessions.push({ day: focus, rounds, wt, feel, notes, date: new Date().toLocaleDateString() });
-localStorage.setItem(‘hr-sessions-v1’, JSON.stringify(sessions));
-renderTracker();
-[‘l-focus’,‘l-rounds’,‘l-wt’,‘l-feel’].forEach(id => { const e = document.getElementById(id); e.value = ‘’; e.style.borderColor = ‘’; });
-document.getElementById(‘l-notes’).value = ‘’;
+var focus=document.getElementById(‘l-focus’).value;
+var rounds=parseInt(document.getElementById(‘l-rounds’).value);
+var wt=document.getElementById(‘l-wt’).value;
+var feel=document.getElementById(‘l-feel’).value;
+var notes=document.getElementById(‘l-notes’).value.trim();
+document.getElementById(‘l-focus’).style.borderColor=focus?’’:‘var(–red)’;
+document.getElementById(‘l-rounds’).style.borderColor=rounds?’’:‘var(–red)’;
+if(!focus||!rounds) return;
+sessions.push({day:focus,rounds:rounds,wt:wt,feel:feel,notes:notes,date:new Date().toLocaleDateString()});
+saveSessions(); renderTracker();
+[‘l-focus’,‘l-rounds’,‘l-wt’,‘l-feel’].forEach(function(id){ var e=document.getElementById(id); e.value=’’; e.style.borderColor=’’; });
+document.getElementById(‘l-notes’).value=’’;
 }
-
 function clearLog() {
-if (confirm(‘Clear all session history?’)) { sessions = []; localStorage.removeItem(‘hr-sessions-v1’); renderTracker(); }
+if(!confirm(‘Clear all session history?’)) return;
+sessions=[]; saveSessions(); renderTracker();
 }
 
-// ═══════════════════════════════════════════════
-// INIT — runs after DOM is ready
-// ═══════════════════════════════════════════════
-(function init() {
-const DAY_NAMES = [‘Sunday’,‘Monday’,‘Tuesday’,‘Wednesday’,‘Thursday’,‘Friday’,‘Saturday’];
-const MONTH_NAMES = [‘Jan’,‘Feb’,‘Mar’,‘Apr’,‘May’,‘Jun’,‘Jul’,‘Aug’,‘Sep’,‘Oct’,‘Nov’,‘Dec’];
-const now = new Date();
-const dateEl = document.getElementById(‘hero-date’);
-if (dateEl) dateEl.textContent = DAY_NAMES[now.getDay()] + ’ ’ + MONTH_NAMES[now.getMonth()] + ’ ’ + now.getDate() + ’, ’ + now.getFullYear();
-const off = getRerollOffset();
-if (off > 0) { const rn = document.getElementById(‘reroll-note’); if (rn) rn.textContent = ‘Variation #’ + (off + 1); }
-updClock();
+// ═══════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════
+(function() {
+var d=new Date();
+var dateEl=document.getElementById(‘hero-date’);
+if(dateEl) dateEl.textContent=DAYS[d.getDay()]+’ ‘+MONTHS[d.getMonth()]+’ ‘+d.getDate()+’, ’+d.getFullYear();
+var off=rerollOffset();
+if(off>0){ var rn=document.getElementById(‘reroll-note’); if(rn) rn.textContent=‘Variation #’+(off+1); }
 itoUpdateClock();
+tUpdateClock();
+loadSessions();
 renderTracker();
 initWod();
-// tabReset is NOT called here — tab elements exist in DOM but we init lazily on first tabAction
-tabGetSettings();
 })();
 </script>
 
