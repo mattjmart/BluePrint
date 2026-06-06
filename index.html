@@ -524,7 +524,14 @@ input.inp::placeholder, textarea.inp::placeholder { color:var(–muted); }
 <div class="footer">Hybrid Recomp · Daily Generator · NML × BOXROX × Cavemantraining</div>
 
 <script>
-'use strict';
+// ─── Polyfills ────────────────────────────────────────
+if (!Math.imul) {
+  Math.imul = function(a, b) {
+    var ah = (a >>> 16) & 0xffff, al = a & 0xffff;
+    var bh = (b >>> 16) & 0xffff, bl = b & 0xffff;
+    return ((al * bl) + (((ah * bl + al * bh) << 16) >>> 0) | 0);
+  };
+}
 
 // ═══════════════════════════════════════════════════════
 // DATA
@@ -737,8 +744,11 @@ function renderWod(wod) {
 
 ‘</div>’;
 
-document.getElementById(‘wod-card’).innerHTML = html;
-document.getElementById(‘hero-focus’).textContent = f.name;
+var wc = document.getElementById(‘wod-card’);
+if (!wc) return;
+wc.innerHTML = html;
+var hf = document.getElementById(‘hero-focus’);
+if (hf) hf.textContent = f.name;
 
 if (todayWorked()) markDone();
 }
@@ -760,8 +770,14 @@ if (f) { f.textContent = ‘\u2713 LOGGED’; f.className = ‘wf-btn wfb-f done
 }
 
 function initWod() {
+try {
 var seed = todaySeed() + rerollOffset() * 999983;
 renderWod(generateWod(seed));
+} catch(e) {
+var wc = document.getElementById(‘wod-card’);
+if (wc) wc.innerHTML = ‘<div style="padding:20px;color:#c24040;font-family:monospace;font-size:11px">Error loading workout. Try refreshing.<br>’ + e.message + ‘</div>’;
+console.error(‘initWod error:’, e);
+}
 }
 function reroll() {
 var n = bumpReroll();
@@ -1025,14 +1041,20 @@ var tabWork=20, tabRest=10, tabTotal=8;
 var tabRound=0, tabPhase=‘work’;
 
 function tabGetSettings() {
-tabWork  = Math.max(5, parseInt(document.getElementById(‘tab-work’).value)  || 20);
-tabRest  = Math.max(5, parseInt(document.getElementById(‘tab-rest’).value)  || 10);
-tabTotal = Math.max(1, parseInt(document.getElementById(‘tab-rounds’).value) || 8);
+var tw=document.getElementById(‘tab-work’);
+var tr=document.getElementById(‘tab-rest’);
+var tn=document.getElementById(‘tab-rounds’);
+tabWork  = Math.max(5, parseInt((tw&&tw.value)||‘20’) || 20);
+tabRest  = Math.max(5, parseInt((tr&&tr.value)||‘10’) || 10);
+tabTotal = Math.max(1, parseInt((tn&&tn.value)||‘8’)  || 8);
 }
 function tabPreset(w, r, n) {
-document.getElementById(‘tab-work’).value = w;
-document.getElementById(‘tab-rest’).value = r;
-document.getElementById(‘tab-rounds’).value = n;
+var tw=document.getElementById(‘tab-work’);
+var tr=document.getElementById(‘tab-rest’);
+var tn=document.getElementById(‘tab-rounds’);
+if(tw) tw.value = w;
+if(tr) tr.value = r;
+if(tn) tn.value = n;
 tabWork=w; tabRest=r; tabTotal=n;
 if(tabState===‘idle’) tabShowReset();
 }
@@ -1193,30 +1215,44 @@ function saveSessions(){ localStorage.setItem(‘hr-v2’,JSON.stringify(session
 function renderTracker() {
 var tot=sessions.reduce(function(a,s){ return a+(s.rounds||0); },0);
 var pr=sessions.length?Math.max.apply(null,sessions.map(function(s){ return s.rounds||0; })):null;
-document.getElementById(‘s-sess’).textContent=sessions.length;
-document.getElementById(‘s-total’).textContent=tot;
-document.getElementById(‘s-pr’).textContent=pr!==null?pr:’\u2014’;
+var eSess=document.getElementById(‘s-sess’);
+var eTotal=document.getElementById(‘s-total’);
+var ePr=document.getElementById(‘s-pr’);
+if(eSess) eSess.textContent=sessions.length;
+if(eTotal) eTotal.textContent=tot;
+if(ePr) ePr.textContent=pr!==null?pr:’—’;
 var el=document.getElementById(‘log-list’);
-var empty=document.getElementById(‘log-empty’);
-if(!sessions.length){ el.innerHTML=’’; el.appendChild(empty); empty.style.display=‘block’; return; }
-empty.style.display=‘none’;
+if(!el) return;
+if(!sessions.length){
+el.innerHTML=’<div class="empty" id="log-empty">No sessions yet</div>’;
+return;
+}
 el.innerHTML=sessions.slice().reverse().map(function(s){
-return ‘<div class="entry"><div class="entry-top"><div><div class="entry-day">’+s.day+’</div><div class="entry-meta">’+[s.wt,s.feel,s.date].filter(Boolean).join(’ \u00B7 ‘)+’</div></div><div class="entry-rounds">’+s.rounds+’<span>rounds</span></div></div>’+(s.notes?’<div class="entry-notes">’+s.notes+’</div>’:’’)+’</div>’;
+return ‘<div class="entry"><div class="entry-top"><div><div class="entry-day">’+s.day+’</div><div class="entry-meta">’+[s.wt,s.feel,s.date].filter(Boolean).join(’ · ‘)+’</div></div><div class="entry-rounds">’+s.rounds+’<span>rounds</span></div></div>’+(s.notes?’<div class="entry-notes">’+s.notes+’</div>’:’’)+’</div>’;
 }).join(’’);
 }
 function logSession() {
-var focus=document.getElementById(‘l-focus’).value;
-var rounds=parseInt(document.getElementById(‘l-rounds’).value);
-var wt=document.getElementById(‘l-wt’).value;
-var feel=document.getElementById(‘l-feel’).value;
-var notes=document.getElementById(‘l-notes’).value.trim();
-document.getElementById(‘l-focus’).style.borderColor=focus?’’:‘var(–red)’;
-document.getElementById(‘l-rounds’).style.borderColor=rounds?’’:‘var(–red)’;
+var fEl=document.getElementById(‘l-focus’);
+var rEl=document.getElementById(‘l-rounds’);
+var wEl=document.getElementById(‘l-wt’);
+var feEl=document.getElementById(‘l-feel’);
+var nEl=document.getElementById(‘l-notes’);
+if(!fEl||!rEl) return;
+var focus=fEl.value;
+var rounds=parseInt(rEl.value);
+var wt=wEl?wEl.value:’’;
+var feel=feEl?feEl.value:’’;
+var notes=nEl?nEl.value.trim():’’;
+fEl.style.borderColor=focus?’’:‘var(–red)’;
+rEl.style.borderColor=rounds?’’:‘var(–red)’;
 if(!focus||!rounds) return;
 sessions.push({day:focus,rounds:rounds,wt:wt,feel:feel,notes:notes,date:new Date().toLocaleDateString()});
 saveSessions(); renderTracker();
-[‘l-focus’,‘l-rounds’,‘l-wt’,‘l-feel’].forEach(function(id){ var e=document.getElementById(id); e.value=’’; e.style.borderColor=’’; });
-document.getElementById(‘l-notes’).value=’’;
+fEl.value=’’; fEl.style.borderColor=’’;
+rEl.value=’’; rEl.style.borderColor=’’;
+if(wEl) wEl.value=’’;
+if(feEl) feEl.value=’’;
+if(nEl) nEl.value=’’;
 }
 function clearLog() {
 if(!confirm(‘Clear all session history?’)) return;
