@@ -323,37 +323,37 @@ button, a { -webkit-tap-highlight-color:transparent; cursor:pointer; }
 button { touch-action:manipulation; }
 /* Fix 100vh on iOS Safari (address bar shrinks viewport) */
 .section.active { min-height:calc(100vh - 120px); }
-</style>
 
-/* FOCUS SELECTOR (new - before generate button) */
+/* FOCUS SELECTOR */
 .focus-selector { margin-bottom:10px; }
 .focus-sel-lbl { font-family:'Space Mono',monospace; font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--muted); margin-bottom:6px; }
-.focus-btns { display:flex; gap:6px; flex-wrap:wrap; }
-.focus-btn { font-family:'Space Mono',monospace; font-size:9px; letter-spacing:1.5px; text-transform:uppercase; padding:7px 12px; cursor:pointer; border:1px solid var(--border); background:var(--surface); color:var(--muted); transition:.15s; flex:1; text-align:center; min-width:80px; }
-.focus-btn:hover { color:var(--white); border-color:var(--odim); }
-.focus-btn.sel { background:var(--oglow); color:var(--orange); border-color:var(--odim); }
+.focus-btns { display:flex; gap:5px; flex-wrap:wrap; }
+.focus-btn { font-family:'Syne',sans-serif; font-size:13px; font-weight:700; text-transform:uppercase; padding:10px 8px; cursor:pointer; border:1px solid var(--border); background:var(--surface); color:var(--muted); transition:.15s; flex:1; text-align:center; min-width:60px; border-radius:3px; }
+.focus-btn:active { opacity:.8; }
+.focus-btn.sel { background:var(--orange); color:var(--bg); border-color:var(--orange); }
 
-/* WORKOUT CONTROLS on main page */
-.wod-controls { display:flex; gap:7px; margin-bottom:10px; }
-.wctl-btn { flex:1; padding:12px 8px; border:none; cursor:pointer; font-family:'Syne',sans-serif; font-size:15px; font-weight:700; letter-spacing:1px; transition:.15s; }
-.wctl-start { background:var(--orange); color:var(--bg); }
-.wctl-start:hover { background:#f07a42; }
-.wctl-start.going { background:#b85820; color:var(--white); }
-.wctl-start.done { background:#1a5c30; color:var(--white); cursor:default; }
-.wctl-pause { background:var(--surface); color:var(--muted); border:1px solid var(--border); }
-.wctl-pause.active { background:#4a3a10; color:#e0b040; border-color:#8a6820; }
-.wctl-finish { background:var(--surface); color:var(--muted); border:1px solid var(--border); }
-.wctl-finish.ready { background:var(--green); color:var(--white); border:none; }
-.wctl-finish.done { background:var(--card); color:var(--muted); border:1px solid var(--border); cursor:default; }
+/* WORKOUT CONTROLS */
+.wod-controls { display:flex; gap:8px; margin-bottom:10px; }
+.wctl-btn { flex:1; padding:16px 6px; border:none; cursor:pointer; font-family:'Syne',sans-serif; font-size:16px; font-weight:800; letter-spacing:1px; transition:.15s; border-radius:3px; }
+.wctl-start { background:var(--orange); color:var(--bg); box-shadow:0 3px 12px rgba(232,98,42,.35); }
+.wctl-start:active { background:#d05520; }
+.wctl-start.going { background:#c07030; color:var(--white); }
+.wctl-start.done { background:#1a5c30; color:var(--white); }
+.wctl-pause { background:var(--card); color:var(--white); border:2px solid var(--border); }
+.wctl-pause:active { opacity:.8; }
+.wctl-pause.active { background:#3a2a00; color:#f0c030; border-color:#c09020; }
+.wctl-finish { background:var(--card); color:var(--muted); border:2px solid var(--border); }
+.wctl-finish.ready { background:var(--green); color:var(--white); border-color:var(--green); box-shadow:0 3px 12px rgba(58,173,106,.3); }
+.wctl-finish:active { opacity:.8; }
+.wctl-finish.done { background:var(--card); color:var(--muted); border:2px solid var(--border); cursor:default; }
 
-/* INLINE CLOCK on main page */
-.main-clock-wrap { background:var(--surface); border:1px solid var(--border); border-top:2px solid var(--orange); padding:12px 16px 14px; margin-bottom:14px; display:none; }
+/* INLINE CLOCK */
+.main-clock-wrap { background:var(--surface); border:1px solid var(--border); border-top:2px solid var(--orange); padding:12px 16px 14px; margin-bottom:12px; display:none; }
 .main-clock-wrap.visible { display:block; }
 .main-clock-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:4px; }
 .main-clock-lbl { font-family:'Space Mono',monospace; font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--muted); }
 .main-clock-presets { display:flex; gap:4px; }
-.mcp { font-family:'Space Mono',monospace; font-size:8px; letter-spacing:1px; text-transform:uppercase; padding:4px 8px; cursor:pointer; border:1px solid var(--border); background:var(--card); color:var(--muted); }
-.mcp:hover { color:var(--white); }
+.mcp { font-family:'Space Mono',monospace; font-size:8px; letter-spacing:1px; text-transform:uppercase; padding:4px 8px; cursor:pointer; border:1px solid var(--border); background:var(--card); color:var(--muted); border-radius:2px; }
 .mcp.sel { background:var(--oglow); color:var(--orange); border-color:var(--odim); }
 .main-clock-num { font-family:'Syne',sans-serif; font-size:64px; font-weight:800; letter-spacing:-2px; line-height:1; text-align:center; margin:6px 0 3px; }
 .main-clock-num.idle { color:var(--white); }
@@ -366,32 +366,30 @@ button { touch-action:manipulation; }
 .main-riw { display:flex; align-items:center; gap:8px; }
 .main-riw-lbl { font-family:'Space Mono',monospace; font-size:8px; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); flex:1; }
 .main-riw-n { font-family:'Syne',sans-serif; font-size:26px; font-weight:700; color:var(--orange); min-width:34px; text-align:center; }
-.main-riw-add { background:var(--orange); color:var(--bg); border:none; font-family:'Syne',sans-serif; font-size:13px; font-weight:700; padding:5px 10px; cursor:pointer; }
-.main-riw-add:hover { background:#f07a42; }
-.main-riw-rst { background:var(--card); color:var(--muted); border:1px solid var(--border); font-family:'Space Mono',monospace; font-size:8px; letter-spacing:1px; text-transform:uppercase; padding:4px 8px; cursor:pointer; }
-.main-riw-rst:hover { color:var(--white); }
+.main-riw-add { background:var(--orange); color:var(--bg); border:none; font-family:'Syne',sans-serif; font-size:13px; font-weight:700; padding:6px 12px; cursor:pointer; border-radius:2px; }
+.main-riw-rst { background:var(--card); color:var(--muted); border:1px solid var(--border); font-family:'Space Mono',monospace; font-size:8px; letter-spacing:1px; text-transform:uppercase; padding:5px 9px; cursor:pointer; border-radius:2px; }
 
-/* TRACKER - Calendar view */
+/* TRACKER - Calendar */
 .tracker-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:7px; margin-bottom:16px; }
 .cal-nav { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
-.cal-nav-btn { background:none; border:1px solid var(--border); color:var(--muted); font-family:'Syne',sans-serif; font-size:18px; font-weight:700; padding:4px 12px; cursor:pointer; }
-.cal-nav-btn:hover { color:var(--white); border-color:var(--odim); }
+.cal-nav-btn { background:none; border:1px solid var(--border); color:var(--muted); font-family:'Syne',sans-serif; font-size:18px; font-weight:700; padding:4px 12px; cursor:pointer; border-radius:2px; }
+.cal-nav-btn:active { color:var(--white); border-color:var(--odim); }
 .cal-month { font-family:'Syne',sans-serif; font-size:20px; font-weight:700; color:var(--white); }
 .cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:3px; margin-bottom:16px; }
 .cal-dow { font-family:'Space Mono',monospace; font-size:8px; letter-spacing:1px; text-transform:uppercase; color:var(--muted); text-align:center; padding-bottom:4px; }
-.cal-day { aspect-ratio:1; display:flex; align-items:center; justify-content:center; font-family:'Space Mono',monospace; font-size:10px; color:var(--muted); background:var(--surface); border:1px solid var(--border); cursor:pointer; position:relative; border-radius:2px; -webkit-tap-highlight-color:transparent; }
+.cal-day { aspect-ratio:1; display:flex; flex-direction:column; align-items:center; justify-content:center; font-family:'Space Mono',monospace; font-size:10px; color:var(--muted); background:var(--surface); border:1px solid var(--border); cursor:pointer; position:relative; border-radius:2px; -webkit-tap-highlight-color:transparent; }
 .cal-day:active { opacity:.7; }
 .cal-day.empty { background:transparent; border-color:transparent; cursor:default; }
 .cal-day.today { border-color:var(--odim); color:var(--white); }
 .cal-day.worked { background:rgba(232,98,42,.18); border-color:var(--odim); color:var(--orange); font-weight:700; }
 .cal-day.worked::after { content:''; position:absolute; bottom:2px; left:50%; transform:translateX(-50%); width:4px; height:4px; border-radius:50%; background:var(--orange); }
-.cal-dot-row { display:flex; justify-content:center; gap:2px; margin-top:1px; }
+
 /* WORKOUT DETAIL POPUP */
-.wod-detail-overlay { position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,.7); z-index:800; display:none; -webkit-overflow-scrolling:touch; overflow-y:auto; }
+.wod-detail-overlay { position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,.75); z-index:800; display:none; -webkit-overflow-scrolling:touch; overflow-y:auto; }
 .wod-detail-overlay.open { display:block; }
 .wod-detail-card { background:var(--surface); margin:20px 16px 40px; border:1px solid var(--border); border-top:3px solid var(--orange); padding:18px; }
-.wod-detail-close { float:right; background:none; border:1px solid var(--border); color:var(--muted); font-family:'Space Mono',monospace; font-size:9px; letter-spacing:1px; text-transform:uppercase; padding:4px 10px; cursor:pointer; }
-.wod-detail-date { font-family:'Space Mono',monospace; font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--orange); margin-bottom:4px; }
+.wod-detail-close { float:right; background:var(--card); border:1px solid var(--border); color:var(--white); font-family:'Syne',sans-serif; font-size:13px; font-weight:700; padding:6px 14px; cursor:pointer; border-radius:2px; }
+.wod-detail-date { font-family:'Space Mono',monospace; font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--orange); margin-bottom:4px; clear:both; padding-top:4px; }
 .wod-detail-focus { font-family:'Syne',sans-serif; font-size:22px; font-weight:700; color:var(--white); margin-bottom:10px; }
 .wod-detail-ex { padding:7px 0; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:baseline; }
 .wod-detail-ex:last-of-type { border-bottom:none; }
@@ -399,11 +397,12 @@ button { touch-action:manipulation; }
 .wod-detail-ex-reps { font-family:'Syne',sans-serif; font-size:14px; font-weight:700; color:var(--orange); }
 .wod-detail-notes-wrap { margin-top:12px; border-top:1px solid var(--border); padding-top:12px; }
 .wod-detail-notes-lbl { font-family:'Space Mono',monospace; font-size:8px; letter-spacing:2px; text-transform:uppercase; color:var(--muted); margin-bottom:6px; }
-.wod-detail-notes-ta { width:100%; background:var(--card); border:1px solid var(--border); color:var(--white); font-family:'Barlow',sans-serif; font-size:13px; font-weight:300; padding:8px 10px; resize:vertical; min-height:64px; outline:none; line-height:1.6; }
+.wod-detail-notes-ta { width:100%; background:var(--card); border:1px solid var(--border); color:var(--white); font-family:'Barlow',sans-serif; font-size:13px; font-weight:300; padding:8px 10px; resize:vertical; min-height:64px; outline:none; line-height:1.6; border-radius:2px; }
 .wod-detail-notes-ta:focus { border-color:var(--orange); }
 .wod-detail-notes-ta::placeholder { color:var(--muted); }
-.wod-detail-save-btn { margin-top:6px; background:var(--orange); color:var(--bg); border:none; font-family:'Syne',sans-serif; font-size:14px; font-weight:700; padding:9px 18px; cursor:pointer; }
+.wod-detail-save-btn { margin-top:6px; background:var(--orange); color:var(--bg); border:none; font-family:'Syne',sans-serif; font-size:14px; font-weight:700; padding:10px 20px; cursor:pointer; border-radius:3px; width:100%; }
 .wod-detail-rounds { font-family:'Space Mono',monospace; font-size:9px; color:var(--muted); margin-bottom:10px; }
+</style>
 </head>
 <body>
 
