@@ -2,8 +2,15 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hybrid Recomp — Daily WOD Generator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Hybrid Recomp">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0d0e0f">
+<!-- Home screen icon (generates colored square since no image file) -->
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' fill='%230d0e0f'/%3E%3Ctext x='90' y='115' text-anchor='middle' font-size='80' font-family='Arial Black,sans-serif' font-weight='900' fill='%23e8622a'%3EHR%3C/text%3E%3C/svg%3E">
+<title>Hybrid Recomp - Daily WOD</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Space+Mono&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
@@ -19,11 +26,11 @@ html { scroll-behavior:smooth; }
 body { background:var(--bg); color:var(--white); font-family:'Barlow',sans-serif; font-weight:300; min-height:100vh; overflow-x:hidden; }
 
 /* HERO */
-.hero { position:relative; padding:36px 20px 24px; border-bottom:1px solid var(--border); overflow:hidden; }
+.hero { position:relative; padding:20px 20px 14px; border-bottom:1px solid var(--border); overflow:hidden; }
 .hero-bg { position:absolute; right:-8px; bottom:-10px; font-family:'Syne',sans-serif; font-size:120px; font-weight:800; line-height:.85; color:rgba(232,98,42,.04); pointer-events:none; user-select:none; }
 .eyebrow { font-family:'Space Mono',monospace; font-size:9px; letter-spacing:3px; text-transform:uppercase; color:var(--odim); margin-bottom:8px; display:flex; align-items:center; gap:8px; }
 .eyebrow::before { content:''; width:18px; height:1px; background:var(--odim); }
-h1 { font-family:'Syne',sans-serif; font-size:clamp(42px,10vw,74px); font-weight:800; line-height:.9; letter-spacing:-2px; margin-bottom:8px; }
+h1 { font-family:'Syne',sans-serif; font-size:clamp(32px,7vw,52px); font-weight:800; line-height:.9; letter-spacing:-2px; margin-bottom:6px; }
 h1 .ac { color:var(--orange); }
 .hero-sub { font-size:12px; color:var(--muted); line-height:1.7; max-width:340px; margin-bottom:12px; }
 .pills { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px; }
@@ -42,7 +49,7 @@ h1 .ac { color:var(--orange); }
 .tab.active { color:var(--orange); border-bottom-color:var(--orange); }
 
 /* SECTIONS */
-.section { display:none; padding:18px 18px 60px; }
+.section { display:none; padding:14px 18px 60px; }
 .section.active { display:block; }
 .sec-lbl { font-family:'Space Mono',monospace; font-size:8px; letter-spacing:3px; text-transform:uppercase; color:var(--odim); margin-bottom:14px; display:flex; align-items:center; gap:8px; }
 .sec-lbl::after { content:''; flex:1; height:1px; background:var(--border); }
@@ -180,7 +187,7 @@ h1 .ac { color:var(--orange); }
 .ito-radd:hover { background:#f07a42; }
 
 /* BELL FLASH */
-.bell-flash { position:fixed; inset:0; background:rgba(232,98,42,.2); pointer-events:none; opacity:0; z-index:9000; transition:opacity .08s; }
+.bell-flash { position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(232,98,42,.2); pointer-events:none; opacity:0; z-index:9000; transition:opacity .08s; }
 .bell-flash.ring { opacity:1; }
 
 /* STANDALONE TIMER */
@@ -264,7 +271,7 @@ h1 .ac { color:var(--orange); }
 .tab-ex-name { font-family:'Syne',sans-serif; font-size:19px; font-weight:700; color:var(--white); margin-bottom:3px; }
 .tab-ex-cue { font-size:11px; color:var(--muted); line-height:1.5; }
 .tab-ex-next { font-size:11px; color:var(--muted); margin-top:7px; padding-top:7px; border-top:1px solid var(--border); }
-.tab-flash { position:fixed; inset:0; pointer-events:none; opacity:0; z-index:8998; transition:opacity .06s; }
+.tab-flash { position:fixed; top:0; left:0; right:0; bottom:0; pointer-events:none; opacity:0; z-index:8998; transition:opacity .06s; }
 .tab-flash.ring { opacity:1; }
 
 /* HISTORY & TRACKER */
@@ -303,28 +310,129 @@ input.inp::placeholder, textarea.inp::placeholder { color:var(--muted); }
 .info-box b { display:block; font-family:'Space Mono',monospace; font-size:8px; letter-spacing:2px; text-transform:uppercase; color:var(--orange); margin-bottom:2px; }
 .info-box.cyan-box { border-left-color:var(--cdim); background:rgba(42,184,200,.07); }
 .info-box.cyan-box b { color:var(--cyan); }
-.footer { padding:18px; border-top:1px solid var(--border); text-align:center; font-family:'Space Mono',monospace; font-size:8px; letter-spacing:2px; text-transform:uppercase; color:var(--muted); }
+.footer { padding:18px; padding-bottom:calc(18px + env(safe-area-inset-bottom, 0px)); border-top:1px solid var(--border); text-align:center; font-family:'Space Mono',monospace; font-size:8px; letter-spacing:2px; text-transform:uppercase; color:var(--muted); }
+/* iOS Safari / PWA home screen fixes */
+html { -webkit-text-size-adjust:100%; height:100%; }
+body { -webkit-overflow-scrolling:touch; overscroll-behavior-y:none; }
+button, a { -webkit-tap-highlight-color:transparent; cursor:pointer; }
+.hero { padding-top:calc(20px + env(safe-area-inset-top, 0px)); }
+.ito { padding-bottom:calc(24px + env(safe-area-inset-bottom, 0px)) !important; }
+.tabs { padding-left:env(safe-area-inset-left, 0px); padding-right:env(safe-area-inset-right, 0px); }
+.section { padding-bottom:calc(60px + env(safe-area-inset-bottom, 0px)); }
+/* Prevent iOS double-tap zoom on buttons */
+button { touch-action:manipulation; }
+/* Fix 100vh on iOS Safari (address bar shrinks viewport) */
+.section.active { min-height:calc(100vh - 120px); }
 </style>
+
+/* FOCUS SELECTOR (new - before generate button) */
+.focus-selector { margin-bottom:10px; }
+.focus-sel-lbl { font-family:'Space Mono',monospace; font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--muted); margin-bottom:6px; }
+.focus-btns { display:flex; gap:6px; flex-wrap:wrap; }
+.focus-btn { font-family:'Space Mono',monospace; font-size:9px; letter-spacing:1.5px; text-transform:uppercase; padding:7px 12px; cursor:pointer; border:1px solid var(--border); background:var(--surface); color:var(--muted); transition:.15s; flex:1; text-align:center; min-width:80px; }
+.focus-btn:hover { color:var(--white); border-color:var(--odim); }
+.focus-btn.sel { background:var(--oglow); color:var(--orange); border-color:var(--odim); }
+
+/* WORKOUT CONTROLS on main page */
+.wod-controls { display:flex; gap:7px; margin-bottom:10px; }
+.wctl-btn { flex:1; padding:12px 8px; border:none; cursor:pointer; font-family:'Syne',sans-serif; font-size:15px; font-weight:700; letter-spacing:1px; transition:.15s; }
+.wctl-start { background:var(--orange); color:var(--bg); }
+.wctl-start:hover { background:#f07a42; }
+.wctl-start.going { background:#b85820; color:var(--white); }
+.wctl-start.done { background:#1a5c30; color:var(--white); cursor:default; }
+.wctl-pause { background:var(--surface); color:var(--muted); border:1px solid var(--border); }
+.wctl-pause.active { background:#4a3a10; color:#e0b040; border-color:#8a6820; }
+.wctl-finish { background:var(--surface); color:var(--muted); border:1px solid var(--border); }
+.wctl-finish.ready { background:var(--green); color:var(--white); border:none; }
+.wctl-finish.done { background:var(--card); color:var(--muted); border:1px solid var(--border); cursor:default; }
+
+/* INLINE CLOCK on main page */
+.main-clock-wrap { background:var(--surface); border:1px solid var(--border); border-top:2px solid var(--orange); padding:12px 16px 14px; margin-bottom:14px; display:none; }
+.main-clock-wrap.visible { display:block; }
+.main-clock-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:4px; }
+.main-clock-lbl { font-family:'Space Mono',monospace; font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--muted); }
+.main-clock-presets { display:flex; gap:4px; }
+.mcp { font-family:'Space Mono',monospace; font-size:8px; letter-spacing:1px; text-transform:uppercase; padding:4px 8px; cursor:pointer; border:1px solid var(--border); background:var(--card); color:var(--muted); }
+.mcp:hover { color:var(--white); }
+.mcp.sel { background:var(--oglow); color:var(--orange); border-color:var(--odim); }
+.main-clock-num { font-family:'Syne',sans-serif; font-size:64px; font-weight:800; letter-spacing:-2px; line-height:1; text-align:center; margin:6px 0 3px; }
+.main-clock-num.idle { color:var(--white); }
+.main-clock-num.running { color:var(--orange); }
+.main-clock-num.paused { color:#e0b040; }
+.main-clock-num.done { color:var(--green); }
+.main-clock-phase { font-family:'Space Mono',monospace; font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--muted); text-align:center; margin-bottom:8px; }
+.main-clock-prog { height:3px; background:var(--border); overflow:hidden; margin-bottom:10px; }
+.main-clock-prog-fill { height:100%; background:var(--orange); transition:width .95s linear; }
+.main-riw { display:flex; align-items:center; gap:8px; }
+.main-riw-lbl { font-family:'Space Mono',monospace; font-size:8px; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); flex:1; }
+.main-riw-n { font-family:'Syne',sans-serif; font-size:26px; font-weight:700; color:var(--orange); min-width:34px; text-align:center; }
+.main-riw-add { background:var(--orange); color:var(--bg); border:none; font-family:'Syne',sans-serif; font-size:13px; font-weight:700; padding:5px 10px; cursor:pointer; }
+.main-riw-add:hover { background:#f07a42; }
+.main-riw-rst { background:var(--card); color:var(--muted); border:1px solid var(--border); font-family:'Space Mono',monospace; font-size:8px; letter-spacing:1px; text-transform:uppercase; padding:4px 8px; cursor:pointer; }
+.main-riw-rst:hover { color:var(--white); }
+
+/* TRACKER - Calendar view */
+.tracker-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:7px; margin-bottom:16px; }
+.cal-nav { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+.cal-nav-btn { background:none; border:1px solid var(--border); color:var(--muted); font-family:'Syne',sans-serif; font-size:18px; font-weight:700; padding:4px 12px; cursor:pointer; }
+.cal-nav-btn:hover { color:var(--white); border-color:var(--odim); }
+.cal-month { font-family:'Syne',sans-serif; font-size:20px; font-weight:700; color:var(--white); }
+.cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:3px; margin-bottom:16px; }
+.cal-dow { font-family:'Space Mono',monospace; font-size:8px; letter-spacing:1px; text-transform:uppercase; color:var(--muted); text-align:center; padding-bottom:4px; }
+.cal-day { aspect-ratio:1; display:flex; align-items:center; justify-content:center; font-family:'Space Mono',monospace; font-size:10px; color:var(--muted); background:var(--surface); border:1px solid var(--border); cursor:pointer; position:relative; border-radius:2px; -webkit-tap-highlight-color:transparent; }
+.cal-day:active { opacity:.7; }
+.cal-day.empty { background:transparent; border-color:transparent; cursor:default; }
+.cal-day.today { border-color:var(--odim); color:var(--white); }
+.cal-day.worked { background:rgba(232,98,42,.18); border-color:var(--odim); color:var(--orange); font-weight:700; }
+.cal-day.worked::after { content:''; position:absolute; bottom:2px; left:50%; transform:translateX(-50%); width:4px; height:4px; border-radius:50%; background:var(--orange); }
+.cal-dot-row { display:flex; justify-content:center; gap:2px; margin-top:1px; }
+/* WORKOUT DETAIL POPUP */
+.wod-detail-overlay { position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,.7); z-index:800; display:none; -webkit-overflow-scrolling:touch; overflow-y:auto; }
+.wod-detail-overlay.open { display:block; }
+.wod-detail-card { background:var(--surface); margin:20px 16px 40px; border:1px solid var(--border); border-top:3px solid var(--orange); padding:18px; }
+.wod-detail-close { float:right; background:none; border:1px solid var(--border); color:var(--muted); font-family:'Space Mono',monospace; font-size:9px; letter-spacing:1px; text-transform:uppercase; padding:4px 10px; cursor:pointer; }
+.wod-detail-date { font-family:'Space Mono',monospace; font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--orange); margin-bottom:4px; }
+.wod-detail-focus { font-family:'Syne',sans-serif; font-size:22px; font-weight:700; color:var(--white); margin-bottom:10px; }
+.wod-detail-ex { padding:7px 0; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:baseline; }
+.wod-detail-ex:last-of-type { border-bottom:none; }
+.wod-detail-ex-name { font-size:13px; font-weight:500; color:var(--white); }
+.wod-detail-ex-reps { font-family:'Syne',sans-serif; font-size:14px; font-weight:700; color:var(--orange); }
+.wod-detail-notes-wrap { margin-top:12px; border-top:1px solid var(--border); padding-top:12px; }
+.wod-detail-notes-lbl { font-family:'Space Mono',monospace; font-size:8px; letter-spacing:2px; text-transform:uppercase; color:var(--muted); margin-bottom:6px; }
+.wod-detail-notes-ta { width:100%; background:var(--card); border:1px solid var(--border); color:var(--white); font-family:'Barlow',sans-serif; font-size:13px; font-weight:300; padding:8px 10px; resize:vertical; min-height:64px; outline:none; line-height:1.6; }
+.wod-detail-notes-ta:focus { border-color:var(--orange); }
+.wod-detail-notes-ta::placeholder { color:var(--muted); }
+.wod-detail-save-btn { margin-top:6px; background:var(--orange); color:var(--bg); border:none; font-family:'Syne',sans-serif; font-size:14px; font-weight:700; padding:9px 18px; cursor:pointer; }
+.wod-detail-rounds { font-family:'Space Mono',monospace; font-size:9px; color:var(--muted); margin-bottom:10px; }
 </head>
 <body>
 
-<!-- Bell flash overlay -->
+<!-- Bell / Tabata flash overlays -->
 <div class="bell-flash" id="bflash"></div>
-<!-- Tabata flash overlays -->
 <div class="tab-flash" id="tf-work" style="background:rgba(232,98,42,.18)"></div>
 <div class="tab-flash" id="tf-rest" style="background:rgba(42,184,200,.15)"></div>
+
+<!-- WORKOUT DETAIL POPUP (for tracker calendar) -->
+<div class="wod-detail-overlay" id="wod-detail-overlay">
+  <div class="wod-detail-card">
+    <button class="wod-detail-close" onclick="closeWodDetail()">X Close</button>
+    <div class="wod-detail-date" id="wd-date"></div>
+    <div class="wod-detail-focus" id="wd-focus"></div>
+    <div class="wod-detail-rounds" id="wd-rounds"></div>
+    <div id="wd-exercises"></div>
+    <div class="wod-detail-notes-wrap">
+      <div class="wod-detail-notes-lbl">Session Notes</div>
+      <textarea class="wod-detail-notes-ta" id="wd-notes" placeholder="Add notes for this session..."></textarea>
+      <button class="wod-detail-save-btn" onclick="saveWodDetailNotes()">Save Notes</button>
+    </div>
+  </div>
+</div>
 
 <!-- HERO -->
 <div class="hero">
   <div class="hero-bg">WOD</div>
-  <div class="eyebrow">Daily Generator · Fat Loss · Recomp</div>
+  <div class="eyebrow">Fat Loss · Recomp · Daily Generator</div>
   <h1>HYBRID<br><span class="ac">RECOMP</span></h1>
-  <p class="hero-sub">A fresh 20-min AMRAP every day — randomized from 60+ exercises across kettlebell, dumbbell, and bodyweight.</p>
-  <div class="pills">
-    <span class="pill p-nml">Nourish Move Love</span>
-    <span class="pill p-bx">BOXROX</span>
-    <span class="pill p-cm">Cavemantraining</span>
-  </div>
   <div class="hero-meta">
     <div class="hero-date" id="hero-date"></div>
     <div class="hero-focus" id="hero-focus"></div>
@@ -336,56 +444,67 @@ input.inp::placeholder, textarea.inp::placeholder { color:var(--muted); }
   <button class="tab active" onclick="show('today',this)">Today's WOD</button>
   <button class="tab" onclick="show('timer',this)">Timer</button>
   <button class="tab" onclick="show('tabata',this)">Tabata</button>
-  <button class="tab" onclick="show('history',this)">History</button>
   <button class="tab" onclick="show('tracker',this)">Tracker</button>
-</div>
-
-<!-- INLINE TIMER OVERLAY -->
-<div class="ito" id="ito">
-  <div class="ito-drag" onclick="hideITO()"></div>
-  <div class="ito-hdr">
-    <div class="ito-title">🥊 AMRAP Timer</div>
-    <button class="ito-close" onclick="hideITO()">Minimize ↓</button>
-  </div>
-  <div class="ito-presets">
-    <button class="ito-preset" onclick="itoPreset(15,this)">15 min</button>
-    <button class="ito-preset" onclick="itoPreset(18,this)">18 min</button>
-    <button class="ito-preset sel" onclick="itoPreset(20,this)">20 min</button>
-  </div>
-  <div class="ito-clock idle" id="ito-clock">20:00</div>
-  <div class="ito-phase" id="ito-phase">READY</div>
-  <div class="ito-prog"><div class="ito-prog-fill" id="ito-bar" style="width:100%"></div></div>
-  <div class="ito-btns">
-    <button class="ito-btn ito-go" id="ito-btn" onclick="itoAction()">START</button>
-    <button class="ito-btn ito-rst" onclick="itoReset()">RESET</button>
-  </div>
-  <div class="ito-rounds">
-    <span class="ito-rlbl">Rounds</span>
-    <span class="ito-rnum" id="ito-rnum">0</span>
-    <button class="ito-radd" onclick="itoRoundAdd()">+ Round</button>
-  </div>
 </div>
 
 <!-- TODAY'S WOD -->
 <div id="today" class="section active">
-  <div class="sec-lbl">Today's Workout</div>
-  <div class="legend">
-    <div class="lg"><div class="lg-bar" style="background:var(--orange)"></div>KB Kettlebell</div>
-    <div class="lg"><div class="lg-bar" style="background:var(--cyan)"></div>BW Bodyweight</div>
-    <div class="lg"><div class="lg-bar" style="background:var(--green)"></div>DB Dumbbell</div>
+
+  <!-- FOCUS SELECTOR -->
+  <div class="focus-selector">
+    <div class="focus-sel-lbl">Choose Focus</div>
+    <div class="focus-btns">
+      <button class="focus-btn sel" onclick="setFocus('random',this)">Random</button>
+      <button class="focus-btn" onclick="setFocus('Push Focus',this)">Push</button>
+      <button class="focus-btn" onclick="setFocus('Pull Focus',this)">Pull</button>
+      <button class="focus-btn" onclick="setFocus('Legs Focus',this)">Legs</button>
+      <button class="focus-btn" onclick="setFocus('Full Body',this)">Full Body</button>
+      <button class="focus-btn" onclick="setFocus('Core Focus',this)">Core</button>
+    </div>
   </div>
-  <div class="wod-card" id="wod-card"><div style="padding:20px;text-align:center;color:var(--muted);font-family:'Space Mono',monospace;font-size:10px">Loading workout...</div></div>
+
+  <!-- GENERATE -->
   <div class="reroll-row">
-    <button class="reroll-btn" onclick="reroll()">⟳ Generate New Workout</button>
-    <span class="reroll-note" id="reroll-note">Seeded to today</span>
+    <button class="reroll-btn" onclick="reroll()">&#x27F3; Generate Workout</button>
   </div>
+
+  <!-- WORKOUT CONTROLS: Start / Pause / Finish -->
+  <div class="wod-controls">
+    <button class="wctl-btn wctl-start" id="wctl-start" onclick="wStart()">START</button>
+    <button class="wctl-btn wctl-pause" id="wctl-pause" onclick="wPause()">PAUSE</button>
+    <button class="wctl-btn wctl-finish" id="wctl-finish" onclick="wFinish()">FINISH</button>
+  </div>
+
+  <!-- INLINE CLOCK (shown when started) -->
+  <div class="main-clock-wrap" id="main-clock-wrap">
+    <div class="main-clock-top">
+      <div class="main-clock-lbl">AMRAP Timer</div>
+      <div class="main-clock-presets">
+        <button class="mcp" onclick="mcpPreset(15,this)">15</button>
+        <button class="mcp" onclick="mcpPreset(18,this)">18</button>
+        <button class="mcp sel" onclick="mcpPreset(20,this)">20</button>
+      </div>
+    </div>
+    <div class="main-clock-num idle" id="mc-num">20:00</div>
+    <div class="main-clock-phase" id="mc-phase">READY</div>
+    <div class="main-clock-prog"><div class="main-clock-prog-fill" id="mc-bar" style="width:100%"></div></div>
+    <div class="main-riw">
+      <span class="main-riw-lbl">Rounds</span>
+      <button class="main-riw-rst" onclick="mcRoundReset()">Reset</button>
+      <span class="main-riw-n" id="mc-rounds">0</span>
+      <button class="main-riw-add" onclick="mcRoundAdd()">+ Round</button>
+    </div>
+  </div>
+
+  <!-- WOD CARD -->
+  <div class="wod-card" id="wod-card"><div style="padding:20px;text-align:center;color:var(--muted);font-family:'Space Mono',monospace;font-size:10px">Select a focus then tap Generate Workout</div></div>
 </div>
 
 <!-- TIMER -->
 <div id="timer" class="section">
   <div class="sec-lbl">AMRAP Timer</div>
   <div class="timer-card">
-    <div class="timer-h">🥊 Boxing Bell Timer</div>
+    <div class="timer-h">Boxing Bell Timer</div>
     <div class="preset-row">
       <button class="pbtn" onclick="tPreset(15,this)">15 min</button>
       <button class="pbtn" onclick="tPreset(18,this)">18 min</button>
@@ -399,7 +518,7 @@ input.inp::placeholder, textarea.inp::placeholder { color:var(--muted); }
     </div>
     <div class="clock-wrap">
       <div class="clock-num idle" id="t-clock">20:00</div>
-      <div class="clock-phase" id="t-phase">READY · TAP START</div>
+      <div class="clock-phase" id="t-phase">READY - TAP START</div>
     </div>
     <div class="t-prog"><div class="t-prog-fill" id="t-bar" style="width:100%"></div></div>
     <br>
@@ -415,25 +534,25 @@ input.inp::placeholder, textarea.inp::placeholder { color:var(--muted); }
       <div class="round-box"><div class="round-big" id="t-rcount">0</div><div class="round-unit">Rounds</div></div>
     </div>
   </div>
-  <div class="info-box" style="margin-top:14px"><b>🔔 Boxing Bell</b>Three-ring bell fires when the clock hits zero. Hit +Round each time you finish a circuit. Log your total in Tracker.</div>
+  <div class="info-box" style="margin-top:14px"><b>Boxing Bell</b>Three-ring bell fires when the clock hits zero. Hit +Round each time you finish a circuit.</div>
 </div>
 
 <!-- TABATA -->
 <div id="tabata" class="section">
   <div class="sec-lbl">Tabata Timer</div>
   <div class="tab-card">
-    <div class="tab-h">⚡ Tabata Timer</div>
-    <div class="tab-sub">Set work and rest in seconds. Classic Tabata = 20s work / 10s rest × 8 rounds. Fully customizable.</div>
+    <div class="tab-h">Tabata Timer</div>
+    <div class="tab-sub">Set work and rest in seconds. Classic Tabata = 20s work / 10s rest x 8 rounds. Fully customizable.</div>
     <div class="tab-settings">
       <div class="tsetting">
-        <div class="tsetting-lbl">🔥 Work</div>
+        <div class="tsetting-lbl">Work</div>
         <div class="tsetting-row">
           <input class="tsetting-inp" id="tab-work" type="number" min="5" max="120" value="20">
           <div class="tsetting-unit">sec</div>
         </div>
       </div>
       <div class="tsetting">
-        <div class="tsetting-lbl">❄️ Rest</div>
+        <div class="tsetting-lbl">Rest</div>
         <div class="tsetting-row">
           <input class="tsetting-inp" id="tab-rest" type="number" min="5" max="120" value="10">
           <div class="tsetting-unit">sec</div>
@@ -451,16 +570,16 @@ input.inp::placeholder, textarea.inp::placeholder { color:var(--muted); }
       <div class="tsetting">
         <div class="tsetting-lbl">Presets</div>
         <div style="display:flex;flex-direction:column;gap:4px;margin-top:2px">
-          <button class="tab-preset" onclick="tabPreset(20,10,8)">Classic 20/10 ×8</button>
-          <button class="tab-preset" onclick="tabPreset(40,20,6)">Endurance 40/20 ×6</button>
-          <button class="tab-preset" onclick="tabPreset(30,15,8)">Strength 30/15 ×8</button>
+          <button class="tab-preset" onclick="tabPreset(20,10,8)">Classic 20/10 x8</button>
+          <button class="tab-preset" onclick="tabPreset(40,20,6)">Endurance 40/20 x6</button>
+          <button class="tab-preset" onclick="tabPreset(30,15,8)">Strength 30/15 x8</button>
         </div>
       </div>
     </div>
     <div class="tab-clock-wrap">
       <div class="tab-badge idle" id="tab-badge">READY</div><br>
       <div class="tab-clock idle" id="tab-clock">20</div>
-      <div class="tab-info" id="tab-info">Round — / —</div>
+      <div class="tab-info" id="tab-info">Round - / -</div>
     </div>
     <div class="tab-prog-bar"><div class="tab-prog work" id="tab-prog" style="width:100%"></div></div>
     <div class="tab-btns">
@@ -471,49 +590,43 @@ input.inp::placeholder, textarea.inp::placeholder { color:var(--muted); }
   <div class="tab-exercises" id="tab-ex-wrap" style="display:none">
     <div class="tab-ex-lbl">Current Exercise</div>
     <div class="tab-ex-card" id="tab-ex-card">
-      <div class="tab-ex-name" id="tab-ex-name">—</div>
+      <div class="tab-ex-name" id="tab-ex-name">-</div>
       <div class="tab-ex-cue" id="tab-ex-cue"></div>
       <div class="tab-ex-next" id="tab-ex-next"></div>
     </div>
   </div>
-  <div class="info-box cyan-box"><b>🔔 Interval Dings</b>Sharp ding = work ends. Double ding = rest ends / next round starts. Boxing bell = all rounds complete. If Today's WOD is loaded, exercises rotate automatically.</div>
+  <div class="info-box cyan-box"><b>Interval Dings</b>Sharp ding = work ends. Double ding = rest ends. Boxing bell = all rounds complete. Exercises rotate from today's WOD if loaded.</div>
 </div>
 
-<!-- HISTORY -->
-<div id="history" class="section">
-  <div class="sec-lbl">Workout History</div>
-  <div id="hist-list"><div class="empty">No workouts logged yet</div></div>
-</div>
-
-<!-- TRACKER -->
+<!-- TRACKER (Calendar) -->
 <div id="tracker" class="section">
-  <div class="sec-lbl">Session Log</div>
-  <div class="stats-grid">
+  <div class="sec-lbl">Training Calendar</div>
+  <div class="tracker-stats">
     <div class="stat-box"><div class="stat-n" id="s-sess">0</div><div class="stat-l">Sessions</div></div>
     <div class="stat-box"><div class="stat-n" id="s-total">0</div><div class="stat-l">Total Rounds</div></div>
-    <div class="stat-box"><div class="stat-n" id="s-pr">—</div><div class="stat-l">Round PR</div></div>
+    <div class="stat-box"><div class="stat-n" id="s-pr">-</div><div class="stat-l">Round PR</div></div>
   </div>
-  <div class="form-lbl">Log a Session</div>
-  <div class="form">
-    <div class="form-row">
-      <select class="inp" id="l-focus"><option value="">Focus</option><option>Push</option><option>Pull</option><option>Legs</option><option>Full Body</option><option>Core</option></select>
-      <input class="inp" id="l-rounds" type="number" min="1" max="30" placeholder="Rounds">
-    </div>
-    <div class="form-row">
-      <select class="inp" id="l-wt"><option value="">KB Weight</option><option>8kg</option><option>12kg</option><option>16kg</option><option>20kg</option><option>24kg</option></select>
-      <select class="inp" id="l-feel"><option value="">Felt like...</option><option>🔥 Crushed it</option><option>💪 Strong</option><option>😐 Average</option><option>😤 A grind</option></select>
-    </div>
-    <textarea class="inp" id="l-notes" placeholder="Weights used, PRs, what to improve..."></textarea>
-    <button class="btn-log" onclick="logSession()">LOG SESSION</button>
+  <div class="cal-nav">
+    <button class="cal-nav-btn" onclick="calPrev()">&#8249;</button>
+    <div class="cal-month" id="cal-month"></div>
+    <button class="cal-nav-btn" onclick="calNext()">&#8250;</button>
   </div>
-  <div class="log-head"><div class="form-lbl" style="margin-bottom:0">History</div><button class="sm-btn" onclick="clearLog()">Clear All</button></div>
-  <div class="log-list" id="log-list"><div class="empty" id="log-empty">No sessions yet</div></div>
+  <div class="cal-grid" id="cal-grid"></div>
+  <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:4px">
+    <div style="display:flex;align-items:center;gap:5px;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1px;text-transform:uppercase;color:var(--muted)">
+      <div style="width:12px;height:12px;border-radius:2px;background:rgba(232,98,42,.18);border:1px solid var(--odim)"></div>Trained
+    </div>
+    <div style="display:flex;align-items:center;gap:5px;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1px;text-transform:uppercase;color:var(--muted)">
+      <div style="width:12px;height:12px;border-radius:2px;background:var(--surface);border:1px solid var(--odim)"></div>Today
+    </div>
+  </div>
+  <div style="margin-top:12px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--muted)">Tap a day to see workout details and edit notes.</div>
 </div>
 
-<div class="footer">Hybrid Recomp · Daily Generator · NML × BOXROX × Cavemantraining</div>
+<div class="footer">Hybrid Recomp - Daily Generator - NML x BOXROX x Cavemantraining</div>
 
 <script>
-// Polyfill for Math.imul (missing in some older browsers)
+// Polyfills
 if (!Math.imul) {
   Math.imul = function(a, b) {
     var ah = (a >>> 16) & 0xffff, al = a & 0xffff;
@@ -522,12 +635,12 @@ if (!Math.imul) {
   };
 }
 
-// Safe localStorage wrappers - never throw even if storage is blocked
+// Safe localStorage
 function lsGet(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
 function lsSet(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
 function lsDel(k){ try{ localStorage.removeItem(k); }catch(e){} }
 
-// DATA - Exercise Pool
+// EXERCISE POOL
 var POOL = {
   hinge:[
     {n:'KB Swing',t:'kb',r:15,u:'reps',c:'Explosive hip drive - power from hips, not arms. Bell to shoulder height.',m:'No KB -> DB Romanian Deadlift x12',s:'Cavemantraining'},
@@ -550,7 +663,7 @@ var POOL = {
   ],
   push:[
     {n:'Push-Ups',t:'bw',r:12,u:'reps',c:'Chest to floor, full lock-out. Wide = chest, diamond = triceps.',m:'Easier -> incline push-ups on chair',s:'BOXROX'},
-    {n:'Pike Push-Ups',t:'bw',r:8,u:'reps',c:'Hips high, head toward floor. Triangle at bottom. Targets shoulders.',m:'Too hard -> negative pike only (lower slowly)',s:'Calisthenics'},
+    {n:'Pike Push-Ups',t:'bw',r:8,u:'reps',c:'Hips high, head toward floor. Triangle at bottom. Targets shoulders.',m:'Too hard -> negative pike only',s:'Calisthenics'},
     {n:'KB Push Press',t:'kb',r:8,u:'each',c:'Slight knee dip, drive bell overhead. 4 each side or both.',m:'No KB -> DB shoulder press x8',s:'BOXROX'},
     {n:'DB Overhead Press',t:'db',r:10,u:'reps',c:'Core tight, press straight up. Do not arch lower back. Full lockout at top.',m:'Can substitute KB press',s:'Nourish Move Love'},
     {n:'Dips',t:'bw',r:10,u:'reps',c:'Two chairs. Elbows to 90 degrees, press to lockout. Slow descent.',m:'Scale -> bench dips, feet flat',s:'Calisthenics'},
@@ -588,49 +701,39 @@ var POOL = {
 };
 
 var FOCUSES = [
-  {
-    name:'Push Focus', color:'var(--orange)', bc:'var(--odim)',
-    desc:'Full-body AMRAP with a push emphasis. KB ballistics alternate with pressing movements to keep heart rate high while push muscles recover between sets.',
-    tip:{t:'Cavemantraining Push Method',b:'Alternating KB ballistics with pressing keeps heart rate high while pushing muscles get just enough recovery.'},
-    slots:['hinge','push','squat','push','core'],
-    wu:['Jumping Jacks - 60s','Wrist Circles + Arm Circles - 30s','KB Halos - 5 each direction','Easy Incline Push-Up - 10 reps'],
-    cd:['Slow Walk - 2 min','Wall Chest Stretch - 30s each side','Reverse Shoulder Stretch - 30s','Wrist Extensor Stretch - 30s each']
-  },
-  {
-    name:'Pull Focus', color:'var(--cyan)', bc:'var(--cdim)',
-    desc:'Posterior chain emphasis. KB cleans, rows, and pull-ups paired with explosive hinges target your largest muscle group for maximum calorie burn.',
-    tip:{t:'BOXROX Posterior Chain Principle',b:'The back and posterior chain are your biggest calorie-burning asset. Keep transitions fast - the KB moving is the warm-up for the next pull.'},
-    slots:['hinge','pull','pull','squat','core'],
-    wu:['March in Place - 2 min','Arm Circles - 10 forward + 10 back','KB Halos - 5 each direction','Dead Hang - 30s'],
-    cd:['Slow Walk - 2 min','Dead Hang Stretch - 30s','Thread the Needle - 30s each','Forward Fold - 30s']
-  },
-  {
-    name:'Legs Focus', color:'var(--green)', bc:'#1d5c38',
-    desc:'Legs are your biggest calorie-burning asset. KB squats, lunges, and explosive jumps attack glutes, quads, and hamstrings while keeping cardio output maximal.',
-    tip:{t:'NML Legs Protocol',b:'The clean to squat to press sequence is the most metabolically expensive chain you can run. Track your rounds - improvement proves the recomp is working.'},
-    slots:['hinge','squat','squat','push','core'],
-    wu:['High Knees - 90s','Slow Bodyweight Squat - 10 reps','Hip Circles + Lunges - 1 min','KB Halos + Dead Swing - 5 each'],
-    cd:['Slow Walk - 2 min','Knights Stretch - 30s each','Pigeon Pose - 30s each','Forward Fold - 30s']
-  },
-  {
-    name:'Full Body', color:'#b8a060', bc:'#5a4f2a',
-    desc:'All three tools in one circuit. KB ballistics, DB strength, and bodyweight calisthenics - maximum metabolic demand and EPOC effect.',
-    tip:{t:'EPOC Effect',b:'Mixed-modal circuits keep heart rate in 75-85% MHR - the optimal zone for simultaneous fat loss and muscle preservation. Caloric burn stays elevated 24-48 hours post-workout.'},
-    slots:['hinge','push','pull','squat','core'],
-    wu:['Jumping Jacks + High Knees - 90s','KB Halos + Wrist Circles - 1 min','Slow Goblet Squat - 5 reps','Dead Hang - 20s'],
-    cd:["Slow Walk - 2 min","Child's Pose - 30s","Piriformis Stretch - 30s each","T-Spine Windmill - 5 each side"]
-  },
-  {
-    name:'Core Focus', color:'#9b6eda', bc:'#5a3a8a',
-    desc:'Core stability and anti-rotation paired with KB ballistics. Every carry, plank, and explosive movement builds the foundation for every other lift.',
-    tip:{t:'Cavemantraining Core Method',b:"Core training here is about resisting rotation during carries, bracing during swings, and stabilizing during presses. Every exercise is a core exercise."},
-    slots:['hinge','core','push','carry','core'],
-    wu:['Jumping Jacks - 60s','Cat-Cow - 10 slow reps','Dead Bug - 5 each side','Wrist Circles - 30s'],
-    cd:["Slow Walk - 2 min","Child's Pose - 60s","Cat-Cow - 10 reps","Cobra Stretch - 30s"]
-  }
+  {name:'Push Focus',color:'var(--orange)',bc:'var(--odim)',
+   desc:'Full-body AMRAP with a push emphasis. KB ballistics alternate with pressing movements.',
+   tip:{t:'Push Method',b:'Alternating KB ballistics with pressing keeps heart rate high while push muscles recover.'},
+   slots:['hinge','push','squat','push','core'],
+   wu:['Jumping Jacks - 60s','Wrist Circles + Arm Circles - 30s','KB Halos - 5 each direction','Easy Incline Push-Up - 10 reps'],
+   cd:['Slow Walk - 2 min','Wall Chest Stretch - 30s each side','Reverse Shoulder Stretch - 30s','Wrist Extensor Stretch - 30s each']},
+  {name:'Pull Focus',color:'var(--cyan)',bc:'var(--cdim)',
+   desc:'Posterior chain emphasis. KB cleans, rows, and pull-ups target your largest muscle group for maximum calorie burn.',
+   tip:{t:'Posterior Chain Principle',b:'The back and posterior chain are your biggest calorie-burning asset. Keep transitions fast.'},
+   slots:['hinge','pull','pull','squat','core'],
+   wu:['March in Place - 2 min','Arm Circles - 10 forward + 10 back','KB Halos - 5 each direction','Dead Hang - 30s'],
+   cd:['Slow Walk - 2 min','Dead Hang Stretch - 30s','Thread the Needle - 30s each','Forward Fold - 30s']},
+  {name:'Legs Focus',color:'var(--green)',bc:'#1d5c38',
+   desc:'Legs drive the most calorie burn. KB squats, lunges, and explosive jumps attack glutes, quads, and hamstrings.',
+   tip:{t:'Legs Protocol',b:'The clean to squat to press sequence is the most metabolically expensive chain you can run.'},
+   slots:['hinge','squat','squat','push','core'],
+   wu:['High Knees - 90s','Slow Bodyweight Squat - 10 reps','Hip Circles + Lunges - 1 min','KB Halos + Dead Swing - 5 each'],
+   cd:['Slow Walk - 2 min','Knights Stretch - 30s each','Pigeon Pose - 30s each','Forward Fold - 30s']},
+  {name:'Full Body',color:'#b8a060',bc:'#5a4f2a',
+   desc:'All three tools in one circuit. KB ballistics, DB strength, and bodyweight - maximum metabolic demand.',
+   tip:{t:'EPOC Effect',b:'Mixed-modal circuits keep heart rate in 75-85% MHR for simultaneous fat loss and muscle preservation.'},
+   slots:['hinge','push','pull','squat','core'],
+   wu:['Jumping Jacks + High Knees - 90s','KB Halos + Wrist Circles - 1 min','Slow Goblet Squat - 5 reps','Dead Hang - 20s'],
+   cd:["Slow Walk - 2 min","Child's Pose - 30s","Piriformis Stretch - 30s each","T-Spine Windmill - 5 each side"]},
+  {name:'Core Focus',color:'#9b6eda',bc:'#5a3a8a',
+   desc:'Core stability and anti-rotation paired with KB ballistics. Every movement here builds the foundation for every other lift.',
+   tip:{t:'Core Method',b:'Core training here is about resisting rotation during carries, bracing during swings, and stabilizing during presses.'},
+   slots:['hinge','core','push','carry','core'],
+   wu:['Jumping Jacks - 60s','Cat-Cow - 10 slow reps','Dead Bug - 5 each side','Wrist Circles - 30s'],
+   cd:["Slow Walk - 2 min","Child's Pose - 60s","Cat-Cow - 10 reps","Cobra Stretch - 30s"]}
 ];
 
-// Seeded RNG - same seed = same workout for the day
+// Seeded RNG
 function seededRng(seed) {
   var s = (seed >>> 0);
   return function() {
@@ -638,25 +741,38 @@ function seededRng(seed) {
     return s / 4294967295;
   };
 }
-
 function todaySeed() {
   var d = new Date();
   return (d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate()) >>> 0;
 }
-
 function rerollOffset() {
   return parseInt(lsGet('rr-' + todaySeed()) || '0');
 }
-
 function bumpReroll() {
   var n = rerollOffset() + 1;
   lsSet('rr-' + todaySeed(), n);
   return n;
 }
 
+// Selected focus (null = random)
+var selectedFocus = null;
+
+function setFocus(name, btn) {
+  selectedFocus = (name === 'random') ? null : name;
+  var btns = document.querySelectorAll('.focus-btn');
+  for (var i = 0; i < btns.length; i++) btns[i].classList.remove('sel');
+  btn.classList.add('sel');
+}
+
 function generateWod(seed) {
   var rng = seededRng(seed >>> 0);
-  var focus = FOCUSES[Math.floor(rng() * FOCUSES.length)];
+  var focus;
+  if (selectedFocus) {
+    for (var i = 0; i < FOCUSES.length; i++) {
+      if (FOCUSES[i].name === selectedFocus) { focus = FOCUSES[i]; break; }
+    }
+  }
+  if (!focus) focus = FOCUSES[Math.floor(rng() * FOCUSES.length)];
   var seen = {};
   var exercises = focus.slots.map(function(pat) {
     var pool = POOL[pat];
@@ -671,7 +787,6 @@ function generateWod(seed) {
   return { focus: focus, exercises: exercises };
 }
 
-// Render helpers
 var DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 var MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 var SRC_URLS = {
@@ -686,16 +801,12 @@ function srcPillHtml(src) {
   var cls = src === 'Nourish Move Love' ? 'p-nml' : src === 'Cavemantraining' ? 'p-cm' : 'p-bx';
   return '<a class="pill ' + cls + '" href="' + url + '" target="_blank" rel="noopener">' + src + '</a>';
 }
-
 function typePillHtml(t) {
   if (t === 'kb') return '<span class="type-pill tp-kb">KB</span>';
   if (t === 'db') return '<span class="type-pill tp-db">DB</span>';
   return '<span class="type-pill tp-bw">BW</span>';
 }
-
-function rowClass(t) {
-  return t === 'kb' ? 'kb' : t === 'db' ? 'db' : 'bw';
-}
+function rowClass(t) { return t === 'kb' ? 'kb' : t === 'db' ? 'db' : 'bw'; }
 
 var currentWod = null;
 
@@ -703,21 +814,7 @@ function todayKey() {
   var d = new Date();
   return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
 }
-
 function pad(n) { return n < 10 ? '0' + n : '' + n; }
-
-function todayWorked() {
-  try {
-    return (JSON.parse(lsGet('hr-worked') || '[]')).indexOf(todayKey()) !== -1;
-  } catch(e) { return false; }
-}
-
-function markDone() {
-  var s = document.getElementById('wf-start');
-  var f = document.getElementById('wf-finish');
-  if (s) { s.textContent = 'DONE'; s.className = 'wf-btn wfb-s done'; }
-  if (f) { f.textContent = 'LOGGED'; f.className = 'wf-btn wfb-f done'; }
-}
 
 function renderWod(wod) {
   var wc = document.getElementById('wod-card');
@@ -741,7 +838,6 @@ function renderWod(wod) {
 
   var wuHtml = f.wu.map(function(w) { return '<div class="s-row">' + w + '</div>'; }).join('');
   var cdHtml = f.cd.map(function(w) { return '<div class="s-row">' + w + '</div>'; }).join('');
-  var savedNote = lsGet('note-' + todayKey()) || '';
 
   var html =
     '<div class="wod-hdr">' +
@@ -755,20 +851,10 @@ function renderWod(wod) {
         '<div class="chip">KB 16-20kg / DB 15-20lb</div>' +
         '<div class="chip">' + exs.length + ' movements</div>' +
       '</div>' +
-      '<div class="wf-row">' +
-        '<button class="wf-btn wfb-s" id="wf-start" onclick="startWorkout()">START</button>' +
-        '<button class="wf-btn wfb-f" id="wf-finish" onclick="finishWorkout()">FINISH &amp; LOG</button>' +
-      '</div>' +
     '</div>' +
     '<div class="ex-lbl">One Round - Complete in Order</div>' +
     '<div class="ex-list">' + exHtml + '</div>' +
     '<div class="tip"><b>' + f.tip.t + '</b>' + f.tip.b + '</div>' +
-    '<div class="riw">' +
-      '<span class="riw-lbl">Round Counter</span>' +
-      '<button class="riw-rst" onclick="riwReset()">Reset</button>' +
-      '<span class="riw-n" id="riw-n">0</span>' +
-      '<button class="riw-add" onclick="riwAdd()">+ Round</button>' +
-    '</div>' +
     '<div class="phase wu">' +
       '<div class="ph-head" onclick="phToggle(this)">' +
         '<span class="ph-icon">&#x1F525;</span>' +
@@ -784,17 +870,11 @@ function renderWod(wod) {
         '<span class="ph-chev">&#x25BC;</span>' +
       '</div>' +
       '<div class="ph-body"><p class="ph-note">Walk 2 min then hold each stretch 30 seconds.</p><div class="s-list">' + cdHtml + '</div></div>' +
-    '</div>' +
-    '<div class="notes-wrap">' +
-      '<div class="notes-lbl"><span>Session Notes</span><span class="sv-badge" id="sv-badge">Saved</span></div>' +
-      '<textarea class="notes-ta" id="notes-ta" placeholder="Rounds, weights used, how it felt...">' + savedNote.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</textarea>' +
-      '<div class="notes-btns"><button class="nb nb-sv" onclick="saveNote()">Save</button><button class="nb nb-cl" onclick="clearNote()">Clear</button></div>' +
     '</div>';
 
   wc.innerHTML = html;
   var hf = document.getElementById('hero-focus');
   if (hf) hf.textContent = f.name;
-  if (todayWorked()) markDone();
 }
 
 function initWod() {
@@ -808,9 +888,7 @@ function initWod() {
 }
 
 function reroll() {
-  var n = bumpReroll();
-  var rn = document.getElementById('reroll-note');
-  if (rn) rn.textContent = 'Variation #' + (n + 1);
+  bumpReroll();
   initWod();
 }
 
@@ -822,10 +900,10 @@ function show(id, btn) {
   for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove('active');
   document.getElementById(id).classList.add('active');
   btn.classList.add('active');
-  if (id === 'history') renderHistory();
+  if (id === 'tracker') renderCal();
 }
 
-// Phase toggle (warmup/cooldown)
+// Phase toggle
 function phToggle(h) {
   var b = h.nextElementSibling;
   var c = h.querySelector('.ph-chev');
@@ -834,162 +912,154 @@ function phToggle(h) {
   if (c) c.style.transform = open ? 'rotate(180deg)' : '';
 }
 
-// Inline Timer Overlay
-var itoSec = 1200, itoTotal = 1200, itoRunning = false, itoInterval = null, itoRounds = 0;
+// MAIN PAGE CLOCK
+var mcSec = 1200, mcTotal = 1200, mcRunning = false, mcInterval = null, mcRounds = 0;
 
-function showITO() {
-  var el = document.getElementById('ito');
-  if (el) el.classList.add('visible');
-}
-
-function hideITO() {
-  var el = document.getElementById('ito');
-  if (el) el.classList.remove('visible');
-}
-
-function fmtTime(s) { return pad(Math.floor(s / 60)) + ':' + pad(s % 60); }
-
-function itoSetState(cls, ph) {
-  var c = document.getElementById('ito-clock');
-  var p = document.getElementById('ito-phase');
-  if (c) c.className = 'ito-clock ' + cls;
+function mcSetState(cls, ph) {
+  var c = document.getElementById('mc-num');
+  var p = document.getElementById('mc-phase');
+  if (c) c.className = 'main-clock-num ' + cls;
   if (p) p.textContent = ph;
 }
-
-function itoUpdateClock() {
-  var c = document.getElementById('ito-clock');
-  var b = document.getElementById('ito-bar');
-  if (c) c.textContent = fmtTime(itoSec);
-  if (b) b.style.width = (itoTotal > 0 ? (itoSec / itoTotal) * 100 : 100) + '%';
+function mcUpdateClock() {
+  var c = document.getElementById('mc-num');
+  var b = document.getElementById('mc-bar');
+  if (c) c.textContent = fmtTime(mcSec);
+  if (b) b.style.width = (mcTotal > 0 ? (mcSec / mcTotal) * 100 : 100) + '%';
 }
-
-function itoPreset(min, btn) {
-  if (itoRunning) return;
-  var btns = document.querySelectorAll('.ito-preset');
+function mcpPreset(min, btn) {
+  if (mcRunning) return;
+  var btns = document.querySelectorAll('.mcp');
   for (var i = 0; i < btns.length; i++) btns[i].classList.remove('sel');
   btn.classList.add('sel');
-  itoTotal = min * 60;
-  itoSec = itoTotal;
-  itoUpdateClock();
-  itoSetState('idle', 'READY');
+  mcTotal = min * 60; mcSec = mcTotal;
+  mcUpdateClock(); mcSetState('idle', 'READY');
 }
-
-function itoAction() {
-  if (!itoRunning) {
-    if (itoSec <= 0) itoReset();
-    itoRunning = true;
-    var sb = document.getElementById('ito-btn');
-    if (sb) sb.textContent = 'PAUSE';
-    itoSetState('running', 'GO - AMRAP IN PROGRESS');
-    itoInterval = setInterval(function() {
-      itoSec--;
-      itoUpdateClock();
-      if (itoSec === 30) itoSetState('running', '30 SECONDS LEFT');
-      if (itoSec === 10) itoSetState('running', 'PUSH - FINAL 10');
-      if (itoSec <= 0) {
-        clearInterval(itoInterval);
-        itoRunning = false;
-        var c = document.getElementById('ito-clock');
-        var b = document.getElementById('ito-bar');
-        var sb2 = document.getElementById('ito-btn');
-        if (c) c.textContent = 'DONE';
-        if (b) b.style.width = '0%';
-        itoSetState('done', "TIME'S UP");
-        if (sb2) sb2.textContent = 'START';
-        ringBell();
-      }
-    }, 1000);
-  } else {
-    clearInterval(itoInterval);
-    itoRunning = false;
-    var sb = document.getElementById('ito-btn');
-    if (sb) sb.textContent = 'RESUME';
-    itoSetState('paused', 'PAUSED');
-  }
+function mcRoundAdd() {
+  var el = document.getElementById('mc-rounds');
+  if (el) el.textContent = ++mcRounds;
 }
-
-function itoReset() {
-  clearInterval(itoInterval);
-  itoRunning = false;
-  var sel = document.querySelector('.ito-preset.sel');
-  if (sel) itoTotal = parseInt(sel.textContent) * 60;
-  itoSec = itoTotal;
-  itoUpdateClock();
-  itoSetState('idle', 'READY');
-  var sb = document.getElementById('ito-btn');
-  if (sb) sb.textContent = 'START';
-}
-
-function itoRoundAdd() {
-  var el = document.getElementById('ito-rnum');
-  if (el) el.textContent = ++itoRounds;
-}
-
-// Start/Finish workout
-var wStarted = false;
-
-function startWorkout() {
-  var sb = document.getElementById('wf-start');
-  if (!sb || sb.classList.contains('done') || sb.classList.contains('going')) return;
-  wStarted = true;
-  sb.textContent = 'IN PROGRESS';
-  sb.className = 'wf-btn wfb-s going';
-  var fb = document.getElementById('wf-finish');
-  if (fb) fb.className = 'wf-btn wfb-f ready';
-  showITO();
-  if (!itoRunning && itoSec > 0) itoAction();
-}
-
-function finishWorkout() {
-  var fb = document.getElementById('wf-finish');
-  if (!fb || fb.classList.contains('done')) return;
-  var worked;
-  try { worked = JSON.parse(lsGet('hr-worked') || '[]'); } catch(e) { worked = []; }
-  if (worked.indexOf(todayKey()) === -1) worked.push(todayKey());
-  lsSet('hr-worked', JSON.stringify(worked));
-  var rn = document.getElementById('riw-n');
-  var rounds = rn ? parseInt(rn.textContent) || 0 : 0;
-  var ta = document.getElementById('notes-ta');
-  var notes = ta ? ta.value : '';
-  sessions.push({
-    day: currentWod ? currentWod.focus.name : 'Workout',
-    rounds: rounds, wt: '', feel: '', notes: notes,
-    date: new Date().toLocaleDateString(),
-    wod: currentWod
-  });
-  saveSessions();
-  renderTracker();
-  markDone();
-  wStarted = false;
-}
-
-// Round counter
-var riwCount = 0;
-function riwAdd() {
-  var el = document.getElementById('riw-n');
-  if (el) el.textContent = ++riwCount;
-}
-function riwReset() {
-  riwCount = 0;
-  var el = document.getElementById('riw-n');
+function mcRoundReset() {
+  mcRounds = 0;
+  var el = document.getElementById('mc-rounds');
   if (el) el.textContent = 0;
 }
 
-// Notes
-function saveNote() {
-  var ta = document.getElementById('notes-ta');
-  if (!ta) return;
-  lsSet('note-' + todayKey(), ta.value);
-  var b = document.getElementById('sv-badge');
-  if (b) { b.style.opacity = '1'; setTimeout(function() { b.style.opacity = '0'; }, 1800); }
-}
-function clearNote() {
-  var ta = document.getElementById('notes-ta');
-  if (ta) ta.value = '';
-  lsDel('note-' + todayKey());
+// START / PAUSE / FINISH
+var wState = 'idle'; // idle | running | paused | done
+
+function wStart() {
+  if (wState === 'done') return;
+  if (!currentWod) { reroll(); }
+  wState = 'running';
+  // Show clock
+  var cw = document.getElementById('main-clock-wrap');
+  if (cw) cw.classList.add('visible');
+  // Start the clock
+  if (!mcRunning) {
+    mcRunning = true;
+    mcSetState('running', 'GO - AMRAP IN PROGRESS');
+    mcInterval = setInterval(function() {
+      mcSec--; mcUpdateClock();
+      if (mcSec === 30) mcSetState('running', '30 SECONDS LEFT');
+      if (mcSec === 10) mcSetState('running', 'PUSH - FINAL 10');
+      if (mcSec <= 0) {
+        clearInterval(mcInterval); mcRunning = false;
+        var c = document.getElementById('mc-num');
+        var b = document.getElementById('mc-bar');
+        if (c) c.textContent = 'DONE';
+        if (b) b.style.width = '0%';
+        mcSetState('done', "TIME'S UP - HIT FINISH");
+        ringBell();
+      }
+    }, 1000);
+  }
+  // Update buttons
+  var sb = document.getElementById('wctl-start');
+  var pb = document.getElementById('wctl-pause');
+  var fb = document.getElementById('wctl-finish');
+  if (sb) { sb.textContent = 'STARTED'; sb.className = 'wctl-btn wctl-start going'; }
+  if (pb) pb.className = 'wctl-btn wctl-pause';
+  if (fb) fb.className = 'wctl-btn wctl-finish ready';
 }
 
-// Boxing Bell sound
+function wPause() {
+  if (wState === 'idle' || wState === 'done') return;
+  if (wState === 'running') {
+    wState = 'paused';
+    clearInterval(mcInterval); mcRunning = false;
+    mcSetState('paused', 'PAUSED - TAP START TO RESUME');
+    var pb = document.getElementById('wctl-pause');
+    if (pb) { pb.textContent = 'RESUME'; pb.className = 'wctl-btn wctl-pause active'; }
+    var sb = document.getElementById('wctl-start');
+    if (sb) { sb.textContent = 'PAUSED'; sb.className = 'wctl-btn wctl-start going'; }
+  } else if (wState === 'paused') {
+    // Resume
+    wState = 'running';
+    mcRunning = true;
+    mcSetState('running', 'GO - AMRAP IN PROGRESS');
+    mcInterval = setInterval(function() {
+      mcSec--; mcUpdateClock();
+      if (mcSec === 30) mcSetState('running', '30 SECONDS LEFT');
+      if (mcSec === 10) mcSetState('running', 'PUSH - FINAL 10');
+      if (mcSec <= 0) {
+        clearInterval(mcInterval); mcRunning = false;
+        var c = document.getElementById('mc-num');
+        var b = document.getElementById('mc-bar');
+        if (c) c.textContent = 'DONE';
+        if (b) b.style.width = '0%';
+        mcSetState('done', "TIME'S UP - HIT FINISH");
+        ringBell();
+      }
+    }, 1000);
+    var pb = document.getElementById('wctl-pause');
+    if (pb) { pb.textContent = 'PAUSE'; pb.className = 'wctl-btn wctl-pause'; }
+    var sb = document.getElementById('wctl-start');
+    if (sb) { sb.textContent = 'STARTED'; sb.className = 'wctl-btn wctl-start going'; }
+  }
+}
+
+function wFinish() {
+  if (wState === 'idle') return;
+  var fb = document.getElementById('wctl-finish');
+  if (fb && fb.classList.contains('done')) return;
+  // Stop clock
+  clearInterval(mcInterval); mcRunning = false;
+  wState = 'done';
+  // Get round count from main clock round counter
+  var rnEl = document.getElementById('mc-rounds');
+  var rounds = rnEl ? parseInt(rnEl.textContent) || 0 : 0;
+  // Get notes from wod card if present
+  var notesEl = document.getElementById('wod-notes-ta');
+  var notes = notesEl ? notesEl.value : '';
+  // Log the session with full WOD data
+  var key = todayKey();
+  var entry = {
+    key: key,
+    date: new Date().toLocaleDateString(),
+    focus: currentWod ? currentWod.focus.name : 'Workout',
+    rounds: rounds,
+    notes: notes,
+    wod: currentWod
+  };
+  // Save to sessions array (keyed by date - one per day, overwrite if re-done)
+  var existing = false;
+  for (var i = 0; i < sessions.length; i++) {
+    if (sessions[i].key === key) { sessions[i] = entry; existing = true; break; }
+  }
+  if (!existing) sessions.push(entry);
+  saveSessions();
+  renderTrackerStats();
+  // Update buttons
+  var sb = document.getElementById('wctl-start');
+  var pb = document.getElementById('wctl-pause');
+  if (sb) { sb.textContent = 'DONE'; sb.className = 'wctl-btn wctl-start done'; }
+  if (pb) { pb.textContent = 'PAUSE'; pb.className = 'wctl-btn wctl-pause'; }
+  if (fb) { fb.textContent = 'LOGGED'; fb.className = 'wctl-btn wctl-finish done'; }
+  mcSetState('done', 'WORKOUT LOGGED!');
+}
+
+// Bell sound
 function ringBell() {
   try {
     var ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -1016,7 +1086,6 @@ function ringBell() {
   } catch(e) {}
   flashEl('bflash');
 }
-
 function flashEl(id) {
   var el = document.getElementById(id);
   if (!el) return;
@@ -1030,21 +1099,17 @@ function flashEl(id) {
 
 // Standalone Timer tab
 var tSec = 1200, tTotal = 1200, tRunning = false, tInterval = null, tRounds = 0;
-
+function fmtTime(s) { return pad(Math.floor(s / 60)) + ':' + pad(s % 60); }
 function tSetState(cls, ph) {
-  var c = document.getElementById('t-clock');
-  var p = document.getElementById('t-phase');
+  var c = document.getElementById('t-clock'), p = document.getElementById('t-phase');
   if (c) c.className = 'clock-num ' + cls;
   if (p) p.textContent = ph;
 }
-
 function tUpdateClock() {
-  var c = document.getElementById('t-clock');
-  var b = document.getElementById('t-bar');
+  var c = document.getElementById('t-clock'), b = document.getElementById('t-bar');
   if (c) c.textContent = fmtTime(tSec);
   if (b) b.style.width = (tTotal > 0 ? (tSec / tTotal) * 100 : 100) + '%';
 }
-
 function tPreset(min, btn) {
   if (tRunning) return;
   var btns = document.querySelectorAll('.pbtn');
@@ -1061,7 +1126,6 @@ function tPreset(min, btn) {
     tUpdateClock(); tSetState('idle', 'READY - TAP START');
   }
 }
-
 function tCustom() {
   if (tRunning) return;
   var m = parseInt((document.getElementById('cm') || {}).value) || 0;
@@ -1069,7 +1133,6 @@ function tCustom() {
   tTotal = m * 60 + s; tSec = tTotal;
   tUpdateClock(); tSetState('idle', 'READY - TAP START');
 }
-
 function tAction() {
   if (!tRunning) {
     if (tSec <= 0) tReset();
@@ -1083,9 +1146,7 @@ function tAction() {
       if (tSec === 10) tSetState('running', 'PUSH - FINAL 10');
       if (tSec <= 0) {
         clearInterval(tInterval); tRunning = false;
-        var c = document.getElementById('t-clock');
-        var b = document.getElementById('t-bar');
-        var sb2 = document.getElementById('t-btn');
+        var c = document.getElementById('t-clock'), b = document.getElementById('t-bar'), sb2 = document.getElementById('t-btn');
         if (c) c.textContent = 'DONE';
         if (b) b.style.width = '0%';
         tSetState('done', "TIME'S UP - LOG YOUR ROUNDS");
@@ -1100,7 +1161,6 @@ function tAction() {
     tSetState('paused', 'PAUSED');
   }
 }
-
 function tReset() {
   clearInterval(tInterval); tRunning = false;
   var sel = document.querySelector('.pbtn.sel');
@@ -1110,55 +1170,32 @@ function tReset() {
   var sb = document.getElementById('t-btn');
   if (sb) sb.textContent = 'START';
 }
-
-function tRoundAdd() {
-  var el = document.getElementById('t-rcount');
-  if (el) el.textContent = ++tRounds;
-}
-function tRoundReset() {
-  tRounds = 0;
-  var el = document.getElementById('t-rcount');
-  if (el) el.textContent = 0;
-}
+function tRoundAdd() { var el = document.getElementById('t-rcount'); if (el) el.textContent = ++tRounds; }
+function tRoundReset() { tRounds = 0; var el = document.getElementById('t-rcount'); if (el) el.textContent = 0; }
 
 // Tabata Engine
 var tabState = 'idle', tabSec = 20, tabIntvl = null;
-var tabWork = 20, tabRest = 10, tabTotal = 8;
-var tabRound = 0, tabPhase = 'work';
-
+var tabWork = 20, tabRest = 10, tabTotal = 8, tabRound = 0, tabPhase = 'work';
 function tabGetSettings() {
-  var tw = document.getElementById('tab-work');
-  var tr = document.getElementById('tab-rest');
-  var tn = document.getElementById('tab-rounds');
+  var tw = document.getElementById('tab-work'), tr = document.getElementById('tab-rest'), tn = document.getElementById('tab-rounds');
   tabWork  = Math.max(5, parseInt((tw && tw.value) || '20') || 20);
   tabRest  = Math.max(5, parseInt((tr && tr.value) || '10') || 10);
   tabTotal = Math.max(1, parseInt((tn && tn.value) || '8')  || 8);
 }
-
 function tabPreset(w, r, n) {
-  var tw = document.getElementById('tab-work');
-  var tr = document.getElementById('tab-rest');
-  var tn = document.getElementById('tab-rounds');
-  if (tw) tw.value = w;
-  if (tr) tr.value = r;
-  if (tn) tn.value = n;
+  var tw = document.getElementById('tab-work'), tr = document.getElementById('tab-rest'), tn = document.getElementById('tab-rounds');
+  if (tw) tw.value = w; if (tr) tr.value = r; if (tn) tn.value = n;
   tabWork = w; tabRest = r; tabTotal = n;
   if (tabState === 'idle') tabShowReset();
 }
-
 function tabReset() {
-  tabGetSettings();
-  clearInterval(tabIntvl); tabIntvl = null;
+  tabGetSettings(); clearInterval(tabIntvl); tabIntvl = null;
   tabState = 'idle'; tabPhase = 'work'; tabRound = 0; tabSec = tabWork;
   tabShowReset();
 }
-
 function tabShowReset() {
-  var clk = document.getElementById('tab-clock');
-  var bdg = document.getElementById('tab-badge');
-  var inf = document.getElementById('tab-info');
-  var prg = document.getElementById('tab-prog');
-  var btn = document.getElementById('tab-btn');
+  var clk = document.getElementById('tab-clock'), bdg = document.getElementById('tab-badge');
+  var inf = document.getElementById('tab-info'), prg = document.getElementById('tab-prog'), btn = document.getElementById('tab-btn');
   if (clk) { clk.textContent = tabWork; clk.className = 'tab-clock idle'; }
   if (bdg) { bdg.textContent = 'READY'; bdg.className = 'tab-badge idle'; }
   if (inf) inf.textContent = 'Round - / ' + tabTotal;
@@ -1166,129 +1203,95 @@ function tabShowReset() {
   if (btn) btn.textContent = 'START';
   tabUpdateExercise();
 }
-
 function tabAction() {
   if (tabState === 'done') { tabReset(); return; }
   if (tabState === 'idle') {
-    tabGetSettings();
-    tabRound = 1; tabPhase = 'work'; tabSec = tabWork; tabState = 'work';
+    tabGetSettings(); tabRound = 1; tabPhase = 'work'; tabSec = tabWork; tabState = 'work';
     tabStartPhase();
   } else if (tabIntvl) {
     clearInterval(tabIntvl); tabIntvl = null;
-    var btn = document.getElementById('tab-btn');
-    if (btn) btn.textContent = 'RESUME';
+    var btn = document.getElementById('tab-btn'); if (btn) btn.textContent = 'RESUME';
   } else {
-    tabStartTick();
-    var btn = document.getElementById('tab-btn');
-    if (btn) btn.textContent = 'PAUSE';
+    tabStartTick(); var btn = document.getElementById('tab-btn'); if (btn) btn.textContent = 'PAUSE';
   }
 }
-
 function tabStartPhase() {
   var isWork = tabPhase === 'work';
-  var clk = document.getElementById('tab-clock');
-  var bdg = document.getElementById('tab-badge');
-  var inf = document.getElementById('tab-info');
-  var prg = document.getElementById('tab-prog');
-  var btn = document.getElementById('tab-btn');
+  var clk = document.getElementById('tab-clock'), bdg = document.getElementById('tab-badge');
+  var inf = document.getElementById('tab-info'), prg = document.getElementById('tab-prog'), btn = document.getElementById('tab-btn');
   if (clk) { clk.textContent = tabSec; clk.className = 'tab-clock ' + tabPhase; }
   if (bdg) { bdg.textContent = isWork ? 'WORK' : 'REST'; bdg.className = 'tab-badge ' + tabPhase; }
   if (inf) inf.textContent = 'Round ' + tabRound + ' / ' + tabTotal;
   if (prg) prg.className = 'tab-prog ' + tabPhase;
   if (btn) btn.textContent = 'PAUSE';
-  tabUpdateExercise();
-  tabStartTick();
+  tabUpdateExercise(); tabStartTick();
 }
-
 function tabStartTick() {
   var total = tabPhase === 'work' ? tabWork : tabRest;
   clearInterval(tabIntvl);
   tabIntvl = setInterval(function() {
     tabSec--;
-    var clk = document.getElementById('tab-clock');
+    var clk = document.getElementById('tab-clock'), prg = document.getElementById('tab-prog');
     if (clk) clk.textContent = tabSec;
-    var prg = document.getElementById('tab-prog');
     if (prg) prg.style.width = ((tabSec / total) * 100) + '%';
     if (tabSec <= 0) { clearInterval(tabIntvl); tabIntvl = null; tabNext(); }
   }, 1000);
 }
-
 function tabNext() {
   if (tabPhase === 'work') {
     dingWork();
     if (tabRound >= tabTotal) {
       tabState = 'done';
-      var clk = document.getElementById('tab-clock');
-      var bdg = document.getElementById('tab-badge');
-      var inf = document.getElementById('tab-info');
-      var prg = document.getElementById('tab-prog');
-      var btn = document.getElementById('tab-btn');
+      var clk = document.getElementById('tab-clock'), bdg = document.getElementById('tab-badge');
+      var inf = document.getElementById('tab-info'), prg = document.getElementById('tab-prog'), btn = document.getElementById('tab-btn');
       if (clk) { clk.textContent = 'DONE'; clk.className = 'tab-clock done'; }
       if (bdg) { bdg.textContent = 'COMPLETE!'; bdg.className = 'tab-badge work'; }
       if (inf) inf.textContent = 'All ' + tabTotal + ' rounds done!';
       if (prg) prg.style.width = '100%';
       if (btn) btn.textContent = 'RESET';
-      ringBell();
-      return;
+      ringBell(); return;
     }
-    tabPhase = 'rest'; tabSec = tabRest; tabState = 'rest';
-    tabStartPhase();
+    tabPhase = 'rest'; tabSec = tabRest; tabState = 'rest'; tabStartPhase();
   } else {
-    dingRest();
-    tabRound++; tabPhase = 'work'; tabSec = tabWork; tabState = 'work';
-    tabStartPhase();
+    dingRest(); tabRound++; tabPhase = 'work'; tabSec = tabWork; tabState = 'work'; tabStartPhase();
   }
 }
-
 function tabUpdateExercise() {
   var wrap = document.getElementById('tab-ex-wrap');
   if (!wrap) return;
-  if (!currentWod || !currentWod.exercises || !currentWod.exercises.length) {
-    wrap.style.display = 'none'; return;
-  }
+  if (!currentWod || !currentWod.exercises || !currentWod.exercises.length) { wrap.style.display = 'none'; return; }
   wrap.style.display = 'block';
-  var exs = currentWod.exercises;
-  var idx = Math.max(0, tabRound - 1) % exs.length;
-  var ex = exs[idx];
-  var nxt = exs[(idx + 1) % exs.length];
-  var isRest = tabPhase === 'rest';
-  var card = document.getElementById('tab-ex-card');
-  var nm = document.getElementById('tab-ex-name');
-  var cu = document.getElementById('tab-ex-cue');
-  var nx = document.getElementById('tab-ex-next');
+  var exs = currentWod.exercises, idx = Math.max(0, tabRound - 1) % exs.length;
+  var ex = exs[idx], nxt = exs[(idx + 1) % exs.length], isRest = tabPhase === 'rest';
+  var card = document.getElementById('tab-ex-card'), nm = document.getElementById('tab-ex-name');
+  var cu = document.getElementById('tab-ex-cue'), nx = document.getElementById('tab-ex-next');
   if (card) card.className = 'tab-ex-card' + (isRest ? ' resting' : '');
   if (nm) nm.textContent = isRest ? 'REST' : ex.n;
-  if (cu) cu.textContent = isRest ? 'Breathe. Recover. Next: ' + nxt.n : ex.c;
-  if (nx) nx.textContent = isRest ? '' : 'Next up: ' + nxt.n + ' (' + nxt.r + ' ' + nxt.u + ')';
+  if (cu) cu.textContent = isRest ? 'Breathe. Next: ' + nxt.n : ex.c;
+  if (nx) nx.textContent = isRest ? '' : 'Next: ' + nxt.n + ' (' + nxt.r + ' ' + nxt.u + ')';
 }
-
 function dingWork() {
   try {
     var ctx = new (window.AudioContext || window.webkitAudioContext)();
     var o = ctx.createOscillator(), g = ctx.createGain();
-    o.connect(g); g.connect(ctx.destination);
-    o.type = 'sine';
+    o.connect(g); g.connect(ctx.destination); o.type = 'sine';
     o.frequency.setValueAtTime(1047, ctx.currentTime);
     o.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + .3);
-    g.gain.setValueAtTime(.001, ctx.currentTime);
-    g.gain.exponentialRampToValueAtTime(.8, ctx.currentTime + .01);
+    g.gain.setValueAtTime(.001, ctx.currentTime); g.gain.exponentialRampToValueAtTime(.8, ctx.currentTime + .01);
     g.gain.exponentialRampToValueAtTime(.001, ctx.currentTime + .5);
     o.start(ctx.currentTime); o.stop(ctx.currentTime + .55);
   } catch(e) {}
   flashEl('tf-work');
 }
-
 function dingRest() {
   try {
     var ctx = new (window.AudioContext || window.webkitAudioContext)();
     [0, .25].forEach(function(off) {
       var o = ctx.createOscillator(), g = ctx.createGain();
-      o.connect(g); g.connect(ctx.destination);
-      o.type = 'sine';
+      o.connect(g); g.connect(ctx.destination); o.type = 'sine';
       o.frequency.setValueAtTime(660, ctx.currentTime + off);
       o.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + off + .2);
-      g.gain.setValueAtTime(.001, ctx.currentTime + off);
-      g.gain.exponentialRampToValueAtTime(.6, ctx.currentTime + off + .01);
+      g.gain.setValueAtTime(.001, ctx.currentTime + off); g.gain.exponentialRampToValueAtTime(.6, ctx.currentTime + off + .01);
       g.gain.exponentialRampToValueAtTime(.001, ctx.currentTime + off + .35);
       o.start(ctx.currentTime + off); o.stop(ctx.currentTime + off + .4);
     });
@@ -1296,104 +1299,140 @@ function dingRest() {
   flashEl('tf-rest');
 }
 
-// History tab
-function renderHistory() {
-  var el = document.getElementById('hist-list');
-  if (!el) return;
-  var withWod = sessions.filter(function(s) { return s.wod; });
-  if (!withWod.length) { el.innerHTML = '<div class="empty">No workouts logged yet</div>'; return; }
-  el.innerHTML = withWod.slice().reverse().map(function(s) {
-    var exRows = s.wod.exercises.map(function(ex) {
-      return '<div class="hist-ex"><span>' + ex.n + '</span><span class="hist-reps">' + ex.r + ' ' + ex.u + '</span></div>';
-    }).join('');
-    var notePrev = s.notes ? (' - ' + s.notes.slice(0, 50) + (s.notes.length > 50 ? '...' : '')) : '';
-    return '<div class="hist-card"><div class="hist-date">' + s.date + '</div><div class="hist-focus">' + s.wod.focus.name + ' - ' + s.rounds + ' rounds' + notePrev + '</div>' + exRows + '</div>';
-  }).join('');
-}
-
-// Tracker
+// TRACKER / CALENDAR
 var sessions = [];
-function loadSessions() {
-  try { sessions = JSON.parse(lsGet('hr-v2') || '[]'); } catch(e) { sessions = []; }
-}
-function saveSessions() { lsSet('hr-v2', JSON.stringify(sessions)); }
+function loadSessions() { try { sessions = JSON.parse(lsGet('hr-v3') || '[]'); } catch(e) { sessions = []; } }
+function saveSessions() { lsSet('hr-v3', JSON.stringify(sessions)); }
 
-function renderTracker() {
+function renderTrackerStats() {
   var tot = sessions.reduce(function(a, s) { return a + (s.rounds || 0); }, 0);
   var pr = sessions.length ? Math.max.apply(null, sessions.map(function(s) { return s.rounds || 0; })) : null;
-  var eSess = document.getElementById('s-sess');
-  var eTotal = document.getElementById('s-total');
-  var ePr = document.getElementById('s-pr');
-  if (eSess) eSess.textContent = sessions.length;
-  if (eTotal) eTotal.textContent = tot;
-  if (ePr) ePr.textContent = pr !== null ? pr : '-';
-  var el = document.getElementById('log-list');
-  if (!el) return;
-  if (!sessions.length) {
-    el.innerHTML = '<div class="empty" id="log-empty">No sessions yet</div>';
-    return;
-  }
-  el.innerHTML = sessions.slice().reverse().map(function(s) {
-    return '<div class="entry">' +
-      '<div class="entry-top">' +
-        '<div><div class="entry-day">' + s.day + '</div>' +
-        '<div class="entry-meta">' + [s.wt, s.feel, s.date].filter(Boolean).join(' - ') + '</div></div>' +
-        '<div class="entry-rounds">' + s.rounds + '<span>rounds</span></div>' +
-      '</div>' +
-      (s.notes ? '<div class="entry-notes">' + s.notes + '</div>' : '') +
-    '</div>';
-  }).join('');
+  var eS = document.getElementById('s-sess'), eT = document.getElementById('s-total'), eP = document.getElementById('s-pr');
+  if (eS) eS.textContent = sessions.length;
+  if (eT) eT.textContent = tot;
+  if (eP) eP.textContent = pr !== null ? pr : '-';
 }
 
-function logSession() {
-  var fEl = document.getElementById('l-focus');
-  var rEl = document.getElementById('l-rounds');
-  var wEl = document.getElementById('l-wt');
-  var feEl = document.getElementById('l-feel');
-  var nEl = document.getElementById('l-notes');
-  if (!fEl || !rEl) return;
-  var focus = fEl.value;
-  var rounds = parseInt(rEl.value);
-  if (!focus || !rounds) {
-    if (!focus) fEl.style.borderColor = 'var(--red)';
-    if (!rounds) rEl.style.borderColor = 'var(--red)';
-    return;
-  }
-  sessions.push({
-    day: focus, rounds: rounds,
-    wt: wEl ? wEl.value : '',
-    feel: feEl ? feEl.value : '',
-    notes: nEl ? nEl.value.trim() : '',
-    date: new Date().toLocaleDateString()
+var calYear, calMonth;
+
+function renderCal() {
+  var now = new Date();
+  if (calYear === undefined) { calYear = now.getFullYear(); calMonth = now.getMonth(); }
+  var monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var el = document.getElementById('cal-month');
+  if (el) el.textContent = monthNames[calMonth] + ' ' + calYear;
+  var grid = document.getElementById('cal-grid');
+  if (!grid) return;
+  var todStr = todayKey();
+  var first = new Date(calYear, calMonth, 1).getDay();
+  var daysInM = new Date(calYear, calMonth + 1, 0).getDate();
+  // Build lookup of worked days this month
+  var worked = {};
+  sessions.forEach(function(s) {
+    if (s.key) worked[s.key] = s;
   });
+  var dows = ['S','M','T','W','T','F','S'];
+  var html = dows.map(function(d) { return '<div class="cal-dow">' + d + '</div>'; }).join('');
+  for (var i = 0; i < first; i++) html += '<div class="cal-day empty"></div>';
+  for (var d = 1; d <= daysInM; d++) {
+    var ds = calYear + '-' + pad(calMonth + 1) + '-' + pad(d);
+    var cls = 'cal-day';
+    if (ds === todStr) cls += ' today';
+    var entry = worked[ds];
+    if (entry) cls += ' worked';
+    var focusLabel = entry ? entry.focus.slice(0,4).toUpperCase() : '';
+    html += '<div class="' + cls + '" onclick="openWodDetail(\'' + ds + '\')">' +
+      d +
+      (focusLabel ? '<div style="font-size:6px;letter-spacing:0;margin-top:1px;opacity:.8">' + focusLabel + '</div>' : '') +
+    '</div>';
+  }
+  grid.innerHTML = html;
+}
+
+function calPrev() { calMonth--; if (calMonth < 0) { calMonth = 11; calYear--; } renderCal(); }
+function calNext() { calMonth++; if (calMonth > 11) { calMonth = 0; calYear++; } renderCal(); }
+
+// WOD DETAIL POPUP
+var detailKey = null;
+
+function openWodDetail(ds) {
+  detailKey = ds;
+  var entry = null;
+  for (var i = 0; i < sessions.length; i++) {
+    if (sessions[i].key === ds) { entry = sessions[i]; break; }
+  }
+  var overlay = document.getElementById('wod-detail-overlay');
+  if (!overlay) return;
+  var dateEl = document.getElementById('wd-date');
+  var focusEl = document.getElementById('wd-focus');
+  var roundsEl = document.getElementById('wd-rounds');
+  var exEl = document.getElementById('wd-exercises');
+  var notesEl = document.getElementById('wd-notes');
+  if (dateEl) dateEl.textContent = ds;
+  if (!entry) {
+    if (focusEl) focusEl.textContent = 'No workout logged';
+    if (roundsEl) roundsEl.textContent = '';
+    if (exEl) exEl.innerHTML = '<div style="color:var(--muted);font-size:12px;padding:8px 0">No workout recorded for this day.</div>';
+    if (notesEl) notesEl.value = '';
+  } else {
+    if (focusEl) focusEl.textContent = entry.focus;
+    if (roundsEl) roundsEl.textContent = entry.rounds + ' rounds completed';
+    var exHtml = '';
+    if (entry.wod && entry.wod.exercises) {
+      entry.wod.exercises.forEach(function(ex) {
+        exHtml += '<div class="wod-detail-ex">' +
+          '<span class="wod-detail-ex-name">' + ex.n + '</span>' +
+          '<span class="wod-detail-ex-reps">' + ex.r + ' ' + ex.u + '</span>' +
+        '</div>';
+      });
+    }
+    if (exEl) exEl.innerHTML = exHtml;
+    if (notesEl) notesEl.value = entry.notes || '';
+  }
+  overlay.classList.add('open');
+}
+
+function closeWodDetail() {
+  var overlay = document.getElementById('wod-detail-overlay');
+  if (overlay) overlay.classList.remove('open');
+  detailKey = null;
+}
+
+function saveWodDetailNotes() {
+  if (!detailKey) return;
+  var notesEl = document.getElementById('wd-notes');
+  var notes = notesEl ? notesEl.value : '';
+  var found = false;
+  for (var i = 0; i < sessions.length; i++) {
+    if (sessions[i].key === detailKey) {
+      sessions[i].notes = notes;
+      found = true; break;
+    }
+  }
+  // If no entry yet (day with no workout), create a note-only entry
+  if (!found) {
+    sessions.push({ key: detailKey, date: detailKey, focus: 'Note', rounds: 0, notes: notes, wod: null });
+  }
   saveSessions();
-  renderTracker();
-  fEl.value = ''; fEl.style.borderColor = '';
-  rEl.value = ''; rEl.style.borderColor = '';
-  if (wEl) wEl.value = '';
-  if (feEl) feEl.value = '';
-  if (nEl) nEl.value = '';
+  renderCal();
+  // Flash the save button
+  var btn = document.querySelector('.wod-detail-save-btn');
+  if (btn) {
+    var orig = btn.textContent;
+    btn.textContent = 'Saved!';
+    setTimeout(function() { btn.textContent = orig; }, 1200);
+  }
 }
 
-function clearLog() {
-  if (!confirm('Clear all session history?')) return;
-  sessions = []; saveSessions(); renderTracker();
-}
-
-// Init - runs after DOM is ready
-(function init() {
+// INIT
+(function() {
   var d = new Date();
   var dateEl = document.getElementById('hero-date');
   if (dateEl) dateEl.textContent = DAYS[d.getDay()] + ' ' + MONTHS[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
-  var off = rerollOffset();
-  if (off > 0) {
-    var rn = document.getElementById('reroll-note');
-    if (rn) rn.textContent = 'Variation #' + (off + 1);
-  }
-  itoUpdateClock();
   tUpdateClock();
+  mcUpdateClock();
   loadSessions();
-  renderTracker();
+  renderTrackerStats();
   initWod();
 })();
 </script>
