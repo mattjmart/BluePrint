@@ -332,7 +332,36 @@ button { touch-action:manipulation; }
 .focus-btn:active { opacity:.8; }
 .focus-btn.sel { background:var(--orange); color:var(--bg); border-color:var(--orange); }
 
-/* WORKOUT CONTROLS */
+/* QUOTE BLOCK */
+.quote-block { margin-bottom:12px; padding:14px 16px; background:var(--surface); border-left:3px solid var(--orange); border:1px solid var(--border); border-left-width:3px; position:relative; }
+.quote-text { font-family:'Syne',sans-serif; font-size:14px; font-weight:700; color:var(--white); line-height:1.4; margin-bottom:6px; font-style:italic; }
+.quote-text::before { content:'\201C'; color:var(--orange); font-size:20px; line-height:0; vertical-align:-6px; margin-right:2px; }
+.quote-text::after { content:'\201D'; color:var(--orange); font-size:20px; line-height:0; vertical-align:-6px; margin-left:2px; }
+.quote-attr { font-family:'Space Mono',monospace; font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--orange); }
+
+/* REST DAY BUTTON */
+.rest-btn { flex:1; padding:18px 10px; background:var(--card); color:var(--cyan); border:2px solid var(--cyan-dim); font-family:'Syne',sans-serif; font-size:16px; font-weight:800; letter-spacing:1px; cursor:pointer; border-radius:3px; transition:.15s; white-space:nowrap; }
+.rest-btn:active { background:rgba(42,184,200,.12); transform:scale(.98); }
+
+/* TIME PICKER MODAL */
+.time-picker-overlay { position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,.82); z-index:850; display:none; align-items:center; justify-content:center; padding:20px; }
+.time-picker-overlay.open { display:flex; }
+.time-picker-card { background:var(--surface); border:1px solid var(--border); border-top:3px solid var(--orange); padding:24px 20px 20px; width:100%; max-width:360px; border-radius:4px; }
+.time-picker-title { font-family:'Syne',sans-serif; font-size:20px; font-weight:800; color:var(--white); margin-bottom:18px; text-align:center; letter-spacing:-0.5px; }
+.time-picker-grid { display:flex; flex-direction:column; gap:8px; margin-bottom:18px; }
+.time-opt { padding:16px; background:var(--card); border:2px solid var(--border); color:var(--white); font-family:'Syne',sans-serif; font-size:18px; font-weight:700; cursor:pointer; border-radius:3px; transition:.15s; text-align:center; }
+.time-opt:active { opacity:.8; }
+.time-opt.sel { background:var(--oglow); color:var(--orange); border-color:var(--orange); box-shadow:0 0 0 1px var(--orange); }
+.time-start-btn { width:100%; padding:16px; background:var(--orange); color:var(--bg); border:none; font-family:'Syne',sans-serif; font-size:20px; font-weight:800; letter-spacing:1px; cursor:pointer; border-radius:3px; box-shadow:0 4px 18px rgba(232,98,42,.4); margin-bottom:10px; }
+.time-start-btn:active { background:#d05520; transform:scale(.98); }
+.time-cancel-btn { width:100%; padding:10px; background:none; color:var(--muted); border:1px solid var(--border); font-family:'Space Mono',monospace; font-size:10px; letter-spacing:2px; text-transform:uppercase; cursor:pointer; border-radius:3px; }
+.time-cancel-btn:active { color:var(--white); }
+
+/* BIG GENERATE BUTTON */
+.gen-btn { width:100%; padding:18px; background:var(--orange); color:var(--bg); border:none; font-family:'Syne',sans-serif; font-size:20px; font-weight:800; letter-spacing:1px; cursor:pointer; border-radius:3px; box-shadow:0 4px 18px rgba(232,98,42,.4); transition:.15s; }
+.gen-btn:active { background:#d05520; transform:scale(.98); }
+
+
 .wod-controls { display:flex; gap:8px; margin-bottom:10px; }
 .wctl-btn { flex:1; padding:16px 6px; border:none; cursor:pointer; font-family:'Syne',sans-serif; font-size:16px; font-weight:800; letter-spacing:1px; transition:.15s; border-radius:3px; }
 .wctl-start { background:var(--orange); color:var(--bg); box-shadow:0 3px 12px rgba(232,98,42,.35); }
@@ -449,27 +478,37 @@ button { touch-action:manipulation; }
 <!-- TODAY'S WOD -->
 <div id="today" class="section active">
 
-  <!-- FOCUS SELECTOR -->
-  <div class="focus-selector">
-    <div class="focus-sel-lbl">Choose Focus</div>
-    <div class="focus-btns">
-      <button class="focus-btn sel" onclick="setFocus('random',this)">Random</button>
-      <button class="focus-btn" onclick="setFocus('Push Focus',this)">Push</button>
-      <button class="focus-btn" onclick="setFocus('Pull Focus',this)">Pull</button>
-      <button class="focus-btn" onclick="setFocus('Legs Focus',this)">Legs</button>
-      <button class="focus-btn" onclick="setFocus('Full Body',this)">Full Body</button>
-      <button class="focus-btn" onclick="setFocus('Core Focus',this)">Core</button>
-    </div>
+  <!-- MOTIVATIONAL QUOTE -->
+  <div class="quote-block" id="quote-block">
+    <div class="quote-text" id="quote-text"></div>
+    <div class="quote-attr" id="quote-attr"></div>
   </div>
 
-  <!-- GENERATE -->
-  <div class="reroll-row">
-    <button class="reroll-btn" onclick="reroll()">&#x27F3; Generate Workout</button>
+  <!-- GENERATE + REST DAY -->
+  <div class="reroll-row" style="display:flex;gap:8px;">
+    <button class="gen-btn" onclick="reroll()" style="flex:2">&#x27F3; Generate Workout</button>
+    <button class="rest-btn" onclick="logRestDay()">Rest Day</button>
+  </div>
+
+  <!-- TIME PICKER MODAL (shown when START tapped) -->
+  <div class="time-picker-overlay" id="time-picker-overlay">
+    <div class="time-picker-card">
+      <div class="time-picker-title">Select Workout Duration</div>
+      <div class="time-picker-grid">
+        <button class="time-opt" onclick="selectTime(5,this)">5 min</button>
+        <button class="time-opt" onclick="selectTime(10,this)">10 min</button>
+        <button class="time-opt sel" onclick="selectTime(15,this)">15 min</button>
+        <button class="time-opt" onclick="selectTime(20,this)">20 min</button>
+        <button class="time-opt" onclick="selectTime(25,this)">25 min</button>
+      </div>
+      <button class="time-start-btn" id="time-start-btn" onclick="confirmStart()">START WORKOUT</button>
+      <button class="time-cancel-btn" onclick="cancelTimePicker()">Cancel</button>
+    </div>
   </div>
 
   <!-- WORKOUT CONTROLS: Start / Pause / Finish -->
   <div class="wod-controls">
-    <button class="wctl-btn wctl-start" id="wctl-start" onclick="wStart()">START</button>
+    <button class="wctl-btn wctl-start" id="wctl-start" onclick="openTimePicker()">START</button>
     <button class="wctl-btn wctl-pause" id="wctl-pause" onclick="wPause()">PAUSE</button>
     <button class="wctl-btn wctl-finish" id="wctl-finish" onclick="wFinish()">FINISH</button>
   </div>
@@ -478,14 +517,9 @@ button { touch-action:manipulation; }
   <div class="main-clock-wrap" id="main-clock-wrap">
     <div class="main-clock-top">
       <div class="main-clock-lbl">AMRAP Timer</div>
-      <div class="main-clock-presets">
-        <button class="mcp" onclick="mcpPreset(15,this)">15</button>
-        <button class="mcp" onclick="mcpPreset(18,this)">18</button>
-        <button class="mcp sel" onclick="mcpPreset(20,this)">20</button>
-      </div>
+      <div class="main-clock-phase" id="mc-phase">IN PROGRESS</div>
     </div>
     <div class="main-clock-num idle" id="mc-num">20:00</div>
-    <div class="main-clock-phase" id="mc-phase">READY</div>
     <div class="main-clock-prog"><div class="main-clock-prog-fill" id="mc-bar" style="width:100%"></div></div>
     <div class="main-riw">
       <span class="main-riw-lbl">Rounds</span>
@@ -496,7 +530,7 @@ button { touch-action:manipulation; }
   </div>
 
   <!-- WOD CARD -->
-  <div class="wod-card" id="wod-card"><div style="padding:20px;text-align:center;color:var(--muted);font-family:'Space Mono',monospace;font-size:10px">Select a focus then tap Generate Workout</div></div>
+  <div class="wod-card" id="wod-card"><div style="padding:20px;text-align:center;color:var(--muted);font-family:'Space Mono',monospace;font-size:10px">Tap Generate Workout to get started</div></div>
 </div>
 
 <!-- TIMER -->
@@ -622,7 +656,7 @@ button { touch-action:manipulation; }
   <div style="margin-top:12px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--muted)">Tap a day to see workout details and edit notes.</div>
 </div>
 
-<div class="footer">Hybrid Recomp - Daily Generator - NML x BOXROX x Cavemantraining</div>
+<div class="footer">Hybrid Recomp - KB, Landmine, TRX, Cable, Med Ball, DB, Bodyweight</div>
 
 <script>
 // Polyfills
@@ -637,100 +671,172 @@ if (!Math.imul) {
 // Safe localStorage
 function lsGet(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
 function lsSet(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
-function lsDel(k){ try{ localStorage.removeItem(k); }catch(e){} }
 
+// =====================================================
 // EXERCISE POOL
-var POOL = {
-  hinge:[
-    {n:'KB Swing',t:'kb',r:15,u:'reps',c:'Explosive hip drive - power from hips, not arms. Bell to shoulder height.',m:'No KB -> DB Romanian Deadlift x12',s:'Cavemantraining'},
-    {n:'KB Single-Arm Swing',t:'kb',r:10,u:'each',c:'5 each side. More core demand than two-hand swing. Switch hands at top.',m:'No KB -> Single-leg RDL x8 each',s:'Cavemantraining'},
-    {n:'KB Dead Clean',t:'kb',r:6,u:'each',c:'Dead stop on floor each rep. Full hip extension at top. Clean to rack.',m:'No KB -> DB Hang Clean x8',s:'Cavemantraining'},
-    {n:'KB High Pull',t:'kb',r:10,u:'each',c:'Swing arc then elbow drives high and wide. 5 each side.',m:'No KB -> DB Upright Row x10',s:'BOXROX'},
-    {n:'DB Romanian Deadlift',t:'db',r:12,u:'reps',c:'Hip hinge, flat back, hamstring stretch at bottom. Full hip extension at top.',m:'Can use KB in suitcase hold',s:'Nourish Move Love'},
-    {n:'KB Sumo Deadlift',t:'kb',r:12,u:'reps',c:'Wide stance, toes out, bell between legs. Drive hips through at top.',m:'No KB -> DB wide-stance deadlift',s:'Nourish Move Love'},
-    {n:'KB Dead Snatch',t:'kb',r:5,u:'each',c:'Dead stop to snatch overhead in one explosive move. Lock out elbow.',m:'Beginner -> KB dead clean instead',s:'Cavemantraining'}
-  ],
-  squat:[
-    {n:'KB Goblet Squat',t:'kb',r:10,u:'reps',c:'Bell at chest, sit deep, drive knees out. Full extension at top.',m:'No KB -> bodyweight deep squat x15',s:'Nourish Move Love'},
-    {n:'KB Goblet Squat + Press',t:'kb',r:8,u:'reps',c:'Squat deep, stand, press bell overhead in one fluid combo.',m:'No KB -> DB thruster',s:'Nourish Move Love'},
-    {n:'DB Thruster',t:'db',r:8,u:'reps',c:'Front squat + overhead press in one movement. Most metabolically expensive per rep.',m:'No DB -> KB goblet + press',s:'BOXROX'},
-    {n:'Jump Squats',t:'bw',r:12,u:'reps',c:'Explosive up, land softly through full foot.',m:'Scale: bodyweight squat if knees hurt',s:'BOXROX'},
-    {n:'KB Reverse Lunge',t:'kb',r:6,u:'each',c:'Bell in rack or suitcase. Step back, back knee close to floor.',m:'No KB -> BW reverse lunge x8 each',s:'Cavemantraining'},
-    {n:'DB Reverse Lunge',t:'db',r:8,u:'each',c:'DBs at sides. Control descent. Drive through front heel to stand.',m:'Add a curl at top for extra bicep work',s:'Nourish Move Love'},
-    {n:'DB Split Squat',t:'db',r:8,u:'each',c:'Rear foot elevated on chair. Deep stretch at bottom. Knees track over toes.',m:'No DB -> bodyweight split squat x10',s:'Nourish Move Love'},
-    {n:'Pistol Squat',t:'bw',r:5,u:'each',c:'Assisted: hold a door frame for balance. Box pistol: lower onto chair, press back up.',m:'Beginner -> regular squat x15',s:'Calisthenics'}
-  ],
-  push:[
-    {n:'Push-Ups',t:'bw',r:12,u:'reps',c:'Chest to floor, full lock-out. Wide = chest, diamond = triceps.',m:'Easier -> incline push-ups on chair',s:'BOXROX'},
-    {n:'Pike Push-Ups',t:'bw',r:8,u:'reps',c:'Hips high, head toward floor. Triangle at bottom. Targets shoulders.',m:'Too hard -> negative pike only',s:'Calisthenics'},
-    {n:'KB Push Press',t:'kb',r:8,u:'each',c:'Slight knee dip, drive bell overhead. 4 each side or both.',m:'No KB -> DB shoulder press x8',s:'BOXROX'},
-    {n:'DB Overhead Press',t:'db',r:10,u:'reps',c:'Core tight, press straight up. Do not arch lower back. Full lockout at top.',m:'Can substitute KB press',s:'Nourish Move Love'},
-    {n:'Dips',t:'bw',r:10,u:'reps',c:'Two chairs. Elbows to 90 degrees, press to lockout. Slow descent.',m:'Scale -> bench dips, feet flat',s:'Calisthenics'},
-    {n:'KB Floor Press',t:'kb',r:8,u:'each',c:'Lie on floor, KB in one hand. Stabilizes shoulder. 4 each side.',m:'No KB -> DB floor press x8 each',s:'Cavemantraining'},
-    {n:'KB Clean and Press',t:'kb',r:5,u:'each',c:'Dead clean to rack, pause, then strict overhead press.',m:'No KB -> DB hang clean + press',s:'Cavemantraining'},
-    {n:'Decline Push-Ups',t:'bw',r:10,u:'reps',c:'Feet on chair, hands on floor. Upper chest and shoulder emphasis.',m:'Easier -> standard push-ups',s:'BOXROX'}
-  ],
-  pull:[
-    {n:'Pull-Ups',t:'bw',r:5,u:'reps',c:'Dead hang to chin over bar. Lock scapula first. Slow 3-sec descent.',m:'No bar -> Australian pull-ups under a table',s:'BOXROX'},
-    {n:'Chin-Ups',t:'bw',r:5,u:'reps',c:'Underhand grip. Bicep squeeze at top. Fully control the descent.',m:'Too hard -> jump to top, lower slowly',s:'Calisthenics'},
-    {n:'DB Bent-Over Row',t:'db',r:10,u:'each',c:'Hip hinge, flat back. Row to hip. Full scapular retraction at top.',m:'No DB -> KB bent-over row',s:'Nourish Move Love'},
-    {n:'KB Bent-Over Row',t:'kb',r:8,u:'each',c:'Dead row each side. Bell from floor, full scapular retraction.',m:'No KB -> DB row or inverted row',s:'Cavemantraining'},
-    {n:'DB Renegade Row',t:'db',r:4,u:'each',c:'Plank on DBs, row one side at a time. Hips stay square - 4 each side.',m:'Scale -> plank hold + separate rows',s:'Nourish Move Love'},
-    {n:'Inverted Rows',t:'bw',r:10,u:'reps',c:'Under a table or low bar. Body rigid, pull chest to bar.',m:'Easier -> raise the bar height',s:'Calisthenics'},
-    {n:'Hanging Knee Raises',t:'bw',r:10,u:'reps',c:'From dead hang. Pull knees to chest using core. No swinging.',m:'No bar -> lying leg raises, back flat',s:'BOXROX'},
-    {n:'DB High Pull',t:'db',r:10,u:'reps',c:'Hip hinge, explosive pull with elbows high and wide.',m:'No DB -> KB high pull',s:'Nourish Move Love'}
-  ],
-  core:[
-    {n:'Plank Hold',t:'bw',r:30,u:'sec',c:'Elbows under shoulders. Squeeze glutes and abs. No raised hips.',m:'Easier -> knee plank',s:'BOXROX'},
-    {n:'Mountain Climbers',t:'bw',r:20,u:'total',c:'Fast and controlled - 10 each leg. Spikes heart rate between loaded movements.',m:'Slower -> 10 each leg, controlled',s:'BOXROX'},
-    {n:'Hollow Body Hold',t:'bw',r:25,u:'sec',c:'Lower back flat to floor, arms and legs extended. Full tension throughout.',m:'Easier -> half hollow, knees bent',s:'Calisthenics'},
-    {n:'V-Ups',t:'bw',r:10,u:'reps',c:'Legs and torso rise together to form V shape. Control both halves.',m:'Easier -> alternating single-leg V-up',s:'BOXROX'},
-    {n:'Lying Leg Raises',t:'bw',r:12,u:'reps',c:'Legs together, raise to 45 degrees. Lower back flat the whole time.',m:'Easier -> bent-knee raises',s:'Calisthenics'},
-    {n:'KB Turkish Get-Up',t:'kb',r:2,u:'each',c:'1 rep each side. Slow and deliberate. The most complete exercise that exists.',m:'Beginner -> shoe on fist, no weight',s:'Cavemantraining'},
-    {n:'DB Woodchop',t:'db',r:10,u:'each',c:'Diagonal chop from hip to opposite shoulder. Rotational power, core braced.',m:'No DB -> bodyweight rotational twist',s:'Nourish Move Love'},
-    {n:'Burpees',t:'bw',r:6,u:'reps',c:'Chest to floor, full extension at top. The most efficient fat-burning movement.',m:'Scale -> step-back burpee, no jump',s:'BOXROX'},
-    {n:'High-to-Low Plank',t:'bw',r:8,u:'reps',c:'Push-up then lower elbow by elbow then press back up. Core anti-rotation.',m:'Slow down each transition',s:'Calisthenics'},
-    {n:'KB Suitcase Carry',t:'kb',r:20,u:'meters',c:'One KB at side, resist leaning sideways. Core anti-lateral flexion.',m:'No space -> stationary hold 20 sec each',s:'Cavemantraining'}
-  ],
-  carry:[
-    {n:'KB Farmer Carry',t:'kb',r:20,u:'meters',c:'Two KBs, walk tall. Grip, traps, and core under load.',m:'No space -> march in place 20 steps',s:'BOXROX'},
-    {n:'DB Waiter Walk',t:'db',r:20,u:'meters',c:'One DB overhead, arm locked. Walk slow. Shoulder stability and core.',m:'No space -> overhead hold 20 sec',s:'Nourish Move Love'},
-    {n:'KB Rack Carry',t:'kb',r:20,u:'meters',c:'KB in front rack, elbow down, core braced. Both sides.',m:'No space -> rack hold and march 20 steps',s:'Cavemantraining'}
-  ]
+// Each exercise: { n: name, eq: equipment, body: body-part,
+//   r: reps, u: unit, c: cue, m: modification }
+// Equipment codes: kb, lm (landmine), trx, bw, mb (med ball), cab (cable), db
+// Body part codes: legs, chest, back, shoulders, biceps, triceps, core
+// =====================================================
+var EX = [
+  // KETTLEBELL
+  {n:'KB Swing', eq:'kb', body:'legs', r:15, u:'reps', c:'Hip hinge - explosive drive. Power from hips not arms. Bell to shoulder height.', m:'Lighter KB or DB Romanian Deadlift x12'},
+  {n:'KB Goblet Squat', eq:'kb', body:'legs', r:10, u:'reps', c:'Bell at chest, sit deep, drive knees out. Full extension at top.', m:'Bodyweight squat x15'},
+  {n:'KB Sumo Deadlift', eq:'kb', body:'legs', r:12, u:'reps', c:'Wide stance, toes out, bell between legs. Drive hips through at top.', m:'DB wide-stance deadlift'},
+  {n:'KB Reverse Lunge', eq:'kb', body:'legs', r:8, u:'each', c:'Bell in rack or suitcase hold. Step back, back knee close to floor.', m:'Bodyweight reverse lunge x10 each'},
+  {n:'KB Single-Leg RDL', eq:'kb', body:'legs', r:8, u:'each', c:'Single leg hinge - reach KB toward floor, back flat. Control the descent.', m:'Hold wall for balance'},
+  {n:'KB Jump Squat', eq:'kb', body:'legs', r:10, u:'reps', c:'Goblet hold, squat then explode up. Land soft through full foot.', m:'Bodyweight jump squats'},
+  {n:'KB Floor Press', eq:'kb', body:'chest', r:8, u:'each', c:'Lie on floor, KB in one hand. Press up to lockout, slow descent. 4 each side.', m:'Both hands, lighter weight'},
+  {n:'KB Push Press', eq:'kb', body:'shoulders', r:8, u:'each', c:'Slight knee dip, drive bell overhead explosively. 4 each side.', m:'DB shoulder press x8'},
+  {n:'KB Bent-Over Row', eq:'kb', body:'back', r:8, u:'each', c:'Hip hinge, flat back. Row to hip - full scapular retraction at top.', m:'DB row or inverted row'},
+  {n:'KB Dead Clean', eq:'kb', body:'back', r:6, u:'each', c:'Dead stop on floor each rep. Full hip extension at top, clean to rack.', m:'DB hang clean x8'},
+  {n:'KB High Pull', eq:'kb', body:'back', r:10, u:'each', c:'Swing arc then elbow drives high and wide to shoulder. 5 each side.', m:'DB upright row x10'},
+  {n:'KB Curl', eq:'kb', body:'biceps', r:10, u:'reps', c:'Stand, KB by handle. Curl to shoulder squeezing bicep at top. Keep elbows fixed.', m:'DB curl x12'},
+  {n:'KB Halo', eq:'kb', body:'shoulders', r:8, u:'each', c:'Circle bell slowly around head each direction. Control throughout.', m:'Lighter weight'},
+  {n:'KB Suitcase Carry', eq:'kb', body:'core', r:20, u:'meters', c:'One KB at side - resist leaning. Walk tall. Core anti-lateral flexion.', m:'Stationary hold 20 sec each side'},
+  {n:'KB Turkish Get-Up', eq:'kb', body:'core', r:2, u:'each', c:'Slow and deliberate - 1 rep each side. The most complete exercise that exists.', m:'Shoe on fist to learn the pattern'},
+  {n:'KB Tricep Overhead Ext', eq:'kb', body:'triceps', r:10, u:'reps', c:'Both hands on bell overhead. Bend elbows behind head, extend fully. Elbows stay still.', m:'DB overhead extension'},
+
+  // LANDMINE BARBELL
+  {n:'Landmine Squat to Press', eq:'lm', body:'legs', r:8, u:'reps', c:'Hold bar at chest, squat deep, drive up, press overhead as you stand. Full body.', m:'Squat only - skip press'},
+  {n:'Landmine Single-Leg RDL', eq:'lm', body:'legs', r:8, u:'each', c:'Hold bar, single leg hinge. Reduces stability demand vs free weight. Hamstring focus.', m:'Both feet, standard RDL'},
+  {n:'Landmine Reverse Lunge', eq:'lm', body:'legs', r:8, u:'each', c:'Hold bar at shoulder. Step back into lunge. Drive through front heel to return.', m:'BW reverse lunge'},
+  {n:'Landmine Front Squat', eq:'lm', body:'legs', r:10, u:'reps', c:'Hold bar at chest level, elbows high. Squat deep, chest tall throughout.', m:'Goblet squat with KB'},
+  {n:'Landmine Shoulder Press', eq:'lm', body:'shoulders', r:8, u:'each', c:'Stand or half-kneel. Press bar along its natural arc overhead. 4 each side.', m:'DB shoulder press x8'},
+  {n:'Landmine Half-Kneel Press', eq:'lm', body:'shoulders', r:8, u:'each', c:'Kneel on one knee. Press bar up from shoulder. Glute of down knee engaged.', m:'Standing landmine press'},
+  {n:'Landmine Shoulder-to-Shoulder', eq:'lm', body:'shoulders', r:6, u:'each', c:'Both hands, press bar from right shoulder across to left. Anti-rotation core.', m:'Single arm version'},
+  {n:'Landmine Row', eq:'lm', body:'back', r:8, u:'each', c:'Hinge, grab end of bar. Row toward lower ribs. Keep torso angle consistent.', m:'DB row'},
+  {n:'Landmine T-Bar Row', eq:'lm', body:'back', r:10, u:'reps', c:'Stand over bar facing anchor, straddle, narrow grip. Row to chest, squeeze lats.', m:'Seated cable row'},
+  {n:'Landmine Meadows Row', eq:'lm', body:'back', r:8, u:'each', c:'Stand sideways to bar, side lunge, row with outside arm. Hits lats and rear delt.', m:'Standard landmine row'},
+  {n:'Landmine Chest Press', eq:'lm', body:'chest', r:8, u:'each', c:'Hold bar at chest, one arm press forward along arc. Chest, triceps, shoulders.', m:'Push-up x10'},
+  {n:'Landmine Fly', eq:'lm', body:'chest', r:8, u:'each', c:'Lie on floor, bar to side. Fly motion - bring bar over center of chest. Pec focus.', m:'DB fly or push-up'},
+  {n:'Landmine Curl', eq:'lm', body:'biceps', r:10, u:'reps', c:'Stand, curl bar from hip height to shoulder. Elbows fixed at sides.', m:'DB curl x12'},
+  {n:'Landmine Tricep Ext', eq:'lm', body:'triceps', r:10, u:'reps', c:'Face anchor, hold bar overhead, bend elbows behind head, extend. Elbows stay still.', m:'DB overhead tricep ext'},
+  {n:'Landmine Anti-Rotation Press', eq:'lm', body:'core', r:8, u:'each', c:'Hold bar at chest, press forward resisting body rotation. Obliques fire hard.', m:'Pallof press with band'},
+  {n:'Landmine Rotation', eq:'lm', body:'core', r:10, u:'each', c:'Squat slightly, swing bar from hip to hip in wide arc. Core rotational power.', m:'Lighter weight'},
+
+  // TRX SUSPENSION
+  {n:'TRX Squat', eq:'trx', body:'legs', r:12, u:'reps', c:'Hold handles, lean back slightly. Squat deep - straps help with balance and depth.', m:'Regular bodyweight squat'},
+  {n:'TRX Pistol Squat', eq:'trx', body:'legs', r:6, u:'each', c:'Hold straps, single leg squat as deep as possible. Straps reduce balance demand.', m:'TRX squat - both legs'},
+  {n:'TRX Lunge', eq:'trx', body:'legs', r:8, u:'each', c:'One foot in cradle behind, lunge forward. Rear foot elevated. Deep stretch.', m:'Standard reverse lunge'},
+  {n:'TRX Hamstring Curl', eq:'trx', body:'legs', r:10, u:'reps', c:'On back, heels in cradles, hips up. Curl heels toward glutes then extend. Slow.', m:'Glute bridge bodyweight'},
+  {n:'TRX Pulse Lunge', eq:'trx', body:'legs', r:10, u:'each', c:'Hold straps, lunge position, pulse 2 inches up/down. Glutes and quads burn.', m:'Bodyweight lunge holds'},
+  {n:'TRX Chest Press', eq:'trx', body:'chest', r:10, u:'reps', c:'Face away from anchor, hands in handles at chest. Press out - more decline = harder.', m:'Push-up'},
+  {n:'TRX Push-Up', eq:'trx', body:'chest', r:10, u:'reps', c:'Hands in handles. Push-up - instability recruits more chest and stabilizers.', m:'Regular push-up'},
+  {n:'TRX Fly', eq:'trx', body:'chest', r:8, u:'reps', c:'Face anchor, arms wide, lean into it. Bring hands together in a fly motion. Pecs.', m:'Push-up'},
+  {n:'TRX Row', eq:'trx', body:'back', r:10, u:'reps', c:'Face anchor, lean back, row body up. Elbows drive back. More lean = harder.', m:'Inverted row under table'},
+  {n:'TRX Y-Fly', eq:'trx', body:'back', r:10, u:'reps', c:'Face anchor, arms form Y overhead. Pull body up squeezing rear delts and upper traps.', m:'Face pulls with resistance band'},
+  {n:'TRX Single-Arm Row', eq:'trx', body:'back', r:8, u:'each', c:'One strap, row with one arm. Anti-rotation demand. Keep hips square throughout.', m:'Two-arm TRX row'},
+  {n:'TRX Bicep Curl', eq:'trx', body:'biceps', r:10, u:'reps', c:'Face anchor, arms extended, curl body up. Harder = more lean away from anchor.', m:'Less lean = easier'},
+  {n:'TRX Tricep Press', eq:'trx', body:'triceps', r:10, u:'reps', c:'Face away from anchor, handles at head level, elbows forward. Extend elbows to push up.', m:'Less lean = easier'},
+  {n:'TRX Overhead Ext', eq:'trx', body:'triceps', r:8, u:'reps', c:'Hold handles overhead, lean body forward. Bend elbows to lower, extend to return.', m:'Reduce lean angle'},
+  {n:'TRX Face Pull', eq:'trx', body:'shoulders', r:12, u:'reps', c:'Face anchor, pull handles to face - elbows high and wide. Rear delts and upper back.', m:'Resistance band face pull'},
+  {n:'TRX T Fly', eq:'trx', body:'shoulders', r:10, u:'reps', c:'Face anchor, arms form T at shoulder height. Pull body up with rear delts. Posture.', m:'TRX Y-Fly'},
+  {n:'TRX Plank', eq:'trx', body:'core', r:30, u:'sec', c:'Feet in cradles, hands on floor. Hold rigid plank. Instability fires core harder.', m:'Regular floor plank'},
+  {n:'TRX Mountain Climber', eq:'trx', body:'core', r:20, u:'total', c:'Feet in cradles, plank position. Drive alternating knees toward chest. Core and cardio.', m:'Floor mountain climbers'},
+  {n:'TRX Pike', eq:'trx', body:'core', r:8, u:'reps', c:'Feet in cradles, plank. Pike hips up to ceiling, legs straight. Abs and shoulders.', m:'TRX plank hold'},
+  {n:'TRX Knee Tuck', eq:'trx', body:'core', r:10, u:'reps', c:'Feet in cradles, plank. Pull knees to chest, return. Control each rep.', m:'Floor mountain climbers'},
+
+  // BODYWEIGHT
+  {n:'Pull-Ups', eq:'bw', body:'back', r:5, u:'reps', c:'Dead hang to chin over bar. Lock scapula first. Slow 3-sec descent.', m:'Australian pull-ups under table'},
+  {n:'Chin-Ups', eq:'bw', body:'biceps', r:5, u:'reps', c:'Underhand grip. Bicep squeeze at top. Fully control the descent.', m:'Jump to top, lower slowly'},
+  {n:'Push-Ups', eq:'bw', body:'chest', r:12, u:'reps', c:'Chest to floor, full lock-out. Wide = chest, diamond = triceps.', m:'Incline push-ups on bench'},
+  {n:'Pike Push-Ups', eq:'bw', body:'shoulders', r:8, u:'reps', c:'Hips high, head toward floor. Triangle at bottom. Targets shoulders.', m:'Negative pike - lower only'},
+  {n:'Dips', eq:'bw', body:'triceps', r:10, u:'reps', c:'Parallel bars or two chairs. Elbows to 90 degrees, press to lockout. Slow descent.', m:'Bench dips, feet flat'},
+  {n:'Jump Squats', eq:'bw', body:'legs', r:12, u:'reps', c:'Explosive up, land softly through full foot. High heart rate.', m:'Bodyweight squat'},
+  {n:'Pistol Squat', eq:'bw', body:'legs', r:5, u:'each', c:'Assisted with hands on rack or door. Lower on one leg, press back up.', m:'Box squat on bench'},
+  {n:'Burpees', eq:'bw', body:'core', r:6, u:'reps', c:'Chest to floor, full extension at top. The most efficient fat-burning movement.', m:'Step-back burpee, no jump'},
+  {n:'Plank Hold', eq:'bw', body:'core', r:30, u:'sec', c:'Elbows under shoulders. Squeeze glutes and abs. Body rigid.', m:'Knee plank'},
+  {n:'Hanging Knee Raises', eq:'bw', body:'core', r:10, u:'reps', c:'From dead hang. Pull knees to chest using core. No swinging.', m:'Lying leg raises on floor'},
+  {n:'Inverted Row', eq:'bw', body:'back', r:10, u:'reps', c:'Under bar or table, body rigid, pull chest to bar. More lean = harder.', m:'Raise bar height for easier version'},
+  {n:'Diamond Push-Ups', eq:'bw', body:'triceps', r:8, u:'reps', c:'Hands form diamond. Elbows track back - not out. Isolates triceps.', m:'Regular push-ups'},
+  {n:'High-to-Low Plank', eq:'bw', body:'core', r:8, u:'reps', c:'Push-up position, lower one elbow then the other, press back up. Anti-rotation core.', m:'Slow each transition'},
+  {n:'Bulgarian Split Squat', eq:'bw', body:'legs', r:8, u:'each', c:'Rear foot on bench, deep single-leg squat. Drives quads and glutes.', m:'Standard reverse lunge'},
+
+  // MEDICINE BALL
+  {n:'MB Slam', eq:'mb', body:'core', r:10, u:'reps', c:'Overhead, slam ball to floor with full force. Full body explosive. Catch or pick up.', m:'Lighter ball'},
+  {n:'MB Wall Ball', eq:'mb', body:'legs', r:12, u:'reps', c:'Squat, explode up, throw ball to target on wall. Catch and repeat. Full body.', m:'Lower target or lighter ball'},
+  {n:'MB Russian Twist', eq:'mb', body:'core', r:20, u:'total', c:'Sit, feet off floor, rotate ball side to side. Obliques. Touch floor each side.', m:'Feet on floor'},
+  {n:'MB Chest Pass', eq:'mb', body:'chest', r:10, u:'reps', c:'Hold at chest, explosive push forward to wall. Catch and repeat. Chest and triceps.', m:'Lighter ball or partner'},
+  {n:'MB Overhead Throw', eq:'mb', body:'shoulders', r:8, u:'reps', c:'Overhead throw to wall or slam to floor in front. Explosive chest and shoulders.', m:'Lighter ball'},
+  {n:'MB Push-Up', eq:'mb', body:'chest', r:8, u:'reps', c:'Hands on ball, push-up. Instability fires more stabilizers. Keep core rigid.', m:'Hands on floor'},
+  {n:'MB Lunge and Twist', eq:'mb', body:'legs', r:8, u:'each', c:'Step into lunge, rotate ball to front leg side. Hips, quads, and rotational core.', m:'No ball - hands on hips'},
+  {n:'MB Squat', eq:'mb', body:'legs', r:12, u:'reps', c:'Hold ball at chest or overhead. Squat deep, full extension at top.', m:'Bodyweight squat'},
+  {n:'MB Romanian Deadlift', eq:'mb', body:'legs', r:12, u:'reps', c:'Hold ball, hip hinge, flat back. Feel hamstring stretch at bottom, extend at top.', m:'Light KB or DB'},
+  {n:'MB Woodchop', eq:'mb', body:'core', r:10, u:'each', c:'Start high one side, diagonal chop across body to opposite hip. Rotational power.', m:'Lighter ball'},
+  {n:'MB Tricep Overhead Ext', eq:'mb', body:'triceps', r:10, u:'reps', c:'Hold ball overhead in both hands. Lower behind head, extend to start. Elbows fixed.', m:'Lighter ball or KB'},
+  {n:'MB Curl', eq:'mb', body:'biceps', r:10, u:'reps', c:'Hold ball with both hands, curl to chest. Squeeze biceps at top.', m:'DB curl x12'},
+  {n:'MB Lateral Raise', eq:'mb', body:'shoulders', r:10, u:'each', c:'Hold ball in one hand, raise to shoulder height. Control descent. Lateral deltoid.', m:'Lighter ball'},
+  {n:'MB Glute Bridge', eq:'mb', body:'legs', r:12, u:'reps', c:'On back, ball on hips held in place. Drive hips to ceiling. Glutes and hamstrings.', m:'Bodyweight glute bridge'},
+  {n:'MB Superman', eq:'mb', body:'back', r:10, u:'reps', c:'Face down, hold ball extended. Lift chest, arms, and legs off floor. Lower back.', m:'No ball - bodyweight superman'},
+
+  // CABLE MACHINE
+  {n:'Cable Lat Pulldown', eq:'cab', body:'back', r:10, u:'reps', c:'Wide grip, pull bar to upper chest. Drive elbows down and back. Squeeze lats.', m:'Lighter weight, fuller range'},
+  {n:'Cable Seated Row', eq:'cab', body:'back', r:10, u:'reps', c:'Upright posture. Pull handle to lower abdomen. Squeeze shoulder blades together.', m:'Lighter weight'},
+  {n:'Cable Straight-Arm Pulldown', eq:'cab', body:'back', r:12, u:'reps', c:'Arms straight, push bar from chest height to thighs. Keeps biceps out of it. Lats.', m:'Lighter weight'},
+  {n:'Cable Face Pull', eq:'cab', body:'shoulders', r:12, u:'reps', c:'Rope at face height. Pull to face, elbows high and wide. Rear delts and rotator cuff.', m:'Lighter weight - posture exercise'},
+  {n:'Cable Lateral Raise', eq:'cab', body:'shoulders', r:12, u:'each', c:'Single cable at hip height. Raise arm to shoulder level. Control descent. Lateral delt.', m:'Lighter weight'},
+  {n:'Cable Chest Press', eq:'cab', body:'chest', r:10, u:'reps', c:'Cables at chest height behind you. Step forward and press - full chest engagement throughout.', m:'Lighter weight or machine chest press'},
+  {n:'Cable Fly', eq:'cab', body:'chest', r:12, u:'reps', c:'Arms wide, bring handles together in front of chest. Constant tension vs dumbbell fly.', m:'Lighter weight'},
+  {n:'Cable Bicep Curl', eq:'cab', body:'biceps', r:12, u:'reps', c:'Low pulley, curl to shoulder. Constant tension through full range. No swinging.', m:'Lighter weight'},
+  {n:'Cable Hammer Curl', eq:'cab', body:'biceps', r:12, u:'reps', c:'Rope attachment, neutral grip curl. Targets brachialis for arm thickness.', m:'Standard cable curl'},
+  {n:'Cable Tricep Pushdown', eq:'cab', body:'triceps', r:12, u:'reps', c:'High pulley, rope or bar. Push down to full extension. Keep elbows at sides.', m:'Lighter weight'},
+  {n:'Cable Overhead Tricep Ext', eq:'cab', body:'triceps', r:12, u:'reps', c:'Face away from high cable, hold rope overhead, extend elbows. Long head focus.', m:'Lighter weight'},
+  {n:'Cable Squat', eq:'cab', body:'legs', r:12, u:'reps', c:'Hold low cable between legs. Squat - cable keeps torso upright. Quad and glute.', m:'Goblet squat with KB'},
+  {n:'Cable Pull-Through', eq:'cab', body:'legs', r:12, u:'reps', c:'Face away from cable, hinge at hip pulling cable between legs. Hamstrings and glutes.', m:'KB swing'},
+  {n:'Cable Hip Abduction', eq:'cab', body:'legs', r:12, u:'each', c:'Ankle strap, cable at floor. Kick leg out to side against resistance. Glute med.', m:'Side-lying band abduction'},
+  {n:'Cable Crunch', eq:'cab', body:'core', r:12, u:'reps', c:'High cable, rope behind neck, kneel. Crunch down - ribs to hips. Core with load.', m:'Bodyweight crunch'},
+  {n:'Cable Pallof Press', eq:'cab', body:'core', r:10, u:'each', c:'Side-on to cable at chest height. Press straight out - resist rotation. Anti-rotation.', m:'Lighter weight'},
+
+  // DUMBBELL
+  {n:'DB Bent-Over Row', eq:'db', body:'back', r:10, u:'each', c:'Hip hinge, flat back. Row to hip. Full scapular retraction and squeeze at top.', m:'Lighter weight'},
+  {n:'DB Renegade Row', eq:'db', body:'back', r:4, u:'each', c:'Plank on DBs, row one side at a time. Hips stay square. 4 each side.', m:'Plank hold then separate rows'},
+  {n:'DB Romanian Deadlift', eq:'db', body:'legs', r:12, u:'reps', c:'Hip hinge, flat back, hamstring stretch at bottom. Full hip extension at top.', m:'KB sumo deadlift'},
+  {n:'DB Reverse Lunge', eq:'db', body:'legs', r:8, u:'each', c:'DBs at sides. Control descent. Drive through front heel to return.', m:'Bodyweight reverse lunge'},
+  {n:'DB Goblet Squat', eq:'db', body:'legs', r:10, u:'reps', c:'Hold one DB at chest vertically. Squat deep, drive knees out.', m:'Bodyweight squat'},
+  {n:'DB Thruster', eq:'db', body:'legs', r:8, u:'reps', c:'Front squat then press overhead in one movement. Most metabolically expensive per rep.', m:'Squat only then separate press'},
+  {n:'DB Split Squat', eq:'db', body:'legs', r:8, u:'each', c:'Rear foot elevated on bench. Deep single-leg squat. Quads and glutes.', m:'Standard reverse lunge'},
+  {n:'DB Overhead Press', eq:'db', body:'shoulders', r:10, u:'reps', c:'Core tight, press overhead. Do not arch lower back. Full lockout at top.', m:'Lighter weight or seated'},
+  {n:'DB Lateral Raise', eq:'db', body:'shoulders', r:12, u:'reps', c:'Arms to shoulder height - slight bend in elbows. Control descent. Lateral delt.', m:'Lighter weight - form first'},
+  {n:'DB Front Raise', eq:'db', body:'shoulders', r:10, u:'reps', c:'Raise one or both arms straight in front to shoulder height. Anterior deltoid.', m:'Lighter weight'},
+  {n:'DB Bench Press', eq:'db', body:'chest', r:10, u:'reps', c:'Full range of motion - stretch at bottom. Press to lockout. Control descent.', m:'Floor press if no bench'},
+  {n:'DB Fly', eq:'db', body:'chest', r:10, u:'reps', c:'Arms wide, slight elbow bend. Bring together over chest in arc. Stretch and squeeze.', m:'Lighter weight'},
+  {n:'DB Bicep Curl', eq:'db', body:'biceps', r:12, u:'reps', c:'Alternate or together. Full range of motion. Squeeze at top. Elbow stays fixed.', m:'Lighter weight'},
+  {n:'DB Hammer Curl', eq:'db', body:'biceps', r:12, u:'reps', c:'Neutral grip, curl. Targets brachialis for arm thickness. No swinging.', m:'Lighter weight'},
+  {n:'DB Tricep Kickback', eq:'db', body:'triceps', r:12, u:'each', c:'Hinge over, upper arm parallel to floor, extend elbow to straight. Peak contraction.', m:'Lighter weight'},
+  {n:'DB Overhead Tricep Ext', eq:'db', body:'triceps', r:10, u:'reps', c:'One or two DBs overhead. Bend elbows behind head, extend fully. Elbows stay fixed.', m:'Lighter weight'}
+];
+
+// Equipment labels for display
+var EQ_LABEL = {
+  kb: 'KB', lm: 'LANDMINE', trx: 'TRX', bw: 'BODYWEIGHT', mb: 'MED BALL', cab: 'CABLE', db: 'DUMBBELL'
+};
+var EQ_COLOR = {
+  kb: '#e8622a', lm: '#c8a84b', trx: '#2ab8c8', bw: '#9b6eda', mb: '#3aad6a', cab: '#e84870', db: '#4888d0'
 };
 
-var FOCUSES = [
-  {name:'Push Focus',color:'var(--orange)',bc:'var(--odim)',
-   desc:'Full-body AMRAP with a push emphasis. KB ballistics alternate with pressing movements.',
-   tip:{t:'Push Method',b:'Alternating KB ballistics with pressing keeps heart rate high while push muscles recover.'},
-   slots:['hinge','push','squat','push','core'],
-   wu:['Jumping Jacks - 60s','Wrist Circles + Arm Circles - 30s','KB Halos - 5 each direction','Easy Incline Push-Up - 10 reps'],
-   cd:['Slow Walk - 2 min','Wall Chest Stretch - 30s each side','Reverse Shoulder Stretch - 30s','Wrist Extensor Stretch - 30s each']},
-  {name:'Pull Focus',color:'var(--cyan)',bc:'var(--cdim)',
-   desc:'Posterior chain emphasis. KB cleans, rows, and pull-ups target your largest muscle group for maximum calorie burn.',
-   tip:{t:'Posterior Chain Principle',b:'The back and posterior chain are your biggest calorie-burning asset. Keep transitions fast.'},
-   slots:['hinge','pull','pull','squat','core'],
-   wu:['March in Place - 2 min','Arm Circles - 10 forward + 10 back','KB Halos - 5 each direction','Dead Hang - 30s'],
-   cd:['Slow Walk - 2 min','Dead Hang Stretch - 30s','Thread the Needle - 30s each','Forward Fold - 30s']},
-  {name:'Legs Focus',color:'var(--green)',bc:'#1d5c38',
-   desc:'Legs drive the most calorie burn. KB squats, lunges, and explosive jumps attack glutes, quads, and hamstrings.',
-   tip:{t:'Legs Protocol',b:'The clean to squat to press sequence is the most metabolically expensive chain you can run.'},
-   slots:['hinge','squat','squat','push','core'],
-   wu:['High Knees - 90s','Slow Bodyweight Squat - 10 reps','Hip Circles + Lunges - 1 min','KB Halos + Dead Swing - 5 each'],
-   cd:['Slow Walk - 2 min','Knights Stretch - 30s each','Pigeon Pose - 30s each','Forward Fold - 30s']},
-  {name:'Full Body',color:'#b8a060',bc:'#5a4f2a',
-   desc:'All three tools in one circuit. KB ballistics, DB strength, and bodyweight - maximum metabolic demand.',
-   tip:{t:'EPOC Effect',b:'Mixed-modal circuits keep heart rate in 75-85% MHR for simultaneous fat loss and muscle preservation.'},
-   slots:['hinge','push','pull','squat','core'],
-   wu:['Jumping Jacks + High Knees - 90s','KB Halos + Wrist Circles - 1 min','Slow Goblet Squat - 5 reps','Dead Hang - 20s'],
-   cd:["Slow Walk - 2 min","Child's Pose - 30s","Piriformis Stretch - 30s each","T-Spine Windmill - 5 each side"]},
-  {name:'Core Focus',color:'#9b6eda',bc:'#5a3a8a',
-   desc:'Core stability and anti-rotation paired with KB ballistics. Every movement here builds the foundation for every other lift.',
-   tip:{t:'Core Method',b:'Core training here is about resisting rotation during carries, bracing during swings, and stabilizing during presses.'},
-   slots:['hinge','core','push','carry','core'],
-   wu:['Jumping Jacks - 60s','Cat-Cow - 10 slow reps','Dead Bug - 5 each side','Wrist Circles - 30s'],
-   cd:["Slow Walk - 2 min","Child's Pose - 60s","Cat-Cow - 10 reps","Cobra Stretch - 30s"]}
-];
+// Body parts we want to hit - one of each per workout
+var BODY_PARTS = ['legs', 'chest', 'back', 'shoulders', 'biceps', 'triceps', 'core'];
+
+// Focus configs - which equipment types to prefer per focus
+var FOCUSES = {
+  'Full Gym': ['kb', 'lm', 'trx', 'bw', 'mb', 'cab', 'db'],
+  'Kettlebell': ['kb', 'kb', 'kb', 'bw', 'mb', 'kb', 'kb'],
+  'Cable Heavy': ['cab', 'cab', 'cab', 'bw', 'db', 'cab', 'cab'],
+  'TRX + BW': ['trx', 'trx', 'trx', 'bw', 'bw', 'trx', 'trx'],
+  'Dumbbell': ['db', 'db', 'db', 'bw', 'mb', 'db', 'db'],
+  'Power Day': ['lm', 'kb', 'lm', 'kb', 'bw', 'lm', 'mb']
+};
+
+var FOCUS_DESC = {
+  'Full Gym': 'All 7 equipment types - KB, Landmine, TRX, Cable, Med Ball, Dumbbell and Bodyweight. Maximum variety.',
+  'Kettlebell': 'Kettlebell-dominant hybrid circuit. The most metabolically demanding combination for fat loss.',
+  'Cable Heavy': 'Cable machine focused. Constant tension through every rep - ideal for muscle definition.',
+  'TRX + BW': 'Suspension trainer and pure bodyweight. No weights needed - full body in 20 minutes.',
+  'Dumbbell': 'Dumbbell-based circuit with bodyweight and medicine ball. Classic strength-meets-cardio.',
+  'Power Day': 'Landmine and KB power day. Explosive compound movements for athletic performance and fat burn.'
+};
 
 // Seeded RNG
 function seededRng(seed) {
@@ -744,69 +850,124 @@ function todaySeed() {
   var d = new Date();
   return (d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate()) >>> 0;
 }
-function rerollOffset() {
-  return parseInt(lsGet('rr-' + todaySeed()) || '0');
-}
+function rerollOffset() { return parseInt(lsGet('rr-' + todaySeed()) || '0'); }
 function bumpReroll() {
   var n = rerollOffset() + 1;
   lsSet('rr-' + todaySeed(), n);
   return n;
 }
 
-// Selected focus (null = random)
-var selectedFocus = null;
+// MOTIVATIONAL QUOTES
+var QUOTES = [
+  {q:"The only way to prove you are a good sport is to lose.", a:"Ernie Banks"},
+  {q:"It's not whether you get knocked down, it's whether you get up.", a:"Vince Lombardi"},
+  {q:"Champions keep playing until they get it right.", a:"Billie Jean King"},
+  {q:"You miss 100% of the shots you don't take.", a:"Wayne Gretzky"},
+  {q:"Hard work beats talent when talent doesn't work hard.", a:"Tim Notke"},
+  {q:"The more difficult the victory, the greater the happiness in winning.", a:"Pele"},
+  {q:"Do not let what you cannot do interfere with what you can do.", a:"John Wooden"},
+  {q:"Talent wins games, but teamwork and intelligence win championships.", a:"Michael Jordan"},
+  {q:"Never give up, never give in, and when the upper hand is ours, may we have the ability to handle the win with the dignity that we absorbed the loss.", a:"Doug Williams"},
+  {q:"If you can believe it, the mind can achieve it.", a:"Ronnie Lott"},
+  {q:"Push yourself again and again. Don't give an inch until the final buzzer sounds.", a:"Larry Bird"},
+  {q:"The difference between the impossible and the possible lies in a person's determination.", a:"Tommy Lasorda"},
+  {q:"If you train hard, you'll not only be hard, you'll be hard to beat.", a:"Herschel Walker"},
+  {q:"Gold medals aren't really made of gold. They're made of sweat, determination, and a hard-to-find alloy called guts.", a:"Dan Gable"},
+  {q:"You are never really playing an opponent. You are playing yourself, your own highest standards.", a:"Arthur Ashe"},
+  {q:"Somewhere behind the athlete you've become is the little kid who fell in love with the game.", a:"Mia Hamm"},
+  {q:"The will to win is important, but the will to prepare is vital.", a:"Joe Paterno"},
+  {q:"To uncover your true potential you must first find your own limits and then you have to have the courage to blow past them.", a:"Picabo Street"},
+  {q:"I hated every minute of training, but I said, don't quit. Suffer now and live the rest of your life as a champion.", a:"Muhammad Ali"},
+  {q:"Most people give up just when they're about to achieve success.", a:"Ross Perot"},
+  {q:"If you have everything under control, you're not moving fast enough.", a:"Mario Andretti"},
+  {q:"Pain is temporary. Quitting lasts forever.", a:"Lance Armstrong"},
+  {q:"Without self-discipline, success is impossible, period.", a:"Lou Holtz"},
+  {q:"The more I practice, the luckier I get.", a:"Gary Player"},
+  {q:"Set your goals high, and don't stop till you get there.", a:"Bo Jackson"},
+  {q:"Winning is not a sometime thing; it's an all-time thing.", a:"Vince Lombardi"},
+  {q:"A champion is someone who gets up when they can't.", a:"Jack Dempsey"},
+  {q:"The secret of getting ahead is getting started.", a:"Mark Twain"},
+  {q:"Run when you can, walk if you have to, crawl if you must; just never give up.", a:"Dean Karnazes"},
+  {q:"The only place where success comes before work is in the dictionary.", a:"Vidal Sassoon"},
+  {q:"If you want to be the best, you have to do things that other people aren't willing to do.", a:"Michael Phelps"},
+  {q:"Success is where preparation and opportunity meet.", a:"Bobby Unser"},
+  {q:"It ain't over till it's over.", a:"Yogi Berra"},
+  {q:"Persistence can change failure into extraordinary achievement.", a:"Matt Biondi"},
+  {q:"Make each day your masterpiece.", a:"John Wooden"},
+  {q:"What makes something special is not just what you have to gain, but what you feel there is to lose.", a:"Andre Agassi"},
+  {q:"If you can't outplay them, outwork them.", a:"Ben Hogan"},
+  {q:"Nobody who ever gave his best regretted it.", a:"George Halas"},
+  {q:"Do you know what my favorite part of the game is? The opportunity to play.", a:"Mike Singletary"},
+  {q:"Excellence is not a singular act, but a habit. You are what you repeatedly do.", a:"Shaquille O'Neal"},
+  {q:"Show me a guy who's afraid to look bad, and I'll show you a guy you can beat every time.", a:"Lou Brock"},
+  {q:"I've failed over and over and over again in my life. And that is why I succeed.", a:"Michael Jordan"},
+  {q:"Obstacles don't have to stop you. If you run into a wall, don't turn around and give up.", a:"Michael Jordan"},
+  {q:"The harder the battle, the sweeter the victory.", a:"Les Brown"},
+  {q:"Never say never because limits, like fears, are often just an illusion.", a:"Michael Jordan"},
+  {q:"You have to expect things of yourself before you can do them.", a:"Michael Jordan"},
+  {q:"Strength does not come from winning. Your struggles develop your strengths.", a:"Arnold Schwarzenegger"},
+  {q:"The mind is the limit. As long as the mind can envision the fact that you can do something, you can do it.", a:"Arnold Schwarzenegger"},
+  {q:"The last three or four reps is what makes the muscle grow. This area of pain divides a champion from someone who is not.", a:"Arnold Schwarzenegger"},
+  {q:"Work hard in silence, let your success be your noise.", a:"Frank Ocean"}
+];
 
-function setFocus(name, btn) {
-  selectedFocus = (name === 'random') ? null : name;
-  var btns = document.querySelectorAll('.focus-btn');
-  for (var i = 0; i < btns.length; i++) btns[i].classList.remove('sel');
-  btn.classList.add('sel');
+function showQuote() {
+  // Cycle through quotes based on day + reroll offset so it changes with each generate
+  var seed = todaySeed() + rerollOffset();
+  var idx = seed % QUOTES.length;
+  var q = QUOTES[idx];
+  var qtEl = document.getElementById('quote-text');
+  var qaEl = document.getElementById('quote-attr');
+  if (qtEl) qtEl.textContent = q.q;
+  if (qaEl) qaEl.textContent = '- ' + q.a;
 }
+
+// Keep full gym as the default - no equipment restriction
+var selectedFocus = 'Full Gym';
+
 
 function generateWod(seed) {
   var rng = seededRng(seed >>> 0);
-  var focus;
-  if (selectedFocus) {
-    for (var i = 0; i < FOCUSES.length; i++) {
-      if (FOCUSES[i].name === selectedFocus) { focus = FOCUSES[i]; break; }
+  var focus = selectedFocus || 'Full Gym';
+  var eqPrefs = FOCUSES[focus] || FOCUSES['Full Gym'];
+
+  // Build one station per body part, each hitting a DIFFERENT body part
+  // Equipment preference per body part slot (eqPrefs[i] maps to BODY_PARTS[i])
+  var stations = [];
+  var usedBodyParts = {};
+  var usedEquipment = {};
+
+  for (var i = 0; i < BODY_PARTS.length; i++) {
+    var targetBody = BODY_PARTS[i];
+    var prefEq = eqPrefs[i];
+
+    // Get all exercises matching this body part
+    var candidates = EX.filter(function(e) {
+      return e.body === targetBody && !usedEquipment[e.eq + '_' + e.n];
+    });
+
+    if (candidates.length === 0) {
+      candidates = EX.filter(function(e) { return e.body === targetBody; });
     }
-  }
-  if (!focus) focus = FOCUSES[Math.floor(rng() * FOCUSES.length)];
-  var seen = {};
-  var exercises = focus.slots.map(function(pat) {
-    var pool = POOL[pat];
+
+    // Prefer the suggested equipment type, fall back to any
+    var preferred = candidates.filter(function(e) { return e.eq === prefEq; });
+    var pool = preferred.length > 0 ? preferred : candidates;
+
     var ex = pool[Math.floor(rng() * pool.length)];
-    if (seen[ex.n]) {
-      var alts = pool.filter(function(e) { return !seen[e.n]; });
-      if (alts.length) ex = alts[Math.floor(rng() * alts.length)];
-    }
-    seen[ex.n] = true;
-    return ex;
-  });
-  return { focus: focus, exercises: exercises };
+    usedEquipment[ex.eq + '_' + ex.n] = true;
+    stations.push(ex);
+  }
+
+  return {
+    focus: focus,
+    desc: FOCUS_DESC[focus] || '',
+    stations: stations
+  };
 }
 
 var DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 var MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-var SRC_URLS = {
-  'Nourish Move Love':'https://www.youtube.com/c/NourishMoveLove',
-  'BOXROX':'https://www.boxrox.com/20-minute-amrap-kettlebell-workouts/',
-  'Cavemantraining':'https://www.cavemantraining.com/kettlebell-workouts/',
-  'Calisthenics':'https://www.youtube.com/results?search_query=calisthenics+beginners'
-};
-
-function srcPillHtml(src) {
-  var url = SRC_URLS[src] || '#';
-  var cls = src === 'Nourish Move Love' ? 'p-nml' : src === 'Cavemantraining' ? 'p-cm' : 'p-bx';
-  return '<a class="pill ' + cls + '" href="' + url + '" target="_blank" rel="noopener">' + src + '</a>';
-}
-function typePillHtml(t) {
-  if (t === 'kb') return '<span class="type-pill tp-kb">KB</span>';
-  if (t === 'db') return '<span class="type-pill tp-db">DB</span>';
-  return '<span class="type-pill tp-bw">BW</span>';
-}
-function rowClass(t) { return t === 'kb' ? 'kb' : t === 'db' ? 'db' : 'bw'; }
-
 var currentWod = null;
 
 function todayKey() {
@@ -819,61 +980,44 @@ function renderWod(wod) {
   var wc = document.getElementById('wod-card');
   if (!wc) return;
   currentWod = wod;
-  var f = wod.focus;
-  var exs = wod.exercises;
 
-  var exHtml = exs.map(function(ex, i) {
-    return '<div class="ex-row ' + rowClass(ex.t) + '">' +
+  var stationsHtml = wod.stations.map(function(ex, i) {
+    var color = EQ_COLOR[ex.eq] || '#e8622a';
+    var label = EQ_LABEL[ex.eq] || ex.eq.toUpperCase();
+    var bodyLabel = ex.body.charAt(0).toUpperCase() + ex.body.slice(1);
+    return '<div class="ex-row" style="border-left:3px solid ' + color + '">' +
       '<div class="ex-n">' + (i + 1) + '</div>' +
       '<div class="ex-info">' +
-        '<div class="ex-name">' + ex.n + typePillHtml(ex.t) + '</div>' +
+        '<div class="ex-name">' + ex.n +
+          '<span class="type-pill" style="background:' + color + '22;color:' + color + '">' + label + '</span>' +
+          '<span class="type-pill" style="background:rgba(255,255,255,.06);color:var(--muted);margin-left:4px">' + bodyLabel + '</span>' +
+        '</div>' +
         '<div class="ex-cue">' + ex.c + '</div>' +
         (ex.m ? '<div class="ex-mod">Scale: ' + ex.m + '</div>' : '') +
-        '<div class="ex-src">' + srcPillHtml(ex.s) + '</div>' +
       '</div>' +
       '<div class="ex-tgt"><div class="ex-reps">' + ex.r + '</div><div class="ex-unit">' + ex.u + '</div></div>' +
     '</div>';
   }).join('');
 
-  var wuHtml = f.wu.map(function(w) { return '<div class="s-row">' + w + '</div>'; }).join('');
-  var cdHtml = f.cd.map(function(w) { return '<div class="s-row">' + w + '</div>'; }).join('');
-
   var html =
     '<div class="wod-hdr">' +
       '<div class="wod-top-row">' +
         '<div class="wod-day">' + DAYS[new Date().getDay()] + '</div>' +
-        '<div class="wod-focus-tag" style="color:' + f.color + ';border-color:' + f.bc + ';background:rgba(255,255,255,.03)">' + f.name + '</div>' +
+        '<div class="wod-focus-tag" style="color:var(--orange);border-color:var(--odim);background:var(--oglow)">' + wod.focus + '</div>' +
       '</div>' +
-      '<div class="wod-desc">' + f.desc + '</div>' +
+      '<div class="wod-desc">' + wod.desc + '</div>' +
       '<div class="wod-chips">' +
         '<div class="chip hi">20 min AMRAP</div>' +
-        '<div class="chip">KB 16-20kg / DB 15-20lb</div>' +
-        '<div class="chip">' + exs.length + ' movements</div>' +
+        '<div class="chip">7 stations</div>' +
+        '<div class="chip">No body part repeated</div>' +
       '</div>' +
     '</div>' +
-    '<div class="ex-lbl">One Round - Complete in Order</div>' +
-    '<div class="ex-list">' + exHtml + '</div>' +
-    '<div class="tip"><b>' + f.tip.t + '</b>' + f.tip.b + '</div>' +
-    '<div class="phase wu">' +
-      '<div class="ph-head" onclick="phToggle(this)">' +
-        '<span class="ph-icon">&#x1F525;</span>' +
-        '<span class="ph-title">Warm-Up - 4 min</span>' +
-        '<span class="ph-chev">&#x25BC;</span>' +
-      '</div>' +
-      '<div class="ph-body"><p class="ph-note">Complete before starting the clock.</p><div class="s-list">' + wuHtml + '</div></div>' +
-    '</div>' +
-    '<div class="phase cd" style="margin-top:6px">' +
-      '<div class="ph-head" onclick="phToggle(this)">' +
-        '<span class="ph-icon">&#x2744;&#xFE0F;</span>' +
-        '<span class="ph-title">Cool-Down - 5 min</span>' +
-        '<span class="ph-chev">&#x25BC;</span>' +
-      '</div>' +
-      '<div class="ph-body"><p class="ph-note">Walk 2 min then hold each stretch 30 seconds.</p><div class="s-list">' + cdHtml + '</div></div>' +
-    '</div>';
+    '<div class="ex-lbl">One Round - 7 Stations - Each Hits a Different Body Part</div>' +
+    '<div class="ex-list">' + stationsHtml + '</div>';
 
   wc.innerHTML = html;
   var hf = document.getElementById('hero-focus');
-  if (hf) hf.textContent = f.name;
+  if (hf) hf.textContent = wod.focus;
 }
 
 function initWod() {
@@ -886,12 +1030,9 @@ function initWod() {
   }
 }
 
-function reroll() {
-  bumpReroll();
-  initWod();
-}
+function reroll() { bumpReroll(); showQuote(); initWod(); }
 
-// Tab switching
+// Tabs
 function show(id, btn) {
   var secs = document.querySelectorAll('.section');
   for (var i = 0; i < secs.length; i++) secs[i].classList.remove('active');
@@ -902,7 +1043,7 @@ function show(id, btn) {
   if (id === 'tracker') renderCal();
 }
 
-// Phase toggle
+// Phase toggle (warmup/cooldown)
 function phToggle(h) {
   var b = h.nextElementSibling;
   var c = h.querySelector('.ph-chev');
@@ -911,18 +1052,17 @@ function phToggle(h) {
   if (c) c.style.transform = open ? 'rotate(180deg)' : '';
 }
 
-// MAIN PAGE CLOCK
+// MAIN CLOCK
 var mcSec = 1200, mcTotal = 1200, mcRunning = false, mcInterval = null, mcRounds = 0;
+function fmtTime(s) { return pad(Math.floor(s / 60)) + ':' + pad(s % 60); }
 
 function mcSetState(cls, ph) {
-  var c = document.getElementById('mc-num');
-  var p = document.getElementById('mc-phase');
+  var c = document.getElementById('mc-num'), p = document.getElementById('mc-phase');
   if (c) c.className = 'main-clock-num ' + cls;
   if (p) p.textContent = ph;
 }
 function mcUpdateClock() {
-  var c = document.getElementById('mc-num');
-  var b = document.getElementById('mc-bar');
+  var c = document.getElementById('mc-num'), b = document.getElementById('mc-bar');
   if (c) c.textContent = fmtTime(mcSec);
   if (b) b.style.width = (mcTotal > 0 ? (mcSec / mcTotal) * 100 : 100) + '%';
 }
@@ -934,27 +1074,69 @@ function mcpPreset(min, btn) {
   mcTotal = min * 60; mcSec = mcTotal;
   mcUpdateClock(); mcSetState('idle', 'READY');
 }
-function mcRoundAdd() {
-  var el = document.getElementById('mc-rounds');
-  if (el) el.textContent = ++mcRounds;
-}
-function mcRoundReset() {
-  mcRounds = 0;
-  var el = document.getElementById('mc-rounds');
-  if (el) el.textContent = 0;
+function mcRoundAdd() { var el = document.getElementById('mc-rounds'); if (el) el.textContent = ++mcRounds; }
+function mcRoundReset() { mcRounds = 0; var el = document.getElementById('mc-rounds'); if (el) el.textContent = 0; }
+
+// TIME PICKER
+var selectedMinutes = 15;
+
+function openTimePicker() {
+  var sb = document.getElementById('wctl-start');
+  if (sb && (sb.classList.contains('done') || sb.classList.contains('going'))) return;
+  if (!currentWod) reroll();
+  var overlay = document.getElementById('time-picker-overlay');
+  if (overlay) overlay.classList.add('open');
 }
 
-// START / PAUSE / FINISH
-var wState = 'idle'; // idle | running | paused | done
+function selectTime(mins, btn) {
+  selectedMinutes = mins;
+  var opts = document.querySelectorAll('.time-opt');
+  for (var i = 0; i < opts.length; i++) opts[i].classList.remove('sel');
+  btn.classList.add('sel');
+}
 
-function wStart() {
+function confirmStart() {
+  cancelTimePicker();
+  wStart(selectedMinutes);
+}
+
+function cancelTimePicker() {
+  var overlay = document.getElementById('time-picker-overlay');
+  if (overlay) overlay.classList.remove('open');
+}
+
+// REST DAY
+function logRestDay() {
+  var key = todayKey();
+  var entry = { key: key, date: new Date().toLocaleDateString(), focus: 'Rest Day', rounds: 0, notes: '', wod: null, isRest: true };
+  var found = false;
+  for (var i = 0; i < sessions.length; i++) {
+    if (sessions[i].key === key) { sessions[i] = entry; found = true; break; }
+  }
+  if (!found) sessions.push(entry);
+  lsSet('hr-v3', JSON.stringify(sessions));
+  renderTrackerStats();
+  // Visual feedback
+  var btn = document.querySelector('.rest-btn');
+  if (btn) {
+    var orig = btn.textContent;
+    btn.style.background = 'rgba(42,184,200,.15)';
+    btn.textContent = 'Rest Day Logged';
+    setTimeout(function() { btn.textContent = orig; btn.style.background = ''; }, 2000);
+  }
+}
+
+// WORKOUT STATE MACHINE
+var wState = 'idle';
+function wStart(durationMins) {
   if (wState === 'done') return;
-  if (!currentWod) { reroll(); }
+  durationMins = durationMins || 20;
+  mcTotal = durationMins * 60;
+  mcSec = mcTotal;
+  mcUpdateClock();
   wState = 'running';
-  // Show clock
   var cw = document.getElementById('main-clock-wrap');
   if (cw) cw.classList.add('visible');
-  // Start the clock
   if (!mcRunning) {
     mcRunning = true;
     mcSetState('running', 'GO - AMRAP IN PROGRESS');
@@ -964,8 +1146,7 @@ function wStart() {
       if (mcSec === 10) mcSetState('running', 'PUSH - FINAL 10');
       if (mcSec <= 0) {
         clearInterval(mcInterval); mcRunning = false;
-        var c = document.getElementById('mc-num');
-        var b = document.getElementById('mc-bar');
+        var c = document.getElementById('mc-num'), b = document.getElementById('mc-bar');
         if (c) c.textContent = 'DONE';
         if (b) b.style.width = '0%';
         mcSetState('done', "TIME'S UP - HIT FINISH");
@@ -973,27 +1154,21 @@ function wStart() {
       }
     }, 1000);
   }
-  // Update buttons
-  var sb = document.getElementById('wctl-start');
-  var pb = document.getElementById('wctl-pause');
-  var fb = document.getElementById('wctl-finish');
+  var sb = document.getElementById('wctl-start'), pb = document.getElementById('wctl-pause'), fb = document.getElementById('wctl-finish');
   if (sb) { sb.textContent = 'STARTED'; sb.className = 'wctl-btn wctl-start going'; }
   if (pb) pb.className = 'wctl-btn wctl-pause';
   if (fb) fb.className = 'wctl-btn wctl-finish ready';
 }
-
 function wPause() {
   if (wState === 'idle' || wState === 'done') return;
   if (wState === 'running') {
     wState = 'paused';
     clearInterval(mcInterval); mcRunning = false;
     mcSetState('paused', 'PAUSED - TAP START TO RESUME');
-    var pb = document.getElementById('wctl-pause');
+    var pb = document.getElementById('wctl-pause'), sb = document.getElementById('wctl-start');
     if (pb) { pb.textContent = 'RESUME'; pb.className = 'wctl-btn wctl-pause active'; }
-    var sb = document.getElementById('wctl-start');
     if (sb) { sb.textContent = 'PAUSED'; sb.className = 'wctl-btn wctl-start going'; }
   } else if (wState === 'paused') {
-    // Resume
     wState = 'running';
     mcRunning = true;
     mcSetState('running', 'GO - AMRAP IN PROGRESS');
@@ -1003,55 +1178,35 @@ function wPause() {
       if (mcSec === 10) mcSetState('running', 'PUSH - FINAL 10');
       if (mcSec <= 0) {
         clearInterval(mcInterval); mcRunning = false;
-        var c = document.getElementById('mc-num');
-        var b = document.getElementById('mc-bar');
+        var c = document.getElementById('mc-num'), b = document.getElementById('mc-bar');
         if (c) c.textContent = 'DONE';
         if (b) b.style.width = '0%';
         mcSetState('done', "TIME'S UP - HIT FINISH");
         ringBell();
       }
     }, 1000);
-    var pb = document.getElementById('wctl-pause');
+    var pb = document.getElementById('wctl-pause'), sb = document.getElementById('wctl-start');
     if (pb) { pb.textContent = 'PAUSE'; pb.className = 'wctl-btn wctl-pause'; }
-    var sb = document.getElementById('wctl-start');
     if (sb) { sb.textContent = 'STARTED'; sb.className = 'wctl-btn wctl-start going'; }
   }
 }
-
 function wFinish() {
-  if (wState === 'idle') return;
   var fb = document.getElementById('wctl-finish');
-  if (fb && fb.classList.contains('done')) return;
-  // Stop clock
+  if (!fb || fb.classList.contains('done') || wState === 'idle') return;
   clearInterval(mcInterval); mcRunning = false;
   wState = 'done';
-  // Get round count from main clock round counter
   var rnEl = document.getElementById('mc-rounds');
   var rounds = rnEl ? parseInt(rnEl.textContent) || 0 : 0;
-  // Get notes from wod card if present
-  var notesEl = document.getElementById('wod-notes-ta');
-  var notes = notesEl ? notesEl.value : '';
-  // Log the session with full WOD data
   var key = todayKey();
-  var entry = {
-    key: key,
-    date: new Date().toLocaleDateString(),
-    focus: currentWod ? currentWod.focus.name : 'Workout',
-    rounds: rounds,
-    notes: notes,
-    wod: currentWod
-  };
-  // Save to sessions array (keyed by date - one per day, overwrite if re-done)
-  var existing = false;
+  var entry = { key: key, date: new Date().toLocaleDateString(), focus: currentWod ? currentWod.focus : 'Workout', rounds: rounds, notes: '', wod: currentWod };
+  var found = false;
   for (var i = 0; i < sessions.length; i++) {
-    if (sessions[i].key === key) { sessions[i] = entry; existing = true; break; }
+    if (sessions[i].key === key) { sessions[i] = entry; found = true; break; }
   }
-  if (!existing) sessions.push(entry);
-  saveSessions();
+  if (!found) sessions.push(entry);
+  lsSet('hr-v3', JSON.stringify(sessions));
   renderTrackerStats();
-  // Update buttons
-  var sb = document.getElementById('wctl-start');
-  var pb = document.getElementById('wctl-pause');
+  var sb = document.getElementById('wctl-start'), pb = document.getElementById('wctl-pause');
   if (sb) { sb.textContent = 'DONE'; sb.className = 'wctl-btn wctl-start done'; }
   if (pb) { pb.textContent = 'PAUSE'; pb.className = 'wctl-btn wctl-pause'; }
   if (fb) { fb.textContent = 'LOGGED'; fb.className = 'wctl-btn wctl-finish done'; }
@@ -1062,43 +1217,25 @@ function wFinish() {
 function ringBell() {
   try {
     var ctx = new (window.AudioContext || window.webkitAudioContext)();
-    var params = [[0,.7,880,440,1.2],[.38,.5,1100,550,.9],[.76,.45,880,440,1.0]];
-    params.forEach(function(p) {
+    [[0,.7,880,440,1.2],[.38,.5,1100,550,.9],[.76,.45,880,440,1.0]].forEach(function(p) {
       var o = ctx.createOscillator(), g = ctx.createGain();
-      o.connect(g); g.connect(ctx.destination);
-      o.type = 'sine';
+      o.connect(g); g.connect(ctx.destination); o.type = 'sine';
       o.frequency.setValueAtTime(p[2], ctx.currentTime + p[0]);
       o.frequency.exponentialRampToValueAtTime(p[3], ctx.currentTime + p[0] + .8);
       g.gain.setValueAtTime(.001, ctx.currentTime + p[0]);
       g.gain.exponentialRampToValueAtTime(p[1], ctx.currentTime + p[0] + .015);
       g.gain.exponentialRampToValueAtTime(.001, ctx.currentTime + p[0] + p[4]);
-      o.start(ctx.currentTime + p[0]);
-      o.stop(ctx.currentTime + p[0] + p[4] + .1);
+      o.start(ctx.currentTime + p[0]); o.stop(ctx.currentTime + p[0] + p[4] + .1);
     });
-    var o2 = ctx.createOscillator(), g2 = ctx.createGain();
-    o2.connect(g2); g2.connect(ctx.destination);
-    o2.type = 'triangle'; o2.frequency.value = 1760;
-    g2.gain.setValueAtTime(.001, ctx.currentTime);
-    g2.gain.exponentialRampToValueAtTime(.25, ctx.currentTime + .01);
-    g2.gain.exponentialRampToValueAtTime(.001, ctx.currentTime + .5);
-    o2.start(ctx.currentTime); o2.stop(ctx.currentTime + .6);
   } catch(e) {}
-  flashEl('bflash');
-}
-function flashEl(id) {
-  var el = document.getElementById(id);
-  if (!el) return;
-  [0, 420, 840].forEach(function(t) {
-    setTimeout(function() {
-      el.classList.add('ring');
-      setTimeout(function() { el.classList.remove('ring'); }, 180);
-    }, t);
+  var fl = document.getElementById('bflash');
+  if (fl) [0,420,840].forEach(function(t) {
+    setTimeout(function() { fl.classList.add('ring'); setTimeout(function() { fl.classList.remove('ring'); }, 180); }, t);
   });
 }
 
-// Standalone Timer tab
+// Standalone timer tab
 var tSec = 1200, tTotal = 1200, tRunning = false, tInterval = null, tRounds = 0;
-function fmtTime(s) { return pad(Math.floor(s / 60)) + ':' + pad(s % 60); }
 function tSetState(cls, ph) {
   var c = document.getElementById('t-clock'), p = document.getElementById('t-phase');
   if (c) c.className = 'clock-num ' + cls;
@@ -1115,29 +1252,24 @@ function tPreset(min, btn) {
   for (var i = 0; i < btns.length; i++) btns[i].classList.remove('sel');
   btn.classList.add('sel');
   if (min === 0) {
-    var ci = document.getElementById('cust-inputs');
-    if (ci) ci.style.display = 'flex';
+    var ci = document.getElementById('cust-inputs'); if (ci) ci.style.display = 'flex';
     tCustom();
   } else {
-    var ci = document.getElementById('cust-inputs');
-    if (ci) ci.style.display = 'none';
-    tTotal = min * 60; tSec = tTotal;
-    tUpdateClock(); tSetState('idle', 'READY - TAP START');
+    var ci = document.getElementById('cust-inputs'); if (ci) ci.style.display = 'none';
+    tTotal = min * 60; tSec = tTotal; tUpdateClock(); tSetState('idle', 'READY - TAP START');
   }
 }
 function tCustom() {
   if (tRunning) return;
   var m = parseInt((document.getElementById('cm') || {}).value) || 0;
   var s = parseInt((document.getElementById('cs') || {}).value) || 0;
-  tTotal = m * 60 + s; tSec = tTotal;
-  tUpdateClock(); tSetState('idle', 'READY - TAP START');
+  tTotal = m * 60 + s; tSec = tTotal; tUpdateClock(); tSetState('idle', 'READY - TAP START');
 }
 function tAction() {
   if (!tRunning) {
     if (tSec <= 0) tReset();
     tRunning = true;
-    var sb = document.getElementById('t-btn');
-    if (sb) sb.textContent = 'PAUSE';
+    var sb = document.getElementById('t-btn'); if (sb) sb.textContent = 'PAUSE';
     tSetState('running', 'GO - AMRAP IN PROGRESS');
     tInterval = setInterval(function() {
       tSec--; tUpdateClock();
@@ -1146,17 +1278,13 @@ function tAction() {
       if (tSec <= 0) {
         clearInterval(tInterval); tRunning = false;
         var c = document.getElementById('t-clock'), b = document.getElementById('t-bar'), sb2 = document.getElementById('t-btn');
-        if (c) c.textContent = 'DONE';
-        if (b) b.style.width = '0%';
-        tSetState('done', "TIME'S UP - LOG YOUR ROUNDS");
-        if (sb2) sb2.textContent = 'START';
-        ringBell();
+        if (c) c.textContent = 'DONE'; if (b) b.style.width = '0%';
+        tSetState('done', "TIME'S UP"); if (sb2) sb2.textContent = 'START'; ringBell();
       }
     }, 1000);
   } else {
     clearInterval(tInterval); tRunning = false;
-    var sb = document.getElementById('t-btn');
-    if (sb) sb.textContent = 'RESUME';
+    var sb = document.getElementById('t-btn'); if (sb) sb.textContent = 'RESUME';
     tSetState('paused', 'PAUSED');
   }
 }
@@ -1164,34 +1292,26 @@ function tReset() {
   clearInterval(tInterval); tRunning = false;
   var sel = document.querySelector('.pbtn.sel');
   if (sel && sel.id !== 'cust-btn') tTotal = parseInt(sel.textContent) * 60;
-  tSec = tTotal; tUpdateClock();
-  tSetState('idle', 'READY - TAP START');
-  var sb = document.getElementById('t-btn');
-  if (sb) sb.textContent = 'START';
+  tSec = tTotal; tUpdateClock(); tSetState('idle', 'READY - TAP START');
+  var sb = document.getElementById('t-btn'); if (sb) sb.textContent = 'START';
 }
 function tRoundAdd() { var el = document.getElementById('t-rcount'); if (el) el.textContent = ++tRounds; }
 function tRoundReset() { tRounds = 0; var el = document.getElementById('t-rcount'); if (el) el.textContent = 0; }
 
-// Tabata Engine
-var tabState = 'idle', tabSec = 20, tabIntvl = null;
-var tabWork = 20, tabRest = 10, tabTotal = 8, tabRound = 0, tabPhase = 'work';
+// Tabata
+var tabState = 'idle', tabSec = 20, tabIntvl = null, tabWork = 20, tabRest = 10, tabTotal = 8, tabRound = 0, tabPhase = 'work';
 function tabGetSettings() {
   var tw = document.getElementById('tab-work'), tr = document.getElementById('tab-rest'), tn = document.getElementById('tab-rounds');
-  tabWork  = Math.max(5, parseInt((tw && tw.value) || '20') || 20);
-  tabRest  = Math.max(5, parseInt((tr && tr.value) || '10') || 10);
-  tabTotal = Math.max(1, parseInt((tn && tn.value) || '8')  || 8);
+  tabWork = Math.max(5, parseInt((tw && tw.value) || '20') || 20);
+  tabRest = Math.max(5, parseInt((tr && tr.value) || '10') || 10);
+  tabTotal = Math.max(1, parseInt((tn && tn.value) || '8') || 8);
 }
 function tabPreset(w, r, n) {
   var tw = document.getElementById('tab-work'), tr = document.getElementById('tab-rest'), tn = document.getElementById('tab-rounds');
   if (tw) tw.value = w; if (tr) tr.value = r; if (tn) tn.value = n;
-  tabWork = w; tabRest = r; tabTotal = n;
-  if (tabState === 'idle') tabShowReset();
+  tabWork = w; tabRest = r; tabTotal = n; if (tabState === 'idle') tabShowReset();
 }
-function tabReset() {
-  tabGetSettings(); clearInterval(tabIntvl); tabIntvl = null;
-  tabState = 'idle'; tabPhase = 'work'; tabRound = 0; tabSec = tabWork;
-  tabShowReset();
-}
+function tabReset() { tabGetSettings(); clearInterval(tabIntvl); tabIntvl = null; tabState = 'idle'; tabPhase = 'work'; tabRound = 0; tabSec = tabWork; tabShowReset(); }
 function tabShowReset() {
   var clk = document.getElementById('tab-clock'), bdg = document.getElementById('tab-badge');
   var inf = document.getElementById('tab-info'), prg = document.getElementById('tab-prog'), btn = document.getElementById('tab-btn');
@@ -1204,15 +1324,9 @@ function tabShowReset() {
 }
 function tabAction() {
   if (tabState === 'done') { tabReset(); return; }
-  if (tabState === 'idle') {
-    tabGetSettings(); tabRound = 1; tabPhase = 'work'; tabSec = tabWork; tabState = 'work';
-    tabStartPhase();
-  } else if (tabIntvl) {
-    clearInterval(tabIntvl); tabIntvl = null;
-    var btn = document.getElementById('tab-btn'); if (btn) btn.textContent = 'RESUME';
-  } else {
-    tabStartTick(); var btn = document.getElementById('tab-btn'); if (btn) btn.textContent = 'PAUSE';
-  }
+  if (tabState === 'idle') { tabGetSettings(); tabRound = 1; tabPhase = 'work'; tabSec = tabWork; tabState = 'work'; tabStartPhase(); }
+  else if (tabIntvl) { clearInterval(tabIntvl); tabIntvl = null; var btn = document.getElementById('tab-btn'); if (btn) btn.textContent = 'RESUME'; }
+  else { tabStartTick(); var btn = document.getElementById('tab-btn'); if (btn) btn.textContent = 'PAUSE'; }
 }
 function tabStartPhase() {
   var isWork = tabPhase === 'work';
@@ -1242,11 +1356,10 @@ function tabNext() {
     if (tabRound >= tabTotal) {
       tabState = 'done';
       var clk = document.getElementById('tab-clock'), bdg = document.getElementById('tab-badge');
-      var inf = document.getElementById('tab-info'), prg = document.getElementById('tab-prog'), btn = document.getElementById('tab-btn');
+      var inf = document.getElementById('tab-info'), btn = document.getElementById('tab-btn');
       if (clk) { clk.textContent = 'DONE'; clk.className = 'tab-clock done'; }
       if (bdg) { bdg.textContent = 'COMPLETE!'; bdg.className = 'tab-badge work'; }
       if (inf) inf.textContent = 'All ' + tabTotal + ' rounds done!';
-      if (prg) prg.style.width = '100%';
       if (btn) btn.textContent = 'RESET';
       ringBell(); return;
     }
@@ -1256,53 +1369,28 @@ function tabNext() {
   }
 }
 function tabUpdateExercise() {
-  var wrap = document.getElementById('tab-ex-wrap');
-  if (!wrap) return;
-  if (!currentWod || !currentWod.exercises || !currentWod.exercises.length) { wrap.style.display = 'none'; return; }
+  var wrap = document.getElementById('tab-ex-wrap'); if (!wrap) return;
+  if (!currentWod || !currentWod.stations || !currentWod.stations.length) { wrap.style.display = 'none'; return; }
   wrap.style.display = 'block';
-  var exs = currentWod.exercises, idx = Math.max(0, tabRound - 1) % exs.length;
-  var ex = exs[idx], nxt = exs[(idx + 1) % exs.length], isRest = tabPhase === 'rest';
-  var card = document.getElementById('tab-ex-card'), nm = document.getElementById('tab-ex-name');
-  var cu = document.getElementById('tab-ex-cue'), nx = document.getElementById('tab-ex-next');
+  var exs = currentWod.stations, idx = Math.max(0, tabRound - 1) % exs.length, ex = exs[idx], nxt = exs[(idx + 1) % exs.length], isRest = tabPhase === 'rest';
+  var card = document.getElementById('tab-ex-card'), nm = document.getElementById('tab-ex-name'), cu = document.getElementById('tab-ex-cue'), nx = document.getElementById('tab-ex-next');
   if (card) card.className = 'tab-ex-card' + (isRest ? ' resting' : '');
   if (nm) nm.textContent = isRest ? 'REST' : ex.n;
   if (cu) cu.textContent = isRest ? 'Breathe. Next: ' + nxt.n : ex.c;
   if (nx) nx.textContent = isRest ? '' : 'Next: ' + nxt.n + ' (' + nxt.r + ' ' + nxt.u + ')';
 }
 function dingWork() {
-  try {
-    var ctx = new (window.AudioContext || window.webkitAudioContext)();
-    var o = ctx.createOscillator(), g = ctx.createGain();
-    o.connect(g); g.connect(ctx.destination); o.type = 'sine';
-    o.frequency.setValueAtTime(1047, ctx.currentTime);
-    o.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + .3);
-    g.gain.setValueAtTime(.001, ctx.currentTime); g.gain.exponentialRampToValueAtTime(.8, ctx.currentTime + .01);
-    g.gain.exponentialRampToValueAtTime(.001, ctx.currentTime + .5);
-    o.start(ctx.currentTime); o.stop(ctx.currentTime + .55);
-  } catch(e) {}
-  flashEl('tf-work');
+  try { var ctx = new (window.AudioContext || window.webkitAudioContext)(); var o = ctx.createOscillator(), g = ctx.createGain(); o.connect(g); g.connect(ctx.destination); o.type = 'sine'; o.frequency.setValueAtTime(1047, ctx.currentTime); o.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + .3); g.gain.setValueAtTime(.001, ctx.currentTime); g.gain.exponentialRampToValueAtTime(.8, ctx.currentTime + .01); g.gain.exponentialRampToValueAtTime(.001, ctx.currentTime + .5); o.start(ctx.currentTime); o.stop(ctx.currentTime + .55); } catch(e) {}
+  var f = document.getElementById('tf-work'); if (f) { f.classList.add('ring'); setTimeout(function() { f.classList.remove('ring'); }, 200); }
 }
 function dingRest() {
-  try {
-    var ctx = new (window.AudioContext || window.webkitAudioContext)();
-    [0, .25].forEach(function(off) {
-      var o = ctx.createOscillator(), g = ctx.createGain();
-      o.connect(g); g.connect(ctx.destination); o.type = 'sine';
-      o.frequency.setValueAtTime(660, ctx.currentTime + off);
-      o.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + off + .2);
-      g.gain.setValueAtTime(.001, ctx.currentTime + off); g.gain.exponentialRampToValueAtTime(.6, ctx.currentTime + off + .01);
-      g.gain.exponentialRampToValueAtTime(.001, ctx.currentTime + off + .35);
-      o.start(ctx.currentTime + off); o.stop(ctx.currentTime + off + .4);
-    });
-  } catch(e) {}
-  flashEl('tf-rest');
+  try { var ctx = new (window.AudioContext || window.webkitAudioContext)(); [0, .25].forEach(function(off) { var o = ctx.createOscillator(), g = ctx.createGain(); o.connect(g); g.connect(ctx.destination); o.type = 'sine'; o.frequency.setValueAtTime(660, ctx.currentTime + off); o.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + off + .2); g.gain.setValueAtTime(.001, ctx.currentTime + off); g.gain.exponentialRampToValueAtTime(.6, ctx.currentTime + off + .01); g.gain.exponentialRampToValueAtTime(.001, ctx.currentTime + off + .35); o.start(ctx.currentTime + off); o.stop(ctx.currentTime + off + .4); }); } catch(e) {}
+  var f = document.getElementById('tf-rest'); if (f) { f.classList.add('ring'); setTimeout(function() { f.classList.remove('ring'); }, 200); }
 }
 
 // TRACKER / CALENDAR
 var sessions = [];
 function loadSessions() { try { sessions = JSON.parse(lsGet('hr-v3') || '[]'); } catch(e) { sessions = []; } }
-function saveSessions() { lsSet('hr-v3', JSON.stringify(sessions)); }
-
 function renderTrackerStats() {
   var tot = sessions.reduce(function(a, s) { return a + (s.rounds || 0); }, 0);
   var pr = sessions.length ? Math.max.apply(null, sessions.map(function(s) { return s.rounds || 0; })) : null;
@@ -1313,60 +1401,39 @@ function renderTrackerStats() {
 }
 
 var calYear, calMonth;
-
 function renderCal() {
   var now = new Date();
   if (calYear === undefined) { calYear = now.getFullYear(); calMonth = now.getMonth(); }
   var monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-  var el = document.getElementById('cal-month');
-  if (el) el.textContent = monthNames[calMonth] + ' ' + calYear;
-  var grid = document.getElementById('cal-grid');
-  if (!grid) return;
+  var el = document.getElementById('cal-month'); if (el) el.textContent = monthNames[calMonth] + ' ' + calYear;
+  var grid = document.getElementById('cal-grid'); if (!grid) return;
   var todStr = todayKey();
-  var first = new Date(calYear, calMonth, 1).getDay();
-  var daysInM = new Date(calYear, calMonth + 1, 0).getDate();
-  // Build lookup of worked days this month
   var worked = {};
-  sessions.forEach(function(s) {
-    if (s.key) worked[s.key] = s;
-  });
+  sessions.forEach(function(s) { if (s.key) worked[s.key] = s; });
   var dows = ['S','M','T','W','T','F','S'];
   var html = dows.map(function(d) { return '<div class="cal-dow">' + d + '</div>'; }).join('');
+  var first = new Date(calYear, calMonth, 1).getDay();
+  var daysInM = new Date(calYear, calMonth + 1, 0).getDate();
   for (var i = 0; i < first; i++) html += '<div class="cal-day empty"></div>';
   for (var d = 1; d <= daysInM; d++) {
     var ds = calYear + '-' + pad(calMonth + 1) + '-' + pad(d);
-    var cls = 'cal-day';
-    if (ds === todStr) cls += ' today';
-    var entry = worked[ds];
-    if (entry) cls += ' worked';
-    var focusLabel = entry ? entry.focus.slice(0,4).toUpperCase() : '';
-    html += '<div class="' + cls + '" onclick="openWodDetail(\'' + ds + '\')">' +
-      d +
-      (focusLabel ? '<div style="font-size:6px;letter-spacing:0;margin-top:1px;opacity:.8">' + focusLabel + '</div>' : '') +
-    '</div>';
+    var cls = 'cal-day'; if (ds === todStr) cls += ' today';
+    var entry = worked[ds]; if (entry) cls += ' worked';
+    var focusLabel = entry ? entry.focus.slice(0, 4).toUpperCase() : '';
+    html += '<div class="' + cls + '" onclick="openWodDetail(\'' + ds + '\')">' + d + (focusLabel ? '<div style="font-size:6px;margin-top:1px">' + focusLabel + '</div>' : '') + '</div>';
   }
   grid.innerHTML = html;
 }
-
 function calPrev() { calMonth--; if (calMonth < 0) { calMonth = 11; calYear--; } renderCal(); }
 function calNext() { calMonth++; if (calMonth > 11) { calMonth = 0; calYear++; } renderCal(); }
 
-// WOD DETAIL POPUP
 var detailKey = null;
-
 function openWodDetail(ds) {
   detailKey = ds;
   var entry = null;
-  for (var i = 0; i < sessions.length; i++) {
-    if (sessions[i].key === ds) { entry = sessions[i]; break; }
-  }
-  var overlay = document.getElementById('wod-detail-overlay');
-  if (!overlay) return;
-  var dateEl = document.getElementById('wd-date');
-  var focusEl = document.getElementById('wd-focus');
-  var roundsEl = document.getElementById('wd-rounds');
-  var exEl = document.getElementById('wd-exercises');
-  var notesEl = document.getElementById('wd-notes');
+  for (var i = 0; i < sessions.length; i++) { if (sessions[i].key === ds) { entry = sessions[i]; break; } }
+  var overlay = document.getElementById('wod-detail-overlay'); if (!overlay) return;
+  var dateEl = document.getElementById('wd-date'), focusEl = document.getElementById('wd-focus'), roundsEl = document.getElementById('wd-rounds'), exEl = document.getElementById('wd-exercises'), notesEl = document.getElementById('wd-notes');
   if (dateEl) dateEl.textContent = ds;
   if (!entry) {
     if (focusEl) focusEl.textContent = 'No workout logged';
@@ -1377,10 +1444,13 @@ function openWodDetail(ds) {
     if (focusEl) focusEl.textContent = entry.focus;
     if (roundsEl) roundsEl.textContent = entry.rounds + ' rounds completed';
     var exHtml = '';
-    if (entry.wod && entry.wod.exercises) {
-      entry.wod.exercises.forEach(function(ex) {
+    if (entry.wod && entry.wod.stations) {
+      entry.wod.stations.forEach(function(ex) {
+        var color = EQ_COLOR[ex.eq] || '#e8622a';
+        var label = EQ_LABEL[ex.eq] || ex.eq;
+        var bodyLabel = ex.body.charAt(0).toUpperCase() + ex.body.slice(1);
         exHtml += '<div class="wod-detail-ex">' +
-          '<span class="wod-detail-ex-name">' + ex.n + '</span>' +
+          '<span class="wod-detail-ex-name">' + ex.n + ' <span style="font-size:10px;color:' + color + '">[' + label + ' - ' + bodyLabel + ']</span></span>' +
           '<span class="wod-detail-ex-reps">' + ex.r + ' ' + ex.u + '</span>' +
         '</div>';
       });
@@ -1390,37 +1460,20 @@ function openWodDetail(ds) {
   }
   overlay.classList.add('open');
 }
-
 function closeWodDetail() {
-  var overlay = document.getElementById('wod-detail-overlay');
-  if (overlay) overlay.classList.remove('open');
+  var overlay = document.getElementById('wod-detail-overlay'); if (overlay) overlay.classList.remove('open');
   detailKey = null;
 }
-
 function saveWodDetailNotes() {
   if (!detailKey) return;
-  var notesEl = document.getElementById('wd-notes');
-  var notes = notesEl ? notesEl.value : '';
+  var notesEl = document.getElementById('wd-notes'), notes = notesEl ? notesEl.value : '';
   var found = false;
-  for (var i = 0; i < sessions.length; i++) {
-    if (sessions[i].key === detailKey) {
-      sessions[i].notes = notes;
-      found = true; break;
-    }
-  }
-  // If no entry yet (day with no workout), create a note-only entry
-  if (!found) {
-    sessions.push({ key: detailKey, date: detailKey, focus: 'Note', rounds: 0, notes: notes, wod: null });
-  }
-  saveSessions();
+  for (var i = 0; i < sessions.length; i++) { if (sessions[i].key === detailKey) { sessions[i].notes = notes; found = true; break; } }
+  if (!found) sessions.push({ key: detailKey, date: detailKey, focus: 'Note', rounds: 0, notes: notes, wod: null });
+  lsSet('hr-v3', JSON.stringify(sessions));
   renderCal();
-  // Flash the save button
   var btn = document.querySelector('.wod-detail-save-btn');
-  if (btn) {
-    var orig = btn.textContent;
-    btn.textContent = 'Saved!';
-    setTimeout(function() { btn.textContent = orig; }, 1200);
-  }
+  if (btn) { var orig = btn.textContent; btn.textContent = 'Saved!'; setTimeout(function() { btn.textContent = orig; }, 1200); }
 }
 
 // INIT
@@ -1428,10 +1481,9 @@ function saveWodDetailNotes() {
   var d = new Date();
   var dateEl = document.getElementById('hero-date');
   if (dateEl) dateEl.textContent = DAYS[d.getDay()] + ' ' + MONTHS[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
-  tUpdateClock();
-  mcUpdateClock();
-  loadSessions();
-  renderTrackerStats();
+  tUpdateClock(); mcUpdateClock();
+  loadSessions(); renderTrackerStats();
+  showQuote();
   initWod();
 })();
 </script>
