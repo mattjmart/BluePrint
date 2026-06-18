@@ -357,8 +357,8 @@ button { touch-action:manipulation; }
 .time-cancel-btn { width:100%; padding:10px; background:none; color:var(--muted); border:1px solid var(--border); font-family:'Space Mono',monospace; font-size:10px; letter-spacing:2px; text-transform:uppercase; cursor:pointer; border-radius:3px; }
 .time-cancel-btn:active { color:var(--white); }
 
-/* BIG GENERATE BUTTON */
-.gen-btn { width:100%; padding:18px; background:var(--orange); color:var(--bg); border:none; font-family:'Syne',sans-serif; font-size:20px; font-weight:800; letter-spacing:1px; cursor:pointer; border-radius:3px; box-shadow:0 4px 18px rgba(232,98,42,.4); transition:.15s; }
+/* BIG GENERATE BUTTON - same height as rest day */
+.gen-btn { padding:18px 10px; background:var(--orange); color:var(--bg); border:none; font-family:'Syne',sans-serif; font-size:16px; font-weight:800; letter-spacing:1px; cursor:pointer; border-radius:3px; box-shadow:0 4px 18px rgba(232,98,42,.35); transition:.15s; white-space:nowrap; }
 .gen-btn:active { background:#d05520; transform:scale(.98); }
 
 
@@ -754,23 +754,6 @@ var EX = [
   {n:'High-to-Low Plank', eq:'bw', body:'core', r:8, u:'reps', c:'Push-up position, lower one elbow then the other, press back up. Anti-rotation core.', m:'Slow each transition'},
   {n:'Bulgarian Split Squat', eq:'bw', body:'legs', r:8, u:'each', c:'Rear foot on bench, deep single-leg squat. Drives quads and glutes.', m:'Standard reverse lunge'},
 
-  // MEDICINE BALL
-  {n:'MB Slam', eq:'mb', body:'core', r:10, u:'reps', c:'Overhead, slam ball to floor with full force. Full body explosive. Catch or pick up.', m:'Lighter ball'},
-  {n:'MB Wall Ball', eq:'mb', body:'legs', r:12, u:'reps', c:'Squat, explode up, throw ball to target on wall. Catch and repeat. Full body.', m:'Lower target or lighter ball'},
-  {n:'MB Russian Twist', eq:'mb', body:'core', r:20, u:'total', c:'Sit, feet off floor, rotate ball side to side. Obliques. Touch floor each side.', m:'Feet on floor'},
-  {n:'MB Chest Pass', eq:'mb', body:'chest', r:10, u:'reps', c:'Hold at chest, explosive push forward to wall. Catch and repeat. Chest and triceps.', m:'Lighter ball or partner'},
-  {n:'MB Overhead Throw', eq:'mb', body:'shoulders', r:8, u:'reps', c:'Overhead throw to wall or slam to floor in front. Explosive chest and shoulders.', m:'Lighter ball'},
-  {n:'MB Push-Up', eq:'mb', body:'chest', r:8, u:'reps', c:'Hands on ball, push-up. Instability fires more stabilizers. Keep core rigid.', m:'Hands on floor'},
-  {n:'MB Lunge and Twist', eq:'mb', body:'legs', r:8, u:'each', c:'Step into lunge, rotate ball to front leg side. Hips, quads, and rotational core.', m:'No ball - hands on hips'},
-  {n:'MB Squat', eq:'mb', body:'legs', r:12, u:'reps', c:'Hold ball at chest or overhead. Squat deep, full extension at top.', m:'Bodyweight squat'},
-  {n:'MB Romanian Deadlift', eq:'mb', body:'legs', r:12, u:'reps', c:'Hold ball, hip hinge, flat back. Feel hamstring stretch at bottom, extend at top.', m:'Light KB or DB'},
-  {n:'MB Woodchop', eq:'mb', body:'core', r:10, u:'each', c:'Start high one side, diagonal chop across body to opposite hip. Rotational power.', m:'Lighter ball'},
-  {n:'MB Tricep Overhead Ext', eq:'mb', body:'triceps', r:10, u:'reps', c:'Hold ball overhead in both hands. Lower behind head, extend to start. Elbows fixed.', m:'Lighter ball or KB'},
-  {n:'MB Curl', eq:'mb', body:'biceps', r:10, u:'reps', c:'Hold ball with both hands, curl to chest. Squeeze biceps at top.', m:'DB curl x12'},
-  {n:'MB Lateral Raise', eq:'mb', body:'shoulders', r:10, u:'each', c:'Hold ball in one hand, raise to shoulder height. Control descent. Lateral deltoid.', m:'Lighter ball'},
-  {n:'MB Glute Bridge', eq:'mb', body:'legs', r:12, u:'reps', c:'On back, ball on hips held in place. Drive hips to ceiling. Glutes and hamstrings.', m:'Bodyweight glute bridge'},
-  {n:'MB Superman', eq:'mb', body:'back', r:10, u:'reps', c:'Face down, hold ball extended. Lift chest, arms, and legs off floor. Lower back.', m:'No ball - bodyweight superman'},
-
   // CABLE MACHINE
   {n:'Cable Lat Pulldown', eq:'cab', body:'back', r:10, u:'reps', c:'Wide grip, pull bar to upper chest. Drive elbows down and back. Squeeze lats.', m:'Lighter weight, fuller range'},
   {n:'Cable Seated Row', eq:'cab', body:'back', r:10, u:'reps', c:'Upright posture. Pull handle to lower abdomen. Squeeze shoulder blades together.', m:'Lighter weight'},
@@ -805,38 +788,19 @@ var EX = [
   {n:'DB Bicep Curl', eq:'db', body:'biceps', r:12, u:'reps', c:'Alternate or together. Full range of motion. Squeeze at top. Elbow stays fixed.', m:'Lighter weight'},
   {n:'DB Hammer Curl', eq:'db', body:'biceps', r:12, u:'reps', c:'Neutral grip, curl. Targets brachialis for arm thickness. No swinging.', m:'Lighter weight'},
   {n:'DB Tricep Kickback', eq:'db', body:'triceps', r:12, u:'each', c:'Hinge over, upper arm parallel to floor, extend elbow to straight. Peak contraction.', m:'Lighter weight'},
-  {n:'DB Overhead Tricep Ext', eq:'db', body:'triceps', r:10, u:'reps', c:'One or two DBs overhead. Bend elbows behind head, extend fully. Elbows stay fixed.', m:'Lighter weight'}
+  {n:'DB Overhead Tricep Ext', eq:'db', body:'triceps', r:10, u:'reps', c:'One or two DBs overhead. Bend elbows behind head, extend fully. Elbows stay fixed.', m:'Lighter weight'},
+  {n:'DB Woodchop', eq:'db', body:'core', r:10, u:'each', c:'Diagonal chop from hip to opposite shoulder. Rotational power, core braced.', m:'Lighter weight'},
+  {n:'DB Suitcase Carry', eq:'db', body:'core', r:20, u:'meters', c:'One DB at side, walk tall resisting lean. Anti-lateral flexion. Core fires the whole time.', m:'Stationary hold 20 sec each side'}
 ];
 
 // Equipment labels for display
-var EQ_LABEL = {
-  kb: 'KB', lm: 'LANDMINE', trx: 'TRX', bw: 'BODYWEIGHT', mb: 'MED BALL', cab: 'CABLE', db: 'DUMBBELL'
-};
-var EQ_COLOR = {
-  kb: '#e8622a', lm: '#c8a84b', trx: '#2ab8c8', bw: '#9b6eda', mb: '#3aad6a', cab: '#e84870', db: '#4888d0'
-};
+var EQ_LABEL = { kb:'KB', lm:'LANDMINE', trx:'TRX', bw:'BODYWEIGHT', cab:'CABLE', db:'DUMBBELL' };
+var EQ_COLOR = { kb:'#e8622a', lm:'#c8a84b', trx:'#2ab8c8', bw:'#9b6eda', cab:'#e84870', db:'#4888d0' };
 
-// Body parts we want to hit - one of each per workout
-var BODY_PARTS = ['legs', 'chest', 'back', 'shoulders', 'biceps', 'triceps', 'core'];
-
-// Focus configs - which equipment types to prefer per focus
-var FOCUSES = {
-  'Full Gym': ['kb', 'lm', 'trx', 'bw', 'mb', 'cab', 'db'],
-  'Kettlebell': ['kb', 'kb', 'kb', 'bw', 'mb', 'kb', 'kb'],
-  'Cable Heavy': ['cab', 'cab', 'cab', 'bw', 'db', 'cab', 'cab'],
-  'TRX + BW': ['trx', 'trx', 'trx', 'bw', 'bw', 'trx', 'trx'],
-  'Dumbbell': ['db', 'db', 'db', 'bw', 'mb', 'db', 'db'],
-  'Power Day': ['lm', 'kb', 'lm', 'kb', 'bw', 'lm', 'mb']
-};
-
-var FOCUS_DESC = {
-  'Full Gym': 'All 7 equipment types - KB, Landmine, TRX, Cable, Med Ball, Dumbbell and Bodyweight. Maximum variety.',
-  'Kettlebell': 'Kettlebell-dominant hybrid circuit. The most metabolically demanding combination for fat loss.',
-  'Cable Heavy': 'Cable machine focused. Constant tension through every rep - ideal for muscle definition.',
-  'TRX + BW': 'Suspension trainer and pure bodyweight. No weights needed - full body in 20 minutes.',
-  'Dumbbell': 'Dumbbell-based circuit with bodyweight and medicine ball. Classic strength-meets-cardio.',
-  'Power Day': 'Landmine and KB power day. Explosive compound movements for athletic performance and fat burn.'
-};
+// 6 equipment types (no medicine ball)
+var ALL_EQ = ['kb', 'lm', 'trx', 'bw', 'cab', 'db'];
+// 7 body parts - 6 are picked each workout
+var ALL_BODY = ['legs', 'chest', 'back', 'shoulders', 'biceps', 'triceps', 'core'];
 
 // Seeded RNG
 function seededRng(seed) {
@@ -855,6 +819,15 @@ function bumpReroll() {
   var n = rerollOffset() + 1;
   lsSet('rr-' + todaySeed(), n);
   return n;
+}
+
+function shuffle(arr, rng) {
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(rng() * (i + 1));
+    var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+  }
+  return a;
 }
 
 // MOTIVATIONAL QUOTES
@@ -925,44 +898,56 @@ function showQuote() {
 // Keep full gym as the default - no equipment restriction
 var selectedFocus = 'Full Gym';
 
-
 function generateWod(seed) {
   var rng = seededRng(seed >>> 0);
-  var focus = selectedFocus || 'Full Gym';
-  var eqPrefs = FOCUSES[focus] || FOCUSES['Full Gym'];
 
-  // Build one station per body part, each hitting a DIFFERENT body part
-  // Equipment preference per body part slot (eqPrefs[i] maps to BODY_PARTS[i])
+  // Shuffle both equipment list and body part list independently
+  var eqs = shuffle(ALL_EQ, rng);           // 6 equipment types in random order
+  var bodies = shuffle(ALL_BODY, rng);      // 7 body parts shuffled, take first 6
+  bodies = bodies.slice(0, 6);
+
   var stations = [];
-  var usedBodyParts = {};
-  var usedEquipment = {};
+  var usedNames = {};
 
-  for (var i = 0; i < BODY_PARTS.length; i++) {
-    var targetBody = BODY_PARTS[i];
-    var prefEq = eqPrefs[i];
+  for (var i = 0; i < 6; i++) {
+    var eq = eqs[i];
+    var body = bodies[i];
 
-    // Get all exercises matching this body part
-    var candidates = EX.filter(function(e) {
-      return e.body === targetBody && !usedEquipment[e.eq + '_' + e.n];
+    // All exercises for this equipment + body part combo
+    var pool = EX.filter(function(e) {
+      return e.eq === eq && e.body === body && !usedNames[e.n];
     });
 
-    if (candidates.length === 0) {
-      candidates = EX.filter(function(e) { return e.body === targetBody; });
+    // If no exact match exists, fall back to same body part any equipment
+    // (excluding already used equipment for this workout)
+    if (pool.length === 0) {
+      var usedEq = {};
+      for (var s = 0; s < stations.length; s++) usedEq[stations[s].eq] = true;
+      pool = EX.filter(function(e) {
+        return e.body === body && !usedNames[e.n] && !usedEq[e.eq];
+      });
     }
 
-    // Prefer the suggested equipment type, fall back to any
-    var preferred = candidates.filter(function(e) { return e.eq === prefEq; });
-    var pool = preferred.length > 0 ? preferred : candidates;
+    // Final fallback: any exercise for this body part not yet used
+    if (pool.length === 0) {
+      pool = EX.filter(function(e) { return e.body === body && !usedNames[e.n]; });
+    }
+
+    if (pool.length === 0) continue; // skip if truly no options
 
     var ex = pool[Math.floor(rng() * pool.length)];
-    usedEquipment[ex.eq + '_' + ex.n] = true;
+    usedNames[ex.n] = true;
     stations.push(ex);
   }
 
+  // Build a readable description of what body parts are hit
+  var bodyList = stations.map(function(s) {
+    return s.body.charAt(0).toUpperCase() + s.body.slice(1);
+  }).join(', ');
+
   return {
-    focus: focus,
-    desc: FOCUS_DESC[focus] || '',
-    stations: stations
+    stations: stations,
+    bodyList: bodyList
   };
 }
 
@@ -1003,21 +988,21 @@ function renderWod(wod) {
     '<div class="wod-hdr">' +
       '<div class="wod-top-row">' +
         '<div class="wod-day">' + DAYS[new Date().getDay()] + '</div>' +
-        '<div class="wod-focus-tag" style="color:var(--orange);border-color:var(--odim);background:var(--oglow)">' + wod.focus + '</div>' +
+        '<div class="wod-focus-tag" style="color:var(--orange);border-color:var(--odim);background:var(--oglow)">6 Stations</div>' +
       '</div>' +
-      '<div class="wod-desc">' + wod.desc + '</div>' +
+      '<div class="wod-desc" style="font-size:11px;margin-bottom:8px">' + wod.bodyList + '</div>' +
       '<div class="wod-chips">' +
-        '<div class="chip hi">20 min AMRAP</div>' +
-        '<div class="chip">7 stations</div>' +
+        '<div class="chip hi">AMRAP Circuit</div>' +
+        '<div class="chip">6 equipment types</div>' +
         '<div class="chip">No body part repeated</div>' +
       '</div>' +
     '</div>' +
-    '<div class="ex-lbl">One Round - 7 Stations - Each Hits a Different Body Part</div>' +
+    '<div class="ex-lbl">One Round - 6 Stations - Each Uses a Different Equipment and Body Part</div>' +
     '<div class="ex-list">' + stationsHtml + '</div>';
 
   wc.innerHTML = html;
   var hf = document.getElementById('hero-focus');
-  if (hf) hf.textContent = wod.focus;
+  if (hf) hf.textContent = wod.stations.length + ' stations';
 }
 
 function initWod() {
@@ -1198,7 +1183,7 @@ function wFinish() {
   var rnEl = document.getElementById('mc-rounds');
   var rounds = rnEl ? parseInt(rnEl.textContent) || 0 : 0;
   var key = todayKey();
-  var entry = { key: key, date: new Date().toLocaleDateString(), focus: currentWod ? currentWod.focus : 'Workout', rounds: rounds, notes: '', wod: currentWod };
+  var entry = { key: key, date: new Date().toLocaleDateString(), focus: currentWod ? currentWod.bodyList : 'Workout', rounds: rounds, notes: '', wod: currentWod };
   var found = false;
   for (var i = 0; i < sessions.length; i++) {
     if (sessions[i].key === key) { sessions[i] = entry; found = true; break; }
