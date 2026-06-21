@@ -797,8 +797,8 @@ var EX = [
 var EQ_LABEL = { kb:'KB', lm:'LANDMINE', trx:'TRX', bw:'BODYWEIGHT', cab:'CABLE', db:'DUMBBELL' };
 var EQ_COLOR = { kb:'#e8622a', lm:'#c8a84b', trx:'#2ab8c8', bw:'#9b6eda', cab:'#e84870', db:'#4888d0' };
 
-// 6 equipment types (no medicine ball)
-var ALL_EQ = ['kb', 'lm', 'trx', 'bw', 'cab', 'db'];
+// 3 equipment types, each used twice = 6 stations
+var ALL_EQ = ['kb', 'db', 'bw', 'kb', 'db', 'bw'];
 // 7 body parts - 6 are picked each workout
 var ALL_BODY = ['legs', 'chest', 'back', 'shoulders', 'biceps', 'triceps', 'core'];
 
@@ -993,11 +993,11 @@ function renderWod(wod) {
       '<div class="wod-desc" style="font-size:11px;margin-bottom:8px">' + wod.bodyList + '</div>' +
       '<div class="wod-chips">' +
         '<div class="chip hi">AMRAP Circuit</div>' +
-        '<div class="chip">6 equipment types</div>' +
+        '<div class="chip">KB + DB + Bodyweight</div>' +
         '<div class="chip">No body part repeated</div>' +
       '</div>' +
     '</div>' +
-    '<div class="ex-lbl">One Round - 6 Stations - Each Uses a Different Equipment and Body Part</div>' +
+    '<div class="ex-lbl">One Round - 6 Stations - Each Hits a Different Body Part</div>' +
     '<div class="ex-list">' + stationsHtml + '</div>';
 
   wc.innerHTML = html;
